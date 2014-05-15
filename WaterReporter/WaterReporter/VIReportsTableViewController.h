@@ -1,5 +1,5 @@
 //
-//  VIFirstViewController.h
+//  VIReportsTableViewController.h
 //  WaterReporter
 //
 //  Created by Joshua Isaac Powell on 5/15/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VIFirstViewController : UIViewController
+@interface VIReportsTableViewController : UITableViewController
 
 @end

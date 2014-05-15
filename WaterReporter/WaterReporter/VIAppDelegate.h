@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VILocationViewController.h"
+#import "VIFormTableViewController.h"
+#import "VIReportsTableViewController.h"
 
 @interface VIAppDelegate : UIResponder <UIApplicationDelegate>
 

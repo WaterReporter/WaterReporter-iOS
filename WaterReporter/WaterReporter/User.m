@@ -1,13 +1,20 @@
 //
-//  VISecondViewController.h
+//  User.m
 //  WaterReporter
 //
 //  Created by Joshua Isaac Powell on 5/15/14.
 //  Copyright (c) 2014 Viable Industries, L.L.C. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "User.h"
+#import "User.h"
 
-@interface VISecondViewController : UIViewController
+
+@implementation User
+
+@dynamic name;
+@dynamic email;
+@dynamic user_type;
+@dynamic report;
 
 @end

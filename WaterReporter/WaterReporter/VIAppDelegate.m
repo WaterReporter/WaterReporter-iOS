@@ -8,14 +8,43 @@
 
 #import "VIAppDelegate.h"
 
+#define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
+#define COLOR_BRAND_WHITE_BASE [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0]
+
 @implementation VIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+
+    // Change the NavigationController Toolbar and Status bar color to white
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    // Setup our "My Location" Tab and ensure it's placed within the NavigationController
+    VILocationViewController *locationViewController = [[VILocationViewController alloc] init];
+    UINavigationController *locationNavigationController = [[UINavigationController alloc] initWithRootViewController:locationViewController];
+
+    // Setup our "Submit Report" Tab and ensure it's placed within the NavigationController
+    VIFormTableViewController *formViewController = [[VIFormTableViewController alloc] init];
+    UINavigationController *formNavigationController = [[UINavigationController alloc] initWithRootViewController:formViewController];
+
+    // Setup our "My Reports" Tab and ensure it's placed within the NavigationController
+    VIReportsTableViewController *reportsViewController = [[VIReportsTableViewController alloc] init];
+    UINavigationController *reportsNavigationController = [[UINavigationController alloc] initWithRootViewController:reportsViewController];
+    
+    // Define and popluate our Tab Bar with the content defined above
+    UITabBarController *tabBarCtrl = [[UITabBarController alloc] init];
+    [tabBarCtrl setViewControllers:@[locationNavigationController, formNavigationController, reportsNavigationController] animated:YES];
+
+    // Set Toolbar/Statusbar to Green with White text throughout the entire application
+	[[UINavigationBar appearance] setBarTintColor:COLOR_BRAND_BLUE_BASE];
+    [[UINavigationBar appearance] setTintColor:COLOR_BRAND_WHITE_BASE];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : COLOR_BRAND_WHITE_BASE}];
+    
+//    [MagicalRecord setupCoreDataStackWithStoreNamed:@"BeerModel"];
+
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
