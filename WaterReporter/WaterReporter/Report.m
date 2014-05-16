@@ -21,5 +21,6 @@
 @dynamic pollution_type;
 @dynamic report_type;
 @dynamic owner;
+@dynamic status;
 
 @end

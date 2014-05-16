@@ -249,67 +249,60 @@
 
 - (void) saveFormContent
 {
+
+    //
+    // After we save it to the system, we should send the user over to the "My Submission" tab
+    // and clear all the form fields
+    //
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+    NSDate *date = [NSDate date];
     
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
-//    NSDate *date = [NSDate date];
-//    NSString *dateString = [dateFormatter stringFromDate:date];
-//    
-//    self.report = [Report MR_createEntity];
+    self.report = [Report MR_createEntity];
 //    User *user = [User MR_findFirst];
-//    
-//    self.report.created = date;
-//    self.report.pollution_type = self.pollutionTypeField.text;
-//    self.report.comments = self.commentsTypeField.text;
-//    self.report.issueType = self.issueTypeField.text;
+    
+    self.report.created = date;
+//    self.report.comments = self.commentsField.text;
 //    self.report.activity_type = self.activityTypeField.text;
-//    self.report.describe = self.describeTextField.text;
-//    self.report.facilityType = self.facilityTextField.text;
-//    self.report.incidentType = self.incidentTextField.text;
-//    self.report.waterIssueType = self.waterIssueTextField.text;
-//    self.report.status = @"crowd";
-//    self.report.type = self.reportType;
-//    self.report.user = user;
-//    self.report.longitude = self.reportLongitude;
-//    self.report.latitude = self.reportLatitude;
-//    //we have to convert the image to the JPEG binary representation to store it
-//    //    self.report.image = UIImageJPEGRepresentation(self.imageView.image, 1.0);
+//    self.report.pollution_type = self.pollutionTypeField.text;
+//    self.report.status = @"public";
+//    self.report.report_type = self.reportType;
+//    self.report.owner = user;
+//    self.report.geometry = @"";
+//    self.report.date = self.datePicker.date;
 //    
-//    if([self.potableTextField.text isEqualToString:@"YES"]){
-//        NSNumber *number = [NSNumber numberWithInt:1];
-//        self.report.potableWater = number;
-//    }
-//    else{
-//        NSNumber *number = [NSNumber numberWithInt:0];
-//        self.report.potableWater = number;
-//    }
-//    
-//    if([self.reportType isEqualToString:@"Trail Logbook"]){
-//        self.report.pollutiondate = self.datePicker.date;
-//    }
-//    else if([self.reportType isEqualToString:@"Well Water Report"]){
-//        self.report.wellDate = self.datePicker.date;
-//    }
-//    else if([self.reportType isEqualToString:@"Oil & Gas Report"]){
-//        self.report.oilDate = self.datePicker.date;
-//    }
-//    
-//    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-//    
+//    [[NSManagedObjectContext defaultContext] saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+//        if (success) {
+//            NSLog(@"You successfully saved your context.");
+//        } else if (error) {
+//            NSLog(@"Error saving context: %@", error.description);
+//        }
+//    }];
+
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
 //    [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
-//
+
+//    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void) resetFormContent
 {
     NSString *dateString = [self dateTodayAsString];
     
-    // Reset all fields to nil or appropriate default value
+    self.activityDateField.text = dateString;
+    self.activityTypeField.text = nil;
+    self.pollutionDateField.text = dateString;
+    self.pollutionTypeField.text = nil;
+    self.commentsField.text = nil;
+
 }
 
 - (void) submitForm
 {
     [self saveFormContent];
+    [self resetFormContent];
+
     [self.tabBarController setSelectedIndex:2];
 }
 

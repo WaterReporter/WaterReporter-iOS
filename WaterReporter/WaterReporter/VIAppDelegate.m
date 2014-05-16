@@ -40,7 +40,7 @@
     [[UINavigationBar appearance] setTintColor:COLOR_BRAND_WHITE_BASE];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : COLOR_BRAND_WHITE_BASE}];
     
-//    [MagicalRecord setupCoreDataStackWithStoreNamed:@"BeerModel"];
+    [MagicalRecord setupCoreDataStackWithStoreNamed:@"ReportModel.sqlite"];
 
     return YES;
 }

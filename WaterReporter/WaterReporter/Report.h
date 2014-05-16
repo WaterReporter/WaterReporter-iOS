@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * activity_type;
 @property (nonatomic, retain) NSString * pollution_type;
 @property (nonatomic, retain) NSString * report_type;
+@property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) User *owner;
 
 @end
