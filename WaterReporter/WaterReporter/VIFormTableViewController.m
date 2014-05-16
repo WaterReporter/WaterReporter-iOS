@@ -259,26 +259,18 @@
     NSDate *date = [NSDate date];
     
     self.report = [Report MR_createEntity];
-//    User *user = [User MR_findFirst];
+    User *user = [User MR_findFirst];
     
     self.report.created = date;
-//    self.report.comments = self.commentsField.text;
-//    self.report.activity_type = self.activityTypeField.text;
-//    self.report.pollution_type = self.pollutionTypeField.text;
-//    self.report.status = @"public";
-//    self.report.report_type = self.reportType;
-//    self.report.owner = user;
-//    self.report.geometry = @"";
-//    self.report.date = self.datePicker.date;
-//    
-//    [[NSManagedObjectContext defaultContext] saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-//        if (success) {
-//            NSLog(@"You successfully saved your context.");
-//        } else if (error) {
-//            NSLog(@"Error saving context: %@", error.description);
-//        }
-//    }];
-
+    self.report.comments = self.commentsField.text;
+    self.report.activity_type = self.activityTypeField.text;
+    self.report.pollution_type = self.pollutionTypeField.text;
+    self.report.status = @"public";
+    self.report.report_type = self.reportType;
+    self.report.owner = user;
+    self.report.geometry = [self createGeoJSONPoint];
+    self.report.date = self.datePicker.date;
+    
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 //    [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
@@ -318,6 +310,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSString*) createGeoJSONPoint
+{
+    
+    NSString *before = @"{\"type\": \"GeometryCollection\",\"geometries\": [{\"type\": \"Point\",\"coordinates\": [";
+    NSString *after = @"]}]}";
+    NSString *geojson = [NSString stringWithFormat: @"%@%f,%f%@", before, self.reportLongitude, self.reportLatitude, after];
+
+    return geojson;
+}
+
 #pragma mark - Media Interactions
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -332,7 +334,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *chosenImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *chosenImage = [info valueForKey:UIImagePickerControllerOriginalImage];
     
     if (self.report.image) {
         [ImageSaver deleteImageAtPath:self.report.image];

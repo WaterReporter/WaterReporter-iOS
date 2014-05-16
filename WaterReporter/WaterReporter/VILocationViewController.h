@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MBXMapKit/MBXMapKit.h>
 
-@interface VILocationViewController : UIViewController
+@interface VILocationViewController : UIViewController<MKMapViewDelegate>
 
 @property (strong, nonatomic) MBXMapView *mapView;
 @property BOOL userLocationUpdated;

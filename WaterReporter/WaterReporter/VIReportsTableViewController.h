@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Report.h"
+#import "VISingleReportTableViewController.h"
 
 @interface VIReportsTableViewController : UITableViewController
+
+@property (strong, nonatomic) NSArray *reports;
 
 @end

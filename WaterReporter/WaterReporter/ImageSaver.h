@@ -7,6 +7,6 @@
 
 @interface ImageSaver : NSObject
 
-+ (BOOL)saveImageToDisk:(UIImage*)image andToReport:(Report*)report;
++ (NSString*)saveImageToDisk:(UIImage*)image andToReport:(Report*)report;
 + (void)deleteImageAtPath:(NSString*)path;
 @end

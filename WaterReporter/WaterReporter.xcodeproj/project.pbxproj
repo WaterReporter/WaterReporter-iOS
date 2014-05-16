@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C10177FE1926A33D00A1F7EF /* VISingleReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */; };
 		C12D7B03192533BC00C2B9F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B02192533BC00C2B9F5 /* Foundation.framework */; };
 		C12D7B05192533BC00C2B9F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */; };
 		C12D7B07192533BC00C2B9F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B06192533BC00C2B9F5 /* UIKit.framework */; };
@@ -45,6 +46,8 @@
 /* Begin PBXFileReference section */
 		3DBBC128CEF14D94B9A4C71C /* libPods-WaterReporter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WaterReporter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		83C09DD9E92A45478A304B2D /* Pods-WaterReporter.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.xcconfig"; path = "Pods/Pods-WaterReporter.xcconfig"; sourceTree = "<group>"; };
+		C10177FC1926A33D00A1F7EF /* VISingleReportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VISingleReportTableViewController.h; sourceTree = "<group>"; };
+		C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VISingleReportTableViewController.m; sourceTree = "<group>"; };
 		C12D7AFF192533BC00C2B9F5 /* WaterReporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterReporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C12D7B02192533BC00C2B9F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -217,6 +220,8 @@
 				C12D7B521925533000C2B9F5 /* ImageSaver.m */,
 				C12D7B3D1925390300C2B9F5 /* VIReportsTableViewController.h */,
 				C12D7B3E1925390300C2B9F5 /* VIReportsTableViewController.m */,
+				C10177FC1926A33D00A1F7EF /* VISingleReportTableViewController.h */,
+				C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */,
 				C12D7B1A192533BC00C2B9F5 /* VILocationViewController.h */,
 				C12D7B1B192533BC00C2B9F5 /* VILocationViewController.m */,
 				C12D7B1D192533BC00C2B9F5 /* VIFormTableViewController.h */,
@@ -382,6 +387,7 @@
 				C12D7B541925533000C2B9F5 /* ImageSaver.m in Sources */,
 				C12D7B1F192533BC00C2B9F5 /* VIFormTableViewController.m in Sources */,
 				C12D7B0F192533BC00C2B9F5 /* main.m in Sources */,
+				C10177FE1926A33D00A1F7EF /* VISingleReportTableViewController.m in Sources */,
 				C12D7B13192533BC00C2B9F5 /* VIAppDelegate.m in Sources */,
 				C12D7B531925533000C2B9F5 /* PhotoViewController.m in Sources */,
 				C12D7B4819254F7E00C2B9F5 /* ReportModel.xcdatamodeld in Sources */,
