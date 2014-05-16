@@ -11,7 +11,7 @@
 #import "VIFormTableViewController.h"
 
 #define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
-#define COLOR_BRAND_WHITE_BASE [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0]
+#define COLOR_BRAND_WHITE_BASE [UIColor colorWithWhite:242.0/255.0f alpha:1.0f]
 
 
 @interface VIFormTableViewController ()
@@ -40,12 +40,23 @@
     self.activityFields = @[@"Date", @"Activity Type", @"Comments"];
     self.pollutionFields = @[@"Date", @"Pollution Type", @"Comments"];
 
-    self.activityEnums = @[@"Water Pollution", @"Confrontation", @"Trail Relocation", @"Scenic Degradation", @"Impaired Wildlife", @"Significant Noise", @"Unpleasant Odors", @"Other"];
-    self.pollutionEnums = @[@"Pipeline", @"Drilling or Fracking", @"Pit", @"Well Pad", @"Compressor Station", @"New Roads", @"Aircraft", @"Truck Traffic or Incident", @"Other"];
+    self.activityEnums = @[@"Canoeing",@"Diving",@"Fishing",@"Flatwater kayaking",@"Hiking",@"Living the dream",@"Rock climbing",@"Sailing",@"Scouting wildlife",@"Snorkeling",@"Stand-up paddleboarding",@"Stream cleanup",@"Surfing",@"Swimming",@"Tubing",@"Water skiing",@"Whitewater kayaking",@"Whitewater rafting"];
+    self.pollutionEnums = @[@"Discolored water", @"Eroded stream banks", @"Excessive algae", @"Excessive trash", @"Exposed soil", @"Faulty construction entryway", @"Faulty silt fences", @"Fish kill", @"Foam", @"Livestock in stream", @"Oil and grease", @"Other", @"Pipe discharge", @"Sewer overflow", @"Stormwater", @"Winter manure application"];
+
+    // We need to make sure we are defining this class or else our Table View will throw
+    // an error telling us we didn't define it for reuse. In addition make sure that we
+    // style the table to fit the rest of the application
+    [self.tableView registerClass: [UITableViewCell class] forCellReuseIdentifier:@"reportCell"];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = COLOR_BRAND_WHITE_BASE;
+    self.tableView.opaque = NO;
 
     [self prepareMapForReport];
     [self updateNavigationController];
-    [self setupDifferentFormTypes];
+    [self setupFormTypes];
+    [self setupFormFields];
+
+    [self.tableView reloadData];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -54,7 +65,70 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void) setupDifferentFormTypes
+- (void) setupFormFields
+{
+    NSString *dateString = [self dateTodayAsString];
+    
+    // Setup Toolbar to dismiss keyboards and pickers
+    [self setupFormToolbar];
+    
+    // Setup all date fields
+    [self setupDatePicker];
+    
+    self.activityDateField = [self makeTextField:dateString placeholder:@"Date"];
+    self.pollutionDateField = [self makeTextField:dateString placeholder:@"Date"];
+    
+    // Setup picker fields
+    self.activityTypeField = [self makeTextField:self.report.activity_type placeholder:@"Activity Type"];
+    self.activityPickerView = [[UIPickerView alloc] init];
+    [self.activityPickerView sizeToFit];
+    [self.activityPickerView setDelegate:self];
+    [self.activityPickerView setDataSource:self];
+    self.activityPickerView.showsSelectionIndicator = YES;
+
+    self.pollutionTypeField = [self makeTextField:self.report.pollution_type placeholder:@"Pollution Type"];
+    self.pollutionPickerView = [[UIPickerView alloc] init];
+    [self.pollutionPickerView sizeToFit];
+    [self.pollutionPickerView setDelegate:self];
+    [self.pollutionPickerView setDataSource:self];
+    self.pollutionPickerView.showsSelectionIndicator = YES;
+
+    
+    // Setup generic text fields
+    self.commentsField = [self makeTextField:self.report.comments placeholder:@"Comments"];
+
+    
+
+}
+
+- (void) setupFormToolbar
+{
+    self.toolbar = [[UIToolbar alloc] init];
+    self.toolbar.barStyle = UIBarStyleDefault;
+    self.toolbar.opaque = NO;
+    self.toolbar.tintColor = nil;
+    [self.toolbar sizeToFit];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(resignTextField)];
+    self.toolbar.items = [[NSArray alloc] initWithObjects:doneButton, nil];
+
+}
+
+- (void) setupDatePicker
+{
+    self.datePicker = [[UIDatePicker alloc] init];
+    self.datePicker.datePickerMode = UIDatePickerModeDate;
+    [self.datePicker sizeToFit];
+    [self.datePicker setDate:[self dateTodayAsDate] animated:YES];
+    [self.datePicker addTarget:self action:@selector(dateSelection:) forControlEvents:UIControlEventValueChanged];
+
+}
+
+- (void) fetchAllReports {
+    self.reports = [[Report findAllSortedBy:@"created" ascending:NO] mutableCopy];
+}
+
+
+- (void) setupFormTypes
 {
     //
     // Set the currently selected segment
@@ -70,7 +144,8 @@
     [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR_BRAND_WHITE_BASE} forState:UIControlStateSelected];
     
     self.segmentedControl.selectedSegmentIndex = 0;
-
+    self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
+    self.reportType = @"Pollution Report";
 }
 
 - (void)segmentClicked:(id)sender
@@ -79,13 +154,14 @@
     NSString *segmentName = self.templates[selectedSegment];
     
     if([segmentName isEqualToString:@"Pollution Report"]){
-//        self.fields = [[NSArray alloc] initWithArray:self.trailFields];
-//        self.reportType = @"Trail Logbook";
+        self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
+        self.reportType = @"Pollution Report";
     }
     else if([segmentName isEqualToString:@"Activity Report"]){
-//        self.fields = [[NSArray alloc] initWithArray:self.wellFields];
-//        self.reportType = @"Well Water Report";
+        self.fields = [[NSArray alloc] initWithArray:self.activityFields];
+        self.reportType = @"Activity Report";
     }
+
     
     self.segmentedControl.selectedSegmentIndex = selectedSegment;
     
@@ -158,8 +234,17 @@
     [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
     NSDate *date = [NSDate date];
     NSString *dateString = [dateFormatter stringFromDate:date];
-
+    
     return dateString;
+}
+
+- (NSDate*) dateTodayAsDate
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+    NSDate *date = [NSDate date];
+    
+    return date;
 }
 
 - (void) saveFormContent
@@ -440,13 +525,13 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
     // Handle the selection
     
-    if(pickerView == self.pollutionPickerView){
-        NSString *selected = self.pollutionEnums[row];
-        self.pollutionTypeField.text = selected;
-    }
-    else if(pickerView == self.activityPickerView){
+    if(pickerView == self.activityPickerView){
         NSString *selected = self.activityEnums[row];
         self.activityTypeField.text = selected;
+    }
+    else if(pickerView == self.pollutionPickerView){
+        NSString *selected = self.pollutionEnums[row];
+        self.pollutionTypeField.text = selected;
     }
 }
 
@@ -492,7 +577,47 @@
     return sectionWidth;
 }
 
+- (void) dateSelection:(id)sender
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+    
+    if([self.reportType isEqualToString:@"Activity Report"]){
+        NSString *dateString = [dateFormatter stringFromDate:self.datePicker.date];
+        self.activityDateField.text = dateString;
+    }
+    else if([self.reportType isEqualToString:@"Pollution Report"]){
+        NSString *dateString = [dateFormatter stringFromDate:self.datePicker.date];
+        self.pollutionDateField.text = dateString;
+    }
+
+}
+
+- (void) resignTextField
+{
+    [self.activityDateField endEditing:YES];
+    [self.activityDateField resignFirstResponder];
+
+    [self.pollutionDateField endEditing:YES];
+    [self.pollutionDateField resignFirstResponder];
+
+    [self.activityTypeField endEditing:YES];
+    [self.activityTypeField resignFirstResponder];
+
+    [self.pollutionTypeField endEditing:YES];
+    [self.pollutionTypeField resignFirstResponder];
+}
+
+
+
 #pragma mark - Table view data source
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 45)];
+    [headerView addSubview:self.segmentedControl];
+    return headerView;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -550,7 +675,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reportCell" forIndexPath:indexPath];
 
     if(cell == nil){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fieldCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reportCell"];
     }
     
     //
@@ -567,9 +692,12 @@
 }
 
 - (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath {
-
     
-    if([self.fields[indexPath.row] isEqualToString:@"Date"]){
+//    Report *report = self.reports[indexPath.row];
+
+    if([self.fields[indexPath.row] isEqualToString:@"Date"] && [self.reportType isEqualToString:@"Pollution Report"]){
+        NSLog(@"Pollution Date Field");
+        
         [cell setAccessoryView:self.pollutionDateField];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
@@ -580,7 +708,9 @@
         self.pollutionDateField.inputAccessoryView = self.toolbar;
         self.pollutionDateField.text = dateString;
     }
-    else if ([self.fields[indexPath.row] isEqualToString:@"Date"]){
+    else if([self.fields[indexPath.row] isEqualToString:@"Date"] && [self.reportType isEqualToString:@"Activity Report"]){
+        NSLog(@"Activity Date Field");
+
         [cell setAccessoryView:self.activityDateField];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
@@ -590,7 +720,21 @@
         self.activityDateField.inputAccessoryView = self.toolbar;
         self.activityDateField.text = dateString;
     }
-    
+    else if([self.fields[indexPath.row] isEqualToString:@"Activity Type"]){
+        [cell setAccessoryView:self.activityTypeField];
+        self.activityTypeField.inputView = self.activityPickerView;
+        self.activityTypeField.inputAccessoryView = self.toolbar;
+    }
+    else if([self.fields[indexPath.row] isEqualToString:@"Pollution Type"]){
+        [cell setAccessoryView:self.pollutionTypeField];
+        self.pollutionTypeField.inputView = self.pollutionPickerView;
+        self.pollutionTypeField.inputAccessoryView = self.toolbar;
+    }
+    else if([self.fields[indexPath.row] isEqualToString:@"Comments"]){
+        [cell setAccessoryView:self.commentsField];
+        [self.commentsField setReturnKeyType:UIReturnKeyDone];
+    }
+
 }
 
 /*

@@ -19,10 +19,12 @@
 
 // Template Information
 @property (strong, nonatomic) Report *report;
-@property (strong, nonatomic) NSArray *templates;
-@property (strong, nonatomic) NSString *template;
-
 @property (strong, nonatomic) NSString *reportType;
+@property (nonatomic) NSMutableArray *reports;
+
+@property (strong, nonatomic) NSString *template;
+@property (strong, nonatomic) NSArray *templates;
+
 @property (strong, nonatomic) UIToolbar *toolbar;
 
 // Template fields
@@ -43,9 +45,9 @@
 @property (strong, nonatomic) UIPickerView *activityPickerView;
 @property (strong, nonatomic) NSArray *activityEnums;
 
-@property (strong, nonatomic) UITextField *commentsTypeField;
-@property (strong, nonatomic) UITextField *geometryTypeField;
-@property (strong, nonatomic) UITextField *imageTypeField;
+@property (strong, nonatomic) UITextField *commentsField;
+@property (strong, nonatomic) UITextField *geometryField;
+@property (strong, nonatomic) UITextField *imageField;
 
 
 // Location Information

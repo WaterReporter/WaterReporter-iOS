@@ -18,8 +18,8 @@
 @property (nonatomic, retain) NSString * comments;
 @property (nonatomic, retain) NSString * image;
 @property (nonatomic, retain) NSString * geometry;
-@property (nonatomic, retain) NSNumber * activity_type;
-@property (nonatomic, retain) NSNumber * pollution_type;
+@property (nonatomic, retain) NSString * activity_type;
+@property (nonatomic, retain) NSString * pollution_type;
 @property (nonatomic, retain) NSString * report_type;
 @property (nonatomic, retain) User *owner;
 
