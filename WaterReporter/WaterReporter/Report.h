@@ -13,6 +13,7 @@
 
 @interface Report : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * feature_id;
 @property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSString * comments;

@@ -12,6 +12,7 @@
 
 @implementation Report
 
+@dynamic feature_id;
 @dynamic created;
 @dynamic date;
 @dynamic comments;

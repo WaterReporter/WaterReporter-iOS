@@ -5,6 +5,7 @@
         <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="feature_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="geometry" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pollution_type" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,7 +20,7 @@
         <relationship name="report" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Report" inverseName="owner" inverseEntity="Report" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Report" positionX="-54" positionY="18" width="128" height="193"/>
+        <element name="Report" positionX="-54" positionY="18" width="128" height="210"/>
         <element name="User" positionX="-63" positionY="-18" width="128" height="103"/>
     </elements>
 </model>

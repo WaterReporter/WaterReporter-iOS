@@ -27,11 +27,73 @@
     
     self.title = self.report.report_type;
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareReport)];
+
+    // Title
+    CGRect reportTypeFrame = CGRectMake(10, 16, 302, 16);
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UILabel *reportTypeLabel = [[UILabel alloc] initWithFrame:reportTypeFrame];
+    reportTypeLabel.text = self.report.report_type;
+    reportTypeLabel.font = [UIFont systemFontOfSize:12.0];
+    reportTypeLabel.textColor = [UIColor lightGrayColor];
+
+    [self.view addSubview:reportTypeLabel];
+    
+    
+    // Activity or Pollution Type
+    CGRect categoryTypeFrame = CGRectMake(10, 32, 302, 20);
+    
+    UILabel *categoryTypeLabel = [[UILabel alloc] initWithFrame:categoryTypeFrame];
+    
+    if ([self.report.report_type isEqualToString:@"Activity Report"]) {
+        categoryTypeLabel.text = self.report.activity_type;
+    }
+    else if ([self.report.report_type isEqualToString:@"Pollution Report"]) {
+        categoryTypeLabel.text = self.report.pollution_type;
+    }
+    
+    [self.view addSubview:categoryTypeLabel];
+
+    
+    // Date
+    CGRect submittedDateFrame = CGRectMake(10, 54, 302, 15);
+    
+    UILabel *submittedDateLabel = [[UILabel alloc] initWithFrame:submittedDateFrame];
+    submittedDateLabel.font = [UIFont systemFontOfSize:12.0];
+    submittedDateLabel.textColor = [UIColor lightGrayColor];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMM dd, yyyy"];
+    NSString *dateString = [dateFormatter stringFromDate:self.report.date];
+    
+    submittedDateLabel.text = [NSString stringWithFormat:@"Submitted on %@", dateString];
+    
+    [self.view addSubview:submittedDateLabel];
+
+    // Comment
+    if (self.report.comments) {
+        CGRect commentFrame = CGRectMake(10, 84, 302, 60);
+        
+        UILabel *commentLabel = [[UILabel alloc] initWithFrame:commentFrame];
+        commentLabel.font = [UIFont systemFontOfSize:12.0];
+        commentLabel.numberOfLines = 4;
+        
+        commentLabel.text = self.report.comments;
+        
+        [self.view addSubview:commentLabel];
+    }
+}
+
+- (void) shareReport
+{
+
+    NSString *reportTitle = self.report.report_type;
+    NSString *reportURLString = [NSString stringWithFormat:@"http://www.waterreporter.org/reports/%@", self.report.feature_id];
+    NSURL *reportURL = [NSURL URLWithString:reportURLString];
+    
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[reportTitle, reportURL] applicationActivities:nil];
+    
+    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

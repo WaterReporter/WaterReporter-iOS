@@ -47,7 +47,7 @@
         Report *report = self.reports[indexPath.row];
         
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-
+        
         upcoming.report = report;
 	}
 }
