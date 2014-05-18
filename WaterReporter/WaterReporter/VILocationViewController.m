@@ -26,6 +26,18 @@
     [self updateTabBarAppearance];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    self.userArray = [User MR_findAll];
+    
+    if(self.userArray.count == 0){
+
+        VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
+        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+        [self presentViewController:modalNav animated:YES completion:nil];
+    }
+}
+
 - (void) setupMapboxMapView
 {
     // Setup our Mapbox based MapView using Apple's Mapkit

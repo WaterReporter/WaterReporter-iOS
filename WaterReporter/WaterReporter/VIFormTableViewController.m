@@ -341,6 +341,7 @@
     }
     
     if ([ImageSaver saveImageToDisk:chosenImage andToReport:self.report]) {
+        NSLog(@"Supposed to be submitting an image here");
         [self setImageForReport:chosenImage];
     }
     

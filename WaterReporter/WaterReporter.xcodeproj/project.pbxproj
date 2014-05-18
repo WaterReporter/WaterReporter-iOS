@@ -30,6 +30,8 @@
 		C12D7B4E1925528400C2B9F5 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B4D1925528400C2B9F5 /* Report.m */; };
 		C12D7B531925533000C2B9F5 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B501925533000C2B9F5 /* PhotoViewController.m */; };
 		C12D7B541925533000C2B9F5 /* ImageSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B521925533000C2B9F5 /* ImageSaver.m */; };
+		C12E243B1928EE05004A7FDD /* VILoginTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */; };
+		C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243D1928EE95004A7FDD /* VITutorialViewController.m */; };
 		CF3A7DFC79474526A9332999 /* libPods-WaterReporter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DBBC128CEF14D94B9A4C71C /* libPods-WaterReporter.a */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +83,10 @@
 		C12D7B501925533000C2B9F5 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		C12D7B511925533000C2B9F5 /* ImageSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSaver.h; sourceTree = "<group>"; };
 		C12D7B521925533000C2B9F5 /* ImageSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSaver.m; sourceTree = "<group>"; };
+		C12E24391928EE05004A7FDD /* VILoginTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VILoginTableViewController.h; sourceTree = "<group>"; };
+		C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VILoginTableViewController.m; sourceTree = "<group>"; };
+		C12E243C1928EE95004A7FDD /* VITutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VITutorialViewController.h; sourceTree = "<group>"; };
+		C12E243D1928EE95004A7FDD /* VITutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VITutorialViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +220,8 @@
 		C12D7B4319254DD700C2B9F5 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C12E24391928EE05004A7FDD /* VILoginTableViewController.h */,
+				C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */,
 				C12D7B4F1925533000C2B9F5 /* PhotoViewController.h */,
 				C12D7B501925533000C2B9F5 /* PhotoViewController.m */,
 				C12D7B511925533000C2B9F5 /* ImageSaver.h */,
@@ -226,6 +234,8 @@
 				C12D7B1B192533BC00C2B9F5 /* VILocationViewController.m */,
 				C12D7B1D192533BC00C2B9F5 /* VIFormTableViewController.h */,
 				C12D7B1E192533BC00C2B9F5 /* VIFormTableViewController.m */,
+				C12E243C1928EE95004A7FDD /* VITutorialViewController.h */,
+				C12E243D1928EE95004A7FDD /* VITutorialViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -383,8 +393,10 @@
 			files = (
 				C12D7B3F1925390300C2B9F5 /* VIReportsTableViewController.m in Sources */,
 				C12D7B4B1925528400C2B9F5 /* User.m in Sources */,
+				C12E243B1928EE05004A7FDD /* VILoginTableViewController.m in Sources */,
 				C12D7B1C192533BC00C2B9F5 /* VILocationViewController.m in Sources */,
 				C12D7B541925533000C2B9F5 /* ImageSaver.m in Sources */,
+				C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */,
 				C12D7B1F192533BC00C2B9F5 /* VIFormTableViewController.m in Sources */,
 				C12D7B0F192533BC00C2B9F5 /* main.m in Sources */,
 				C10177FE1926A33D00A1F7EF /* VISingleReportTableViewController.m in Sources */,

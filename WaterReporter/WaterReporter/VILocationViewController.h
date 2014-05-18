@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <MBXMapKit/MBXMapKit.h>
+#import "VITutorialViewController.h"
+#import "VILoginTableViewController.h"
 
 @interface VILocationViewController : UIViewController<MKMapViewDelegate>
 
+@property (strong, nonatomic) NSArray *userArray;
 @property (strong, nonatomic) MBXMapView *mapView;
 @property BOOL userLocationUpdated;
 
