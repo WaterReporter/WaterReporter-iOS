@@ -74,12 +74,13 @@
     UIImage *image = [UIImage imageWithData:jpgData];
     NSLog(@"Image: %@", image);
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.frame = CGRectMake(10, 200, 100, 100);
+//    imageView.frame = CGRectMake(10, 120, 300, 235);
+    imageView.frame = CGRectMake(10, 120, image.size.width/3, image.size.height/3);
     [self.view addSubview:imageView];
     
     // Comment
     if (self.report.comments) {
-        CGRect commentFrame = CGRectMake(10, 84, 302, 60);
+        CGRect commentFrame = CGRectMake(10, 50, 302, 60);
         
         UILabel *commentLabel = [[UILabel alloc] initWithFrame:commentFrame];
         commentLabel.font = [UIFont systemFontOfSize:12.0];
