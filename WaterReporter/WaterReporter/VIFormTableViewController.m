@@ -198,7 +198,7 @@
     //
     // !!!! IMPORTANT REMINDER !!!
     //
-    // We have to assigne dthe delegate here to self and then make sure that User Interaction
+    // We have to assign the delegate here to self and then make sure that User Interaction
     // is enabled on the parent controller, in this case self.mapNavigationController, otherwise
     // our tap gesture will be ignored.
     //
@@ -271,6 +271,14 @@
     self.report.geometry = [self createGeoJSONPoint];
     self.report.date = self.datePicker.date;
     
+    self.report.image = self.path;
+    
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsPath = [paths objectAtIndex:0]; //Get the docs directory
+//    NSString *filePath = [documentsPath stringByAppendingPathComponent:name]; //Add the file name
+//    [imgData writeToFile:filePath atomically:YES]; //Write the file
+//    self.report.image = filePath;
+    
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 //    [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
@@ -294,6 +302,8 @@
 {
     [self saveFormContent];
     [self resetFormContent];
+    
+    NSLog(@"Path from report: %@", self.report.image);
 
     [self.tabBarController setSelectedIndex:2];
 }
@@ -341,10 +351,17 @@
         [ImageSaver deleteImageAtPath:self.report.image];
     }
     
-    if ([ImageSaver saveImageToDisk:chosenImage andToReport:self.report]) {
-        NSLog(@"Supposed to be submitting an image here [second if]");
-        [self setImageForReport:chosenImage];
-    }
+//    if ([ImageSaver saveImageToDisk:chosenImage andToReport:self.report]) {
+//        NSLog(@"Supposed to be submitting an image here [second if]");
+//        [self setImageForReport:chosenImage];
+//    }
+    
+    NSData *imgData   = UIImageJPEGRepresentation(chosenImage, 0.5);
+	NSString *name    = [[NSUUID UUID] UUIDString];
+	self.path	  = [NSString stringWithFormat:@"Documents/%@.jpg", name];
+	NSString *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:self.path];
+    [imgData writeToFile:jpgPath atomically:YES];
+//    [ImageSaver saveImageToDisk:chosenImage andToReport:self.report];
     
     [self.tableView reloadData];
     

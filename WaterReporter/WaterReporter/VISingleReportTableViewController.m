@@ -32,7 +32,7 @@
     reportTypeLabel.text = self.report.report_type;
     reportTypeLabel.font = [UIFont systemFontOfSize:12.0];
     reportTypeLabel.textColor = [UIColor lightGrayColor];
-
+    
     [self.view addSubview:reportTypeLabel];
     
     //Gravatar
@@ -68,7 +68,15 @@
     submittedDateLabel.text = [NSString stringWithFormat:@"Submitted on %@", dateString];
     
     [self.view addSubview:submittedDateLabel];
-
+    
+    NSData *jpgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:self.report.image]];
+    NSLog(@"Path in Single View: %@", self.report.image);
+    UIImage *image = [UIImage imageWithData:jpgData];
+    NSLog(@"Image: %@", image);
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.frame = CGRectMake(10, 200, 100, 100);
+    [self.view addSubview:imageView];
+    
     // Comment
     if (self.report.comments) {
         CGRect commentFrame = CGRectMake(10, 84, 302, 60);
@@ -87,7 +95,9 @@
 {
     UIImage *avatar = self.gravatar.avatar;
     UIImageView *avatarView = [[UIImageView alloc] initWithImage:avatar];
-    avatarView.frame = CGRectMake(235, 45, 50, 50);
+    avatarView.frame = CGRectMake(260, 17, 52, 52);
+    avatarView.layer.cornerRadius = 26;
+    avatarView.clipsToBounds = YES;
     [self.view addSubview:avatarView];
 }
 

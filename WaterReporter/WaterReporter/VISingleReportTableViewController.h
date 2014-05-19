@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "PhotoViewController.h"
 #import "ImageSaver.h"
 #import "Report.h"
