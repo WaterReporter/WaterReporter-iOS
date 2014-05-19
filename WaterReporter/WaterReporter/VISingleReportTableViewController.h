@@ -7,11 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhotoViewController.h"
+#import "ImageSaver.h"
+#import "Report.h"
+#import "User.h"
+#import "Gravatar.h"
 
 @class Report;
 
 @interface VISingleReportTableViewController : UITableViewController
 
 @property (nonatomic, strong) Report *report;
+@property (nonatomic, strong) Gravatar *gravatar;
 
 @end

@@ -7,10 +7,6 @@
 //
 
 #import "VISingleReportTableViewController.h"
-#import "PhotoViewController.h"
-#import "ImageSaver.h"
-#import "Report.h"
-#import "user.h"
 
 @interface VISingleReportTableViewController ()<UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 @end
@@ -39,6 +35,9 @@
 
     [self.view addSubview:reportTypeLabel];
     
+    //Gravatar
+    self.gravatar = [[Gravatar alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadGravatar) name:@"initWithJSONFinishedLoading" object:nil];
     
     // Activity or Pollution Type
     CGRect categoryTypeFrame = CGRectMake(10, 32, 302, 20);
@@ -82,6 +81,14 @@
         
         [self.view addSubview:commentLabel];
     }
+}
+
+- (void) loadGravatar
+{
+    UIImage *avatar = self.gravatar.avatar;
+    UIImageView *avatarView = [[UIImageView alloc] initWithImage:avatar];
+    avatarView.frame = CGRectMake(235, 45, 50, 50);
+    [self.view addSubview:avatarView];
 }
 
 - (void) shareReport
