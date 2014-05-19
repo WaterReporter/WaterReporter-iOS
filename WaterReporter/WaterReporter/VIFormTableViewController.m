@@ -337,15 +337,16 @@
     UIImage *chosenImage = [info valueForKey:UIImagePickerControllerOriginalImage];
     
     if (self.report.image) {
+        NSLog(@"Supposed to be submitting an image here [if]");
         [ImageSaver deleteImageAtPath:self.report.image];
     }
     
     if ([ImageSaver saveImageToDisk:chosenImage andToReport:self.report]) {
-        NSLog(@"Supposed to be submitting an image here");
+        NSLog(@"Supposed to be submitting an image here [second if]");
         [self setImageForReport:chosenImage];
     }
     
-    //    [self.tableView reloadData];
+    [self.tableView reloadData];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }

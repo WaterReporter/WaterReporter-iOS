@@ -114,6 +114,7 @@
     }
     else if ([self.fieldArray[indexPath.row] isEqualToString:@"Who are you?"]) {
         self.userTypeField = [self makeTextField:self.user.user_type placeholder:self.fieldArray[indexPath.row]];
+        [cell addSubview:self.userTypeField];
         [cell setAccessoryView:self.userTypeField];
 
         self.userTypePickerView = [[UIPickerView alloc] init];
