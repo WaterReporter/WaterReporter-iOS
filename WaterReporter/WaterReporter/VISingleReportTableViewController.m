@@ -36,9 +36,12 @@
     reportTypeLabel.text = self.report.report_type;
     reportTypeLabel.font = [UIFont systemFontOfSize:12.0];
     reportTypeLabel.textColor = [UIColor lightGrayColor];
-
+    
     [self.view addSubview:reportTypeLabel];
     
+    //Gravatar
+    self.gravatar = [[Gravatar alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadGravatar) name:@"initWithJSONFinishedLoading" object:nil];
     
     // Activity or Pollution Type
     CGRect categoryTypeFrame = CGRectMake(10, 32, 302, 20);
@@ -69,10 +72,25 @@
     submittedDateLabel.text = [NSString stringWithFormat:@"Submitted on %@", dateString];
     
     [self.view addSubview:submittedDateLabel];
-
+    
+    NSData *jpgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:self.report.image]];
+    UIImage *image = [UIImage imageWithData:jpgData];
+//    CGRect cropSize = CGRectMake(0, 0, 300, 235);
+//    NSDictionary *info = @{@"UIImagePickerControllerOriginalImage" : image, @"UIImagePickerControllerCropRect" : [NSValue valueWithCGRect:cropSize]};
+//    UIImage *resizedImage = [UIImage cropImageWithInfo:info];
+    UIImage *resizedImage = [image resizedImageByMagick:@"300x235#"];
+    self.imageView = [[UIImageView alloc] initWithImage:image];
+//    imageView.frame = CGRectMake(10, 120, 300, 235);
+    self.imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);
+    [self.imageView setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
+    [singleTap setNumberOfTapsRequired:1];
+    [self.imageView addGestureRecognizer:singleTap];
+    [self.view addSubview:self.imageView];
+    
     // Comment
     if (self.report.comments) {
-        CGRect commentFrame = CGRectMake(10, 84, 302, 60);
+        CGRect commentFrame = CGRectMake(10, 50, 302, 60);
         
         UILabel *commentLabel = [[UILabel alloc] initWithFrame:commentFrame];
         commentLabel.font = [UIFont systemFontOfSize:12.0];
@@ -82,6 +100,23 @@
         
         [self.view addSubview:commentLabel];
     }
+}
+
+- (void) showImage
+{
+    PhotoViewController *photoVC = [[PhotoViewController alloc] init];
+    photoVC.image = self.imageView.image;
+    [self.navigationController pushViewController:photoVC animated:YES];
+}
+
+- (void) loadGravatar
+{
+    UIImage *avatar = self.gravatar.avatar;
+    UIImageView *avatarView = [[UIImageView alloc] initWithImage:avatar];
+    avatarView.frame = CGRectMake(260, 17, 52, 52);
+    avatarView.layer.cornerRadius = 26;
+    avatarView.clipsToBounds = YES;
+    [self.view addSubview:avatarView];
 }
 
 - (void) shareReport

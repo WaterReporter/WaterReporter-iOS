@@ -7,11 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+#import "PhotoViewController.h"
+#import "ImageSaver.h"
+#import "Report.h"
+#import "User.h"
+#import "Gravatar.h"
+#import "UIImage+ResizeMagick.h"
 
 @class Report;
 
 @interface VISingleReportTableViewController : UITableViewController
 
 @property (nonatomic, strong) Report *report;
+@property (nonatomic, strong) Gravatar *gravatar;
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end

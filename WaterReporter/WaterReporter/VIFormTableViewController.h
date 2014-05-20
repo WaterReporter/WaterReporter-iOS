@@ -66,5 +66,6 @@
 @property (strong, nonatomic) UIImagePickerController *cameraUI;
 @property (strong, nonatomic) UIImageView *imageView;
 
+@property (strong, nonatomic) NSString *path;
 
 @end
