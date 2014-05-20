@@ -10,7 +10,7 @@
 #import "PhotoViewController.h"
 #import "ImageSaver.h"
 #import "Report.h"
-#import "user.h"
+#import "User.h"
 
 @interface VISingleReportTableViewController ()<UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 @end
