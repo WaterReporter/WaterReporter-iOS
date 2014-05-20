@@ -71,9 +71,10 @@
     
     NSData *jpgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:self.report.image]];
     UIImage *image = [UIImage imageWithData:jpgData];
-    CGRect cropSize = CGRectMake(0, 0, 300, 235);
-    NSDictionary *info = @{@"UIImagePickerControllerOriginalImage" : image, @"UIImagePickerControllerCropRect" : [NSValue valueWithCGRect:cropSize]};
-    UIImage *resizedImage = [UIImage cropImageWithInfo:info];
+//    CGRect cropSize = CGRectMake(0, 0, 300, 235);
+//    NSDictionary *info = @{@"UIImagePickerControllerOriginalImage" : image, @"UIImagePickerControllerCropRect" : [NSValue valueWithCGRect:cropSize]};
+//    UIImage *resizedImage = [UIImage cropImageWithInfo:info];
+    UIImage *resizedImage = [image resizedImageByMagick:@"300x235"];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
 //    imageView.frame = CGRectMake(10, 120, 300, 235);
     imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);

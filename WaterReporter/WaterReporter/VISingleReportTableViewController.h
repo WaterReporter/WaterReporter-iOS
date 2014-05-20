@@ -13,7 +13,7 @@
 #import "Report.h"
 #import "User.h"
 #import "Gravatar.h"
-#import "UIImage+Resize.h"
+#import "UIImage+ResizeMagick.h"
 
 @class Report;
 
