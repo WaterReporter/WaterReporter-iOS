@@ -16,5 +16,6 @@
 @property (strong, nonatomic) NSArray *userArray;
 @property (strong, nonatomic) MBXMapView *mapView;
 @property BOOL userLocationUpdated;
+@property (strong, nonatomic) VITutorialViewController *tutorialVC;
 
 @end

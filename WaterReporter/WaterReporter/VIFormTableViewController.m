@@ -376,7 +376,7 @@
     [actionSheet addButtonWithTitle:@"Choose Existing Photo"];
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
     
-    [actionSheet showInView:self.view];
+    [actionSheet showInView:[self.view window]];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex

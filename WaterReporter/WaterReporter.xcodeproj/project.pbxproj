@@ -11,6 +11,7 @@
 		9412CF24192A4E6B00B36542 /* Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9412CF23192A4E6B00B36542 /* Gravatar.m */; };
 		94A689D8192B960E006CE05D /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A689D7192B960E006CE05D /* UIImage+Resize.m */; };
 		94A689DB192BB3FB006CE05D /* UIImage+ResizeMagick.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A689DA192BB3FB006CE05D /* UIImage+ResizeMagick.m */; };
+		94A689DE192BDBED006CE05D /* VIChildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A689DD192BDBED006CE05D /* VIChildViewController.m */; };
 		C10177FE1926A33D00A1F7EF /* VISingleReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */; };
 		C12D7B03192533BC00C2B9F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B02192533BC00C2B9F5 /* Foundation.framework */; };
 		C12D7B05192533BC00C2B9F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */; };
@@ -60,6 +61,8 @@
 		94A689D7192B960E006CE05D /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		94A689D9192BB3FB006CE05D /* UIImage+ResizeMagick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeMagick.h"; sourceTree = "<group>"; };
 		94A689DA192BB3FB006CE05D /* UIImage+ResizeMagick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizeMagick.m"; sourceTree = "<group>"; };
+		94A689DC192BDBED006CE05D /* VIChildViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIChildViewController.h; sourceTree = "<group>"; };
+		94A689DD192BDBED006CE05D /* VIChildViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIChildViewController.m; sourceTree = "<group>"; };
 		C10177FC1926A33D00A1F7EF /* VISingleReportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VISingleReportTableViewController.h; sourceTree = "<group>"; };
 		C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VISingleReportTableViewController.m; sourceTree = "<group>"; };
 		C12D7AFF192533BC00C2B9F5 /* WaterReporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterReporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -256,6 +259,8 @@
 				C12D7B1E192533BC00C2B9F5 /* VIFormTableViewController.m */,
 				C12E243C1928EE95004A7FDD /* VITutorialViewController.h */,
 				C12E243D1928EE95004A7FDD /* VITutorialViewController.m */,
+				94A689DC192BDBED006CE05D /* VIChildViewController.h */,
+				94A689DD192BDBED006CE05D /* VIChildViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -419,6 +424,7 @@
 				C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */,
 				9412CF21192A465400B36542 /* NSString+MD5.m in Sources */,
 				C12D7B1F192533BC00C2B9F5 /* VIFormTableViewController.m in Sources */,
+				94A689DE192BDBED006CE05D /* VIChildViewController.m in Sources */,
 				C12D7B0F192533BC00C2B9F5 /* main.m in Sources */,
 				94A689D8192B960E006CE05D /* UIImage+Resize.m in Sources */,
 				9412CF24192A4E6B00B36542 /* Gravatar.m in Sources */,

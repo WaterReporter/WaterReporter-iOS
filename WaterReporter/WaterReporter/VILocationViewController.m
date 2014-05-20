@@ -24,6 +24,15 @@
     // Add the content we need to our LocationViewController
     [self setupMapboxMapView];
     [self updateTabBarAppearance];
+    
+    //show app walkthrough on first launch
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [self preparePageController];
+    }
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -36,6 +45,12 @@
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
         [self presentViewController:modalNav animated:YES completion:nil];
     }
+}
+
+- (void) preparePageController
+{
+    self.tutorialVC = [[VITutorialViewController alloc] init];
+    [self presentViewController:self.tutorialVC animated:YES completion:nil];
 }
 
 - (void) setupMapboxMapView
