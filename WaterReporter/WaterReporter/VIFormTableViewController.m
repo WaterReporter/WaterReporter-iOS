@@ -350,7 +350,6 @@
         NSLog(@"Supposed to be submitting an image here [if]");
         [ImageSaver deleteImageAtPath:self.report.image];
     }
-    
 //    if ([ImageSaver saveImageToDisk:chosenImage andToReport:self.report]) {
 //        NSLog(@"Supposed to be submitting an image here [second if]");
 //        [self setImageForReport:chosenImage];

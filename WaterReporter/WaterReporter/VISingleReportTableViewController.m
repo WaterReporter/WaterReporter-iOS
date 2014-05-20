@@ -70,12 +70,13 @@
     [self.view addSubview:submittedDateLabel];
     
     NSData *jpgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:self.report.image]];
-    NSLog(@"Path in Single View: %@", self.report.image);
     UIImage *image = [UIImage imageWithData:jpgData];
-    NSLog(@"Image: %@", image);
+    CGRect cropSize = CGRectMake(0, 0, 300, 235);
+    NSDictionary *info = @{@"UIImagePickerControllerOriginalImage" : image, @"UIImagePickerControllerCropRect" : [NSValue valueWithCGRect:cropSize]};
+    UIImage *resizedImage = [UIImage cropImageWithInfo:info];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
 //    imageView.frame = CGRectMake(10, 120, 300, 235);
-    imageView.frame = CGRectMake(10, 120, image.size.width/3, image.size.height/3);
+    imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);
     [self.view addSubview:imageView];
     
     // Comment
