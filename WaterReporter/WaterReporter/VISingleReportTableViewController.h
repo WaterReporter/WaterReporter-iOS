@@ -21,5 +21,6 @@
 
 @property (nonatomic, strong) Report *report;
 @property (nonatomic, strong) Gravatar *gravatar;
+@property (nonatomic, strong) UIImageView *imageView;
 
 @end

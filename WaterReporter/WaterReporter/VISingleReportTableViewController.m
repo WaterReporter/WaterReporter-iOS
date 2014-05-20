@@ -74,11 +74,15 @@
 //    CGRect cropSize = CGRectMake(0, 0, 300, 235);
 //    NSDictionary *info = @{@"UIImagePickerControllerOriginalImage" : image, @"UIImagePickerControllerCropRect" : [NSValue valueWithCGRect:cropSize]};
 //    UIImage *resizedImage = [UIImage cropImageWithInfo:info];
-    UIImage *resizedImage = [image resizedImageByMagick:@"300x235"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    UIImage *resizedImage = [image resizedImageByMagick:@"300x235#"];
+    self.imageView = [[UIImageView alloc] initWithImage:image];
 //    imageView.frame = CGRectMake(10, 120, 300, 235);
-    imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);
-    [self.view addSubview:imageView];
+    self.imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);
+    [self.imageView setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
+    [singleTap setNumberOfTapsRequired:1];
+    [self.imageView addGestureRecognizer:singleTap];
+    [self.view addSubview:self.imageView];
     
     // Comment
     if (self.report.comments) {
@@ -92,6 +96,13 @@
         
         [self.view addSubview:commentLabel];
     }
+}
+
+- (void) showImage
+{
+    PhotoViewController *photoVC = [[PhotoViewController alloc] init];
+    photoVC.image = self.imageView.image;
+    [self.navigationController pushViewController:photoVC animated:YES];
 }
 
 - (void) loadGravatar
