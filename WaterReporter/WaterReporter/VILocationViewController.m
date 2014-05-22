@@ -173,10 +173,7 @@
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-        //        self.markers = [[responseObject objectForKey:@"response"] objectForKey:@"markers"];
         self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
-        //        NSLog(@"Response Object: %@", self.markers);
-        //        NSLog(@"Class of Response Object: %@", [self.markers class]);
         [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"Error: %@", error);
@@ -189,40 +186,55 @@
     
     for(NSDictionary *marker in self.markers){
         
+//        MKAnnotationView *annotationView = [[MKAnnotationView alloc] init];
+//        annotationView.canShowCallout = YES;
+//        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-        //    MKAnnotationView *annotationView = [[MKAnnotationView alloc] init];
         double latitude;
         double longitude;
         CLLocationCoordinate2D coordinate;
         
         if(marker[@"geometry"] != (id)[NSNull null]){
             if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
-                //                NSLog(@"Latitude: %@", marker[@"geometry"][@"coordinates"][1]);
-                //                NSLog(@"Longitude: %@", marker[@"geometry"][@"coordinates"][0]);
                 latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
                 longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
                 coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                self.annotationTitle = @"Marker from if statement";
                 annotation.coordinate = coordinate;
-                NSLog(@"Coordinates: (%f, %f)", annotation.coordinate.latitude, annotation.coordinate.longitude);
+                annotation.title = self.annotationTitle;
                 [mutableAnnotationArray addObject:annotation];
-                //                annotationView.annotation = annotation;
             }
             else{
-//                NSLog(@"Latitude: %@", marker[@"geometry"][@"geometries"][0][@"coordinates"][1]);
-//                NSLog(@"Longitude: %@", marker[@"geometry"][@"geometries"][0][@"coordinates"][0]);
                 latitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][1] doubleValue];
                 longitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][0] doubleValue];
                 coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                self.annotationTitle = @"Marker from else statement";
                 annotation.coordinate = coordinate;
-                NSLog(@"Coordinates: (%f, %f)", annotation.coordinate.latitude, annotation.coordinate.longitude);
+                annotation.title = self.annotationTitle;
                 [mutableAnnotationArray addObject:annotation];
-                //                annotationView.annotation = annotation;
             }
         }
     }
     NSArray *annotationArray = [[NSArray alloc] initWithArray:mutableAnnotationArray];
-    NSLog(@"Markers: %@", mutableAnnotationArray);
     [self.mapView addAnnotations:annotationArray];
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    if([annotation isKindOfClass:[MKUserLocation class]]){
+        return nil;
+    }
+    
+    MKAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"location"];
+    annotationView.canShowCallout = YES;
+    annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    
+    return annotationView;
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    NSLog(@"Tap");
 }
 
 @end
