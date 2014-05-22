@@ -33,6 +33,10 @@
         
         [self preparePageController];
     }
+    
+    [self loadMapMarkers];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -155,6 +159,70 @@
     }
     
     self.userLocationUpdated = YES;
+}
+
+- (void)loadMapMarkers
+{
+    NSLog(@"loadMapMarkers");
+    
+    NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
+    NSString *url = @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13.geojson?results_per_page=1000";
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
+        //        self.markers = [[responseObject objectForKey:@"response"] objectForKey:@"markers"];
+        self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
+        //        NSLog(@"Response Object: %@", self.markers);
+        //        NSLog(@"Class of Response Object: %@", [self.markers class]);
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+- (void)drawMapMarkers
+{
+    NSMutableArray *mutableAnnotationArray = [[NSMutableArray alloc] init];
+    
+    for(NSDictionary *marker in self.markers){
+        
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        //    MKAnnotationView *annotationView = [[MKAnnotationView alloc] init];
+        double latitude;
+        double longitude;
+        CLLocationCoordinate2D coordinate;
+        
+        if(marker[@"geometry"] != (id)[NSNull null]){
+            if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
+                //                NSLog(@"Latitude: %@", marker[@"geometry"][@"coordinates"][1]);
+                //                NSLog(@"Longitude: %@", marker[@"geometry"][@"coordinates"][0]);
+                latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
+                longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
+                coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                annotation.coordinate = coordinate;
+                NSLog(@"Coordinates: (%f, %f)", annotation.coordinate.latitude, annotation.coordinate.longitude);
+                [mutableAnnotationArray addObject:annotation];
+                //                annotationView.annotation = annotation;
+            }
+            else{
+//                NSLog(@"Latitude: %@", marker[@"geometry"][@"geometries"][0][@"coordinates"][1]);
+//                NSLog(@"Longitude: %@", marker[@"geometry"][@"geometries"][0][@"coordinates"][0]);
+                latitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][1] doubleValue];
+                longitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][0] doubleValue];
+                coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                annotation.coordinate = coordinate;
+                NSLog(@"Coordinates: (%f, %f)", annotation.coordinate.latitude, annotation.coordinate.longitude);
+                [mutableAnnotationArray addObject:annotation];
+                //                annotationView.annotation = annotation;
+            }
+        }
+    }
+    NSArray *annotationArray = [[NSArray alloc] initWithArray:mutableAnnotationArray];
+    NSLog(@"Markers: %@", mutableAnnotationArray);
+    [self.mapView addAnnotations:annotationArray];
 }
 
 @end
