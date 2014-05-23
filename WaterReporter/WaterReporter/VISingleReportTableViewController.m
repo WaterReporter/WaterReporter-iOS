@@ -74,15 +74,13 @@
     [self.view addSubview:submittedDateLabel];
     
     NSData *jpgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:self.report.image]];
-    UIImage *image = [UIImage imageWithData:jpgData];
-//    CGRect cropSize = CGRectMake(0, 0, 300, 235);
-//    NSDictionary *info = @{@"UIImagePickerControllerOriginalImage" : image, @"UIImagePickerControllerCropRect" : [NSValue valueWithCGRect:cropSize]};
-//    UIImage *resizedImage = [UIImage cropImageWithInfo:info];
-    UIImage *resizedImage = [image resizedImageByMagick:@"300x235#"];
-    self.imageView = [[UIImageView alloc] initWithImage:image];
-//    imageView.frame = CGRectMake(10, 120, 300, 235);
+    self.originalImage = [UIImage imageWithData:jpgData];
+    UIImage *resizedImage = [self.originalImage resizedImageByMagick:@"300x235#"];
+    
+    self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
     self.imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);
     [self.imageView setUserInteractionEnabled:YES];
+    
     UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
     [singleTap setNumberOfTapsRequired:1];
     [self.imageView addGestureRecognizer:singleTap];
@@ -105,7 +103,7 @@
 - (void) showImage
 {
     PhotoViewController *photoVC = [[PhotoViewController alloc] init];
-    photoVC.image = self.imageView.image;
+    photoVC.image = self.originalImage;
     [self.navigationController pushViewController:photoVC animated:YES];
 }
 
