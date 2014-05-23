@@ -19,5 +19,6 @@
 @property BOOL userLocationUpdated;
 @property (strong, nonatomic) VITutorialViewController *tutorialVC;
 @property (strong, nonatomic) NSArray *markers;
+@property (strong, nonatomic) NSString *annotationTitle;
 
 @end
