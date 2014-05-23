@@ -33,6 +33,35 @@
 
     self.tableView.backgroundColor = [UIColor whiteColor];
     
+    [self checkNetworkAvailability];
+    
+}
+
+- (void) checkNetworkAvailability
+{
+    NSURL *baseURL = [NSURL URLWithString:@"http://api.commonscloud.org/"];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+    
+    NSOperationQueue *operationQueue = manager.operationQueue;
+    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                [operationQueue setSuspended:NO];
+                self.networkStatus = @"reachable";
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                [operationQueue setSuspended:YES];
+                self.networkStatus = @"unreachable";
+                break;
+        }
+    }];
+    
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    NSLog(@"%hhd", self.networkStatus);
+
 }
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
