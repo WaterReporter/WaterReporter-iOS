@@ -1,12 +1,14 @@
 //
 //  VITutorialViewController.m
-//  WaterReporter
+//  Fractracker
 //
-//  Created by Ryan Hamley on 5/18/14.
-//  Copyright (c) 2014 Viable Industries, L.L.C. All rights reserved.
+//  Created by Joshua Isaac Powell on 5/14/14.
+//  Copyright (c) 2014 Viable. All rights reserved.
 //
 
 #import "VITutorialViewController.h"
+
+#define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
 
 @interface VITutorialViewController ()
 
@@ -29,8 +31,11 @@
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
+    self.pageController.view.backgroundColor = COLOR_BRAND_BLUE_BASE;
+    
     self.pageController.dataSource = self;
-    [[self.pageController view] setFrame:[[self view] bounds]];
+    //    [[self.pageController view] setFrame:[[self view] bounds]];
+    [[self.pageController view] setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40)];
     
     VIChildViewController *initialViewController = [self viewControllerAtIndex:0];
     
@@ -38,17 +43,26 @@
     
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
+    self.pageController.view.clipsToBounds = NO;
+    self.view.clipsToBounds = NO;
+    
     [self addChildViewController:self.pageController];
     [[self view] addSubview:[self.pageController view]];
     [self.pageController didMoveToParentViewController:self];
     
-    UIButton *endTutorialButton = [[UIButton alloc] initWithFrame:CGRectMake(212, 538, 100, 20)];
-    [endTutorialButton setTitle:@"Get Started" forState:UIControlStateNormal];
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    UIButton *endTutorialButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
+    [endTutorialButton setTitle:@"Already know how? Get started" forState:UIControlStateNormal];
     [endTutorialButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    endTutorialButton.backgroundColor = [UIColor clearColor];
+    endTutorialButton.backgroundColor = COLOR_BRAND_BLUE_BASE;
+    [endTutorialButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [endTutorialButton.titleLabel setFont:[UIFont systemFontOfSize:13.0]];
     [endTutorialButton addTarget:self action:@selector(dismissTutorial) forControlEvents:UIControlEventTouchUpInside];
     
     [self.pageController.view addSubview:endTutorialButton];
+    [self.pageController.view bringSubviewToFront:endTutorialButton];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,7 +83,7 @@
     
     NSUInteger index = [(VIChildViewController *)viewController index];
     
-    if (index == 0) {
+    if ((index == 0) || (index == NSNotFound)) {
         return nil;
     }
     
@@ -84,9 +98,13 @@
     
     NSUInteger index = [(VIChildViewController *)viewController index];
     
+    if (index == NSNotFound) {
+        return nil;
+    }
+    
     index++;
     
-    if (index == 4) {
+    if (index == 5) {
         return nil;
     }
     
@@ -96,20 +114,13 @@
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
     // The number of items reflected in the page indicator.
-    return 4;
+    return 5;
 }
 
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
     // The selected item reflected in the page indicator.
     return 0;
 }
-
-//- (void)loadLogin
-//{
-//    VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
-//    UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
-//    [self presentViewController:modalNav animated:YES completion:nil];
-//}
 
 - (void)dismissTutorial
 {

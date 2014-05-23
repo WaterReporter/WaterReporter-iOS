@@ -115,7 +115,7 @@
     else if ([self.fieldArray[indexPath.row] isEqualToString:@"Who are you?"]) {
         self.userTypeField = [self makeTextField:self.user.user_type placeholder:self.fieldArray[indexPath.row]];
         [cell addSubview:self.userTypeField];
-        [cell setAccessoryView:self.userTypeField];
+//        [cell setAccessoryView:self.userTypeField];
 
         self.userTypePickerView = [[UIPickerView alloc] init];
         [self.userTypePickerView sizeToFit];
@@ -175,22 +175,25 @@
                     placeholder:(NSString *)placeholder
 {
     UITextField *tf = [[UITextField alloc] init];
-    UIColor *color = [UIColor lightGrayColor];
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
     
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 35)];
     tf.leftView = paddingView;
     tf.leftViewMode = UITextFieldViewModeAlways;
+
     tf.text = text;
-    tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:color}];
-    tf.frame = CGRectMake(10, 10, 302, 35);
+    tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]}];
+    tf.frame = CGRectMake(10, 10, 300, 35);
     tf.autocorrectionType = UITextAutocorrectionTypeNo;
     tf.autocapitalizationType = UITextAutocapitalizationTypeNone;
     tf.adjustsFontSizeToFitWidth = YES;
-    tf.textColor = [UIColor colorWithRed:56.0f/255.0f green:84.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
+    tf.textColor = [UIColor colorWithWhite:242.0/255.0 alpha:1.0];
     tf.borderStyle = UITextBorderStyleNone;
     tf.backgroundColor = [UIColor whiteColor];
-    tf.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:14.0];
+    tf.font = [UIFont systemFontOfSize:14.0];
     tf.textColor = [UIColor darkGrayColor];
+    
+    [tf setReturnKeyType:UIReturnKeyDone];
+
     
     [tf addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
     
@@ -252,17 +255,36 @@
     return sectionWidth;
 }
 
+//regular expression function to validate user email
+-(BOOL) NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES;
+    NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
+    NSString *laxString = @".+@([A-Za-z0-9]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
+}
+
 - (void) submitForm
 {
     //save user data & dismiss modal
     
-    self.user.name = self.firstNameField.text;
-    self.user.email = self.emailField.text;
-    self.user.user_type = self.userTypeField.text;
-    
-    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+    if([self NSStringIsValidEmail:self.emailField.text]){
+        self.user.name = self.firstNameField.text;
+        self.user.email = self.emailField.text;
+        self.user.user_type = self.userTypeField.text;
+        
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
 
+    }
+    //else display an alert that user must enter valid email
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Your email address looks wrong, better double check it" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+}
 @end
