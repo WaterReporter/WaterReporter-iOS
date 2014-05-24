@@ -17,8 +17,6 @@
 		C12D7B0D192533BC00C2B9F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C12D7B0B192533BC00C2B9F5 /* InfoPlist.strings */; };
 		C12D7B0F192533BC00C2B9F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B0E192533BC00C2B9F5 /* main.m */; };
 		C12D7B13192533BC00C2B9F5 /* VIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B12192533BC00C2B9F5 /* VIAppDelegate.m */; };
-		C12D7B16192533BC00C2B9F5 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C12D7B14192533BC00C2B9F5 /* Main_iPhone.storyboard */; };
-		C12D7B19192533BC00C2B9F5 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C12D7B17192533BC00C2B9F5 /* Main_iPad.storyboard */; };
 		C12D7B1C192533BC00C2B9F5 /* VILocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B1B192533BC00C2B9F5 /* VILocationViewController.m */; };
 		C12D7B1F192533BC00C2B9F5 /* VIFormTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B1E192533BC00C2B9F5 /* VIFormTableViewController.m */; };
 		C12D7B21192533BC00C2B9F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C12D7B20192533BC00C2B9F5 /* Images.xcassets */; };
@@ -69,8 +67,6 @@
 		C12D7B10192533BC00C2B9F5 /* WaterReporter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WaterReporter-Prefix.pch"; sourceTree = "<group>"; };
 		C12D7B11192533BC00C2B9F5 /* VIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIAppDelegate.h; sourceTree = "<group>"; };
 		C12D7B12192533BC00C2B9F5 /* VIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VIAppDelegate.m; sourceTree = "<group>"; };
-		C12D7B15192533BC00C2B9F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		C12D7B18192533BC00C2B9F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		C12D7B1A192533BC00C2B9F5 /* VILocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VILocationViewController.h; sourceTree = "<group>"; };
 		C12D7B1B192533BC00C2B9F5 /* VILocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VILocationViewController.m; sourceTree = "<group>"; };
 		C12D7B1D192533BC00C2B9F5 /* VIFormTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIFormTableViewController.h; sourceTree = "<group>"; };
@@ -163,7 +159,6 @@
 				C12D7B4319254DD700C2B9F5 /* Controllers */,
 				C12D7B4119254DC600C2B9F5 /* Model */,
 				C12D7B4519254DF900C2B9F5 /* Resources */,
-				C12D7B4419254DE900C2B9F5 /* Views */,
 				C12D7B09192533BC00C2B9F5 /* Supporting Files */,
 			);
 			path = WaterReporter;
@@ -255,15 +250,6 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
-		C12D7B4419254DE900C2B9F5 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				C12D7B14192533BC00C2B9F5 /* Main_iPhone.storyboard */,
-				C12D7B17192533BC00C2B9F5 /* Main_iPad.storyboard */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
 		C12D7B4519254DF900C2B9F5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,9 +337,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C12D7B19192533BC00C2B9F5 /* Main_iPad.storyboard in Resources */,
 				C12D7B21192533BC00C2B9F5 /* Images.xcassets in Resources */,
-				C12D7B16192533BC00C2B9F5 /* Main_iPhone.storyboard in Resources */,
 				C12D7B0D192533BC00C2B9F5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,22 +434,6 @@
 				C12D7B0C192533BC00C2B9F5 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		C12D7B14192533BC00C2B9F5 /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C12D7B15192533BC00C2B9F5 /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		C12D7B17192533BC00C2B9F5 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C12D7B18192533BC00C2B9F5 /* Base */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		C12D7B30192533BC00C2B9F5 /* InfoPlist.strings */ = {

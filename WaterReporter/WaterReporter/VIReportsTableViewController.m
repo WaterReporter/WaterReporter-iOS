@@ -11,19 +11,11 @@
 #define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
 #define COLOR_BRAND_WHITE_BASE [UIColor colorWithWhite:242.0/255.0f alpha:1.0f]
 
-@interface VIReportsTableViewController ()
+@interface VIReportsTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @end
 
 @implementation VIReportsTableViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -60,23 +52,8 @@
     
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
-    NSLog(@"%hhd", self.networkStatus);
+    NSLog(@"%@", self.networkStatus);
 
-}
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{    
-    if ([[segue identifier] isEqualToString:@"viewReport"]) {
-        VISingleReportTableViewController *upcoming = [segue destinationViewController];
-        
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        Report *report = self.reports[indexPath.row];
-        
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
-        upcoming.report = report;
-	}
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -107,7 +84,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reportCell" forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"Cell";
+    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
 	[self configureCell:cell atIndex:indexPath];
     
@@ -141,5 +121,17 @@
 
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VISingleReportTableViewController *singleReportTableViewController = [[VISingleReportTableViewController alloc] init];
+    
+    Report *report = self.reports[indexPath.row];
+    
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    singleReportTableViewController.report = report;
+    
+    [self.navigationController pushViewController:singleReportTableViewController animated:YES];
+}
 
 @end

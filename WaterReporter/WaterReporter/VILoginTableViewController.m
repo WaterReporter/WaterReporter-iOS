@@ -31,7 +31,7 @@
     self.user = [User MR_createEntity];
     
     self.fieldArray = @[@"Name", @"Email", @"Who are you?", @"Submit"];
-    self.userTypeEnums = @[@"Resident", @"Visitor", @"Non-profit Organization Member", @"Waterkeeper Member", @"Waterkeeper"];
+    self.userTypeEnums = @[@"Citizen", @"Non-profit Organization Member", @"Waterkeeper Member", @"Waterkeeper"];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -115,7 +115,6 @@
     else if ([self.fieldArray[indexPath.row] isEqualToString:@"Who are you?"]) {
         self.userTypeField = [self makeTextField:self.user.user_type placeholder:self.fieldArray[indexPath.row]];
         [cell addSubview:self.userTypeField];
-//        [cell setAccessoryView:self.userTypeField];
 
         self.userTypePickerView = [[UIPickerView alloc] init];
         [self.userTypePickerView sizeToFit];
