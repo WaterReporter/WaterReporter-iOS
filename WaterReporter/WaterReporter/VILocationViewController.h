@@ -11,6 +11,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "VITutorialViewController.h"
 #import "VILoginTableViewController.h"
+#import "VIPointAnnotation.h"
 
 @interface VILocationViewController : UIViewController<MKMapViewDelegate>
 
