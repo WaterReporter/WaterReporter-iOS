@@ -32,7 +32,7 @@
 {
     [super viewDidLoad];
 
-    self.title = @"Submit Report";
+    self.title = @"";
     
     self.templates = @[@"Pollution Report", @"Activity Report"];
     self.template = [[NSString alloc] init];

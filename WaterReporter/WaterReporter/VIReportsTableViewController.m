@@ -25,11 +25,20 @@
 
     self.tableView.backgroundColor = [UIColor whiteColor];
     
-    [self checkNetworkAvailability];
+    [self setupReachability];
     
 }
 
 - (void) checkNetworkAvailability
+{
+    
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    NSLog(@"Network Status %@", self.networkStatus);
+
+}
+
+- (void) setupReachability
 {
     NSURL *baseURL = [NSURL URLWithString:@"http://api.commonscloud.org/"];
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
@@ -49,16 +58,38 @@
                 break;
         }
     }];
-    
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    
-    NSLog(@"%@", self.networkStatus);
 
+}
+
+- (void) submitAllUnsubmittedReports
+{
+    
+    for (Report *report in self.reports) {
+        if (!report.feature_id) {
+            NSLog(@"Report Needs Submitted to Server: %@", report);
+        }
+        else {
+            NSLog(@"Report Submitted, Feature ID: %@", report.feature_id);
+        }
+    }
+    
+}
+
+- (void) postReport:(Report*)report
+{
+    NSLog(@"Post to server %@", report);
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     self.reports = [Report MR_findAllSortedBy:@"created" ascending:NO];
+    
+    [self checkNetworkAvailability];
+    
+    if ([self.networkStatus isEqualToString:@"reachable"]) {
+        [self submitAllUnsubmittedReports];
+    }
+
     [self.tableView reloadData];
 }
 

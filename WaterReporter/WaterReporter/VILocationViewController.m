@@ -101,6 +101,8 @@
     
     // Tapped Tab Button Apperance
     tabMyLocation.selectedImage = [UIImage imageNamed:@"LocationTabBarButtonSelected"];
+    
+    tabMyLocation.title = @"My Location";
 }
 
 - (void) styleFormTab
@@ -124,6 +126,7 @@
     [tabSubmitButton setBackgroundImage:tabSubmitSelected forState:UIControlStateHighlighted];
 
     [self.tabBarController.tabBar addSubview:tabSubmitButton];
+    [self.tabBarController.tabBar bringSubviewToFront:tabSubmitButton];
 
 }
 
@@ -137,6 +140,8 @@
     
     // Tapped Tab Button Apperance
     tabMyReports.selectedImage = [UIImage imageNamed:@"ReportsTabBarButtonSelected"];
+
+    tabMyReports.title = @"My Reports";
 }
 
 - (void)displayFormTableViewControllerTab
