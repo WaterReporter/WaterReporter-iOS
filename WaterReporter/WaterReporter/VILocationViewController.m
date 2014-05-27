@@ -199,23 +199,17 @@
             if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
                 latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
                 longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
-                coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                self.annotationTitle = marker[@"properties"][@"trail_name"];
-                annotation.coordinate = coordinate;
-                annotation.title = self.annotationTitle;
-                annotation.reportID = marker[@"id"];
-                [mutableAnnotationArray addObject:annotation];
             }
             else{
                 latitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][1] doubleValue];
                 longitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][0] doubleValue];
-                coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                self.annotationTitle = marker[@"properties"][@"trail_name"];
-                annotation.coordinate = coordinate;
-                annotation.title = self.annotationTitle;
-                annotation.reportID = marker[@"id"];
-                [mutableAnnotationArray addObject:annotation];
             }
+            coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+            self.annotationTitle = marker[@"properties"][@"trail_name"];
+            annotation.coordinate = coordinate;
+            annotation.title = self.annotationTitle;
+            annotation.reportID = marker[@"id"];
+            [mutableAnnotationArray addObject:annotation];
         }
     }
     NSArray *annotationArray = [[NSArray alloc] initWithArray:mutableAnnotationArray];
@@ -257,7 +251,7 @@
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"EEE-dd-MMM-yyyy"];
+    [dateFormatter setDateFormat:@"EE, d LLLL yyyy HH:mm:ss Z"];
     
     if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
         
