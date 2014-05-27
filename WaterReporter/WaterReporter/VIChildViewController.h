@@ -1,9 +1,9 @@
 //
 //  VIChildViewController.h
-//  WaterReporter
+//  Fractracker
 //
-//  Created by Ryan Hamley on 5/20/14.
-//  Copyright (c) 2014 Viable Industries, L.L.C. All rights reserved.
+//  Created by Ryan Hamley on 5/15/14.
+//  Copyright (c) 2014 Viable. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

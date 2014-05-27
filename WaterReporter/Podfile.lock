@@ -22,15 +22,18 @@ PODS:
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
   - MBXMapKit (0.2.1)
+  - UIImage-ResizeMagick (0.0.1)
 
 DEPENDENCIES:
   - AFNetworking
   - MagicalRecord
   - MBXMapKit
+  - UIImage-ResizeMagick
 
 SPEC CHECKSUMS:
-  AFNetworking: 01aa7c3aa9a200b94943e54072a4373f14b3d219
-  MagicalRecord: 95d49d74ef752cd52f6ad87bcb474817fc3978cf
-  MBXMapKit: ddbf1945d8f640f6db3411a41ffcfe1b132497a5
+  AFNetworking: ab63e259fe91eef4519b371ef0a4955af0e73e64
+  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  MBXMapKit: 56137a4400b9ed3690300ac90ebb169777ef7638
+  UIImage-ResizeMagick: 6edd4b95aabf4be264bf99147aa27abb319f3c7f
 
 COCOAPODS: 0.32.1

@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-WaterReporter-UIImage-ResizeMagick.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-WaterReporter.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>744959E9189B4000B405F3A7</key>
+		<key>1B0E54F81E6D49AD9A085701</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>847B7B9C609A4F74998D687B</key>
+		<key>3591D4C399524689922F91D0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8AA15288440645EAB7E8DB76</key>
+		<key>5169D9487A8045E6A33A77CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9C9FD956EFED490A92416142</key>
+		<key>B132AB7E8B5843D1B0E87404</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D48D97C4B82D47B2BA55B15D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

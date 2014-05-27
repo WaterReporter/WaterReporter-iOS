@@ -6,6 +6,8 @@
 //
 //
 
+
+
 @interface UIImage (ResizeMagick)
 
 - (UIImage *) resizedImageByMagick: (NSString *) spec;

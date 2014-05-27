@@ -1,17 +1,19 @@
 //
 //  VITutorialViewController.h
-//  WaterReporter
+//  Fractracker
 //
-//  Created by Ryan Hamley on 5/18/14.
-//  Copyright (c) 2014 Viable Industries, L.L.C. All rights reserved.
+//  Created by Joshua Isaac Powell on 5/14/14.
+//  Copyright (c) 2014 Viable. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "VILoginTableViewController.h"
 #import "VIChildViewController.h"
 
 @interface VITutorialViewController : UIViewController <UIPageViewControllerDataSource>
 
 @property UIPageViewController *pageController;
+
+@property NSUInteger pageIndex;
+@property (strong, nonatomic) UIPageControl *pageControl;
 
 @end

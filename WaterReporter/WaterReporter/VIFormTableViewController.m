@@ -273,17 +273,10 @@
     
     self.report.image = self.path;
     
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *documentsPath = [paths objectAtIndex:0]; //Get the docs directory
-//    NSString *filePath = [documentsPath stringByAppendingPathComponent:name]; //Add the file name
-//    [imgData writeToFile:filePath atomically:YES]; //Write the file
-//    self.report.image = filePath;
-    
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
 
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
-
-//    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void) resetFormContent
@@ -295,7 +288,10 @@
     self.pollutionDateField.text = dateString;
     self.pollutionTypeField.text = nil;
     self.commentsField.text = nil;
+    self.path = nil;
 
+    
+    NSLog(@"%@", self.report.image);
 }
 
 - (void) submitForm
@@ -303,8 +299,6 @@
     [self saveFormContent];
     [self resetFormContent];
     
-    NSLog(@"Path from report: %@", self.report.image);
-
     [self.tabBarController setSelectedIndex:2];
 }
 
@@ -346,21 +340,11 @@
 {
     UIImage *chosenImage = [info valueForKey:UIImagePickerControllerOriginalImage];
     
-    if (self.report.image) {
-        NSLog(@"Supposed to be submitting an image here [if]");
-        [ImageSaver deleteImageAtPath:self.report.image];
-    }
-//    if ([ImageSaver saveImageToDisk:chosenImage andToReport:self.report]) {
-//        NSLog(@"Supposed to be submitting an image here [second if]");
-//        [self setImageForReport:chosenImage];
-//    }
-    
     NSData *imgData   = UIImageJPEGRepresentation(chosenImage, 0.5);
 	NSString *name    = [[NSUUID UUID] UUIDString];
 	self.path	  = [NSString stringWithFormat:@"Documents/%@.jpg", name];
 	NSString *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:self.path];
     [imgData writeToFile:jpgPath atomically:YES];
-//    [ImageSaver saveImageToDisk:chosenImage andToReport:self.report];
     
     [self.tableView reloadData];
     
@@ -381,9 +365,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == [actionSheet cancelButtonIndex])
-    {
-        // cancelled, do nothing
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
         return;
     }
     
@@ -392,26 +374,14 @@
     
     // obtain a human-readable option string
     NSString *option = [actionSheet buttonTitleAtIndex:buttonIndex];
-    if ([option isEqualToString:@"Take A Photo"])
-    {
+    if ([option isEqualToString:@"Take A Photo"]) {
         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:imagePicker animated:YES completion:nil];
-        
-        
-        
-        
-        //        self.cameraUI = [[UIImagePickerController alloc] init];
-        //        self.cameraUI.sourceType = UIImagePickerControllerSourceTypeCamera;
-        //        [self presentViewController:self.cameraUI animated:YES completion:nil];
-    } else if ([option isEqualToString:@"Choose Existing Photo"])
-    {
-        //        UIImagePickerController *cameraUI = [[UIImagePickerController alloc] init];
-        //        self.cameraUI.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        //
-        //        [self presentViewController:self.cameraUI animated:YES completion:nil];
+    } else if ([option isEqualToString:@"Choose Existing Photo"]) {
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:imagePicker animated:YES completion:nil];
     }
+    
 }
 
 
@@ -622,7 +592,6 @@
 }
 
 
-
 #pragma mark - Table view data source
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -696,7 +665,6 @@
     // in a weird place within the field.
     //
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     cell.backgroundColor = [UIColor clearColor];
     
 	[self configureCell:cell atIndex:indexPath];
@@ -749,54 +717,5 @@
     }
 
 }
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end

@@ -40,6 +40,10 @@
     [[UINavigationBar appearance] setTintColor:COLOR_BRAND_WHITE_BASE];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : COLOR_BRAND_WHITE_BASE}];
     
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = tabBarCtrl;
+    [self.window makeKeyAndVisible];
+
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"ReportModel.sqlite"];
 
     return YES;

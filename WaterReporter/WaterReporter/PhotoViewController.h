@@ -5,8 +5,10 @@
 #import <UIKit/UIKit.h>
 #import "UIImage+ResizeMagick.h"
 
-@interface PhotoViewController : UIViewController
+@interface PhotoViewController : UIViewController <UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIImage *image;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 
 @end
