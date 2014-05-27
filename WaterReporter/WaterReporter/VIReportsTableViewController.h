@@ -14,6 +14,9 @@
 @interface VIReportsTableViewController : UITableViewController
 
 @property (strong, nonatomic) NSArray *reports;
-@property (strong, nonatomic) NSString *networkStatus;
+@property (retain, nonatomic) NSString *networkStatus;
+@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+
+-(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id;
 
 @end

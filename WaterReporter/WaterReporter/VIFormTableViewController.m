@@ -13,7 +13,6 @@
 #define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
 #define COLOR_BRAND_WHITE_BASE [UIColor colorWithWhite:242.0/255.0f alpha:1.0f]
 
-
 @interface VIFormTableViewController ()
 
 @end
@@ -261,6 +260,8 @@
     self.report = [Report MR_createEntity];
     User *user = [User MR_findFirst];
     
+    self.report.uuid = [[NSUUID UUID] UUIDString];
+    self.report.feature_id = nil;
     self.report.created = date;
     self.report.comments = self.commentsField.text;
     self.report.activity_type = self.activityTypeField.text;

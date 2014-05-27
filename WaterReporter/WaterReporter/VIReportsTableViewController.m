@@ -10,6 +10,7 @@
 
 #define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
 #define COLOR_BRAND_WHITE_BASE [UIColor colorWithWhite:242.0/255.0f alpha:1.0f]
+#define REPORT_ENDPOINT @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.json"
 
 @interface VIReportsTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -25,8 +26,28 @@
 
     self.tableView.backgroundColor = [UIColor whiteColor];
     
+    NSURL *baseURL = [NSURL URLWithString:@"http://api.commonscloud.org/"];
+    self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     [self setupReachability];
-    
+}
+
+- (void) enableTableRefresh
+{
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshInvoked:forState:) forControlEvents:UIControlEventValueChanged];
+
+}
+
+-(void) refreshInvoked:(id)sender forState:(UIControlState)state {
+
+    if ([self.networkStatus isEqualToString:@"reachable"]) {
+        [self submitAllUnsubmittedReports];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+
+    [self.tableView reloadData];
 }
 
 - (void) checkNetworkAvailability
@@ -40,11 +61,9 @@
 
 - (void) setupReachability
 {
-    NSURL *baseURL = [NSURL URLWithString:@"http://api.commonscloud.org/"];
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     
-    NSOperationQueue *operationQueue = manager.operationQueue;
-    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+    NSOperationQueue *operationQueue = self.manager.operationQueue;
+    [self.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
             case AFNetworkReachabilityStatusReachableViaWWAN:
             case AFNetworkReachabilityStatusReachableViaWiFi:
@@ -66,18 +85,81 @@
     
     for (Report *report in self.reports) {
         if (!report.feature_id) {
-            NSLog(@"Report Needs Submitted to Server: %@", report);
-        }
-        else {
-            NSLog(@"Report Submitted, Feature ID: %@", report.feature_id);
+            [self postReport:report];
         }
     }
     
+    [self.refreshControl endRefreshing];
 }
 
 - (void) postReport:(Report*)report
 {
     NSLog(@"Post to server %@", report);
+    self.manager.requestSerializer = [AFJSONRequestSerializer serializer];
+
+    NSData *imgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:report.image]];
+    
+    User *user = [User MR_findFirst];
+
+    //
+    // After we save it to the system, we should send the user over to the "My Submission" tab
+    // and clear all the form fields
+    //
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    NSString *dateString = [dateFormatter stringFromDate:report.date];
+    
+    NSDictionary *parameters = @{
+                                 @"created": report.created,
+                                 @"geometry": report.geometry,
+                                 @"status": @"public",
+                                 @"date": dateString,
+                                 @"comments": report.comments,
+                                 @"useremail_address": user.email,
+                                 @"username": user.name,
+                                 @"usertitle": user.user_type
+                                 };
+    
+    // @TODO
+    //
+    // - Set Report type
+    // - Set Activity Type
+    // - Set Pollution Type
+    // - Upload Image
+    
+    
+    if (imgData == nil) {
+        NSLog(@"No Image Data");
+        [self.manager POST:REPORT_ENDPOINT parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Success: %@", responseObject);
+            [self updateReportFeatureID:report response_id:[responseObject valueForKey:@"resource_id"]];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+    }
+    else {
+        NSLog(@"Image Data");
+        [self.manager POST:REPORT_ENDPOINT parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            [formData appendPartWithFileData:imgData name:@"image" fileName:@"image" mimeType:@"image/jpeg"];
+        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Success: %@", responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+    }
+    
+    [self.tableView reloadData];
+}
+
+-(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id
+{
+   
+    Report *thisReport = [Report MR_findFirstByAttribute:@"uuid" withValue:report.uuid];
+    thisReport.feature_id = feature_id;
+    
+    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -89,6 +171,8 @@
     if ([self.networkStatus isEqualToString:@"reachable"]) {
         [self submitAllUnsubmittedReports];
     }
+    
+    [self enableTableRefresh];
 
     [self.tableView reloadData];
 }
@@ -144,8 +228,17 @@
     else if([reportType isEqualToString:@"Pollution Report"]){
         text = [NSString stringWithFormat: @"Pollution Report on %@", dateString];
     }
-
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    if (report.feature_id) {
+        cell.accessoryView = nil;
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else {
+        UIImage *accessoryStatusImage = [UIImage imageNamed:@"ReloadAccessoryTypeDefault"];
+        
+        UIImageView *accessoryStatusView = [[UIImageView alloc] initWithImage:accessoryStatusImage];
+        cell.accessoryView = accessoryStatusView;
+    }
 
     cell.textLabel.font = [UIFont systemFontOfSize:13.0];
     cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:128.0/255.0 alpha:1.0]}];
