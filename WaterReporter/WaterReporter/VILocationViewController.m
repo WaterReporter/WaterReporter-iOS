@@ -195,12 +195,12 @@
         CLLocationCoordinate2D coordinate;
         
         if(marker[@"geometry"] != (id)[NSNull null]){
-            NSLog(@"Marker: %@", marker[@"id"]);
+            NSLog(@"Marker: %@", marker);
             if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
                 latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
                 longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
                 coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                self.annotationTitle = @"Marker from if statement";
+                self.annotationTitle = marker[@"properties"][@"trail_name"];
                 annotation.coordinate = coordinate;
                 annotation.title = self.annotationTitle;
                 annotation.reportID = marker[@"id"];
@@ -210,7 +210,7 @@
                 latitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][1] doubleValue];
                 longitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][0] doubleValue];
                 coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                self.annotationTitle = @"Marker from else statement";
+                self.annotationTitle = marker[@"properties"][@"trail_name"];
                 annotation.coordinate = coordinate;
                 annotation.title = self.annotationTitle;
                 annotation.reportID = marker[@"id"];
@@ -256,6 +256,9 @@
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEE-dd-MMM-yyyy"];
+    
     if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
         
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
@@ -269,12 +272,14 @@
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-            NSLog(@"%@", responseObject[@"response"]);
+            NSDate *dateFromString = [[NSDate alloc] init];
+            dateFromString = [dateFormatter dateFromString:responseObject[@"response"][@"created"]];
+            self.report = [Report MR_createEntity];
             self.report.status = responseObject[@"response"][@"status"];
             self.report.comments = responseObject[@"response"][@"comments"];
-            self.report.created = responseObject[@"response"][@"created"];
-            self.report.date = responseObject[@"response"][@"created"];
-            self.report.geometry = responseObject[@"response"][@"geometry"];
+            self.report.created = dateFromString;
+            self.report.date = dateFromString;
+            self.report.geometry = [NSString stringWithFormat:@"%@", responseObject[@"response"][@"geometry"]];
             self.report.feature_id = responseObject[@"response"][@"id"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loadSingleReportFinished" object:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
@@ -285,13 +290,13 @@
 
 - (void)showSingleReport
 {
-    NSLog(@"loadSingleViewObject");
-    
     VISingleReportTableViewController *singleReportTableViewController = [[VISingleReportTableViewController alloc] init];
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     singleReportTableViewController.report = self.report;
+    
+    NSLog(@"Report: %@", singleReportTableViewController.report);
     
     [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
