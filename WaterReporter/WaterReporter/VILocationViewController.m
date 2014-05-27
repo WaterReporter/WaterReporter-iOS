@@ -163,8 +163,6 @@
 
 - (void)loadMapMarkers
 {
-    NSLog(@"loadMapMarkers");
-    
     NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
     NSString *url = @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13.geojson?results_per_page=1000";
     
@@ -185,16 +183,13 @@
     NSMutableArray *mutableAnnotationArray = [[NSMutableArray alloc] init];
     
     for(NSDictionary *marker in self.markers){
-        
-//        MKAnnotationView *annotationView = [[MKAnnotationView alloc] init];
-//        annotationView.canShowCallout = YES;
-//        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        VIPointAnnotation *annotation = [[VIPointAnnotation alloc] init];
         double latitude;
         double longitude;
         CLLocationCoordinate2D coordinate;
         
         if(marker[@"geometry"] != (id)[NSNull null]){
+            NSLog(@"Marker: %@", marker[@"id"]);
             if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
                 latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
                 longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
@@ -202,6 +197,7 @@
                 self.annotationTitle = @"Marker from if statement";
                 annotation.coordinate = coordinate;
                 annotation.title = self.annotationTitle;
+                annotation.reportID = marker[@"id"];
                 [mutableAnnotationArray addObject:annotation];
             }
             else{
@@ -211,6 +207,7 @@
                 self.annotationTitle = @"Marker from else statement";
                 annotation.coordinate = coordinate;
                 annotation.title = self.annotationTitle;
+                annotation.reportID = marker[@"id"];
                 [mutableAnnotationArray addObject:annotation];
             }
         }
@@ -224,17 +221,55 @@
     if([annotation isKindOfClass:[MKUserLocation class]]){
         return nil;
     }
-    
+
     MKAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"location"];
     annotationView.canShowCallout = YES;
     annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     
+    
+    if([annotation isKindOfClass:[VIPointAnnotation class]]){
+        
+        VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)annotation;
+        annotationView.annotation = thisAnnotation;
+        
+        NSLog(@"%@", thisAnnotation.reportID);
+        return annotationView;
+    }
+
     return annotationView;
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
+
+       VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
+        NSLog(@"Did select %@", thisAnnotation.reportID);
+        
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
-    NSLog(@"Tap");
+    if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
+        
+        VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
+        NSLog(@"Tap on %@", thisAnnotation.reportID);
+        
+    }
+//    NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
+//    NSString *url = @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13.geojson?results_per_page=1000";
+//    
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
+//    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
+//        self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+//        NSLog(@"Error: %@", error);
+//    }];
 }
 
 @end
