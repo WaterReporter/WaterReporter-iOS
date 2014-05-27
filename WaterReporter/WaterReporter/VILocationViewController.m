@@ -37,6 +37,7 @@
     [self loadMapMarkers];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSingleReport) name:@"loadSingleReportFinished" object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -250,7 +251,6 @@
 
        VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
         NSLog(@"Did select %@", thisAnnotation.reportID);
-        
     }
 }
 
@@ -259,22 +259,41 @@
     if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
         
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
-        NSLog(@"Tap on %@", thisAnnotation.reportID);
+//        NSLog(@"Tap on %@", thisAnnotation.reportID);
         
+        NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
+        NSString *url = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13/", thisAnnotation.reportID, @".json"];
+
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
+            NSLog(@"%@", responseObject[@"response"]);
+            self.report.status = responseObject[@"response"][@"status"];
+            self.report.comments = responseObject[@"response"][@"comments"];
+            self.report.created = responseObject[@"response"][@"created"];
+            self.report.date = responseObject[@"response"][@"created"];
+            self.report.geometry = responseObject[@"response"][@"geometry"];
+            self.report.feature_id = responseObject[@"response"][@"id"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loadSingleReportFinished" object:nil];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            NSLog(@"Error: %@", error);
+        }];
     }
-//    NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
-//    NSString *url = @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13.geojson?results_per_page=1000";
-//    
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
-//    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-//        self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-//        NSLog(@"Error: %@", error);
-//    }];
+}
+
+- (void)showSingleReport
+{
+    NSLog(@"loadSingleViewObject");
+    
+    VISingleReportTableViewController *singleReportTableViewController = [[VISingleReportTableViewController alloc] init];
+    
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    singleReportTableViewController.report = self.report;
+    
+    [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
 
 @end
