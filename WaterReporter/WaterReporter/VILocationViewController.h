@@ -12,6 +12,8 @@
 #import "VITutorialViewController.h"
 #import "VILoginTableViewController.h"
 #import "VIPointAnnotation.h"
+#import "VISingleReportTableViewController.h"
+#import "Report.h"
 
 @interface VILocationViewController : UIViewController<MKMapViewDelegate>
 
@@ -21,5 +23,6 @@
 @property (strong, nonatomic) VITutorialViewController *tutorialVC;
 @property (strong, nonatomic) NSArray *markers;
 @property (strong, nonatomic) NSString *annotationTitle;
+@property (strong, nonatomic) Report *report;
 
 @end

@@ -37,6 +37,7 @@
     [self loadMapMarkers];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSingleReport) name:@"loadSingleReportFinished" object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -194,27 +195,21 @@
         CLLocationCoordinate2D coordinate;
         
         if(marker[@"geometry"] != (id)[NSNull null]){
-            NSLog(@"Marker: %@", marker[@"id"]);
+            NSLog(@"Marker: %@", marker);
             if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
                 latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
                 longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
-                coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                self.annotationTitle = @"Marker from if statement";
-                annotation.coordinate = coordinate;
-                annotation.title = self.annotationTitle;
-                annotation.reportID = marker[@"id"];
-                [mutableAnnotationArray addObject:annotation];
             }
             else{
                 latitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][1] doubleValue];
                 longitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][0] doubleValue];
-                coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                self.annotationTitle = @"Marker from else statement";
-                annotation.coordinate = coordinate;
-                annotation.title = self.annotationTitle;
-                annotation.reportID = marker[@"id"];
-                [mutableAnnotationArray addObject:annotation];
             }
+            coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+            self.annotationTitle = marker[@"properties"][@"trail_name"];
+            annotation.coordinate = coordinate;
+            annotation.title = self.annotationTitle;
+            annotation.reportID = marker[@"id"];
+            [mutableAnnotationArray addObject:annotation];
         }
     }
     NSArray *annotationArray = [[NSArray alloc] initWithArray:mutableAnnotationArray];
@@ -250,31 +245,54 @@
 
        VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
         NSLog(@"Did select %@", thisAnnotation.reportID);
-        
     }
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EE, d LLLL yyyy HH:mm:ss Z"];
+    
     if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
         
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
-        NSLog(@"Tap on %@", thisAnnotation.reportID);
+//        NSLog(@"Tap on %@", thisAnnotation.reportID);
         
+        NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
+        NSString *url = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13/", thisAnnotation.reportID, @".json"];
+
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
+            NSDate *dateFromString = [[NSDate alloc] init];
+            dateFromString = [dateFormatter dateFromString:responseObject[@"response"][@"created"]];
+            self.report = [Report MR_createEntity];
+            self.report.status = responseObject[@"response"][@"status"];
+            self.report.comments = responseObject[@"response"][@"comments"];
+            self.report.created = dateFromString;
+            self.report.date = dateFromString;
+            self.report.geometry = [NSString stringWithFormat:@"%@", responseObject[@"response"][@"geometry"]];
+            self.report.feature_id = responseObject[@"response"][@"id"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loadSingleReportFinished" object:nil];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            NSLog(@"Error: %@", error);
+        }];
     }
-//    NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
-//    NSString *url = @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13.geojson?results_per_page=1000";
-//    
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
-//    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-//        self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-//        NSLog(@"Error: %@", error);
-//    }];
+}
+
+- (void)showSingleReport
+{
+    VISingleReportTableViewController *singleReportTableViewController = [[VISingleReportTableViewController alloc] init];
+    
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    singleReportTableViewController.report = self.report;
+    
+    NSLog(@"Report: %@", singleReportTableViewController.report);
+    
+    [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
 
 @end
