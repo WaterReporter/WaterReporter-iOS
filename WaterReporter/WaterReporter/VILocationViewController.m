@@ -195,7 +195,6 @@
         CLLocationCoordinate2D coordinate;
         
         if(marker[@"geometry"] != (id)[NSNull null]){
-            NSLog(@"Marker: %@", marker);
             if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
                 latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
                 longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
@@ -232,20 +231,10 @@
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)annotation;
         annotationView.annotation = thisAnnotation;
         
-        NSLog(@"%@", thisAnnotation.reportID);
         return annotationView;
     }
 
     return annotationView;
-}
-
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
-{
-    if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
-
-       VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
-        NSLog(@"Did select %@", thisAnnotation.reportID);
-    }
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
@@ -256,7 +245,6 @@
     if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
         
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
-//        NSLog(@"Tap on %@", thisAnnotation.reportID);
         
         NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
         NSString *url = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13/", thisAnnotation.reportID, @".json"];
@@ -289,9 +277,7 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     singleReportTableViewController.report = self.report;
-    
-    NSLog(@"Report: %@", singleReportTableViewController.report);
-    
+        
     [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
 

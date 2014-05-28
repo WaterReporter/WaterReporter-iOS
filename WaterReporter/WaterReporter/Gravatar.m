@@ -25,7 +25,6 @@
     User *user = [User MR_findFirst];
     NSString *encodedEmail = [user.email MD5String];
     NSString *url = [NSString stringWithFormat:@"%@%@", @"http://www.gravatar.com/avatar/", encodedEmail];
-    NSLog(@"URL: %@", url);
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:url]];
     
     if(self){
