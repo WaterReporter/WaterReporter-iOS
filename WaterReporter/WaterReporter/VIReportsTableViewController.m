@@ -108,18 +108,31 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:report.date];
+    NSString *createdString = [dateFormatter stringFromDate:report.created];
     
-//    NSDictionary *parameters = @{
-//                                 @"created": report.created,
-//                                 @"geometry": report.geometry,
-//                                 @"status": @"public",
-////                                 @"date": dateString,
-//                                 @"comments": report.comments,
-//                                 @"useremail_address": user.email,
-//                                 @"username": user.name,
-//                                 @"usertitle": user.user_type
-//                                 };
-//
+    NSDictionary *geojson =
+    [NSJSONSerialization JSONObjectWithData:[report.geometry dataUsingEncoding:NSUTF8StringEncoding]
+                                    options:NSJSONReadingMutableContainers
+                                      error:nil];
+    
+    NSLog(@"GEOJSON %@", geojson);
+
+    
+    NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
+    
+    [json setObject:createdString forKey:@"created"];
+    [json setObject:geojson forKey:@"geometry"];
+    [json setObject:@"public" forKey:@"status"];
+    [json setObject:dateString forKey:@"date"];
+    [json setObject:report.comments forKey:@"comments"];
+    [json setObject:user.email forKey:@"useremail_address"];
+    [json setObject:user.name forKey:@"username"];
+    [json setObject:user.user_type forKey:@"usertitle"];
+
+    NSLog(@"json %@", json);
+
+    
+    
 //    // @TODO
 //    //
 //    // - Set Report type
@@ -127,12 +140,10 @@
 //    // - Set Pollution Type
 //    // - Upload Image
     
-    NSDictionary *parameters = @{@"created": report.created};
-    
     
     if (imgData == nil) {
         NSLog(@"No Image Data");
-        [self.manager POST:REPORT_ENDPOINT parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.manager POST:REPORT_ENDPOINT parameters:json success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Success: %@", responseObject);
             [self updateReportFeatureID:report response_id:[responseObject valueForKey:@"resource_id"]];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -141,7 +152,7 @@
     }
     else {
         NSLog(@"Image Data");
-        [self.manager POST:REPORT_ENDPOINT parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [self.manager POST:REPORT_ENDPOINT parameters:json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             [formData appendPartWithFileData:imgData name:@"image" fileName:@"image" mimeType:@"image/jpeg"];
         } success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Success: %@", responseObject);
