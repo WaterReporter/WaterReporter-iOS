@@ -109,23 +109,25 @@
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:report.date];
     
-    NSDictionary *parameters = @{
-                                 @"created": report.created,
-                                 @"geometry": report.geometry,
-                                 @"status": @"public",
-                                 @"date": dateString,
-                                 @"comments": report.comments,
-                                 @"useremail_address": user.email,
-                                 @"username": user.name,
-                                 @"usertitle": user.user_type
-                                 };
+//    NSDictionary *parameters = @{
+//                                 @"created": report.created,
+//                                 @"geometry": report.geometry,
+//                                 @"status": @"public",
+////                                 @"date": dateString,
+//                                 @"comments": report.comments,
+//                                 @"useremail_address": user.email,
+//                                 @"username": user.name,
+//                                 @"usertitle": user.user_type
+//                                 };
+//
+//    // @TODO
+//    //
+//    // - Set Report type
+//    // - Set Activity Type
+//    // - Set Pollution Type
+//    // - Upload Image
     
-    // @TODO
-    //
-    // - Set Report type
-    // - Set Activity Type
-    // - Set Pollution Type
-    // - Upload Image
+    NSDictionary *parameters = @{@"created": report.created};
     
     
     if (imgData == nil) {
