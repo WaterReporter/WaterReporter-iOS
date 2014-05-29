@@ -17,11 +17,4 @@
     return self;
 }
 
-//- (void)setReportID:(NSNumber *)reportID
-//{
-//    NSLog(@"Report ID: %@", reportID);
-//    self.reportID = [[NSNumber alloc] init];
-//    self.reportID = reportID;
-//}
-
 @end

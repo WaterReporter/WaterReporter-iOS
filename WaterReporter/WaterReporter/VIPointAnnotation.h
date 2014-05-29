@@ -12,6 +12,4 @@
 
 @property (strong, nonatomic) NSNumber *reportID;
 
-- (void)setReportID:(NSNumber *)reportID;
-
 @end
