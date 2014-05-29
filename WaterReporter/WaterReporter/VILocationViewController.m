@@ -242,6 +242,9 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"EE, d LLLL yyyy HH:mm:ss Z"];
     
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    
     if([view.annotation isKindOfClass:[VIPointAnnotation class]]){
         
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
@@ -262,7 +265,8 @@
             self.report.created = dateFromString;
             self.report.date = dateFromString;
             self.report.geometry = [NSString stringWithFormat:@"%@", responseObject[@"response"][@"geometry"]];
-            self.report.feature_id = responseObject[@"response"][@"id"];
+            NSNumber *featureID = [numberFormatter numberFromString:responseObject[@"response"][@"id"]];
+            self.report.feature_id = featureID;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loadSingleReportFinished" object:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             NSLog(@"Error: %@", error);
