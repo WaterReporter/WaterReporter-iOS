@@ -290,7 +290,6 @@
     self.pollutionTypeField.text = nil;
     self.commentsField.text = nil;
     self.path = nil;
-
     
     NSLog(@"%@", self.report.image);
 }

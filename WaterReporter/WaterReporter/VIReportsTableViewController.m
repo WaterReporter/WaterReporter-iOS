@@ -115,11 +115,17 @@
                                     options:NSJSONReadingMutableContainers
                                       error:nil];
     
-    NSLog(@"GEOJSON %@", geojson);
+    NSArray *relationship;
+    
+    if ([report.report_type isEqualToString:@"Activity Report"]) {
+        relationship = [[NSArray alloc] initWithObjects:@{@"id": @1}, nil];
+    } else if ([report.report_type isEqualToString:@"Pollution Report"]) {
+        relationship = [[NSArray alloc] initWithObjects:@{@"id": @2}, nil];
+    }
 
     
     NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
-    
+
     [json setObject:createdString forKey:@"created"];
     [json setObject:geojson forKey:@"geometry"];
     [json setObject:@"public" forKey:@"status"];
@@ -128,14 +134,11 @@
     [json setObject:user.email forKey:@"useremail_address"];
     [json setObject:user.name forKey:@"username"];
     [json setObject:user.user_type forKey:@"usertitle"];
-
-    NSLog(@"json %@", json);
-
+    [json setObject:relationship forKey:@"type_8f432efc18c545ea9578b4bdea860b4c"];
     
     
 //    // @TODO
 //    //
-//    // - Set Report type
 //    // - Set Activity Type
 //    // - Set Pollution Type
 //    // - Upload Image

@@ -208,10 +208,10 @@
 		C12D7B4119254DC600C2B9F5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C12D7B491925528400C2B9F5 /* User.h */,
 				C12D7B4619254F7E00C2B9F5 /* ReportModel.xcdatamodeld */,
 				C12D7B4C1925528400C2B9F5 /* Report.h */,
 				C12D7B4D1925528400C2B9F5 /* Report.m */,
-				C12D7B491925528400C2B9F5 /* User.h */,
 				C12D7B4A1925528400C2B9F5 /* User.m */,
 				9412CF22192A4E6B00B36542 /* Gravatar.h */,
 				9412CF23192A4E6B00B36542 /* Gravatar.m */,
