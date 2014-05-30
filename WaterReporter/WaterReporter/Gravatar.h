@@ -17,6 +17,8 @@
 
 -(id) initWithJSON;
 
+- (id)initWithEmail:(NSString *)email;
+
 + (NSString *) getPathToArchive;
 
 + (void) saveAvatar:(Gravatar *)anAvatar;

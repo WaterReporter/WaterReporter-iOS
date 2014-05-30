@@ -61,19 +61,21 @@
 
 - (void) setupReachability
 {
-    
+    //Create weak version of self to avoid retain cycle in switch statement
+    __weak typeof(self) weakSelf = self;
+
     NSOperationQueue *operationQueue = self.manager.operationQueue;
     [self.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
             case AFNetworkReachabilityStatusReachableViaWWAN:
             case AFNetworkReachabilityStatusReachableViaWiFi:
                 [operationQueue setSuspended:NO];
-                self.networkStatus = @"reachable";
+                weakSelf.networkStatus = @"reachable";
                 break;
             case AFNetworkReachabilityStatusNotReachable:
             default:
                 [operationQueue setSuspended:YES];
-                self.networkStatus = @"unreachable";
+                weakSelf.networkStatus = @"unreachable";
                 break;
         }
     }];

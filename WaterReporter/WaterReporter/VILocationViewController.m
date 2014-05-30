@@ -259,12 +259,13 @@
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
             NSDate *dateFromString = [[NSDate alloc] init];
             dateFromString = [dateFormatter dateFromString:responseObject[@"response"][@"created"]];
-            self.report = [Report MR_createEntity];
-            self.report.status = responseObject[@"response"][@"status"];
+            self.retrievedEntities = [NSManagedObjectContext MR_context];
+            self.report = [Report MR_createInContext:self.retrievedEntities];            self.report.status = responseObject[@"response"][@"status"];
             self.report.comments = responseObject[@"response"][@"comments"];
             self.report.created = dateFromString;
             self.report.date = dateFromString;
             self.report.geometry = [NSString stringWithFormat:@"%@", responseObject[@"response"][@"geometry"]];
+            self.userEmail = responseObject[@"response"][@"email"];
             NSNumber *featureID = [numberFormatter numberFromString:responseObject[@"response"][@"id"]];
             self.report.feature_id = featureID;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"loadSingleReportFinished" object:nil];
@@ -281,7 +282,9 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     singleReportTableViewController.report = self.report;
-        
+    
+    singleReportTableViewController.userEmail = self.userEmail;
+    
     [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
 

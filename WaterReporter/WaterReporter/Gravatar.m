@@ -45,6 +45,33 @@
     return self;
 }
 
+- (id)initWithEmail:(NSString *)email
+{
+    self = [super init];
+    
+    //create url for HTTP request
+    NSString *encodedEmail = [email MD5String];
+    NSString *url = [NSString stringWithFormat:@"%@%@", @"http://www.gravatar.com/avatar/", encodedEmail];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:url]];
+    
+    if(self){
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        operation.responseSerializer = [AFImageResponseSerializer serializer];
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject){
+            self.avatar = responseObject;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"initWithJSONFinishedLoading" object:nil];
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            NSLog(@"Error: %@", error);
+        }];
+        
+        [operation start];
+    }
+    
+    [Gravatar saveAvatar:self];
+    
+    return self;
+}
+
 - (Gravatar *) initWithCoder:(NSCoder *)aDecoder
 {
     self = [super init];

@@ -52,7 +52,13 @@
     [self.view addSubview:reportTypeLabel];
     
     //Gravatar
-    self.gravatar = [[Gravatar alloc] init];
+    if(!self.userEmail){
+        self.gravatar = [[Gravatar alloc] init];
+    }
+    else{
+        self.gravatar = [[Gravatar alloc] initWithEmail:self.userEmail];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadGravatar) name:@"initWithJSONFinishedLoading" object:nil];
     
     // Activity or Pollution Type
@@ -122,10 +128,8 @@
     self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
         self.imageView.frame = CGRectMake(10, 320, resizedImage.size.width, resizedImage.size.height);
-        NSLog(@"iPad");
     }else{
         self.imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);
-        NSLog(@"iPhone");
     }
     
     [self.imageView setUserInteractionEnabled:YES];
