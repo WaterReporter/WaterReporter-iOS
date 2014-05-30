@@ -84,6 +84,7 @@
     [self.activityPickerView setDelegate:self];
     [self.activityPickerView setDataSource:self];
     self.activityPickerView.showsSelectionIndicator = YES;
+    self.activityPickerView.backgroundColor = [UIColor whiteColor];
 
     self.pollutionTypeField = [self makeTextField:self.report.pollution_type placeholder:@"Pollution Type"];
     self.pollutionPickerView = [[UIPickerView alloc] init];
@@ -91,6 +92,7 @@
     [self.pollutionPickerView setDelegate:self];
     [self.pollutionPickerView setDataSource:self];
     self.pollutionPickerView.showsSelectionIndicator = YES;
+    self.pollutionPickerView.backgroundColor = [UIColor whiteColor];
 
     
     // Setup generic text fields
