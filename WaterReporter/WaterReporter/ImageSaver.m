@@ -37,6 +37,7 @@
     
 	if ([imgData writeToFile:jpgPath atomically:YES]) {
             report.image = path;
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
             NSLog(@"Path: %@", path);
             NSLog(@"JPGPath: %@", jpgPath);
 	} else {

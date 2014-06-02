@@ -26,9 +26,9 @@
     [self updateTabBarAppearance];
     
     //show app walkthrough on first launch
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"])
     {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SettingsShowTutorialOnLaunch"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [self preparePageController];

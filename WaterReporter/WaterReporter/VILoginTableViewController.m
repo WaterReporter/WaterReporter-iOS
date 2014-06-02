@@ -109,6 +109,7 @@
     }
     else if([self.fieldArray[indexPath.row] isEqualToString:@"Email"]){
         self.emailField = [self makeTextField:self.user.email placeholder:self.fieldArray[indexPath.row]];
+        self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
         [cell addSubview:self.emailField];
     }
@@ -183,7 +184,7 @@
     tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]}];
     tf.frame = CGRectMake(10, 10, 300, 35);
     tf.autocorrectionType = UITextAutocorrectionTypeNo;
-    tf.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    tf.autocapitalizationType = UITextAutocapitalizationTypeWords;
     tf.adjustsFontSizeToFitWidth = YES;
     tf.textColor = [UIColor colorWithWhite:242.0/255.0 alpha:1.0];
     tf.borderStyle = UITextBorderStyleNone;
