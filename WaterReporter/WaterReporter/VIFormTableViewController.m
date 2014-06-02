@@ -348,9 +348,20 @@
 	NSString *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:self.path];
     [imgData writeToFile:jpgPath atomically:YES];
     
+    UIImageWriteToSavedPhotosAlbum(chosenImage, self, @selector(thisImage:hasBeenSavedInPhotoAlbumWithError:usingContextInfo:), nil);
+
     [self.tableView reloadData];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)thisImage:(UIImage *)image hasBeenSavedInPhotoAlbumWithError:(NSError *)error usingContextInfo:(void*)ctxInfo {
+    if (error) {
+        // Do anything needed to handle the error or display it to the user
+    } else {
+        // .... do anything you want here to handle
+        // .... when the image has been saved in the photo album
+    }
 }
 
 - (void)selectCameraOrLibrary
