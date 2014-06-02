@@ -182,7 +182,8 @@
 
     tf.text = text;
     tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]}];
-    tf.frame = CGRectMake(10, 10, 300, 35);
+//    tf.frame = CGRectMake(10, 10, 300, 35);
+    tf.frame = CGRectMake(10, 0, self.view.bounds.size.width-20, 35);
     tf.autocorrectionType = UITextAutocorrectionTypeNo;
     tf.autocapitalizationType = UITextAutocapitalizationTypeWords;
     tf.adjustsFontSizeToFitWidth = YES;

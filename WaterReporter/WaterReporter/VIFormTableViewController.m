@@ -84,6 +84,7 @@
     [self.activityPickerView setDelegate:self];
     [self.activityPickerView setDataSource:self];
     self.activityPickerView.showsSelectionIndicator = YES;
+    self.activityPickerView.backgroundColor = [UIColor whiteColor];
 
     self.pollutionTypeField = [self makeTextField:self.report.pollution_type placeholder:@"Pollution Type"];
     self.pollutionPickerView = [[UIPickerView alloc] init];
@@ -91,6 +92,7 @@
     [self.pollutionPickerView setDelegate:self];
     [self.pollutionPickerView setDataSource:self];
     self.pollutionPickerView.showsSelectionIndicator = YES;
+    self.pollutionPickerView.backgroundColor = [UIColor whiteColor];
 
     
     // Setup generic text fields
@@ -135,7 +137,7 @@
     // https://developer.apple.com/library/iOs/documentation/UIKit/Reference/UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/selectedSegmentIndex
     //
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:self.templates];
-    [self.segmentedControl setFrame:CGRectMake(25, 10, 275, 30)];
+    [self.segmentedControl setFrame:CGRectMake(25, 10, self.view.bounds.size.width-47, 30)];
     [self.segmentedControl setEnabled:YES];
     [self.segmentedControl addTarget:self action:@selector(segmentClicked:) forControlEvents:UIControlEventValueChanged];
     self.segmentedControl.tintColor = COLOR_BRAND_BLUE_BASE;
@@ -384,6 +386,10 @@
     
 }
 
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
 
 #pragma mark - Location data source
 
@@ -481,7 +487,8 @@
     tf.leftViewMode = UITextFieldViewModeAlways;
     tf.text = text;
     tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:color}];
-    tf.frame = CGRectMake(0, 0, 290, 35);
+//    tf.frame = CGRectMake(0, 0, 290, 35);
+    tf.frame = CGRectMake(0, 0, self.view.bounds.size.width-30, 35);
     tf.autocorrectionType = UITextAutocorrectionTypeNo;
     tf.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     tf.adjustsFontSizeToFitWidth = YES;
@@ -610,13 +617,13 @@
 {
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
     
-    UIButton *cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 55, 290, 35)];
+    UIButton *cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 55, self.view.bounds.size.width-30, 35)];
     [cameraButton setTitle:@"Add a photo to your report" forState:UIControlStateNormal];
     cameraButton.titleLabel.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:13.0];
     cameraButton.backgroundColor = [UIColor colorWithRed:148.0/255.0f green:195.0/255.0f blue:22.0/255.0f alpha:1.0f];
     [cameraButton addTarget:self action:@selector(selectCameraOrLibrary) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *locationButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 10, 290, 35)];
+    UIButton *locationButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 10, self.view.bounds.size.width-30, 35)];
     NSString *locationLabel = @"Add a different location";
     UIColor *locationButtonColor = [UIColor darkGrayColor];
     if (isnan(self.reportLongitude) && isnan(self.reportLatitude)){

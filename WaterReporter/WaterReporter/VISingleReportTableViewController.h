@@ -23,5 +23,6 @@
 @property (nonatomic, strong) Gravatar *gravatar;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *originalImage;
+@property (nonatomic, strong) NSString *userEmail;
 
 @end
