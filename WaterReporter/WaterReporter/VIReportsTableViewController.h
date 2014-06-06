@@ -13,7 +13,7 @@
 
 @interface VIReportsTableViewController : UITableViewController
 
-@property (strong, nonatomic) NSArray *reports;
+@property (strong, nonatomic) NSMutableArray *reports;
 @property (retain, nonatomic) NSString *networkStatus;
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 

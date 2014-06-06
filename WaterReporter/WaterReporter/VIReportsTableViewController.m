@@ -23,12 +23,16 @@
     [super viewDidLoad];
     
     self.title = @"My Reports";
-
+    
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
     NSURL *baseURL = [NSURL URLWithString:@"http://api.commonscloud.org/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     [self setupReachability];
+    
 }
 
 - (void) enableTableRefresh
@@ -45,6 +49,7 @@
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
+        [self.refreshControl endRefreshing];
     }
 
     [self.tableView reloadData];
@@ -96,10 +101,9 @@
 
 - (void) postReport:(Report*)report
 {
-    NSLog(@"Post to server %@", report);
-    self.manager.requestSerializer = [AFJSONRequestSerializer serializer];
-
-    NSData *imgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:report.image]];
+    
+    NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:report.image];
+    NSURL *imageURL = [NSURL fileURLWithPath:filePath];
     
     User *user = [User MR_findFirst];
 
@@ -112,25 +116,23 @@
     NSString *dateString = [dateFormatter stringFromDate:report.date];
     NSString *createdString = [dateFormatter stringFromDate:report.created];
     
-    NSDictionary *geojson =
-    [NSJSONSerialization JSONObjectWithData:[report.geometry dataUsingEncoding:NSUTF8StringEncoding]
-                                    options:NSJSONReadingMutableContainers
-                                      error:nil];
-    
-    NSArray *relationship;
+    NSString *relationship;
     
     if ([report.report_type isEqualToString:@"Activity Report"]) {
-        relationship = [[NSArray alloc] initWithObjects:@{@"id": @1}, nil];
+        relationship = @"[{\"id\":1}]";
     } else if ([report.report_type isEqualToString:@"Pollution Report"]) {
-        relationship = [[NSArray alloc] initWithObjects:@{@"id": @2}, nil];
+        relationship = @"[{\"id\":2}]";
     }
 
     
     NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
 
     [json setObject:createdString forKey:@"created"];
-    [json setObject:geojson forKey:@"geometry"];
-    [json setObject:@"public" forKey:@"status"];
+    [json setObject:@"crowd" forKey:@"status"];
+    [json setObject:user.email forKey:@"useremail_address"];
+    [json setObject:user.name forKey:@"username"];
+    [json setObject:user.user_type forKey:@"usertitle"];
+    [json setValue:report.geometry forKey:@"geometry"];
     [json setObject:dateString forKey:@"date"];
     [json setObject:report.comments forKey:@"comments"];
     [json setObject:user.email forKey:@"useremail_address"];
@@ -138,35 +140,150 @@
     [json setObject:user.user_type forKey:@"usertitle"];
     [json setObject:relationship forKey:@"type_8f432efc18c545ea9578b4bdea860b4c"];
     
+    if ([report.report_type isEqualToString:@"Pollution Report"]) {
+        [json setObject:[self findPollutionType:report.pollution_type] forKey:@"type_05a300e835024771a51a6d3114e82abc"];
+    }
+
+    if ([report.report_type isEqualToString:@"Activity Report"]) {
+        [json setObject:[self findActivityType:report.activity_type] forKey:@"type_0e9423a9a393481f82c4f22ff5954567"];
+    }
     
-//    // @TODO
-//    //
-//    // - Set Activity Type
-//    // - Set Pollution Type
-//    // - Upload Image
+    [self.manager POST:@"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.json" parameters:(NSDictionary *)json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        NSError *error;
+        [formData appendPartWithFileURL:imageURL name:@"attachment_76fc17d6574c401d9a20d18187f8083e" fileName:filePath mimeType:@"image/png" error:&error];
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Success: %@", responseObject);
+        [self updateReportFeatureID:report response_id:[responseObject valueForKey:@"resource_id"]];
+        [self.tableView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+- (NSString *) findPollutionType:(NSString *)type
+{
     
+    NSNumber *typeId;
     
-    if (imgData == nil) {
-        NSLog(@"No Image Data");
-        [self.manager POST:REPORT_ENDPOINT parameters:json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Success: %@", responseObject);
-            [self updateReportFeatureID:report response_id:[responseObject valueForKey:@"resource_id"]];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];
+    if ([type isEqualToString:@"Discolored water"]) {
+        typeId = @1;
+    }
+    else if ([type isEqualToString:@"Eroded stream banks"]) {
+        typeId = @2;
+    }
+    else if ([type isEqualToString:@"Excessive trash"]) {
+        typeId = @3;
+    }
+    else if ([type isEqualToString:@"Excessive algae"]) {
+        typeId = @17;
+    }
+    else if ([type isEqualToString:@"Exposed soil"]) {
+        typeId = @4;
+    }
+    else if ([type isEqualToString:@"Faulty construction entryway"]) {
+        typeId = @5;
+    }
+    else if ([type isEqualToString:@"Faulty silt fences"]) {
+        typeId = @6;
+    }
+    else if ([type isEqualToString:@"Fish kill"]) {
+        typeId = @7;
+    }
+    else if ([type isEqualToString:@"Foam"]) {
+        typeId = @8;
+    }
+    else if ([type isEqualToString:@"Livestock in stream"]) {
+        typeId = @9;
+    }
+    else if ([type isEqualToString:@"Oil and grease"]) {
+        typeId = @10;
+    }
+    else if ([type isEqualToString:@"Other"]) {
+        typeId = @11;
+    }
+    else if ([type isEqualToString:@"Pipe discharge"]) {
+        typeId = @12;
+    }
+    else if ([type isEqualToString:@"Sewer overflow"]) {
+        typeId = @13;
+    }
+    else if ([type isEqualToString:@"Stormwater"]) {
+        typeId = @14;
+    }
+    else if ([type isEqualToString:@"Winter manure application"]) {
+        typeId = @15;
     }
     else {
-        NSLog(@"Image Data");
-        [self.manager POST:REPORT_ENDPOINT parameters:json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            [formData appendPartWithFileData:imgData name:@"image" fileName:@"image" mimeType:@"image/jpeg"];
-        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Success: %@", responseObject);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-        }];
+        typeId = @11;
     }
     
-    [self.tableView reloadData];
+    return [NSString stringWithFormat:@"[{\"id\":%@}]", typeId];
+}
+
+- (NSString *) findActivityType:(NSString *)type
+{
+    
+    NSNumber *typeId;
+    
+    if ([type isEqualToString:@"Canoeing"]) {
+        typeId = @1;
+    }
+    else if ([type isEqualToString:@"Diving"]) {
+        typeId = @2;
+    }
+    else if ([type isEqualToString:@"Fishing"]) {
+        typeId = @3;
+    }
+    else if ([type isEqualToString:@"Flatwater kayaking"]) {
+        typeId = @4;
+    }
+    else if ([type isEqualToString:@"Hiking"]) {
+        typeId = @5;
+    }
+    else if ([type isEqualToString:@"Living the dream"]) {
+        typeId = @6;
+    }
+    else if ([type isEqualToString:@"Rock climbing"]) {
+        typeId = @7;
+    }
+    else if ([type isEqualToString:@"Sailing"]) {
+        typeId = @8;
+    }
+    else if ([type isEqualToString:@"Scouting wildlife"]) {
+        typeId = @9;
+    }
+    else if ([type isEqualToString:@"Snorkeling"]) {
+        typeId = @10;
+    }
+    else if ([type isEqualToString:@"Stand-up paddleboarding"]) {
+        typeId = @11;
+    }
+    else if ([type isEqualToString:@"Stream cleanup"]) {
+        typeId = @12;
+    }
+    else if ([type isEqualToString:@"Surfing"]) {
+        typeId = @13;
+    }
+    else if ([type isEqualToString:@"Swimming"]) {
+        typeId = @14;
+    }
+    else if ([type isEqualToString:@"Tubing"]) {
+        typeId = @15;
+    }
+    else if ([type isEqualToString:@"Water skiing"]) {
+        typeId = @16;
+    }
+    else if ([type isEqualToString:@"Whitewater kayaking"]) {
+        typeId = @17;
+    }
+    else if ([type isEqualToString:@"Whitewater rafting"]) {
+        typeId = @18;
+    }
+    else {
+        typeId = @6;
+    }
+    
+    return [NSString stringWithFormat:@"[{\"id\":%@}]", typeId];
 }
 
 -(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id
@@ -182,8 +299,8 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    self.reports = [Report MR_findAllSortedBy:@"created" ascending:NO];
-    
+    self.reports = [[Report MR_findAllSortedBy:@"created" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]] mutableCopy];
+
     [self checkNetworkAvailability];
     
     if ([self.networkStatus isEqualToString:@"reachable"]) {
@@ -252,10 +369,18 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     else {
-        UIImage *accessoryStatusImage = [UIImage imageNamed:@"ReloadAccessoryTypeDefault"];
-        
-        UIImageView *accessoryStatusView = [[UIImageView alloc] initWithImage:accessoryStatusImage];
-        cell.accessoryView = accessoryStatusView;
+//        cell.accessoryType = UITableViewCellAccessoryNone;
+//        
+//        UILabel *accessoryStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+//        accessoryStatusLabel.font = [UIFont systemFontOfSize:17.0];
+//        accessoryStatusLabel.text = @"!";
+//
+//        cell.accessoryView = accessoryStatusLabel;
+
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner setFrame:CGRectMake(0, 0, 10, 10)];
+        [spinner startAnimating];
+        cell.accessoryView = spinner;
     }
 
     cell.textLabel.font = [UIFont systemFontOfSize:13.0];
@@ -269,13 +394,45 @@
     
     Report *report = self.reports[indexPath.row];
     
-    NSLog(@"%@", report);
-    
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     singleReportTableViewController.report = report;
     
     [self.navigationController pushViewController:singleReportTableViewController animated:YES];
+}
+
+// Override to support conditional editing of the table view.
+// This only needs to be implemented if you are going to be returning NO
+// for some items. By default, all items are editable.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return YES if you want the specified item to be editable.
+    return YES;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSLog(@"Before Deletion %d", self.reports.count);
+    
+    [tableView beginUpdates];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        // Remove Report from TableView
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ 
+        // Remove Report from database
+        Report *report = self.reports[indexPath.row];
+        [report MR_deleteEntity];
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reportDeleted" object:nil];
+
+         // Remove Report from self.reports
+        [self.reports removeObjectAtIndex:indexPath.row];
+        [self.tableView reloadData];
+    }
+    [tableView endUpdates];
+
+    NSLog(@"After Deletion %d", self.reports.count);
 }
 
 @end

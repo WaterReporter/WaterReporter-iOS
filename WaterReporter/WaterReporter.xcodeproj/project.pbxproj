@@ -34,6 +34,7 @@
 		C12D7B541925533000C2B9F5 /* ImageSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B521925533000C2B9F5 /* ImageSaver.m */; };
 		C12E243B1928EE05004A7FDD /* VILoginTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */; };
 		C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243D1928EE95004A7FDD /* VITutorialViewController.m */; };
+		C1B7D30A193CB2AB0057E735 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C1B7D309193CB2AB0057E735 /* Settings.bundle */; };
 		CF3A7DFC79474526A9332999 /* libPods-WaterReporter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DBBC128CEF14D94B9A4C71C /* libPods-WaterReporter.a */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,7 @@
 		C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VILoginTableViewController.m; sourceTree = "<group>"; };
 		C12E243C1928EE95004A7FDD /* VITutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VITutorialViewController.h; sourceTree = "<group>"; };
 		C12E243D1928EE95004A7FDD /* VITutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VITutorialViewController.m; sourceTree = "<group>"; };
+		C1B7D309193CB2AB0057E735 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +260,7 @@
 		C12D7B4519254DF900C2B9F5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C1B7D309193CB2AB0057E735 /* Settings.bundle */,
 				C12D7B20192533BC00C2B9F5 /* Images.xcassets */,
 			);
 			name = Resources;
@@ -343,6 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C12D7B21192533BC00C2B9F5 /* Images.xcassets in Resources */,
+				C1B7D30A193CB2AB0057E735 /* Settings.bundle in Resources */,
 				C12D7B0D192533BC00C2B9F5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

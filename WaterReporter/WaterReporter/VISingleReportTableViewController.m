@@ -33,16 +33,16 @@
     CGRect reportTypeFrame;
     
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        reportTypeFrame = CGRectMake(10, 0, 400, 100);
+        reportTypeFrame = CGRectMake(20, 28, 400, 32);
     }else{
-        reportTypeFrame = CGRectMake(10, 16, 302, 16);
+        reportTypeFrame = CGRectMake(10, 14, 302, 16);
     }
     
     UILabel *reportTypeLabel = [[UILabel alloc] initWithFrame:reportTypeFrame];
     reportTypeLabel.text = self.report.report_type;
     
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        reportTypeLabel.font = [UIFont systemFontOfSize:42.0];
+        reportTypeLabel.font = [UIFont systemFontOfSize:24.0];
     }else{
         reportTypeLabel.font = [UIFont systemFontOfSize:12.0];
     }
@@ -65,7 +65,7 @@
     CGRect categoryTypeFrame;
     
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        categoryTypeFrame = CGRectMake(10, 80, 302, 35);
+        categoryTypeFrame = CGRectMake(20, 60, self.view.frame.size.width-160, 40);
     }else{
         categoryTypeFrame = CGRectMake(10, 32, 302, 20);
     }
@@ -73,9 +73,9 @@
     UILabel *categoryTypeLabel = [[UILabel alloc] initWithFrame:categoryTypeFrame];
     
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        categoryTypeLabel.font = [UIFont systemFontOfSize:32.0];
+        categoryTypeLabel.font = [UIFont systemFontOfSize:34.0];
     }else{
-        categoryTypeLabel.font = [UIFont systemFontOfSize:12.0];
+        categoryTypeLabel.font = [UIFont systemFontOfSize:17.0];
     }
     
     if ([self.report.report_type isEqualToString:@"Activity Report"]) {
@@ -92,7 +92,7 @@
     CGRect submittedDateFrame;
     
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        submittedDateFrame = CGRectMake(10, 120, 302, 35);
+        submittedDateFrame = CGRectMake(20, 100, 302, 30);
     }else{
         submittedDateFrame = CGRectMake(10, 54, 302, 15);
     }
@@ -143,19 +143,20 @@
     if (self.report.comments) {
         CGRect commentFrame;
         if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-            commentFrame = CGRectMake(10, 25, 402, 300);
+            commentFrame = CGRectMake(20, 160, self.view.frame.size.width-40, 60);
         }else{
-            commentFrame = CGRectMake(10, 50, 302, 60);
+            commentFrame = CGRectMake(10, 72, 302, 60);
         }
         
         UILabel *commentLabel = [[UILabel alloc] initWithFrame:commentFrame];
         if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
             commentLabel.font = [UIFont systemFontOfSize:24.0];
+            commentLabel.numberOfLines = 2;
         }else{
             commentLabel.font = [UIFont systemFontOfSize:12.0];
+            commentLabel.numberOfLines = 4;
         }
-        commentLabel.numberOfLines = 4;
-        
+        [commentLabel sizeToFit];
         commentLabel.text = self.report.comments;
         
         [self.view addSubview:commentLabel];
@@ -177,7 +178,7 @@
         avatarView.frame = CGRectMake(630, 30, 120, 120);
         avatarView.layer.cornerRadius = 60;
     }else{
-        avatarView.frame = CGRectMake(260, 17, 52, 52);
+        avatarView.frame = CGRectMake(260, 14, 52, 52);
         avatarView.layer.cornerRadius = 26;
     }
     avatarView.clipsToBounds = YES;
@@ -187,7 +188,7 @@
 - (void) shareReport
 {
 
-    NSString *reportTitle = self.report.report_type;
+    NSString *reportTitle = [NSString stringWithFormat:@"I submitted a %@ with WaterReporter", self.report.report_type];
     NSString *reportURLString = [NSString stringWithFormat:@"http://www.waterreporter.org/reports/%@", self.report.feature_id];
     NSURL *reportURL = [NSURL URLWithString:reportURLString];
     

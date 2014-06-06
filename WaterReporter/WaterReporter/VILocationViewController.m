@@ -26,9 +26,9 @@
     [self updateTabBarAppearance];
     
     //show app walkthrough on first launch
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"])
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"])
     {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SettingsShowTutorialOnLaunch"];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"SettingsShowTutorialOnLaunch"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [self preparePageController];
@@ -170,7 +170,7 @@
 - (void)loadMapMarkers
 {
     NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
-    NSString *url = @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13.geojson?results_per_page=1000";
+    NSString *url = @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.geojson?results_per_page=1000";
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];

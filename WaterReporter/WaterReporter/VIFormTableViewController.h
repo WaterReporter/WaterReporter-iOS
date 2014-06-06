@@ -68,4 +68,7 @@
 
 @property (strong, nonatomic) NSString *path;
 
+- (void) activityViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer;
+- (void) pollutionViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer;
+
 @end

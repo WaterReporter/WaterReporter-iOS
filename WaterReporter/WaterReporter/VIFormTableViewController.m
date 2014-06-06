@@ -68,6 +68,10 @@
 {
     NSString *dateString = [self dateTodayAsString];
     
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
+
     // Setup Toolbar to dismiss keyboards and pickers
     [self setupFormToolbar];
     
@@ -76,30 +80,81 @@
     
     self.activityDateField = [self makeTextField:dateString placeholder:@"Date"];
     self.pollutionDateField = [self makeTextField:dateString placeholder:@"Date"];
-    
+
     // Setup picker fields
     self.activityTypeField = [self makeTextField:self.report.activity_type placeholder:@"Activity Type"];
+    self.activityTypeField.clearButtonMode = UITextFieldViewModeAlways;
+    [self.activityTypeField setUserInteractionEnabled:YES];
+
     self.activityPickerView = [[UIPickerView alloc] init];
     [self.activityPickerView sizeToFit];
     [self.activityPickerView setDelegate:self];
     [self.activityPickerView setDataSource:self];
     self.activityPickerView.showsSelectionIndicator = YES;
     self.activityPickerView.backgroundColor = [UIColor whiteColor];
+    [self.activityPickerView setUserInteractionEnabled:YES];
+
+    UITapGestureRecognizer *activityGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(activityViewTapGestureRecognized:)];
+    activityGestureRecognizer.cancelsTouchesInView = NO;
+    [activityGestureRecognizer setNumberOfTapsRequired:1];
+    [self.activityPickerView addGestureRecognizer:activityGestureRecognizer];
 
     self.pollutionTypeField = [self makeTextField:self.report.pollution_type placeholder:@"Pollution Type"];
+    self.pollutionTypeField.clearButtonMode = UITextFieldViewModeAlways;
+    [self.pollutionTypeField setUserInteractionEnabled:YES];
+
     self.pollutionPickerView = [[UIPickerView alloc] init];
     [self.pollutionPickerView sizeToFit];
     [self.pollutionPickerView setDelegate:self];
     [self.pollutionPickerView setDataSource:self];
     self.pollutionPickerView.showsSelectionIndicator = YES;
     self.pollutionPickerView.backgroundColor = [UIColor whiteColor];
+    [self.pollutionPickerView setUserInteractionEnabled:YES];
+
+    UITapGestureRecognizer *pollutionGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pollutionViewTapGestureRecognized:)];
+    pollutionGestureRecognizer.cancelsTouchesInView = NO;
+    [pollutionGestureRecognizer setNumberOfTapsRequired:1];
+    [pollutionGestureRecognizer setNumberOfTouchesRequired:1];
+    [self.pollutionPickerView addGestureRecognizer:pollutionGestureRecognizer];
 
     
     // Setup generic text fields
     self.commentsField = [self makeTextField:self.report.comments placeholder:@"Comments"];
-
+    self.commentsField.clearButtonMode = UITextFieldViewModeAlways;
     
 
+}
+
+- (void) activityViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer
+{
+    NSLog(@"activityViewTapGestureRecognized tapped");
+
+    CGPoint touchPoint = [gestureRecognizer locationInView:gestureRecognizer.view.superview];
+    
+    CGRect frame = self.activityPickerView.frame;
+    CGRect selectorFrame = CGRectInset( frame, 0.0, self.activityPickerView.bounds.size.height * 0.85 / 2.0 );
+    
+    if( CGRectContainsPoint( selectorFrame, touchPoint) )
+    {
+        NSString *selected = [self.activityEnums objectAtIndex:[self.activityPickerView selectedRowInComponent:0]];
+        self.activityTypeField.text = selected;
+    }
+}
+
+- (void) pollutionViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer
+{
+    NSLog(@"pollutionViewTapGestureRecognized tapped");
+    
+    CGPoint touchPoint = [gestureRecognizer locationInView:gestureRecognizer.view.superview];
+    
+    CGRect frame = self.pollutionPickerView.frame;
+    CGRect selectorFrame = CGRectInset( frame, 0.0, self.pollutionPickerView.bounds.size.height * 0.85 / 2.0 );
+    
+    if( CGRectContainsPoint( selectorFrame, touchPoint) )
+    {
+        NSString *selected = [self.pollutionEnums objectAtIndex:[self.pollutionPickerView selectedRowInComponent:0]];
+        self.pollutionTypeField.text = selected;
+    }
 }
 
 - (void) setupFormToolbar
@@ -298,10 +353,16 @@
 
 - (void) submitForm
 {
-    [self saveFormContent];
-    [self resetFormContent];
+
+    if (self.path) {
+        [self saveFormContent];
+        [self resetFormContent];
+        [self.tabBarController setSelectedIndex:2];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You forgot a photo" message:@"It looks like you forgot to add a photo to your report, why not do that before submitting." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
     
-    [self.tabBarController setSelectedIndex:2];
 }
 
 - (void) cancelForm
@@ -693,7 +754,7 @@
 - (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath {
     
 //    Report *report = self.reports[indexPath.row];
-
+    
     if([self.fields[indexPath.row] isEqualToString:@"Date"] && [self.reportType isEqualToString:@"Pollution Report"]){
         NSLog(@"Pollution Date Field");
         
