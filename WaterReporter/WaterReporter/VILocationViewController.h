@@ -13,7 +13,6 @@
 #import "VILoginTableViewController.h"
 #import "VIPointAnnotation.h"
 #import "VISingleReportTableViewController.h"
-#import "Report.h"
 
 @interface VILocationViewController : UIViewController<MKMapViewDelegate>
 
@@ -23,8 +22,8 @@
 @property (strong, nonatomic) VITutorialViewController *tutorialVC;
 @property (strong, nonatomic) NSArray *markers;
 @property (strong, nonatomic) NSString *annotationTitle;
-@property (strong, nonatomic) Report *report;
-@property (strong, nonatomic) NSString *userEmail;
-@property (nonatomic, retain) NSManagedObjectContext *retrievedEntities;
+@property BOOL annotationPinType;
+
+- (void)showSingleReport:(NSString *)reportID;
 
 @end

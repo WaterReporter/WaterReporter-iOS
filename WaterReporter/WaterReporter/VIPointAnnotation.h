@@ -11,5 +11,6 @@
 @interface VIPointAnnotation : MKPointAnnotation
 
 @property (strong, nonatomic) NSNumber *reportID;
+@property BOOL pollutionReport;
 
 @end

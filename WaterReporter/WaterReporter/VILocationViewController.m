@@ -37,7 +37,6 @@
     [self loadMapMarkers];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showSingleReport) name:@"loadSingleReportFinished" object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -204,10 +203,18 @@
                 longitude = [marker[@"geometry"][@"geometries"][0][@"coordinates"][0] doubleValue];
             }
             coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-            self.annotationTitle = marker[@"properties"][@"trail_name"];
+            
             annotation.coordinate = coordinate;
-            annotation.title = self.annotationTitle;
             annotation.reportID = marker[@"id"];
+            NSString *reportType = @"Activity";
+            
+            if ([[marker[@"properties"] objectForKey:@"is_a_pollution_report?"] boolValue]) {
+                reportType = @"Pollution";
+            }
+            
+            annotation.title = [NSString stringWithFormat:@"%@ Report", reportType];
+            annotation.subtitle = [NSString stringWithFormat:@"Submitted on %@", marker[@"properties"][@"date"]];
+            annotation.pollutionReport = [[marker[@"properties"] objectForKey:@"is_a_pollution_report?"] boolValue];
             [mutableAnnotationArray addObject:annotation];
         }
     }
@@ -220,25 +227,36 @@
     if([annotation isKindOfClass:[MKUserLocation class]]){
         return nil;
     }
-
+    
     MKAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"location"];
     annotationView.canShowCallout = YES;
     annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    
     
     if([annotation isKindOfClass:[VIPointAnnotation class]]){
         
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)annotation;
         annotationView.annotation = thisAnnotation;
         
+        if (thisAnnotation.pollutionReport) {
+            annotationView.image = [UIImage imageNamed:@"pin-redorange"];
+        } else {
+            annotationView.image = [UIImage imageNamed:@"pin-bluegreen"];
+        }
+
         return annotationView;
     }
 
     return annotationView;
 }
 
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    NSLog(@"Pin tapped: didSelectAnnotationView");
+}
+
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
+    NSLog(@"Pin tapped: calloutAccessoryControlTapped");
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"EE, d LLLL yyyy HH:mm:ss Z"];
     
@@ -249,42 +267,19 @@
         
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)view.annotation;
         
-        NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
-        NSString *url = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_d37400ebcba841cfa4c0b03764940b13/", thisAnnotation.reportID, @".json"];
+        [self showSingleReport:(NSString *)thisAnnotation.reportID];
 
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
-        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-            NSDate *dateFromString = [[NSDate alloc] init];
-            dateFromString = [dateFormatter dateFromString:responseObject[@"response"][@"created"]];
-            self.retrievedEntities = [NSManagedObjectContext MR_context];
-            self.report = [Report MR_createInContext:self.retrievedEntities];            self.report.status = responseObject[@"response"][@"status"];
-            self.report.comments = responseObject[@"response"][@"comments"];
-            self.report.created = dateFromString;
-            self.report.date = dateFromString;
-            self.report.geometry = [NSString stringWithFormat:@"%@", responseObject[@"response"][@"geometry"]];
-            self.userEmail = responseObject[@"response"][@"email"];
-            NSNumber *featureID = [numberFormatter numberFromString:responseObject[@"response"][@"id"]];
-            self.report.feature_id = featureID;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"loadSingleReportFinished" object:nil];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-            NSLog(@"Error: %@", error);
-        }];
     }
 }
 
-- (void)showSingleReport
+- (void)showSingleReport:(NSString *)reportID
 {
     VISingleReportTableViewController *singleReportTableViewController = [[VISingleReportTableViewController alloc] init];
     
+    singleReportTableViewController.reportID = reportID;
+    
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
-    singleReportTableViewController.report = self.report;
-    
-    singleReportTableViewController.userEmail = self.userEmail;
-    
+
     [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
 

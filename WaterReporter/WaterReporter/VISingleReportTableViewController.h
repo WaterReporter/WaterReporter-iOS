@@ -14,11 +14,13 @@
 #import "User.h"
 #import "Gravatar.h"
 #import "UIImage+ResizeMagick.h"
+#import <AFNetworking/AFNetworking.h>
 
 @class Report;
 
 @interface VISingleReportTableViewController : UITableViewController
 
+@property (nonatomic, strong) NSString *reportID;
 @property (nonatomic, strong) Report *report;
 @property (nonatomic, strong) Gravatar *gravatar;
 @property (nonatomic, strong) UIImageView *imageView;
