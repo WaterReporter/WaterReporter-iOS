@@ -241,6 +241,7 @@
     // We need to have the Map and Gestures loaded when the user asks for them
     //
     self.mapVC = [[VILocationViewController alloc] init];
+    self.mapVC.loadingMapForForm = YES;
     
     //
     // Add buttons so the user can Save their changes or Cancel their changes

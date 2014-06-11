@@ -415,8 +415,6 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSLog(@"Before Deletion %d", self.reports.count);
-    
     [tableView beginUpdates];
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
@@ -435,7 +433,6 @@
     }
     [tableView endUpdates];
 
-    NSLog(@"After Deletion %d", self.reports.count);
 }
 
 @end

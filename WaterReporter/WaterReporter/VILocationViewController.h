@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSArray *markers;
 @property (strong, nonatomic) NSString *annotationTitle;
 @property BOOL annotationPinType;
+@property BOOL loadingMapForForm;
 
 - (void)showSingleReport:(NSString *)reportID;
 

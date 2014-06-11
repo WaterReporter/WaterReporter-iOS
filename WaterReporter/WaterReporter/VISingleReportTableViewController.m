@@ -200,9 +200,11 @@
     [self.view addSubview:loadingLabel];
     
     self.title = @"Activity Report";
-
-    if ([[report[@"response"] objectForKey:@"is_a_pollution_report?"] boolValue]) {
-        self.title = @"Pollution Report";
+    
+    if (report[@"response"][@"is_a_pollution_report?"] && report[@"response"][@"is_a_pollution_report?"] != [NSNull null]){
+        if ([report[@"response"][@"is_a_pollution_report?"] integerValue] == 1) {
+            self.title = @"Pollution Report";
+        }
     }
 
     // Title
@@ -253,29 +255,31 @@
     NSLog(@"reportTypeURL %@", reportTypeURL);
     
     [manager GET:reportTypeURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-        NSString *category = responseObject[@"response"][@"features"][0][@"name"];
-        
-        CGRect categoryTypeFrame;
-        
-        if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-            categoryTypeFrame = CGRectMake(20, 60, self.view.frame.size.width-160, 40);
-        }else{
-            categoryTypeFrame = CGRectMake(10, 32, 302, 20);
+        if ([responseObject[@"response"][@"features"] count] != 0) {
+            NSString *category = responseObject[@"response"][@"features"][0][@"name"];
+            
+            CGRect categoryTypeFrame;
+            
+            if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+                categoryTypeFrame = CGRectMake(20, 60, self.view.frame.size.width-160, 40);
+            }else{
+                categoryTypeFrame = CGRectMake(10, 32, 302, 20);
+            }
+            
+            UILabel *categoryTypeLabel = [[UILabel alloc] initWithFrame:categoryTypeFrame];
+            
+            if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+                categoryTypeLabel.font = [UIFont systemFontOfSize:34.0];
+            }else{
+                categoryTypeLabel.font = [UIFont systemFontOfSize:17.0];
+            }
+            
+            NSLog(@"Category %@", category);
+            categoryTypeLabel.text = category;
+            
+            [self.view addSubview:categoryTypeLabel];
+            [self.view sendSubviewToBack:categoryTypeLabel];
         }
-        
-        UILabel *categoryTypeLabel = [[UILabel alloc] initWithFrame:categoryTypeFrame];
-        
-        if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-            categoryTypeLabel.font = [UIFont systemFontOfSize:34.0];
-        }else{
-            categoryTypeLabel.font = [UIFont systemFontOfSize:17.0];
-        }
-        
-        NSLog(@"Category %@", category);
-        categoryTypeLabel.text = category;
-        
-        [self.view addSubview:categoryTypeLabel];
-        [self.view sendSubviewToBack:categoryTypeLabel];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"Error: %@", error);
     }];
@@ -314,7 +318,8 @@
     // Activity or Pollution Type
     NSString *attachmentURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/attachment_76fc17d6574c401d9a20d18187f8083e.json"];
     [manager GET:attachmentURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-        if (responseObject[@"response"][@"features"][0]) {
+        NSLog(@"%lu", (unsigned long)[responseObject[@"response"][@"features"] count]);
+        if ([responseObject[@"response"][@"features"] count] != 0) {
             NSURL *photos = [NSURL URLWithString:responseObject[@"response"][@"features"][0][@"filepath"]];
             if (![responseObject[@"response"][@"features"][0][@"filepath"] hasPrefix:@"http://"]) {
                 photos = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"http://", responseObject[@"response"][@"features"][0][@"filepath"]]];
@@ -345,9 +350,10 @@
             [singleTap setNumberOfTapsRequired:1];
             [self.imageView addGestureRecognizer:singleTap];
             [self.view addSubview:self.imageView];
-            
-            [loadingLabel removeFromSuperview];
         }
+
+        [loadingLabel removeFromSuperview];
+        [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"Error: %@", error);
     }];

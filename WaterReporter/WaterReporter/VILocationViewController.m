@@ -34,18 +34,18 @@
         [self preparePageController];
     }
     
-    [self loadMapMarkers];
-    
-    [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:self
-                                   selector:@selector(timerFired:)
-                                   userInfo:nil
-                                    repeats:YES];
-    
+    if (!self.loadingMapForForm) {
+        [self loadMapMarkers];
+        
+        UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
+        
+        self.navigationItem.leftBarButtonItem = refreshButton;   
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
 }
 
-- (void)timerFired:(NSTimer *)timer
+- (void)refreshMap
 {
     [self loadMapMarkers];
     
