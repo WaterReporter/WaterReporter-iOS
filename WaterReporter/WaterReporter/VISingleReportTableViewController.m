@@ -48,6 +48,8 @@
 - (void) setupSingleViewDetails
 {
     self.title = self.report.report_type;
+    self.reportID = [self.report.feature_id stringValue];
+    
     // Title
     CGRect reportTypeFrame;
     
@@ -188,14 +190,20 @@
     
     NSLog(@"Single Report Content: %@", report[@"response"]);
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+
+    CGRect loadingFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    UILabel *loadingLabel = [[UILabel alloc] initWithFrame:loadingFrame];
+    loadingLabel.backgroundColor = [UIColor whiteColor];
+
+    [self.view addSubview:loadingLabel];
+    
     self.title = @"Activity Report";
 
     if ([[report[@"response"] objectForKey:@"is_a_pollution_report?"] boolValue]) {
         self.title = @"Pollution Report";
     }
-
-    self.report.report_type = self.title;
-    self.report.feature_id = report[@"response"][@"id"];
 
     // Title
     CGRect reportTypeFrame;
@@ -267,6 +275,7 @@
         categoryTypeLabel.text = category;
         
         [self.view addSubview:categoryTypeLabel];
+        [self.view sendSubviewToBack:categoryTypeLabel];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"Error: %@", error);
     }];
@@ -336,6 +345,8 @@
             [singleTap setNumberOfTapsRequired:1];
             [self.imageView addGestureRecognizer:singleTap];
             [self.view addSubview:self.imageView];
+            
+            [loadingLabel removeFromSuperview];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"Error: %@", error);
@@ -364,6 +375,9 @@
         [self.view addSubview:commentLabel];
     }
     
+    [self.view bringSubviewToFront:loadingLabel];
+    [self.view bringSubviewToFront:hud];
+    
 }
 
 - (void) showImage
@@ -391,11 +405,15 @@
 - (void) shareReport
 {
     
-    NSString *reportTitle = [NSString stringWithFormat:@"I submitted a new %@ with WaterReporter", self.report.report_type];
-    NSString *reportURLString = [NSString stringWithFormat:@"http://www.waterreporter.org/reports/%@", self.report.feature_id];
+    NSString *reportTitle = [NSString stringWithFormat:@"I submitted a new %@ with WaterReporter", self.title];
+    NSString *reportURLString = [NSString stringWithFormat:@"http://www.waterreporter.org/reports/%@", self.reportID];
     NSURL *reportURL = [NSURL URLWithString:reportURLString];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[reportTitle, reportURL] applicationActivities:nil];
+
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
     
     [self presentViewController:activityViewController animated:YES completion:nil];
 }

@@ -36,6 +36,19 @@
     
     [self loadMapMarkers];
     
+    [NSTimer scheduledTimerWithTimeInterval:10.0
+                                     target:self
+                                   selector:@selector(timerFired:)
+                                   userInfo:nil
+                                    repeats:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
+}
+
+- (void)timerFired:(NSTimer *)timer
+{
+    [self loadMapMarkers];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
 }
 
@@ -168,13 +181,12 @@
 
 - (void)loadMapMarkers
 {
-    NSString *bearerToken = @"Bearer WhFE64dQI2fuTk1vMpc5pFQHPA6Ayk";
     NSString *url = @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.geojson?results_per_page=1000";
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:bearerToken forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:@"no-cache, must-revalidate, max-age=0" forHTTPHeaderField:@"Cache-control"];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
         self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
@@ -285,5 +297,6 @@
 
     [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
+
 
 @end
