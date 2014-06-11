@@ -117,18 +117,20 @@
     NSString *createdString = [dateFormatter stringFromDate:report.created];
     
     NSString *relationship;
+    NSString *is_a_pollution_report = @"false";
     
     if ([report.report_type isEqualToString:@"Activity Report"]) {
         relationship = @"[{\"id\":1}]";
     } else if ([report.report_type isEqualToString:@"Pollution Report"]) {
         relationship = @"[{\"id\":2}]";
+        is_a_pollution_report = @"true";
     }
 
     
     NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
 
     [json setObject:createdString forKey:@"created"];
-    [json setObject:@"crowd" forKey:@"status"];
+    [json setObject:@"public" forKey:@"status"];
     [json setObject:user.email forKey:@"useremail_address"];
     [json setObject:user.name forKey:@"username"];
     [json setObject:user.user_type forKey:@"usertitle"];
@@ -137,6 +139,7 @@
     [json setObject:report.comments forKey:@"comments"];
     [json setObject:user.email forKey:@"useremail_address"];
     [json setObject:user.name forKey:@"username"];
+    [json setObject:is_a_pollution_report forKey:@"is_a_pollution_report?"];
     [json setObject:user.user_type forKey:@"usertitle"];
     [json setObject:relationship forKey:@"type_8f432efc18c545ea9578b4bdea860b4c"];
     

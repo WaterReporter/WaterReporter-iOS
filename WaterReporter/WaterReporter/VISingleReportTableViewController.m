@@ -25,8 +25,7 @@
         NSLog(@"WE NEED TO LOAD A REPORT >> %@", self.reportID);
 
         NSString *url = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @".json"];
-//
-
+        
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -39,14 +38,11 @@
                 NSLog(@"Error: %@", error);
             }];
 
-//            NSLog(@"%@", self.report);
-
             [self setupStaticSingleViewDetails:responseObject];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             NSLog(@"Error: %@", error);
         }];
     } else {
-        NSLog(@"WE ALREADY HAVE REPORT DETAILS");
         [self setupSingleViewDetails];
     }
     
@@ -198,6 +194,9 @@
 
 - (void) setupStaticSingleViewDetails:(NSDictionary *)report
 {
+    
+    NSLog(@"Single Report Content: %@", report[@"response"]);
+    
     self.title = @"Activity Report";
 
     if ([[report[@"response"] objectForKey:@"is_a_pollution_report?"] boolValue]) {
@@ -227,11 +226,11 @@
     [self.view addSubview:reportTypeLabel];
     
     //Gravatar
-    if(!report[@"response"][@"email"]){
-        self.gravatar = [[Gravatar alloc] init];
+    if(report[@"response"][@"useremail_address"] == [NSNull null]){
+        self.gravatar = [[Gravatar alloc] initWithEmail:@"error@waterreporter.org"];
     }
-    else{
-        self.gravatar = [[Gravatar alloc] initWithEmail:report[@"response"][@"email"]];
+    else {
+        self.gravatar = [[Gravatar alloc] initWithEmail:report[@"response"][@"useremail_address"]];
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadGravatar) name:@"initWithJSONFinishedLoading" object:nil];
@@ -288,7 +287,6 @@
 
     [dateFormatter setDateFormat:@"MMM dd, yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:date];
-    NSLog(@"DATE %@, %@", report[@"response"][@"date"], dateString);
     
     submittedDateLabel.text = [NSString stringWithFormat:@"Submitted on %@", dateString];
     

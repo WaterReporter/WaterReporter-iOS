@@ -207,14 +207,17 @@
             annotation.coordinate = coordinate;
             annotation.reportID = marker[@"id"];
             NSString *reportType = @"Activity";
+            annotation.pollutionReport = NO;
             
-            if ([[marker[@"properties"] objectForKey:@"is_a_pollution_report?"] boolValue]) {
-                reportType = @"Pollution";
+            if (marker[@"properties"][@"is_a_pollution_report?"] && marker[@"properties"][@"is_a_pollution_report?"] != [NSNull null]){
+                if ([marker[@"properties"][@"is_a_pollution_report?"] integerValue] == 1) {
+                    reportType = @"Pollution";
+                    annotation.pollutionReport = YES;
+                }
             }
-            
+                        
             annotation.title = [NSString stringWithFormat:@"%@ Report", reportType];
             annotation.subtitle = [NSString stringWithFormat:@"Submitted on %@", marker[@"properties"][@"date"]];
-            annotation.pollutionReport = [[marker[@"properties"] objectForKey:@"is_a_pollution_report?"] boolValue];
             [mutableAnnotationArray addObject:annotation];
         }
     }
@@ -238,9 +241,9 @@
         annotationView.annotation = thisAnnotation;
         
         if (thisAnnotation.pollutionReport) {
-            annotationView.image = [UIImage imageNamed:@"pin-redorange"];
+            annotationView.image = [UIImage imageNamed:@"pin-yellow"];
         } else {
-            annotationView.image = [UIImage imageNamed:@"pin-bluegreen"];
+            annotationView.image = [UIImage imageNamed:@"pin-green"];
         }
 
         return annotationView;

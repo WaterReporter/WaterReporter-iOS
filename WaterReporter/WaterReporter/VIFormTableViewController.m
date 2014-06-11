@@ -561,7 +561,7 @@
     tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:color}];
 //    tf.frame = CGRectMake(0, 0, 290, 35);
     tf.frame = CGRectMake(0, 0, self.view.bounds.size.width-30, 35);
-    tf.autocorrectionType = UITextAutocorrectionTypeNo;
+    tf.autocorrectionType = UITextAutocorrectionTypeDefault;
     tf.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     tf.adjustsFontSizeToFitWidth = YES;
     tf.textColor = [UIColor colorWithRed:56.0f/255.0f green:84.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
