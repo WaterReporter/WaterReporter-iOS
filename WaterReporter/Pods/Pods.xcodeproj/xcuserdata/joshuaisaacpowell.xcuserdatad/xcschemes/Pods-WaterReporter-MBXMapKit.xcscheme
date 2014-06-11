@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B132AB7E8B5843D1B0E87404"
+               BlueprintIdentifier = "FF54B87112A74D5FBAFF1944"
                BuildableName = "libPods-WaterReporter-MBXMapKit.a"
                BlueprintName = "Pods-WaterReporter-MBXMapKit"
                ReferencedContainer = "container:Pods.xcodeproj">

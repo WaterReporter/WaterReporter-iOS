@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1B0E54F81E6D49AD9A085701"
+               BlueprintIdentifier = "21C462A5587D48F985A58AEC"
                BuildableName = "libPods-WaterReporter-UIImage-ResizeMagick.a"
                BlueprintName = "Pods-WaterReporter-UIImage-ResizeMagick"
                ReferencedContainer = "container:Pods.xcodeproj">

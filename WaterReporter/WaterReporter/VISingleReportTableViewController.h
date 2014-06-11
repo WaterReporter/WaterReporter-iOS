@@ -27,4 +27,6 @@
 @property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, strong) NSString *userEmail;
 
+- (void) setupStaticSingleViewDetails:(NSDictionary *)report;
+
 @end

@@ -6,6 +6,7 @@ target "WaterReporter" do
 	pod 'MagicalRecord'
 	pod 'MBXMapKit'
     pod 'UIImage-ResizeMagick'
+    pod 'MBProgressHUD'
 end
 
 target "WaterReporterTests" do

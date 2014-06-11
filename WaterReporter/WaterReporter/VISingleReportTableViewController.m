@@ -11,6 +11,7 @@
 #import "ImageSaver.h"
 #import "Report.h"
 #import "User.h"
+#import "MBProgressHUD.h"
 
 @interface VISingleReportTableViewController ()<UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 @end
@@ -22,22 +23,12 @@
     [super viewDidLoad];
     
     if (self.reportID) {
-        NSLog(@"WE NEED TO LOAD A REPORT >> %@", self.reportID);
-
         NSString *url = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @".json"];
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-            
-            NSString *attachmentURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/attachment_76fc17d6574c401d9a20d18187f8083e.json"];
-            [manager GET:attachmentURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-                NSLog(@"Photos? %@", responseObject[@"response"]);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-                NSLog(@"Error: %@", error);
-            }];
-
             [self setupStaticSingleViewDetails:responseObject];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             NSLog(@"Error: %@", error);
@@ -184,8 +175,8 @@
             commentLabel.font = [UIFont systemFontOfSize:12.0];
             commentLabel.numberOfLines = 4;
         }
-        [commentLabel sizeToFit];
         commentLabel.text = self.report.comments;
+        [commentLabel sizeToFit];
         
         [self.view addSubview:commentLabel];
     }
@@ -202,6 +193,9 @@
     if ([[report[@"response"] objectForKey:@"is_a_pollution_report?"] boolValue]) {
         self.title = @"Pollution Report";
     }
+
+    self.report.report_type = self.title;
+    self.report.feature_id = report[@"response"][@"id"];
 
     // Title
     CGRect reportTypeFrame;
@@ -234,34 +228,50 @@
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadGravatar) name:@"initWithJSONFinishedLoading" object:nil];
-//
-//    // Activity or Pollution Type
-//    CGRect categoryTypeFrame;
-//    
-//    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-//        categoryTypeFrame = CGRectMake(20, 60, self.view.frame.size.width-160, 40);
-//    }else{
-//        categoryTypeFrame = CGRectMake(10, 32, 302, 20);
-//    }
-//    
-//    UILabel *categoryTypeLabel = [[UILabel alloc] initWithFrame:categoryTypeFrame];
-//    
-//    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-//        categoryTypeLabel.font = [UIFont systemFontOfSize:34.0];
-//    }else{
-//        categoryTypeLabel.font = [UIFont systemFontOfSize:17.0];
-//    }
-//    
-//    if ([self.report.report_type isEqualToString:@"Activity Report"]) {
-//        categoryTypeLabel.text = self.report.activity_type;
-//    }
-//    else if ([self.report.report_type isEqualToString:@"Pollution Report"]) {
-//        categoryTypeLabel.text = self.report.pollution_type;
-//    }
-//    
-//    [self.view addSubview:categoryTypeLabel];
-//    
-//    
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+
+    NSString *reportTypeURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/type_0e9423a9a393481f82c4f22ff5954567.json"];
+    
+    NSLog(@"is_a_pollution_report? %@", report[@"response"][@"is_a_pollution_report?"]);
+    if (report[@"response"][@"is_a_pollution_report?"] && report[@"response"][@"is_a_pollution_report?"] != [NSNull null]){
+        if ([report[@"response"][@"is_a_pollution_report?"] integerValue] == 1) {
+            reportTypeURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/type_05a300e835024771a51a6d3114e82abc.json"];
+        }
+    }
+    
+    NSLog(@"reportTypeURL %@", reportTypeURL);
+    
+    [manager GET:reportTypeURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
+        NSString *category = responseObject[@"response"][@"features"][0][@"name"];
+        
+        CGRect categoryTypeFrame;
+        
+        if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+            categoryTypeFrame = CGRectMake(20, 60, self.view.frame.size.width-160, 40);
+        }else{
+            categoryTypeFrame = CGRectMake(10, 32, 302, 20);
+        }
+        
+        UILabel *categoryTypeLabel = [[UILabel alloc] initWithFrame:categoryTypeFrame];
+        
+        if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+            categoryTypeLabel.font = [UIFont systemFontOfSize:34.0];
+        }else{
+            categoryTypeLabel.font = [UIFont systemFontOfSize:17.0];
+        }
+        
+        NSLog(@"Category %@", category);
+        categoryTypeLabel.text = category;
+        
+        [self.view addSubview:categoryTypeLabel];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Error: %@", error);
+    }];
+    
+    
     // Date
     CGRect submittedDateFrame;
     
@@ -292,30 +302,45 @@
     
     [self.view addSubview:submittedDateLabel];
 
-//    NSData *jpgData = [NSData dataWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:self.report.image]];
-//    self.originalImage = [UIImage imageWithData:jpgData];
-//    UIImage *resizedImage;
-//    
-//    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-//        resizedImage = [self.originalImage resizedImageByMagick:@"745x550#"];
-//    }else{
-//        resizedImage = [self.originalImage resizedImageByMagick:@"300x235#"];
-//    }
-//    
-//    self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
-//    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-//        self.imageView.frame = CGRectMake(10, 320, resizedImage.size.width, resizedImage.size.height);
-//    }else{
-//        self.imageView.frame = CGRectMake(10, 120, resizedImage.size.width, resizedImage.size.height);
-//    }
-//    
-//    [self.imageView setUserInteractionEnabled:YES];
-//    
-//    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
-//    [singleTap setNumberOfTapsRequired:1];
-//    [self.imageView addGestureRecognizer:singleTap];
-//    [self.view addSubview:self.imageView];
-//    
+    // Activity or Pollution Type
+    NSString *attachmentURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/attachment_76fc17d6574c401d9a20d18187f8083e.json"];
+    [manager GET:attachmentURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
+        if (responseObject[@"response"][@"features"][0]) {
+            NSURL *photos = [NSURL URLWithString:responseObject[@"response"][@"features"][0][@"filepath"]];
+            if (![responseObject[@"response"][@"features"][0][@"filepath"] hasPrefix:@"http://"]) {
+                photos = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"http://", responseObject[@"response"][@"features"][0][@"filepath"]]];
+            }
+            
+            NSLog(@"%@", photos);
+            
+            NSData *jpgData = [NSData dataWithContentsOfURL:photos];
+            self.originalImage = [UIImage imageWithData:jpgData];
+            UIImage *resizedImage;
+
+            if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+                resizedImage = [self.originalImage resizedImageByMagick:@"745x550#"];
+            }else{
+                resizedImage = [self.originalImage resizedImageByMagick:@"300x235#"];
+            }
+
+            self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
+            if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+                self.imageView.frame = CGRectMake(10, 220, resizedImage.size.width, resizedImage.size.height);
+            }else{
+                self.imageView.frame = CGRectMake(10, 142, resizedImage.size.width, resizedImage.size.height);
+            }
+
+            [self.imageView setUserInteractionEnabled:YES];
+
+            UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
+            [singleTap setNumberOfTapsRequired:1];
+            [self.imageView addGestureRecognizer:singleTap];
+            [self.view addSubview:self.imageView];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Error: %@", error);
+    }];
+    
     // Comment
     if (report[@"response"][@"comments"]) {
         CGRect commentFrame;
@@ -333,9 +358,8 @@
             commentLabel.font = [UIFont systemFontOfSize:12.0];
             commentLabel.numberOfLines = 4;
         }
-        [commentLabel sizeToFit];
         commentLabel.text = report[@"response"][@"comments"];
-        NSLog(@"comments %@", report[@"response"][@"comments"]);
+        [commentLabel sizeToFit];
 
         [self.view addSubview:commentLabel];
     }
@@ -366,7 +390,7 @@
 
 - (void) shareReport
 {
-
+    
     NSString *reportTitle = [NSString stringWithFormat:@"I submitted a new %@ with WaterReporter", self.report.report_type];
     NSString *reportURLString = [NSString stringWithFormat:@"http://www.waterreporter.org/reports/%@", self.report.feature_id];
     NSURL *reportURL = [NSURL URLWithString:reportURLString];

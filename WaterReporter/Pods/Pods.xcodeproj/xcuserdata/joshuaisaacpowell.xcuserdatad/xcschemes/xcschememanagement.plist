@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-WaterReporter-MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-WaterReporter-MBXMapKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,27 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1B0E54F81E6D49AD9A085701</key>
+		<key>21C462A5587D48F985A58AEC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3591D4C399524689922F91D0</key>
+		<key>4764213796D3401492C6C59A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5169D9487A8045E6A33A77CC</key>
+		<key>4D9B45E022124705A7CC3F34</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B132AB7E8B5843D1B0E87404</key>
+		<key>7CBBBC31F1754D3CAF24BE7C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D48D97C4B82D47B2BA55B15D</key>
+		<key>A7B55CFCEB9440E3878294F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FF54B87112A74D5FBAFF1944</key>
 		<dict>
 			<key>primary</key>
 			<true/>
