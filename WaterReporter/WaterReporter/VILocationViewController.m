@@ -35,14 +35,54 @@
     }
     
     if (!self.loadingMapForForm) {
-        [self loadMapMarkers];
+        [self checkNetworkAvailability];
         
+        if ([self.networkStatus isEqualToString:@"reachable"]) {
+            [self loadMapMarkers];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [alert show];
+        }
+        
+
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
         
-        self.navigationItem.leftBarButtonItem = refreshButton;   
+        self.navigationItem.leftBarButtonItem = refreshButton;
     }
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
+}
+
+- (void) checkNetworkAvailability
+{
+    
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    NSLog(@"Network Status %@", self.networkStatus);
+    
+}
+
+- (void) setupReachability
+{
+    //Create weak version of self to avoid retain cycle in switch statement
+    __weak typeof(self) weakSelf = self;
+    
+    NSOperationQueue *operationQueue = self.manager.operationQueue;
+    [self.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                [operationQueue setSuspended:NO];
+                weakSelf.networkStatus = @"reachable";
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                [operationQueue setSuspended:YES];
+                weakSelf.networkStatus = @"unreachable";
+                break;
+        }
+    }];
+    
 }
 
 - (void)refreshMap
@@ -62,6 +102,7 @@
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
         [self presentViewController:modalNav animated:YES completion:nil];
     }
+    
 }
 
 - (void) preparePageController

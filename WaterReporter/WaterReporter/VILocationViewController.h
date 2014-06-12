@@ -25,6 +25,9 @@
 @property BOOL annotationPinType;
 @property BOOL loadingMapForForm;
 
+@property (retain, nonatomic) NSString *networkStatus;
+@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+
 - (void)showSingleReport:(NSString *)reportID;
 
 @end

@@ -13,6 +13,9 @@
 #import "User.h"
 #import "MBProgressHUD.h"
 
+#define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
+#define COLOR_BRAND_WHITE_BASE [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0]
+
 @interface VISingleReportTableViewController ()<UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 @end
 
@@ -406,6 +409,7 @@
     }
     avatarView.clipsToBounds = YES;
     [self.view addSubview:avatarView];
+    [self.view sendSubviewToBack:avatarView];
 }
 
 - (void) shareReport
@@ -416,12 +420,31 @@
     NSURL *reportURL = [NSURL URLWithString:reportURLString];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[reportTitle, reportURL] applicationActivities:nil];
-
-    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor blackColor]}];
     
-    [self presentViewController:activityViewController animated:YES completion:nil];
+    [activityViewController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+        // back to normal color
+    	[[UINavigationBar appearance] setBarTintColor:COLOR_BRAND_BLUE_BASE];
+        [[UINavigationBar appearance] setTintColor:COLOR_BRAND_WHITE_BASE];
+        [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : COLOR_BRAND_WHITE_BASE}];
+    }];
+    [self presentViewController:activityViewController animated:YES completion:^{
+        // change color temporary
+        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+        [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+        [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor]}];
+    }];
+
+//    activityViewController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    activityViewController.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+//    activityViewController.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
+//    activityViewController.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
+//    activityViewController.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+//    activityViewController.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
+
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+//    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+//    [[UINavigationBar appearance] setTitleTextAttributes:];
+    
 }
 
 - (void)didReceiveMemoryWarning
