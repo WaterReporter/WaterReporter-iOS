@@ -39,12 +39,11 @@
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshInvoked:forState:) forControlEvents:UIControlEventValueChanged];
-
 }
 
 -(void) refreshInvoked:(id)sender forState:(UIControlState)state {
 
-    if ([self.networkStatus isEqualToString:@"reachable"]) {
+    if ([self.networkStatus isEqualToString:@"reachable"] && ![self.refreshControl isRefreshing]) {
         [self submitAllUnsubmittedReports];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -97,6 +96,7 @@
     }
     
     [self.refreshControl endRefreshing];
+
 }
 
 - (void) postReport:(Report*)report

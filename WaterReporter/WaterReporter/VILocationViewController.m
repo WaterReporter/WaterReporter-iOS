@@ -35,15 +35,10 @@
     }
     
     if (!self.loadingMapForForm) {
+        [self setupReachability];
         [self checkNetworkAvailability];
-        
-        if ([self.networkStatus isEqualToString:@"reachable"]) {
-            [self loadMapMarkers];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [alert show];
-        }
-        
+
+        [self loadMapMarkers];
 
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
         
@@ -59,7 +54,7 @@
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     NSLog(@"Network Status %@", self.networkStatus);
-    
+
 }
 
 - (void) setupReachability
@@ -82,6 +77,7 @@
                 break;
         }
     }];
+    
     
 }
 
@@ -224,6 +220,8 @@
 {
     NSString *url = @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.geojson?results_per_page=1000";
     
+    NSLog(@"Load map markers");
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -232,6 +230,8 @@
         self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
         NSLog(@"Error: %@", error);
     }];
 }
@@ -241,6 +241,7 @@
     NSMutableArray *mutableAnnotationArray = [[NSMutableArray alloc] init];
     
     for(NSDictionary *marker in self.markers){
+        NSLog(@"marker %@", marker);
         VIPointAnnotation *annotation = [[VIPointAnnotation alloc] init];
         double latitude;
         double longitude;
