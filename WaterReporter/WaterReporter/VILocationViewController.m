@@ -18,6 +18,8 @@
 {
     [super viewDidLoad];
     
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
     // Set View Title
     self.title = @"My Location";
 
@@ -35,9 +37,6 @@
     }
     
     if (!self.loadingMapForForm) {
-        [self setupReachability];
-        [self checkNetworkAvailability];
-
         [self loadMapMarkers];
 
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
@@ -46,15 +45,14 @@
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
+    
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+    }];
 }
 
-- (void) checkNetworkAvailability
-{
-    
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    
-    NSLog(@"Network Status %@", self.networkStatus);
-
+- (BOOL)connected {
+    return [AFNetworkReachabilityManager sharedManager].reachable;
 }
 
 - (void) setupReachability
@@ -241,7 +239,6 @@
     NSMutableArray *mutableAnnotationArray = [[NSMutableArray alloc] init];
     
     for(NSDictionary *marker in self.markers){
-        NSLog(@"marker %@", marker);
         VIPointAnnotation *annotation = [[VIPointAnnotation alloc] init];
         double latitude;
         double longitude;

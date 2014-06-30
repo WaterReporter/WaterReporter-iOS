@@ -13,6 +13,7 @@
 
 @interface VIReportsTableViewController : UITableViewController
 
+@property (nonatomic) BOOL isRefreshing;
 @property (strong, nonatomic) NSMutableArray *reports;
 @property (retain, nonatomic) NSString *networkStatus;
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;

@@ -21,6 +21,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"viewDidLoad");
+ 
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     self.title = @"My Reports";
     
@@ -31,77 +34,122 @@
     
     NSURL *baseURL = [NSURL URLWithString:@"http://api.commonscloud.org/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
-    [self setupReachability];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    NSLog(@"viewDidAppear");
+    [self refreshTableView];
+    [self.tableView reloadData];
+}
+
+- (BOOL)connected {
+    return [AFNetworkReachabilityManager sharedManager].reachable;
 }
 
 - (void) enableTableRefresh
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshInvoked:forState:) forControlEvents:UIControlEventValueChanged];
+
+}
+
+- (void) refreshTableView
+{
+    
+    NSLog(@"refreshTableView");
+    __weak typeof(self) weakSelf = self;
+    
+    if ([self shouldAttemptSubmission]) {
+        NSLog(@"Submission found, we need to attempt to submit them");
+        if (!self.isRefreshing) {
+            self.isRefreshing = true;
+            NSLog(@"Unsubmitted reports found ... do SOMETHING!!!");
+            if ([self connected]) {
+                NSLog(@"Connected to network, try to submit, then end refreshing and reload table data");
+                [weakSelf submitReports];
+            } else {
+                NSLog(@"No network connection, show an alert");
+
+                [self.refreshControl endRefreshing];
+                self.isRefreshing = false;
+                [self.tableView reloadData];
+
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:weakSelf cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                [alert show];
+            }
+            NSLog(@"PASSED CONDITOINAL .... did anything happen??");
+        } else {
+            NSLog(@"PASSED the isRefreshing conditional");
+        }
+        NSLog(@"SKIPPED the isRefreshing conditional");
+    } else {
+        NSLog(@"No unsubmitted reports, end refreshing and reload table data");
+        self.isRefreshing = false;
+        [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
+    }
+}
+
+- (int) shouldAttemptSubmission
+{
+    NSLog(@"shouldAttemptSubmission");
+    
+    if ([self countUnsubmittedReports] == 0) {
+        return false;
+    }
+    
+    return true;
+}
+
+- (int) countUnsubmittedReports
+{
+    NSMutableArray *reports = [[Report MR_findAllSortedBy:@"created" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]] mutableCopy];
+
+    NSMutableArray *unsubmittedReports = [[NSMutableArray alloc] init];
+
+    for (Report *report in reports) {
+        if (!report.feature_id) {
+            [unsubmittedReports addObject:report];
+        }
+    }
+    
+    NSLog(@"count of unsubmitted reports %d", unsubmittedReports.count);
+    return unsubmittedReports.count;
 }
 
 -(void) refreshInvoked:(id)sender forState:(UIControlState)state {
-
-    if ([self.networkStatus isEqualToString:@"reachable"] && ![self.refreshControl isRefreshing]) {
-        [self submitAllUnsubmittedReports];
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
-        [self.refreshControl endRefreshing];
-    }
-
-    [self.tableView reloadData];
-}
-
-- (void) checkNetworkAvailability
-{
     
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    NSLog(@"refreshInvoked");
     
-    NSLog(@"Network Status %@", self.networkStatus);
+    [self refreshTableView];
 
 }
 
-- (void) setupReachability
-{
-    //Create weak version of self to avoid retain cycle in switch statement
-    __weak typeof(self) weakSelf = self;
-
-    NSOperationQueue *operationQueue = self.manager.operationQueue;
-    [self.manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-                [operationQueue setSuspended:NO];
-                weakSelf.networkStatus = @"reachable";
-                break;
-            case AFNetworkReachabilityStatusNotReachable:
-            default:
-                [operationQueue setSuspended:YES];
-                weakSelf.networkStatus = @"unreachable";
-                break;
-        }
-    }];
-
-}
-
-- (void) submitAllUnsubmittedReports
+- (void) submitReports
 {
     
+    NSLog(@"submitReports");
+    
+
+    //
+    // Make sure we have the most recent list of reports before trying to submit them to the database
+    //
+    self.reports = [[Report MR_findAllSortedBy:@"created" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]] mutableCopy];
+
     for (Report *report in self.reports) {
         if (!report.feature_id) {
             [self postReport:report];
         }
     }
     
-    [self.refreshControl endRefreshing];
-
 }
 
 - (void) postReport:(Report*)report
 {
     
+    NSLog(@"postReport");
+
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:report.image];
     NSURL *imageURL = [NSURL fileURLWithPath:filePath];
     
@@ -155,11 +203,22 @@
         NSError *error;
         [formData appendPartWithFileURL:imageURL name:@"attachment_76fc17d6574c401d9a20d18187f8083e" fileName:filePath mimeType:@"image/png" error:&error];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Success: %@", responseObject);
         [self updateReportFeatureID:report response_id:[responseObject valueForKey:@"resource_id"]];
-        [self.tableView reloadData];
+        
+        if ([self countUnsubmittedReports] == 0) {
+            [self.refreshControl endRefreshing];
+            self.isRefreshing = false;
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"We need to submit another one");
+            [self refreshTableView];
+        }
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
+        [self.refreshControl endRefreshing];
+        self.isRefreshing = false;
+        [self.tableView reloadData];
     }];
 }
 
@@ -304,21 +363,15 @@
 {
     self.reports = [[Report MR_findAllSortedBy:@"created" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]] mutableCopy];
 
-    [self checkNetworkAvailability];
-    
-    if ([self.networkStatus isEqualToString:@"reachable"]) {
-        [self submitAllUnsubmittedReports];
-    }
     
     [self enableTableRefresh];
-
     [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // Dispose of any resources that can be recreated.sel
 }
 
 #pragma mark - Table view data source
