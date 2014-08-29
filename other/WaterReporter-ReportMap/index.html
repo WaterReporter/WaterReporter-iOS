@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name='viewport' content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Map of Activity &amp; Pollution Reports in the Chesapeake Bay | Water Reporter</title>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.css" rel="stylesheet" />    
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        bottom: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+
+      p {
+        color: rgb(85,85,85);
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 1.5;
+      }
+
+      p.comments {
+        max-height: 168px;
+        overflow: scroll;
+      }
+
+      p.light-text {
+        color: rgb(196, 196, 196);
+        margin-bottom: 0;
+        font-size: 12px;
+        letter-spacing: 0.025em;
+      }
+
+      h3,
+      .leaflet-container h3 {
+        color: rgb(85,85,85);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.5;
+        margin-bottom: 2px;
+      }
+
+      div.leaflet-popup-content-wrapper {
+        border-radius: 0;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div id="map"></div>
+
+    <script>
+      L.mapbox.accessToken = 'pk.eyJ1IjoiZGV2ZWxvcGVkc2ltcGxlIiwiYSI6Illub2VYY1kifQ.hkyevt9f593Gog0tULJLXg';
+
+      var map = L.mapbox.map('map', 'developedsimple.hno186oj').addControl(L.mapbox.geocoderControl('mapbox.places-v1'));;
+
+      var reports = '//api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.geojson?results_per_page=500';
+      
+      var featureLayer = L.mapbox.featureLayer().loadURL(reports).on('ready', run);
+
+      function run() {
+
+        featureLayer.eachLayer(function(layer) {
+
+          var report = {
+            type: (layer.feature.properties.type_8f432efc18c545ea9578b4bdea860b4c.length) ? layer.feature.properties.type_8f432efc18c545ea9578b4bdea860b4c[0].name: 'Unknown Report',
+            category: (layer.feature.properties.type_05a300e835024771a51a6d3114e82abc.length) ? layer.feature.properties.type_05a300e835024771a51a6d3114e82abc[0].name : 'Other',
+            created: layer.feature.properties.date,
+            comments: layer.feature.properties.comments
+          };
+
+          var popup = "<p class='light-text'>" + report.type + "</p><h3>" + report.category + "</h3><p class='light-text'>Submitted on " + report.created + "</p><p class='comments'>" + report.comments + "</p><p><a href='//www.waterreporter.org/reports/" + layer.feature.id + "' target='_blank'>View full report on WaterReporter.org &raquo;</a></p>";
+
+          var feature = L.geoJson(layer.feature, {
+            pointToLayer: function (feature, latlng) {
+              return L.marker(latlng, {
+                icon: L.icon({
+                  "iconUrl": (layer.feature.properties.type_8f432efc18c545ea9578b4bdea860b4c[0].name === 'Activity Report') ? "https://api.tiles.mapbox.com/v3/marker/pin-l+4ECF00.png": "https://api.tiles.mapbox.com/v3/marker/pin-l+FFAC00.png",
+                  "iconSize": [35, 90],
+                  "iconAnchor": [17,42]
+                })
+              });
+            }
+          }).bindPopup(popup).on('click', function (e) {
+            this.openPopup();
+          });
+
+          map.addLayer(feature);
+        });
+
+        map.fitBounds(featureLayer.getBounds());
+      }
+    </script>
+  </body>
+</html>

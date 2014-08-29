@@ -362,7 +362,6 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     self.reports = [[Report MR_findAllSortedBy:@"created" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]] mutableCopy];
-
     
     [self enableTableRefresh];
     [self.tableView reloadData];
@@ -425,14 +424,6 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     else {
-//        cell.accessoryType = UITableViewCellAccessoryNone;
-//        
-//        UILabel *accessoryStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-//        accessoryStatusLabel.font = [UIFont systemFontOfSize:17.0];
-//        accessoryStatusLabel.text = @"!";
-//
-//        cell.accessoryView = accessoryStatusLabel;
-
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [spinner setFrame:CGRectMake(0, 0, 10, 10)];
         [spinner startAnimating];
