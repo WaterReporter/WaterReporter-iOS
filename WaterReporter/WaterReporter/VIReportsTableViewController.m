@@ -8,10 +8,6 @@
 
 #import "VIReportsTableViewController.h"
 
-#define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
-#define COLOR_BRAND_WHITE_BASE [UIColor colorWithWhite:242.0/255.0f alpha:1.0f]
-#define REPORT_ENDPOINT @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.json"
-
 @interface VIReportsTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @end
@@ -25,7 +21,7 @@
  
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
-    self.title = @"My Reports";
+    self.title = @"My Profile";
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -199,7 +195,7 @@
         [json setObject:[self findActivityType:report.activity_type] forKey:@"type_0e9423a9a393481f82c4f22ff5954567"];
     }
     
-    [self.manager POST:@"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.json" parameters:(NSDictionary *)json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [self.manager POST:@"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.json" parameters:(NSDictionary *)json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSError *error;
         [formData appendPartWithFileURL:imageURL name:@"attachment_76fc17d6574c401d9a20d18187f8083e" fileName:filePath mimeType:@"image/png" error:&error];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {

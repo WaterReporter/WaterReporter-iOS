@@ -26,7 +26,7 @@
     [super viewDidLoad];
     
     if (self.reportID) {
-        NSString *url = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @".json"];
+        NSString *url = [NSString stringWithFormat:@"%@%@%@", @"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @".json"];
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -246,12 +246,12 @@
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
 
-    NSString *reportTypeURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/type_0e9423a9a393481f82c4f22ff5954567.json"];
+    NSString *reportTypeURL = [NSString stringWithFormat:@"%@%@%@", @"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/type_0e9423a9a393481f82c4f22ff5954567.json"];
     
     NSLog(@"is_a_pollution_report? %@", report[@"response"][@"is_a_pollution_report?"]);
     if (report[@"response"][@"is_a_pollution_report?"] && report[@"response"][@"is_a_pollution_report?"] != [NSNull null]){
         if ([report[@"response"][@"is_a_pollution_report?"] integerValue] == 1) {
-            reportTypeURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/type_05a300e835024771a51a6d3114e82abc.json"];
+            reportTypeURL = [NSString stringWithFormat:@"%@%@%@", @"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/type_05a300e835024771a51a6d3114e82abc.json"];
         }
     }
     
@@ -319,13 +319,13 @@
     [self.view addSubview:submittedDateLabel];
 
     // Activity or Pollution Type
-    NSString *attachmentURL = [NSString stringWithFormat:@"%@%@%@", @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/attachment_76fc17d6574c401d9a20d18187f8083e.json"];
+    NSString *attachmentURL = [NSString stringWithFormat:@"%@%@%@", @"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9/", self.reportID, @"/attachment_76fc17d6574c401d9a20d18187f8083e.json"];
     [manager GET:attachmentURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
         NSLog(@"%lu", (unsigned long)[responseObject[@"response"][@"features"] count]);
         if ([responseObject[@"response"][@"features"] count] != 0) {
             NSURL *photos = [NSURL URLWithString:responseObject[@"response"][@"features"][0][@"filepath"]];
-            if (![responseObject[@"response"][@"features"][0][@"filepath"] hasPrefix:@"http://"]) {
-                photos = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"http://", responseObject[@"response"][@"features"][0][@"filepath"]]];
+            if (![responseObject[@"response"][@"features"][0][@"filepath"] hasPrefix:@"https://"]) {
+                photos = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"https://", responseObject[@"response"][@"features"][0][@"filepath"]]];
             }
             
             NSLog(@"%@", photos);
@@ -392,7 +392,9 @@
 - (void) showImage
 {
     PhotoViewController *photoVC = [[PhotoViewController alloc] init];
+    
     photoVC.image = self.originalImage;
+    
     [self.navigationController pushViewController:photoVC animated:YES];
 }
 
@@ -400,6 +402,7 @@
 {
     UIImage *avatar = self.gravatar.avatar;
     UIImageView *avatarView = [[UIImageView alloc] initWithImage:avatar];
+    
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
         avatarView.frame = CGRectMake(630, 30, 120, 120);
         avatarView.layer.cornerRadius = 60;
@@ -407,7 +410,9 @@
         avatarView.frame = CGRectMake(260, 14, 52, 52);
         avatarView.layer.cornerRadius = 26;
     }
+    
     avatarView.clipsToBounds = YES;
+    
     [self.view addSubview:avatarView];
     [self.view sendSubviewToBack:avatarView];
 }
@@ -433,17 +438,6 @@
         [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
         [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor]}];
     }];
-
-//    activityViewController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//    activityViewController.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-//    activityViewController.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-//    activityViewController.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
-//    activityViewController.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
-//    activityViewController.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
-
-//    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
-//    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-//    [[UINavigationBar appearance] setTitleTextAttributes:];
     
 }
 

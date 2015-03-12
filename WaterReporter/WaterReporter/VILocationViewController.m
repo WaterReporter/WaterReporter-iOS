@@ -21,7 +21,7 @@
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     // Set View Title
-    self.title = @"My Location";
+    self.title = @"Activity Feed";
 
     // Add the content we need to our LocationViewController
     [self setupMapboxMapView];
@@ -40,8 +40,10 @@
         [self loadMapMarkers];
 
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
+        UIBarButtonItem *refreshButton2 = [[UIBarButtonItem alloc] initWithTitle:@"Map" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
         
         self.navigationItem.leftBarButtonItem = refreshButton;
+        self.navigationItem.rightBarButtonItem = refreshButton2;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
@@ -159,7 +161,7 @@
     // Tapped Tab Button Apperance
     tabMyLocation.selectedImage = [UIImage imageNamed:@"LocationTabBarButtonSelected"];
     
-    tabMyLocation.title = @"My Location";
+    tabMyLocation.title = @"Activity Feed";
 }
 
 - (void) styleFormTab
@@ -198,7 +200,7 @@
     // Tapped Tab Button Apperance
     tabMyReports.selectedImage = [UIImage imageNamed:@"ReportsTabBarButtonSelected"];
 
-    tabMyReports.title = @"My Reports";
+    tabMyReports.title = @"My Profile";
 }
 
 - (void)displayFormTableViewControllerTab
@@ -225,7 +227,8 @@
 
 - (void)loadMapMarkers
 {
-    NSString *url = @"http://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.geojson?results_per_page=1000";
+  
+    NSString *url = @"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.geojson?results_per_page=1000&statistics=false&relationship=false";
     
     NSLog(@"Load map markers");
     

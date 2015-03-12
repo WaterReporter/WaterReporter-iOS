@@ -36,7 +36,7 @@
     self.templates = @[@"Pollution Report", @"Activity Report"];
     self.template = [[NSString alloc] init];
 
-    self.activityFields = @[@"Date", @"Activity Type", @"Comments"];
+//    self.activityFields = @[@"Date", @"Activity Type", @"Comments"];
     self.pollutionFields = @[@"Date", @"Pollution Type", @"Comments"];
 
     self.activityEnums = @[@"Canoeing",@"Diving",@"Fishing",@"Flatwater kayaking",@"Hiking",@"Living the dream",@"Rock climbing",@"Sailing",@"Scouting wildlife",@"Snorkeling",@"Stand-up paddleboarding",@"Stream cleanup",@"Surfing",@"Swimming",@"Tubing",@"Water skiing",@"Whitewater kayaking",@"Whitewater rafting"];
@@ -99,7 +99,7 @@
     [activityGestureRecognizer setNumberOfTapsRequired:1];
     [self.activityPickerView addGestureRecognizer:activityGestureRecognizer];
 
-    self.pollutionTypeField = [self makeTextField:self.report.pollution_type placeholder:@"Pollution Type"];
+    self.pollutionTypeField = [self makeTextField:self.report.pollution_type placeholder:@"Category"];
     self.pollutionTypeField.clearButtonMode = UITextFieldViewModeAlways;
     [self.pollutionTypeField setUserInteractionEnabled:YES];
 
@@ -191,39 +191,39 @@
     //
     // https://developer.apple.com/library/iOs/documentation/UIKit/Reference/UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/selectedSegmentIndex
     //
-    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:self.templates];
-    [self.segmentedControl setFrame:CGRectMake(25, 10, self.view.bounds.size.width-47, 30)];
-    [self.segmentedControl setEnabled:YES];
-    [self.segmentedControl addTarget:self action:@selector(segmentClicked:) forControlEvents:UIControlEventValueChanged];
-    self.segmentedControl.tintColor = COLOR_BRAND_BLUE_BASE;
-    
-    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR_BRAND_WHITE_BASE} forState:UIControlStateSelected];
-    
-    self.segmentedControl.selectedSegmentIndex = 0;
+//    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:self.templates];
+//    [self.segmentedControl setFrame:CGRectMake(25, 10, self.view.bounds.size.width-47, 30)];
+//    [self.segmentedControl setEnabled:YES];
+//    [self.segmentedControl addTarget:self action:@selector(segmentClicked:) forControlEvents:UIControlEventValueChanged];
+//    self.segmentedControl.tintColor = COLOR_BRAND_BLUE_BASE;
+//    
+//    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR_BRAND_WHITE_BASE} forState:UIControlStateSelected];
+//    
+//    self.segmentedControl.selectedSegmentIndex = 0;
     self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
     self.reportType = @"Pollution Report";
 }
 
-- (void)segmentClicked:(id)sender
-{
-    NSInteger selectedSegment = [sender selectedSegmentIndex];
-    NSString *segmentName = self.templates[selectedSegment];
-    
-    if([segmentName isEqualToString:@"Pollution Report"]){
-        self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
-        self.reportType = @"Pollution Report";
-    }
-    else if([segmentName isEqualToString:@"Activity Report"]){
-        self.fields = [[NSArray alloc] initWithArray:self.activityFields];
-        self.reportType = @"Activity Report";
-    }
-
-    
-    self.segmentedControl.selectedSegmentIndex = selectedSegment;
-    
-    [self.tableView reloadData];
-    
-}
+//- (void)segmentClicked:(id)sender
+//{
+//    NSInteger selectedSegment = [sender selectedSegmentIndex];
+//    NSString *segmentName = self.templates[selectedSegment];
+//    
+//    if([segmentName isEqualToString:@"Pollution Report"]){
+//        self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
+//        self.reportType = @"Pollution Report";
+//    }
+//    else if([segmentName isEqualToString:@"Activity Report"]){
+//        self.fields = [[NSArray alloc] initWithArray:self.activityFields];
+//        self.reportType = @"Activity Report";
+//    }
+//
+//    
+//    self.segmentedControl.selectedSegmentIndex = selectedSegment;
+//    
+//    [self.tableView reloadData];
+//    
+//}
 
 - (void) prepareMapForReport
 {
@@ -549,8 +549,7 @@
 
 #pragma mark - Form Information
 
-- (UITextField *) makeTextField:(NSString *)text
-                    placeholder:(NSString *)placeholder
+- (UITextField *) makeTextField:(NSString *)text placeholder:(NSString *)placeholder
 {
     UITextField *tf = [[UITextField alloc] init];
     UIColor *color = [UIColor lightGrayColor];
@@ -560,7 +559,7 @@
     tf.leftViewMode = UITextFieldViewModeAlways;
     tf.text = text;
     tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:color}];
-//    tf.frame = CGRectMake(0, 0, 290, 35);
+    //    tf.frame = CGRectMake(0, 0, 290, 35);
     tf.frame = CGRectMake(0, 0, self.view.bounds.size.width-30, 35);
     tf.autocorrectionType = UITextAutocorrectionTypeDefault;
     tf.autocapitalizationType = UITextAutocapitalizationTypeSentences;
@@ -677,14 +676,14 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 45)];
-    [headerView addSubview:self.segmentedControl];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 16)];
+//    [headerView addSubview:self.segmentedControl];
     return headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 45.f;
+    return 16.f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
