@@ -127,7 +127,7 @@
         
         [self.mapView setRegion:region animated:YES];
     } else {
-        CLLocation *staticLocation = [[CLLocation alloc] initWithLatitude:40.4397 longitude:-77.9764];
+        CLLocation *staticLocation = [[CLLocation alloc] initWithLatitude:39.4397 longitude:-76.9764];
         location = staticLocation.coordinate;
         [self.mapView setCenterCoordinate:location zoomLevel:6.0 animated:YES];
     }
