@@ -26,6 +26,7 @@
     // Add the content we need to our LocationViewController
     [self setupMapboxMapView];
     [self updateTabBarAppearance];
+    [self setNeedsStatusBarAppearanceUpdate];
     
     //show app walkthrough on first launch
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"])
@@ -51,6 +52,7 @@
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
     }];
+
 }
 
 - (BOOL)connected {
@@ -347,6 +349,10 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 
     [self.navigationController pushViewController:singleReportTableViewController animated:YES];
+}
+
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
 
 
