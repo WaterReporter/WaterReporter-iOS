@@ -10,6 +10,8 @@
 	<string>WaterReporter</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>22D1823F881C4919583150BE214845EB9EC0F168</key>
+		<string>github.com:viableindustries/WaterReporter-iOS.git</string>
 		<key>AE3F19CE-8F5D-4B6B-9B8E-9F8D132E80E5</key>
 		<string>ssh://github.com/viableindustries/WaterReporter.git</string>
 	</dict>
@@ -17,15 +19,17 @@
 	<string>WaterReporter/WaterReporter.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>AE3F19CE-8F5D-4B6B-9B8E-9F8D132E80E5</key>
+		<key>22D1823F881C4919583150BE214845EB9EC0F168</key>
 		<string>../..</string>
+		<key>AE3F19CE-8F5D-4B6B-9B8E-9F8D132E80E5</key>
+		<string>../../../WaterReporter</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/viableindustries/WaterReporter.git</string>
+	<string>github.com:viableindustries/WaterReporter-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>AE3F19CE-8F5D-4B6B-9B8E-9F8D132E80E5</string>
+	<string>22D1823F881C4919583150BE214845EB9EC0F168</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>AE3F19CE-8F5D-4B6B-9B8E-9F8D132E80E5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>WaterReporter</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>22D1823F881C4919583150BE214845EB9EC0F168</string>
+			<key>IDESourceControlWCCName</key>
+			<string>WaterReporter-iOS</string>
 		</dict>
 	</array>
 </dict>

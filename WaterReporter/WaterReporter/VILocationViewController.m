@@ -108,21 +108,30 @@
 - (void) setupMapboxMapView
 {
     // Setup our Mapbox based MapView using Apple's Mapkit
-    CGRect mapFrame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     NSString *mapId = @"developedsimple.hno186oj";
     
-    self.mapView = [[MBXMapView alloc] initWithFrame:mapFrame mapID:mapId];
+    self.mapView = [[MBXMapView alloc] initWithFrame:self.view.bounds mapID:mapId];
     self.mapView.backgroundColor = [UIColor colorWithWhite:242.0/255.0f alpha:1.0f];
     self.mapView.delegate = self;
     self.mapView.showsUserLocation = YES;
     
     //create region to display on map
-    CLLocationCoordinate2D location = self.mapView.userLocation.location.coordinate;
-    CLLocationDistance regionWidth = 1000;
-    CLLocationDistance regionHeight = 1000;
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, regionWidth, regionHeight);
-
-    [self.mapView setRegion:region animated:YES];
+    CLLocationCoordinate2D location;
+    
+    if (self.mapView.userLocation.location) {
+        location = self.mapView.userLocation.location.coordinate;
+        
+        CLLocationDistance regionWidth = 1000;
+        CLLocationDistance regionHeight = 1000;
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, regionWidth, regionHeight);
+        
+        [self.mapView setRegion:region animated:YES];
+    } else {
+        CLLocation *staticLocation = [[CLLocation alloc] initWithLatitude:40.4397 longitude:-77.9764];
+        location = staticLocation.coordinate;
+        [self.mapView setCenterCoordinate:location zoomLevel:6.0 animated:YES];
+    }
+    
     [self.view addSubview:self.mapView];
 }
 
