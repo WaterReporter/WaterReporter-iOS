@@ -570,6 +570,7 @@
     tf.backgroundColor = [UIColor whiteColor];
     tf.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:14.0];
     tf.textColor = [UIColor darkGrayColor];
+    tf.clearButtonMode = UITextFieldViewModeAlways;
     
     [tf addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
     
