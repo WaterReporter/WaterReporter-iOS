@@ -10,9 +10,6 @@
 #import "PhotoViewController.h"
 #import "VIFormTableViewController.h"
 
-#define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
-#define COLOR_BRAND_WHITE_BASE [UIColor colorWithWhite:242.0/255.0f alpha:1.0f]
-
 @interface VIFormTableViewController ()
 
 @end
@@ -33,21 +30,55 @@
 
     self.title = @"";
     
-    self.templates = @[@"Pollution Report", @"Activity Report"];
     self.template = [[NSString alloc] init];
 
-//    self.activityFields = @[@"Date", @"Activity Type", @"Comments"];
     self.pollutionFields = @[@"Date", @"Pollution Type", @"Comments"];
 
-    self.activityEnums = @[@"Canoeing",@"Diving",@"Fishing",@"Flatwater kayaking",@"Hiking",@"Living the dream",@"Rock climbing",@"Sailing",@"Scouting wildlife",@"Snorkeling",@"Stand-up paddleboarding",@"Stream cleanup",@"Surfing",@"Swimming",@"Tubing",@"Water skiing",@"Whitewater kayaking",@"Whitewater rafting"];
-    self.pollutionEnums = @[@"Discolored water", @"Eroded stream banks", @"Excessive algae", @"Excessive trash", @"Exposed soil", @"Faulty construction entryway", @"Faulty silt fences", @"Fish kill", @"Foam", @"Livestock in stream", @"Oil and grease", @"Other", @"Pipe discharge", @"Sewer overflow", @"Stormwater", @"Winter manure application"];
+    self.pollutionEnums = @[
+        @"-- Pollution Types --",
+        @"Discolored water",
+        @"Eroded stream banks",
+        @"Excessive algae",
+        @"Excessive trash",
+        @"Exposed soil",
+        @"Faulty construction entryway",
+        @"Faulty silt fences",
+        @"Fish kill",
+        @"Foam",
+        @"Livestock in stream",
+        @"Oil and grease",
+        @"Other",
+        @"Pipe discharge",
+        @"Sewer overflow",
+        @"Stormwater",
+        @"Winter manure application",
+        @"-- Activity Types --",
+        @"Canoeing",
+        @"Diving",
+        @"Fishing",
+        @"Flatwater kayaking",
+        @"Hiking",
+        @"Living the dream",
+        @"Rock climbing",
+        @"Sailing",
+        @"Scouting wildlife",
+        @"Snorkeling",
+        @"Stand-up paddleboarding",
+        @"Stream cleanup",
+        @"Surfing",
+        @"Swimming",
+        @"Tubing",
+        @"Water skiing",
+        @"Whitewater kayaking",
+        @"Whitewater rafting"
+    ];
 
     // We need to make sure we are defining this class or else our Table View will throw
     // an error telling us we didn't define it for reuse. In addition make sure that we
     // style the table to fit the rest of the application
     [self.tableView registerClass: [UITableViewCell class] forCellReuseIdentifier:@"reportCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = COLOR_BRAND_WHITE_BASE;
+    self.tableView.backgroundColor = [UIColor colorWithWhite:242.0/255.0f alpha:1.0f];
     self.tableView.opaque = NO;
 
     [self prepareMapForReport];
@@ -56,12 +87,6 @@
     [self setupFormFields];
 
     [self.tableView reloadData];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void) setupFormFields
@@ -191,39 +216,10 @@
     //
     // https://developer.apple.com/library/iOs/documentation/UIKit/Reference/UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/selectedSegmentIndex
     //
-//    self.segmentedControl = [[UISegmentedControl alloc] initWithItems:self.templates];
-//    [self.segmentedControl setFrame:CGRectMake(25, 10, self.view.bounds.size.width-47, 30)];
-//    [self.segmentedControl setEnabled:YES];
-//    [self.segmentedControl addTarget:self action:@selector(segmentClicked:) forControlEvents:UIControlEventValueChanged];
-//    self.segmentedControl.tintColor = COLOR_BRAND_BLUE_BASE;
-//    
-//    [self.segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR_BRAND_WHITE_BASE} forState:UIControlStateSelected];
-//    
-//    self.segmentedControl.selectedSegmentIndex = 0;
+
     self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
     self.reportType = @"Pollution Report";
 }
-
-//- (void)segmentClicked:(id)sender
-//{
-//    NSInteger selectedSegment = [sender selectedSegmentIndex];
-//    NSString *segmentName = self.templates[selectedSegment];
-//    
-//    if([segmentName isEqualToString:@"Pollution Report"]){
-//        self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
-//        self.reportType = @"Pollution Report";
-//    }
-//    else if([segmentName isEqualToString:@"Activity Report"]){
-//        self.fields = [[NSArray alloc] initWithArray:self.activityFields];
-//        self.reportType = @"Activity Report";
-//    }
-//
-//    
-//    self.segmentedControl.selectedSegmentIndex = selectedSegment;
-//    
-//    [self.tableView reloadData];
-//    
-//}
 
 - (void) prepareMapForReport
 {
@@ -615,22 +611,12 @@
 
 // tell the picker how many components it will have
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
+    return self.pollutionEnums.count;
 }
 
 // tell the picker the title for a given component
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    
-    NSString *title;
-    
-    if(pickerView == self.pollutionPickerView){
-        title = [@"" stringByAppendingFormat:@"%@",self.pollutionEnums[row]];
-    }
-    else if(pickerView == self.activityPickerView){
-        title = [@"" stringByAppendingFormat:@"%@",self.activityEnums[row]];
-    }
-    
-    return title;
+    return [@"" stringByAppendingFormat:@"%@",self.pollutionEnums[row]];
 }
 
 // tell the picker the width of each row for a given component
