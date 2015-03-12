@@ -324,8 +324,8 @@
         NSLog(@"%lu", (unsigned long)[responseObject[@"response"][@"features"] count]);
         if ([responseObject[@"response"][@"features"] count] != 0) {
             NSURL *photos = [NSURL URLWithString:responseObject[@"response"][@"features"][0][@"filepath"]];
-            if (![responseObject[@"response"][@"features"][0][@"filepath"] hasPrefix:@"https://"]) {
-                photos = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"https://", responseObject[@"response"][@"features"][0][@"filepath"]]];
+            if (![responseObject[@"response"][@"features"][0][@"filepath"] hasPrefix:@"http://"]) {
+                photos = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"http://", responseObject[@"response"][@"features"][0][@"filepath"]]];
             }
             
             NSLog(@"%@", photos);

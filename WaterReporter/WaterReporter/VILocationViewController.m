@@ -29,22 +29,22 @@
     [self setNeedsStatusBarAppearanceUpdate];
     
     //show app walkthrough on first launch
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"])
-    {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"SettingsShowTutorialOnLaunch"];
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"])
+//    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SettingsShowTutorialOnLaunch"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [self preparePageController];
-    }
+//    }
     
     if (!self.loadingMapForForm) {
         [self loadMapMarkers];
 
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
-        UIBarButtonItem *refreshButton2 = [[UIBarButtonItem alloc] initWithTitle:@"Map" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
+//        UIBarButtonItem *refreshButton2 = [[UIBarButtonItem alloc] initWithTitle:@"Map" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
         
         self.navigationItem.leftBarButtonItem = refreshButton;
-        self.navigationItem.rightBarButtonItem = refreshButton2;
+//        self.navigationItem.rightBarButtonItem = refreshButton2;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
@@ -124,17 +124,17 @@
     
     if (self.mapView.userLocation.location) {
         location = self.mapView.userLocation.location.coordinate;
-        
-        CLLocationDistance regionWidth = 1000;
-        CLLocationDistance regionHeight = 1000;
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, regionWidth, regionHeight);
-        
-        [self.mapView setRegion:region animated:YES];
     } else {
         CLLocation *staticLocation = [[CLLocation alloc] initWithLatitude:39.4397 longitude:-76.9764];
         location = staticLocation.coordinate;
         [self.mapView setCenterCoordinate:location zoomLevel:6.0 animated:YES];
     }
+
+    CLLocationDistance regionWidth = 1000;
+    CLLocationDistance regionHeight = 1000;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, regionWidth, regionHeight);
+    
+    [self.mapView setRegion:region animated:YES];
     
     [self.view addSubview:self.mapView];
 }

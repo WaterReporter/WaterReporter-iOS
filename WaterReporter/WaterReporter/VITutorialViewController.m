@@ -16,15 +16,6 @@
 
 @implementation VITutorialViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -34,11 +25,13 @@
     self.pageController.view.backgroundColor = COLOR_BRAND_BLUE_BASE;
     
     self.pageController.dataSource = self;
-    //    [[self.pageController view] setFrame:[[self view] bounds]];
     [[self.pageController view] setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40)];
     
     VIChildViewController *initialViewController = [self viewControllerAtIndex:0];
     
+    initialViewController.view.frame = self.pageController.view.bounds;
+    initialViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
     
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
@@ -62,13 +55,11 @@
     
     [self.pageController.view addSubview:endTutorialButton];
     [self.pageController.view bringSubviewToFront:endTutorialButton];
-    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (VIChildViewController *)viewControllerAtIndex:(NSUInteger)index {

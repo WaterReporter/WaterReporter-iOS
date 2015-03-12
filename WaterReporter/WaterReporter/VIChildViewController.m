@@ -26,7 +26,13 @@
     UIImage *background = slides[self.index];
     UIImageView *imageView = [[UIImageView alloc] initWithImage: background];
     
-    [self.view addSubview: imageView];
+    imageView.frame = self.view.bounds;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    
+    [self.view addSubview:imageView];
 }
 
 - (void)didReceiveMemoryWarning
