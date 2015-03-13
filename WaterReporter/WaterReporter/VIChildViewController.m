@@ -20,7 +20,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSArray *slides = @[[UIImage imageNamed:@"slide_1"], [UIImage imageNamed:@"slide_2"], [UIImage imageNamed:@"slide_3"], [UIImage imageNamed:@"slide_4"], [UIImage imageNamed:@"slide_5"], [UIImage imageNamed:@"slide_6"]];
+    NSArray *slides = @[[UIImage imageNamed:@"slide_1"], [UIImage imageNamed:@"slide_2"], [UIImage imageNamed:@"slide_3"], [UIImage imageNamed:@"slide_4"], [UIImage imageNamed:@"slide_5"], [UIImage imageNamed:@"slide_6"], [UIImage imageNamed:@"slide_7"], [UIImage imageNamed:@"slide_8"], [UIImage imageNamed:@"slide_9"], [UIImage imageNamed:@"slide_10"]];
     
     self.view.backgroundColor = COLOR_BRAND_BLUE_BASE;
     UIImage *background = slides[self.index];

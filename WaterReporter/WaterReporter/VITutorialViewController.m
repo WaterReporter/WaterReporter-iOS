@@ -22,16 +22,13 @@
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
-    self.pageController.view.backgroundColor = COLOR_BRAND_BLUE_BASE;
+    self.pageController.view.backgroundColor = [UIColor colorWithRed:38.0/255.0 green:38.0/255.0 blue:38.0/255.0 alpha:1.0];
     
     self.pageController.dataSource = self;
-    [[self.pageController view] setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40)];
+    [[self.pageController view] setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+37)];
     
     VIChildViewController *initialViewController = [self viewControllerAtIndex:0];
     
-    initialViewController.view.frame = self.pageController.view.bounds;
-    initialViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
     
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
@@ -48,7 +45,7 @@
     UIButton *endTutorialButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40)];
     [endTutorialButton setTitle:@"Already know how? Get started" forState:UIControlStateNormal];
     [endTutorialButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    endTutorialButton.backgroundColor = COLOR_BRAND_BLUE_BASE;
+    endTutorialButton.backgroundColor = [UIColor colorWithRed:38.0/255.0 green:38.0/255.0 blue:38.0/255.0 alpha:1.0];
     [endTutorialButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [endTutorialButton.titleLabel setFont:[UIFont systemFontOfSize:13.0]];
     [endTutorialButton addTarget:self action:@selector(dismissTutorial) forControlEvents:UIControlEventTouchUpInside];
@@ -95,7 +92,7 @@
     
     index++;
     
-    if (index == 5) {
+    if (index == 10) {
         return nil;
     }
     
@@ -105,7 +102,7 @@
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
     // The number of items reflected in the page indicator.
-    return 5;
+    return 10;
 }
 
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
