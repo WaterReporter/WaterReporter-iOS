@@ -1,0 +1,674 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9412CF21192A465400B36542 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9412CF20192A465400B36542 /* NSString+MD5.m */; };
+		9412CF24192A4E6B00B36542 /* Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9412CF23192A4E6B00B36542 /* Gravatar.m */; };
+		94775476192F8BEA00EE4A63 /* VIPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94775475192F8BEA00EE4A63 /* VIPointAnnotation.m */; };
+		94A689DE192BDBED006CE05D /* VIChildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A689DD192BDBED006CE05D /* VIChildViewController.m */; };
+		C10177FE1926A33D00A1F7EF /* VISingleReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */; };
+		C12D7B03192533BC00C2B9F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B02192533BC00C2B9F5 /* Foundation.framework */; };
+		C12D7B05192533BC00C2B9F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */; };
+		C12D7B07192533BC00C2B9F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B06192533BC00C2B9F5 /* UIKit.framework */; };
+		C12D7B0D192533BC00C2B9F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C12D7B0B192533BC00C2B9F5 /* InfoPlist.strings */; };
+		C12D7B0F192533BC00C2B9F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B0E192533BC00C2B9F5 /* main.m */; };
+		C12D7B13192533BC00C2B9F5 /* VIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B12192533BC00C2B9F5 /* VIAppDelegate.m */; };
+		C12D7B1C192533BC00C2B9F5 /* VILocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B1B192533BC00C2B9F5 /* VILocationViewController.m */; };
+		C12D7B1F192533BC00C2B9F5 /* VIFormTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B1E192533BC00C2B9F5 /* VIFormTableViewController.m */; };
+		C12D7B21192533BC00C2B9F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C12D7B20192533BC00C2B9F5 /* Images.xcassets */; };
+		C12D7B28192533BC00C2B9F5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B27192533BC00C2B9F5 /* XCTest.framework */; };
+		C12D7B29192533BC00C2B9F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B02192533BC00C2B9F5 /* Foundation.framework */; };
+		C12D7B2A192533BC00C2B9F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B06192533BC00C2B9F5 /* UIKit.framework */; };
+		C12D7B32192533BC00C2B9F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C12D7B30192533BC00C2B9F5 /* InfoPlist.strings */; };
+		C12D7B34192533BC00C2B9F5 /* WaterReporterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B33192533BC00C2B9F5 /* WaterReporterTests.m */; };
+		C12D7B3F1925390300C2B9F5 /* VIReportsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B3E1925390300C2B9F5 /* VIReportsTableViewController.m */; };
+		C12D7B4819254F7E00C2B9F5 /* ReportModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B4619254F7E00C2B9F5 /* ReportModel.xcdatamodeld */; };
+		C12D7B4B1925528400C2B9F5 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B4A1925528400C2B9F5 /* User.m */; };
+		C12D7B4E1925528400C2B9F5 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B4D1925528400C2B9F5 /* Report.m */; };
+		C12D7B531925533000C2B9F5 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B501925533000C2B9F5 /* PhotoViewController.m */; };
+		C12D7B541925533000C2B9F5 /* ImageSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B521925533000C2B9F5 /* ImageSaver.m */; };
+		C12E243B1928EE05004A7FDD /* VILoginTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */; };
+		C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243D1928EE95004A7FDD /* VITutorialViewController.m */; };
+		C189D6A119802BFB005E4848 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C189D6A019802BFB005E4848 /* MapKit.framework */; };
+		C1B7D30A193CB2AB0057E735 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C1B7D309193CB2AB0057E735 /* Settings.bundle */; };
+		C664F4215B7BDC28F7ECFC15 /* libPods-Water-Reporter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B664AE0B6D5BF93FAEA3B1E8 /* libPods-Water-Reporter.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C12D7B2B192533BC00C2B9F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C12D7AF7192533BC00C2B9F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C12D7AFE192533BC00C2B9F5;
+			remoteInfo = WaterReporter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		85101798FCFB1EE4D2ACF7ED /* Pods-Water-Reporter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Water-Reporter.release.xcconfig"; path = "Pods/Target Support Files/Pods-Water-Reporter/Pods-Water-Reporter.release.xcconfig"; sourceTree = "<group>"; };
+		9412CF1F192A465400B36542 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		9412CF20192A465400B36542 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
+		9412CF22192A4E6B00B36542 /* Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gravatar.h; sourceTree = "<group>"; };
+		9412CF23192A4E6B00B36542 /* Gravatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gravatar.m; sourceTree = "<group>"; };
+		94775474192F8BEA00EE4A63 /* VIPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIPointAnnotation.h; sourceTree = "<group>"; };
+		94775475192F8BEA00EE4A63 /* VIPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIPointAnnotation.m; sourceTree = "<group>"; };
+		94A689DC192BDBED006CE05D /* VIChildViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIChildViewController.h; sourceTree = "<group>"; };
+		94A689DD192BDBED006CE05D /* VIChildViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIChildViewController.m; sourceTree = "<group>"; };
+		B664AE0B6D5BF93FAEA3B1E8 /* libPods-Water-Reporter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Water-Reporter.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C068EB82AA36A2EC1A465610 /* Pods-Water-Reporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Water-Reporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Water-Reporter/Pods-Water-Reporter.debug.xcconfig"; sourceTree = "<group>"; };
+		C10177FC1926A33D00A1F7EF /* VISingleReportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VISingleReportTableViewController.h; sourceTree = "<group>"; };
+		C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VISingleReportTableViewController.m; sourceTree = "<group>"; };
+		C12D7AFF192533BC00C2B9F5 /* Water-Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water-Reporter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C12D7B02192533BC00C2B9F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C12D7B06192533BC00C2B9F5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C12D7B0A192533BC00C2B9F5 /* Water-Reporter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Water-Reporter-Info.plist"; sourceTree = "<group>"; };
+		C12D7B0C192533BC00C2B9F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C12D7B0E192533BC00C2B9F5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C12D7B10192533BC00C2B9F5 /* Water-Reporter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Water-Reporter-Prefix.pch"; sourceTree = "<group>"; };
+		C12D7B11192533BC00C2B9F5 /* VIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIAppDelegate.h; sourceTree = "<group>"; };
+		C12D7B12192533BC00C2B9F5 /* VIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VIAppDelegate.m; sourceTree = "<group>"; };
+		C12D7B1A192533BC00C2B9F5 /* VILocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VILocationViewController.h; sourceTree = "<group>"; };
+		C12D7B1B192533BC00C2B9F5 /* VILocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VILocationViewController.m; sourceTree = "<group>"; };
+		C12D7B1D192533BC00C2B9F5 /* VIFormTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIFormTableViewController.h; sourceTree = "<group>"; };
+		C12D7B1E192533BC00C2B9F5 /* VIFormTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VIFormTableViewController.m; sourceTree = "<group>"; };
+		C12D7B20192533BC00C2B9F5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		C12D7B26192533BC00C2B9F5 /* Water-ReporterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water-ReporterTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C12D7B27192533BC00C2B9F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C12D7B2F192533BC00C2B9F5 /* Water-ReporterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Water-ReporterTests-Info.plist"; sourceTree = "<group>"; };
+		C12D7B31192533BC00C2B9F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C12D7B33192533BC00C2B9F5 /* WaterReporterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WaterReporterTests.m; sourceTree = "<group>"; };
+		C12D7B3D1925390300C2B9F5 /* VIReportsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIReportsTableViewController.h; sourceTree = "<group>"; };
+		C12D7B3E1925390300C2B9F5 /* VIReportsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIReportsTableViewController.m; sourceTree = "<group>"; };
+		C12D7B4719254F7E00C2B9F5 /* ReportModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ReportModel.xcdatamodel; sourceTree = "<group>"; };
+		C12D7B491925528400C2B9F5 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		C12D7B4A1925528400C2B9F5 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C12D7B4C1925528400C2B9F5 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
+		C12D7B4D1925528400C2B9F5 /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
+		C12D7B4F1925533000C2B9F5 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		C12D7B501925533000C2B9F5 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		C12D7B511925533000C2B9F5 /* ImageSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSaver.h; sourceTree = "<group>"; };
+		C12D7B521925533000C2B9F5 /* ImageSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSaver.m; sourceTree = "<group>"; };
+		C12E24391928EE05004A7FDD /* VILoginTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VILoginTableViewController.h; sourceTree = "<group>"; };
+		C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VILoginTableViewController.m; sourceTree = "<group>"; };
+		C12E243C1928EE95004A7FDD /* VITutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VITutorialViewController.h; sourceTree = "<group>"; };
+		C12E243D1928EE95004A7FDD /* VITutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VITutorialViewController.m; sourceTree = "<group>"; };
+		C189D6A019802BFB005E4848 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C1B7D309193CB2AB0057E735 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C12D7AFC192533BC00C2B9F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12D7B05192533BC00C2B9F5 /* CoreGraphics.framework in Frameworks */,
+				C12D7B07192533BC00C2B9F5 /* UIKit.framework in Frameworks */,
+				C189D6A119802BFB005E4848 /* MapKit.framework in Frameworks */,
+				C12D7B03192533BC00C2B9F5 /* Foundation.framework in Frameworks */,
+				C664F4215B7BDC28F7ECFC15 /* libPods-Water-Reporter.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C12D7B23192533BC00C2B9F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12D7B28192533BC00C2B9F5 /* XCTest.framework in Frameworks */,
+				C12D7B2A192533BC00C2B9F5 /* UIKit.framework in Frameworks */,
+				C12D7B29192533BC00C2B9F5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A4D2C0B2D1D1A7E3087B2079 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C068EB82AA36A2EC1A465610 /* Pods-Water-Reporter.debug.xcconfig */,
+				85101798FCFB1EE4D2ACF7ED /* Pods-Water-Reporter.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C12D7AF6192533BC00C2B9F5 = {
+			isa = PBXGroup;
+			children = (
+				C12D7B08192533BC00C2B9F5 /* Water-Reporter */,
+				C12D7B2D192533BC00C2B9F5 /* Water-ReporterTests */,
+				C12D7B01192533BC00C2B9F5 /* Frameworks */,
+				C12D7B00192533BC00C2B9F5 /* Products */,
+				A4D2C0B2D1D1A7E3087B2079 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		C12D7B00192533BC00C2B9F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C12D7AFF192533BC00C2B9F5 /* Water-Reporter.app */,
+				C12D7B26192533BC00C2B9F5 /* Water-ReporterTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C12D7B01192533BC00C2B9F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C189D6A019802BFB005E4848 /* MapKit.framework */,
+				C12D7B02192533BC00C2B9F5 /* Foundation.framework */,
+				C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */,
+				C12D7B06192533BC00C2B9F5 /* UIKit.framework */,
+				C12D7B27192533BC00C2B9F5 /* XCTest.framework */,
+				B664AE0B6D5BF93FAEA3B1E8 /* libPods-Water-Reporter.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C12D7B08192533BC00C2B9F5 /* Water-Reporter */ = {
+			isa = PBXGroup;
+			children = (
+				C12D7B4019254DBC00C2B9F5 /* Application */,
+				C12D7B4219254DD100C2B9F5 /* Categories */,
+				C12D7B4319254DD700C2B9F5 /* Controllers */,
+				C12D7B4119254DC600C2B9F5 /* Model */,
+				C12D7B4519254DF900C2B9F5 /* Resources */,
+				C12D7B09192533BC00C2B9F5 /* Supporting Files */,
+			);
+			path = "Water-Reporter";
+			sourceTree = "<group>";
+		};
+		C12D7B09192533BC00C2B9F5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C12D7B0A192533BC00C2B9F5 /* Water-Reporter-Info.plist */,
+				C12D7B0B192533BC00C2B9F5 /* InfoPlist.strings */,
+				C12D7B0E192533BC00C2B9F5 /* main.m */,
+				C12D7B10192533BC00C2B9F5 /* Water-Reporter-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C12D7B2D192533BC00C2B9F5 /* Water-ReporterTests */ = {
+			isa = PBXGroup;
+			children = (
+				C12D7B33192533BC00C2B9F5 /* WaterReporterTests.m */,
+				C12D7B2E192533BC00C2B9F5 /* Supporting Files */,
+			);
+			path = "Water-ReporterTests";
+			sourceTree = "<group>";
+		};
+		C12D7B2E192533BC00C2B9F5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C12D7B2F192533BC00C2B9F5 /* Water-ReporterTests-Info.plist */,
+				C12D7B30192533BC00C2B9F5 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C12D7B4019254DBC00C2B9F5 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				C12D7B11192533BC00C2B9F5 /* VIAppDelegate.h */,
+				C12D7B12192533BC00C2B9F5 /* VIAppDelegate.m */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		C12D7B4119254DC600C2B9F5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C12D7B491925528400C2B9F5 /* User.h */,
+				C12D7B4619254F7E00C2B9F5 /* ReportModel.xcdatamodeld */,
+				C12D7B4C1925528400C2B9F5 /* Report.h */,
+				C12D7B4D1925528400C2B9F5 /* Report.m */,
+				C12D7B4A1925528400C2B9F5 /* User.m */,
+				9412CF22192A4E6B00B36542 /* Gravatar.h */,
+				9412CF23192A4E6B00B36542 /* Gravatar.m */,
+				94775474192F8BEA00EE4A63 /* VIPointAnnotation.h */,
+				94775475192F8BEA00EE4A63 /* VIPointAnnotation.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C12D7B4219254DD100C2B9F5 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				9412CF1F192A465400B36542 /* NSString+MD5.h */,
+				9412CF20192A465400B36542 /* NSString+MD5.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		C12D7B4319254DD700C2B9F5 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C12E24391928EE05004A7FDD /* VILoginTableViewController.h */,
+				C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */,
+				C12D7B4F1925533000C2B9F5 /* PhotoViewController.h */,
+				C12D7B501925533000C2B9F5 /* PhotoViewController.m */,
+				C12D7B511925533000C2B9F5 /* ImageSaver.h */,
+				C12D7B521925533000C2B9F5 /* ImageSaver.m */,
+				C12D7B3D1925390300C2B9F5 /* VIReportsTableViewController.h */,
+				C12D7B3E1925390300C2B9F5 /* VIReportsTableViewController.m */,
+				C10177FC1926A33D00A1F7EF /* VISingleReportTableViewController.h */,
+				C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */,
+				C12D7B1A192533BC00C2B9F5 /* VILocationViewController.h */,
+				C12D7B1B192533BC00C2B9F5 /* VILocationViewController.m */,
+				C12D7B1D192533BC00C2B9F5 /* VIFormTableViewController.h */,
+				C12D7B1E192533BC00C2B9F5 /* VIFormTableViewController.m */,
+				C12E243C1928EE95004A7FDD /* VITutorialViewController.h */,
+				C12E243D1928EE95004A7FDD /* VITutorialViewController.m */,
+				94A689DC192BDBED006CE05D /* VIChildViewController.h */,
+				94A689DD192BDBED006CE05D /* VIChildViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		C12D7B4519254DF900C2B9F5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C1B7D309193CB2AB0057E735 /* Settings.bundle */,
+				C12D7B20192533BC00C2B9F5 /* Images.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C12D7AFE192533BC00C2B9F5 /* Water-Reporter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C12D7B37192533BC00C2B9F5 /* Build configuration list for PBXNativeTarget "Water-Reporter" */;
+			buildPhases = (
+				652341C49EC84C3BAC5D473D /* Check Pods Manifest.lock */,
+				C12D7AFB192533BC00C2B9F5 /* Sources */,
+				C12D7AFC192533BC00C2B9F5 /* Frameworks */,
+				C12D7AFD192533BC00C2B9F5 /* Resources */,
+				07EB3A3BD6EB496B82D8A3EB /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Water-Reporter";
+			productName = "Water-Reporter";
+			productReference = C12D7AFF192533BC00C2B9F5 /* Water-Reporter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C12D7B25192533BC00C2B9F5 /* Water-ReporterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C12D7B3A192533BC00C2B9F5 /* Build configuration list for PBXNativeTarget "Water-ReporterTests" */;
+			buildPhases = (
+				C12D7B22192533BC00C2B9F5 /* Sources */,
+				C12D7B23192533BC00C2B9F5 /* Frameworks */,
+				C12D7B24192533BC00C2B9F5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C12D7B2C192533BC00C2B9F5 /* PBXTargetDependency */,
+			);
+			name = "Water-ReporterTests";
+			productName = "Water-ReporterTests";
+			productReference = C12D7B26192533BC00C2B9F5 /* Water-ReporterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C12D7AF7192533BC00C2B9F5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = VI;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Viable Industries, L.L.C.";
+				TargetAttributes = {
+					C12D7AFE192533BC00C2B9F5 = {
+						DevelopmentTeam = T8H47R7JRG;
+						SystemCapabilities = {
+							com.apple.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					C12D7B25192533BC00C2B9F5 = {
+						TestTargetID = C12D7AFE192533BC00C2B9F5;
+					};
+				};
+			};
+			buildConfigurationList = C12D7AFA192533BC00C2B9F5 /* Build configuration list for PBXProject "Water-Reporter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C12D7AF6192533BC00C2B9F5;
+			productRefGroup = C12D7B00192533BC00C2B9F5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C12D7AFE192533BC00C2B9F5 /* Water-Reporter */,
+				C12D7B25192533BC00C2B9F5 /* Water-ReporterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C12D7AFD192533BC00C2B9F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12D7B21192533BC00C2B9F5 /* Images.xcassets in Resources */,
+				C1B7D30A193CB2AB0057E735 /* Settings.bundle in Resources */,
+				C12D7B0D192533BC00C2B9F5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C12D7B24192533BC00C2B9F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12D7B32192533BC00C2B9F5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		07EB3A3BD6EB496B82D8A3EB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Water-Reporter/Pods-Water-Reporter-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		652341C49EC84C3BAC5D473D /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C12D7AFB192533BC00C2B9F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12D7B3F1925390300C2B9F5 /* VIReportsTableViewController.m in Sources */,
+				C12D7B4B1925528400C2B9F5 /* User.m in Sources */,
+				C12E243B1928EE05004A7FDD /* VILoginTableViewController.m in Sources */,
+				C12D7B1C192533BC00C2B9F5 /* VILocationViewController.m in Sources */,
+				C12D7B541925533000C2B9F5 /* ImageSaver.m in Sources */,
+				C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */,
+				94775476192F8BEA00EE4A63 /* VIPointAnnotation.m in Sources */,
+				9412CF21192A465400B36542 /* NSString+MD5.m in Sources */,
+				C12D7B1F192533BC00C2B9F5 /* VIFormTableViewController.m in Sources */,
+				94A689DE192BDBED006CE05D /* VIChildViewController.m in Sources */,
+				C12D7B0F192533BC00C2B9F5 /* main.m in Sources */,
+				9412CF24192A4E6B00B36542 /* Gravatar.m in Sources */,
+				C10177FE1926A33D00A1F7EF /* VISingleReportTableViewController.m in Sources */,
+				C12D7B13192533BC00C2B9F5 /* VIAppDelegate.m in Sources */,
+				C12D7B531925533000C2B9F5 /* PhotoViewController.m in Sources */,
+				C12D7B4819254F7E00C2B9F5 /* ReportModel.xcdatamodeld in Sources */,
+				C12D7B4E1925528400C2B9F5 /* Report.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C12D7B22192533BC00C2B9F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12D7B34192533BC00C2B9F5 /* WaterReporterTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C12D7B2C192533BC00C2B9F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C12D7AFE192533BC00C2B9F5 /* Water-Reporter */;
+			targetProxy = C12D7B2B192533BC00C2B9F5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C12D7B0B192533BC00C2B9F5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C12D7B0C192533BC00C2B9F5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C12D7B30192533BC00C2B9F5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C12D7B31192533BC00C2B9F5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C12D7B35192533BC00C2B9F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C12D7B36192533BC00C2B9F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C12D7B38192533BC00C2B9F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C068EB82AA36A2EC1A465610 /* Pods-Water-Reporter.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Water-Reporter/Water-Reporter-Prefix.pch";
+				INFOPLIST_FILE = "Water-Reporter/Water-Reporter-Info.plist";
+				PRODUCT_NAME = "Water-Reporter";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C12D7B39192533BC00C2B9F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 85101798FCFB1EE4D2ACF7ED /* Pods-Water-Reporter.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Water-Reporter/Water-Reporter-Prefix.pch";
+				INFOPLIST_FILE = "Water-Reporter/Water-Reporter-Info.plist";
+				PRODUCT_NAME = "Water-Reporter";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C12D7B3B192533BC00C2B9F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WaterReporter.app/WaterReporter";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Water-Reporter/WaterReporter-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Water-ReporterTests/Water-ReporterTests-Info.plist";
+				PRODUCT_NAME = "Water-ReporterTests";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		C12D7B3C192533BC00C2B9F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WaterReporter.app/WaterReporter";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Water-Reporter/WaterReporter-Prefix.pch";
+				INFOPLIST_FILE = "Water-ReporterTests/Water-ReporterTests-Info.plist";
+				PRODUCT_NAME = "Water-ReporterTests";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C12D7AFA192533BC00C2B9F5 /* Build configuration list for PBXProject "Water-Reporter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C12D7B35192533BC00C2B9F5 /* Debug */,
+				C12D7B36192533BC00C2B9F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C12D7B37192533BC00C2B9F5 /* Build configuration list for PBXNativeTarget "Water-Reporter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C12D7B38192533BC00C2B9F5 /* Debug */,
+				C12D7B39192533BC00C2B9F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C12D7B3A192533BC00C2B9F5 /* Build configuration list for PBXNativeTarget "Water-ReporterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C12D7B3B192533BC00C2B9F5 /* Debug */,
+				C12D7B3C192533BC00C2B9F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C12D7B4619254F7E00C2B9F5 /* ReportModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C12D7B4719254F7E00C2B9F5 /* ReportModel.xcdatamodel */,
+			);
+			currentVersion = C12D7B4719254F7E00C2B9F5 /* ReportModel.xcdatamodel */;
+			path = ReportModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = C12D7AF7192533BC00C2B9F5 /* Project object */;
+}

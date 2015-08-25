@@ -2,7 +2,7 @@
 # platform :ios, "6.0"
 source 'https://github.com/CocoaPods/Specs.git'
 
-target "WaterReporter" do
+target "Water-Reporter" do
   pod 'AFNetworking'
   pod 'MagicalRecord'
     pod 'MBXMapKit', '0.2.1'
@@ -10,7 +10,7 @@ target "WaterReporter" do
     pod 'MBProgressHUD'
 end
 
-target "WaterReporterTests" do
+target "Water-ReporterTests" do
 
 end
 
