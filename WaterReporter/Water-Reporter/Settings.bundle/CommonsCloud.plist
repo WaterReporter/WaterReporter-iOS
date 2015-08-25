@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>CommonsCloud is an open-source platform focused on helping organizations organize their data and publish that data in open formats serving websites, mobile applications, and dynamic visualizations real-time data.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, version 3 of the License
+
+Copyright (C) 2014 Viable Industries, L.L.C.</string>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>CommonsCloud</string>
+</dict>
+</plist>
