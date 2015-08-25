@@ -324,6 +324,10 @@
         CLLocationCoordinate2D coordinate;
         
         if(marker[@"geometry"] != (id)[NSNull null]){
+            
+            //
+            // Prepare Map Coordinates for display
+            //
             if([marker[@"geometry"][@"type"] isEqualToString:@"Point"]){
                 latitude = [marker[@"geometry"][@"coordinates"][1] doubleValue];
                 longitude = [marker [@"geometry"][@"coordinates"][0] doubleValue];
@@ -335,19 +339,42 @@
             coordinate = CLLocationCoordinate2DMake(latitude, longitude);
             
             annotation.coordinate = coordinate;
-            annotation.reportID = marker[@"id"];
-            NSString *reportType = @"Activity";
-            annotation.pollutionReport = NO;
             
-            if (marker[@"properties"][@"is_a_pollution_report?"] && marker[@"properties"][@"is_a_pollution_report?"] != [NSNull null]){
-                if ([marker[@"properties"][@"is_a_pollution_report?"] integerValue] == 1) {
-                    reportType = @"Pollution";
-                    annotation.pollutionReport = YES;
+            //
+            // Prepare Title for display
+            //
+            annotation.reportID = marker[@"id"];
+            NSString *reportType = @"Unknown";
+            
+            if (marker[@"properties"][@"territory"] != [NSNull null]) {
+                if (marker[@"properties"][@"territory"][@"properties"][@"huc_6_name"] != [NSNull null]) {
+                    reportType = marker[@"properties"][@"territory"][@"properties"][@"huc_6_name"];
                 }
             }
-                        
-            annotation.title = [NSString stringWithFormat:@"%@ Report", reportType];
-            annotation.subtitle = [NSString stringWithFormat:@"Submitted on %@", marker[@"properties"][@"date"]];
+            
+            annotation.title = [NSString stringWithFormat:@"%@ Watershed Report", reportType];
+            
+            //
+            // Prepare the Date for display
+            //
+            NSString *dateString = marker[@"properties"][@"report_date"];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+
+            NSLocale *posix = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+            [dateFormatter setLocale:posix];
+            
+            NSDate *date = [dateFormatter dateFromString:dateString];
+            
+            [dateFormatter setDateFormat:@"LLLL d, yyyy"];
+
+            NSString *formattedDateString = [dateFormatter stringFromDate:date];
+            
+            annotation.subtitle = [NSString stringWithFormat:@"Submitted on %@", formattedDateString];
+            
+            //
+            //
+            //
             [mutableAnnotationArray addObject:annotation];
         }
     }
