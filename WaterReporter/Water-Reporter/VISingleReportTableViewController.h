@@ -15,6 +15,7 @@
 #import "Gravatar.h"
 #import "UIImage+ResizeMagick.h"
 #import <AFNetworking/AFNetworking.h>
+#import "MBProgressHUD.h"
 
 @class Report;
 
@@ -22,10 +23,12 @@
 
 @property (nonatomic, strong) NSString *reportID;
 @property (nonatomic, strong) Report *report;
-@property (nonatomic, strong) Gravatar *gravatar;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, strong) NSString *userEmail;
+@property (nonatomic, strong) UILabel *loadingLabel;
+
+@property (nonatomic, strong) MBProgressHUD *hud;
 
 - (void) setupStaticSingleViewDetails:(NSDictionary *)report;
 
