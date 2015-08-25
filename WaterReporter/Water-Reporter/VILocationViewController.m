@@ -21,7 +21,7 @@
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     // Set View Title
-    self.title = @"Activity Feed";
+    self.title = @"Explore";
 
     // Add the content we need to our LocationViewController
     [self setupMapboxMapView:@"developedsimple.mf7anga9"];
@@ -226,7 +226,7 @@
     // Tapped Tab Button Apperance
     tabMyLocation.selectedImage = [UIImage imageNamed:@"LocationTabBarButtonSelected"];
     
-    tabMyLocation.title = @"Activity Feed";
+    tabMyLocation.title = @"Explore";
 }
 
 - (void) styleFormTab
