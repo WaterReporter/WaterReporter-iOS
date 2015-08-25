@@ -15,7 +15,7 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * email;
-@property (nonatomic, retain) NSString * user_type;
+@property (nonatomic, retain) NSString * password;
 @property (nonatomic, retain) User *report;
 
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import <AFNetworking/AFHTTPRequestOperationManager.h>
 #import "User.h"
 
 @interface VILoginTableViewController : UITableViewController <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
@@ -31,5 +32,8 @@
                     placeholder:(NSString *)placeholder;
 - (IBAction) textFieldFinished:(id)sender;
 - (void) submitForm;
+
+@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+@property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
 @end

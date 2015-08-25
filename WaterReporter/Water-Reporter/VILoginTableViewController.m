@@ -18,9 +18,19 @@
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
+
     if (self) {
-        self.title = @"Get Started";
+        self.title = @"Log in";
     }
+    
+    NSURL *baseURL = [NSURL URLWithString:@"http://api.waterreporter.org/"];
+    self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+    self.serializer = [AFJSONRequestSerializer serializer];
+
+    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    self.manager.requestSerializer = self.serializer;
+
     return self;
 }
 
@@ -30,8 +40,7 @@
     
     self.user = [User MR_createEntity];
     
-    self.fieldArray = @[@"Name", @"Email", @"Who are you?", @"Submit"];
-    self.userTypeEnums = @[@"Citizen", @"Non-profit Organization Member", @"Waterkeeper Member", @"Waterkeeper"];
+    self.fieldArray = @[@"Email", @"Password", @"Submit"];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -39,7 +48,7 @@
     
     self.tableView.opaque = NO;
     
-    UIBarButtonItem *submitItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(submitForm)];
+    UIBarButtonItem *submitItem = [[UIBarButtonItem alloc] initWithTitle:@"Submit" style:UIBarButtonItemStylePlain target:self action:@selector(submitForm)];
 
     self.navigationItem.rightBarButtonItem = submitItem;
     
@@ -101,30 +110,17 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     cell.backgroundColor = [UIColor clearColor];
-    
-    if([self.fieldArray[indexPath.row] isEqualToString:@"Name"]){
-        self.firstNameField = [self makeTextField:self.user.name placeholder:self.fieldArray[indexPath.row]];
-        self.firstNameField.keyboardType = UIKeyboardTypeDefault;
-        [cell addSubview:self.firstNameField];
-    }
-    else if([self.fieldArray[indexPath.row] isEqualToString:@"Email"]){
+
+    if([self.fieldArray[indexPath.row] isEqualToString:@"Email"]){
         self.emailField = [self makeTextField:self.user.email placeholder:self.fieldArray[indexPath.row]];
         self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
         [cell addSubview:self.emailField];
     }
-    else if ([self.fieldArray[indexPath.row] isEqualToString:@"Who are you?"]) {
-        self.userTypeField = [self makeTextField:self.user.user_type placeholder:self.fieldArray[indexPath.row]];
-        [cell addSubview:self.userTypeField];
-
-        self.userTypePickerView = [[UIPickerView alloc] init];
-        [self.userTypePickerView sizeToFit];
-        [self.userTypePickerView setDelegate:self];
-        [self.userTypePickerView setDataSource:self];
-        self.userTypePickerView.showsSelectionIndicator = YES;
-
-        self.userTypeField.inputView = self.userTypePickerView;
-        self.userTypeField.inputAccessoryView = self.toolbar;
+    else if ([self.fieldArray[indexPath.row] isEqualToString:@"Password"]) {
+        self.passwordField = [self makeTextField:self.user.password placeholder:self.fieldArray[indexPath.row]];
+        self.passwordField.keyboardType = UIKeyboardTypeDefault;
+        [cell addSubview:self.passwordField];
     }
     
     return cell;
@@ -157,7 +153,7 @@
         headerLabel.backgroundColor = [UIColor clearColor];
         headerLabel.textColor = COLOR_BRAND_BLUE_BASE;
         headerLabel.font = [UIFont  systemFontOfSize:18.0];
-        headerLabel.text = @"Let's get started by telling us \nabout yourself.";
+        headerLabel.text = @"Do you have an account?\nIf so, you can login below.";
         headerLabel.textAlignment = NSTextAlignmentCenter;
         headerLabel.numberOfLines = 2;
         
@@ -211,51 +207,6 @@
     [sender resignFirstResponder];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
-    // Handle the selection
-    
-    if(pickerView == self.userTypePickerView){
-        NSString *selected = self.userTypeEnums[row];
-        self.userTypeField.text = selected;
-    }
-}
-
-// tell the picker how many rows are available for a given component
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    
-    NSUInteger numRows;
-    
-    if(pickerView == self.userTypePickerView){
-        numRows = self.userTypeEnums.count;
-    }
-
-    return numRows;
-}
-
-// tell the picker how many components it will have
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-// tell the picker the title for a given component
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    
-    NSString *title;
-    
-    if(pickerView == self.userTypePickerView){
-        title = [@"" stringByAppendingFormat:@"%@",self.userTypeEnums[row]];
-    }
-    
-    return title;
-}
-
-// tell the picker the width of each row for a given component
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    int sectionWidth = 300;
-    
-    return sectionWidth;
-}
-
 //regular expression function to validate user email
 -(BOOL) NSStringIsValidEmail:(NSString *)checkString
 {
@@ -272,13 +223,27 @@
     //save user data & dismiss modal
     
     if([self NSStringIsValidEmail:self.emailField.text]){
-        self.user.name = self.firstNameField.text;
-        self.user.email = self.emailField.text;
-        self.user.user_type = self.userTypeField.text;
+        
+        NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
+        
+        [json setObject:self.emailField.text forKey:@"email"];
+        [json setObject:self.passwordField.text forKey:@"password"];
+        
+        
+        [self.manager POST:@"http://api.waterreporter.org/login" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[NSUserDefaults standardUserDefaults] setObject:responseObject[@"response"][@"user"][@"authentication_token"] forKey:@"waterReporterTemporaryToken"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self.manager.requestSerializer setAuthorizationHeaderFieldWithToken:[[NSUserDefaults standardUserDefaults] stringForKey:@"waterReporterTemporaryToken"]];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+        
         
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        //        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        
 
     }
     //else display an alert that user must enter valid email

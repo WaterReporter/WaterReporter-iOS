@@ -20,6 +20,8 @@
     
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
+    [self setupLocationManager];
+    
     // Set View Title
     self.title = @"Explore";
 

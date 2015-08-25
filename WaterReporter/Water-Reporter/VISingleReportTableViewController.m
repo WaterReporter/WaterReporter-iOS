@@ -63,8 +63,6 @@
 - (void) setupStaticSingleViewDetails:(NSDictionary *)report
 {
     
-    NSLog(@"Single Report Content: %@", report[@"properties"]);
-    
     //
     // Setup Title
     //

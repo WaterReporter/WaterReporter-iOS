@@ -14,7 +14,7 @@
 
 @dynamic name;
 @dynamic email;
-@dynamic user_type;
+@dynamic password;
 @dynamic report;
 
 @end

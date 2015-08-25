@@ -177,14 +177,14 @@
     [json setObject:@"public" forKey:@"status"];
     [json setObject:user.email forKey:@"useremail_address"];
     [json setObject:user.name forKey:@"username"];
-    [json setObject:user.user_type forKey:@"usertitle"];
+//    [json setObject:user.user_type forKey:@"usertitle"];
     [json setValue:report.geometry forKey:@"geometry"];
     [json setObject:dateString forKey:@"date"];
     [json setObject:report.comments forKey:@"comments"];
     [json setObject:user.email forKey:@"useremail_address"];
     [json setObject:user.name forKey:@"username"];
     [json setObject:is_a_pollution_report forKey:@"is_a_pollution_report?"];
-    [json setObject:user.user_type forKey:@"usertitle"];
+//    [json setObject:user.user_type forKey:@"usertitle"];
     [json setObject:relationship forKey:@"type_8f432efc18c545ea9578b4bdea860b4c"];
     
     if ([report.report_type isEqualToString:@"Pollution Report"]) {
