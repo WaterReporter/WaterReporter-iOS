@@ -95,8 +95,6 @@
 - (void) toggleMap
 {
     
-    NSLog(@"USER TAPPED TOGGLE");
-    
     if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Trails"]) {
         //
         // Change the basemap to Trails Map
