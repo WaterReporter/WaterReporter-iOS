@@ -97,34 +97,25 @@
     
     if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Trails"]) {
         //
-        // Change the basemap to Trails Map
-        //
-        [self setupMapboxMapView:@"developedsimple.mf7anga9"];
-        
-        //
         // Change the text of the toggle button
         //
         self.navigationItem.rightBarButtonItem.title = @"Satellite";
         
         //
-        // Refresh the map so that we see the pins
+        // Change the basemap to Trails Map
         //
-        [self refreshMap];
+        self.mapView.mapID = @"developedsimple.mf7anga9";
+
     } else if ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Satellite"]) {
-        //
-        // Change the basemap to Satellite Map
-        //
-        [self setupMapboxMapView:@"developedsimple.mn44k8he"];
-        
         //
         // Change the text of the toggle button
         //
         self.navigationItem.rightBarButtonItem.title = @"Trails";
         
         //
-        // Refresh the map so that we see the pins
+        // Change the basemap to Satellite Map
         //
-        [self refreshMap];
+        self.mapView.mapID = @"developedsimple.mn44k8he";
     }
     
 }
@@ -150,26 +141,51 @@
 
 - (void) setupMapboxMapView:(NSString *)mapId
 {
-    // Setup our Mapbox based MapView using Apple's Mapkit
-    //    NSString *mapId = @"developedsimple.hno186oj";
+    
+    [self.mapView removeFromSuperview];
+
+    // Setup mapView
     if (!mapId) {
         mapId = @"developedsimple.mf7anga9";
     }
-        
+    
     self.mapView = [[MBXMapView alloc] initWithFrame:self.view.bounds mapID:mapId];
     self.mapView.backgroundColor = [UIColor colorWithWhite:242.0/255.0f alpha:1.0f];
     self.mapView.delegate = self;
+    
     self.mapView.showsUserLocation = YES;
     
-    self.locationManager = [[CLLocationManager alloc] init];
-    [self.locationManager startUpdatingLocation];
+    //create region to display on map
+    if (CLLocationCoordinate2DIsValid(self.mapView.userLocation.location.coordinate)) {
+    } else {
+        [self setupLocationManager];
+    }
 
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, 1000, 1000);
+    NSLog(@"??! %@", self.mapView.userLocation.location.coordinate);
+
+    CLLocationCoordinate2D location = self.mapView.userLocation.location.coordinate;
+    
+    CLLocationDistance regionWidth = 1000;
+    CLLocationDistance regionHeight = 1000;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, regionWidth, regionHeight);
     
     [self.mapView setRegion:region animated:YES];
     
     [self.view addSubview:self.mapView];
 }
+
+- (void) setupLocationManager
+{
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    
+    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+        [self.locationManager requestAlwaysAuthorization];
+    }
+    
+    [self.locationManager startUpdatingLocation];
+}
+
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
@@ -277,7 +293,7 @@
 - (void)loadMapMarkers
 {
   
-    NSString *url = @"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.geojson?results_per_page=1000&statistics=false&relationship=false";
+    NSString *url = @"http://api.waterreporter.org/v1/data/report?results_per_page=1000";
     
     NSLog(@"Load map markers");
     
@@ -298,6 +314,8 @@
 - (void)drawMapMarkers
 {
     NSMutableArray *mutableAnnotationArray = [[NSMutableArray alloc] init];
+
+    [self.mapView removeAnnotations:self.mapView.annotations];
     
     for(NSDictionary *marker in self.markers){
         VIPointAnnotation *annotation = [[VIPointAnnotation alloc] init];
