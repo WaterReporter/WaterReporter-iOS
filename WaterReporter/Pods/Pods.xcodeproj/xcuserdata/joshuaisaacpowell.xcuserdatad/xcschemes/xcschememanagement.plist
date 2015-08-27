@@ -4,27 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-Water-Reporter-AFNetworking.xcscheme</key>
+		<key>AFNetworking.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Water-Reporter-MBProgressHUD.xcscheme</key>
+		<key>Lockbox.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Water-Reporter-MBXMapKit.xcscheme</key>
+		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Water-Reporter-MagicalRecord.xcscheme</key>
+		<key>MBXMapKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Water-Reporter-UIImage-ResizeMagick.xcscheme</key>
+		<key>MagicalRecord.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -34,35 +34,45 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>UIImage-ResizeMagick.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>793FED47819B29FD3F90DB5E</key>
+		<key>10BC1BA6F3F0CF7455D231DDED96F3ED</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8AA13EF78C3983761797C8D5</key>
+		<key>364B4B3830B48AAD4E575BDA5723B604</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8D6183231A1B0A352D7A8FE6</key>
+		<key>939D3DFF5575938872CD42C0340AD89D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B839D0B7FA752565DE6C6931</key>
+		<key>9C76BBD4D211AFD0C84A88E5C4E7B17E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C4218CAF577C186C14B3F098</key>
+		<key>AC639F9D1F5688107377A04117A4439A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C7D44A7ADA9454135A61C1AD</key>
+		<key>ADD409BD0674E7A5E2289A1D0C2E56B0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F4F5EBA9CFE9640C617526ABA9248EB4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.5.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Lockbox (2.1.0)
   - MagicalRecord (2.2):
     - MagicalRecord/Core (= 2.2)
   - MagicalRecord/Core (2.2)
@@ -28,17 +29,19 @@ PODS:
   - UIImage-ResizeMagick (0.0.1)
 
 DEPENDENCIES:
-  - AFNetworking
-  - MagicalRecord
-  - MBProgressHUD
+  - AFNetworking (= 2.5.1)
+  - Lockbox (= 2.1)
+  - MagicalRecord (= 2.2)
+  - MBProgressHUD (= 0.9.1)
   - MBXMapKit (= 0.2.1)
-  - UIImage-ResizeMagick
+  - UIImage-ResizeMagick (= 0.0.1)
 
 SPEC CHECKSUMS:
-  AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
-  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
-  MBProgressHUD: f3747dcbd45a9e855a6b0674550651e0b7ed250c
-  MBXMapKit: 56137a4400b9ed3690300ac90ebb169777ef7638
-  UIImage-ResizeMagick: 6edd4b95aabf4be264bf99147aa27abb319f3c7f
+  AFNetworking: 10e85a00bb0f475124e4ff2677bf15693b2c1523
+  Lockbox: 16442da35d9d4286966936763be728a931d589c3
+  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MBXMapKit: 22f1917a7f3e359a385bf49bc78d15e7cf7a142b
+  UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.38.2

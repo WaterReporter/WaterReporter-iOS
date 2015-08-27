@@ -11,22 +11,15 @@
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 #import "User.h"
 
-@interface VILoginTableViewController : UITableViewController <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface VILoginTableViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) User *user;
 @property (strong, nonatomic) UIToolbar *toolbar;
 
-@property (strong, nonatomic) UITextField *firstNameField;
-@property (strong, nonatomic) UITextField *lastNameField;
 @property (strong, nonatomic) UITextField *emailField;
 @property (strong, nonatomic) UITextField *passwordField;
 
-@property (strong, nonatomic) UITextField *userTypeField;
-@property (strong, nonatomic) UIPickerView *userTypePickerView;
-@property (strong, nonatomic) NSArray *userTypeEnums;
-
 @property (strong, nonatomic) NSArray *fieldArray;
-@property (strong, nonatomic) UIImageView *imageView;
 
 - (UITextField *) makeTextField:(NSString *)text placeholder:(NSString *)placeholder;
 - (IBAction) textFieldFinished:(id)sender;

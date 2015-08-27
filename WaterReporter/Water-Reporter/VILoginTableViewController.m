@@ -7,7 +7,7 @@
 //
 
 #import "VILoginTableViewController.h"
-#define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
+#import "Lockbox.h"
 
 @interface VILoginTableViewController ()
 
@@ -155,7 +155,7 @@
         UILabel* headerLabel = [[UILabel alloc] init];
         headerLabel.frame = CGRectMake(0, 24, tableView.frame.size.width, 48);
         headerLabel.backgroundColor = [UIColor clearColor];
-        headerLabel.textColor = COLOR_BRAND_BLUE_BASE;
+        headerLabel.textColor = [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0];
         headerLabel.font = [UIFont  systemFontOfSize:18.0];
         headerLabel.text = @"Do you have an account?\nIf so, you can login below.";
         headerLabel.textAlignment = NSTextAlignmentCenter;

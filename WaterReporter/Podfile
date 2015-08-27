@@ -3,12 +3,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 target "Water-Reporter" do
-    pod 'AFNetworking'
-    pod 'MagicalRecord'
+    pod 'AFNetworking', '2.5.1'
+    pod 'MagicalRecord', '2.2'
     pod 'MBXMapKit', '0.2.1'
-    pod 'UIImage-ResizeMagick'
-    pod 'MBProgressHUD'
-    pod 'Lockbox', 
+    pod 'UIImage-ResizeMagick', '0.0.1'
+    pod 'MBProgressHUD', '0.9.1'
+    pod 'Lockbox', '2.1'
 end
 
 target "Water-ReporterTests" do
