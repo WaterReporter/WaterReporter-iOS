@@ -71,16 +71,6 @@
     self.toolbar.opaque = NO;
     self.toolbar.tintColor = nil;
     [self.toolbar sizeToFit];
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(resignTextField)];
-    self.toolbar.items = [[NSArray alloc] initWithObjects:doneButton, nil];
-    
-}
-
-- (void) resignTextField
-{
-    [self.userTypeField endEditing:YES];
-    [self.userTypeField resignFirstResponder];
-    
 }
 
 #pragma mark - Table view data source
