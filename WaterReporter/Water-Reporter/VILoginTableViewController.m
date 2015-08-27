@@ -254,7 +254,7 @@
             // Hide the HUD/Loading Icon
             //
             [self.hud hide:YES];
-
+            
             //
             // Hide the modal
             //
