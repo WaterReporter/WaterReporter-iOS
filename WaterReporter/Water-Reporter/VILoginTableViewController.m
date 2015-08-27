@@ -27,8 +27,12 @@
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
 
+    self.manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
+
     [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
     self.manager.requestSerializer = self.serializer;
 
     return self;
@@ -224,25 +228,46 @@
     
     if([self NSStringIsValidEmail:self.emailField.text]){
         
+//        NSString *url = @"http://api.waterreporter.org/v1/auth/remote";
+        NSString *url = @"http://127.0.0.1:5000/v1/auth/remote";
+
+
+        //
+        // Create our URL Parameters
+        //
         NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
         
         [json setObject:self.emailField.text forKey:@"email"];
         [json setObject:self.passwordField.text forKey:@"password"];
+
+        [json setObject:@"token" forKey:@"response_type"];
+        [json setObject:@"SG92Aa2ejWqiYW4kI08r6lhSyKwnK1gDN2xrryku" forKey:@"client_id"];
+        [json setObject:@"http://127.0.0.1:9000/authorize" forKey:@"redirect_uri"];
+        [json setObject:@"user" forKey:@"scope"];
+        [json setObject:@"json" forKey:@"state"];
+
         
+        NSDictionary *params = @{
+                                     @"email": self.emailField.text,
+                                     @"password": self.passwordField.text,
+                                     @"response_type": @"token",
+                                     @"client_id": @"SG92Aa2ejWqiYW4kI08r6lhSyKwnK1gDN2xrryku",
+                                     @"redirect_uri": @"http://127.0.0.1:9000/authorize",
+                                     @"scope": @"user",
+                                     @"state": @"json",
+                                 };
         
-        [self.manager POST:@"http://api.waterreporter.org/login" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [[NSUserDefaults standardUserDefaults] setObject:responseObject[@"response"][@"user"][@"authentication_token"] forKey:@"waterReporterTemporaryToken"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [self.manager.requestSerializer setAuthorizationHeaderFieldWithToken:[[NSUserDefaults standardUserDefaults] stringForKey:@"waterReporterTemporaryToken"]];
+        [self.manager POST:url parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSString *accessToken = responseObject[@"access_token"];
+            
+            NSLog(@"responseObject %@", responseObject);
+            NSLog(@"accessToken %@", accessToken);
+            
+//            [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
         }];
-        
-        
-        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        
-        //        [self dismissViewControllerAnimated:YES completion:nil];
-        
         
 
     }

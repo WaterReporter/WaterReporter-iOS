@@ -15,14 +15,10 @@
 @dynamic uuid;
 @dynamic feature_id;
 @dynamic created;
-@dynamic date;
-@dynamic comments;
+@dynamic report_date;
+@dynamic report_description;
 @dynamic image;
 @dynamic geometry;
-@dynamic activity_type;
-@dynamic pollution_type;
-@dynamic report_type;
 @dynamic owner;
-@dynamic status;
 
 @end

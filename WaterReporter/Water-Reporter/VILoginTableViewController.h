@@ -28,8 +28,7 @@
 @property (strong, nonatomic) NSArray *fieldArray;
 @property (strong, nonatomic) UIImageView *imageView;
 
-- (UITextField *) makeTextField:(NSString *)text
-                    placeholder:(NSString *)placeholder;
+- (UITextField *) makeTextField:(NSString *)text placeholder:(NSString *)placeholder;
 - (IBAction) textFieldFinished:(id)sender;
 - (void) submitForm;
 

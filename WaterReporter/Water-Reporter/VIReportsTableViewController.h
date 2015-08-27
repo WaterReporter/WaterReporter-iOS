@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSMutableArray *reports;
 @property (retain, nonatomic) NSString *networkStatus;
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+@property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
 -(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id;
 

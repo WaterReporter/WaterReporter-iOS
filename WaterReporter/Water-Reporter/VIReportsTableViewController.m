@@ -21,15 +21,26 @@
  
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
-    self.title = @"My Profile";
+    self.title = @"Profile";
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
-    NSURL *baseURL = [NSURL URLWithString:@"http://api.commonscloud.org/"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://api.waterreporter.org/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+    self.serializer = [AFJSONRequestSerializer serializer];
+    
+    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    self.manager.requestSerializer = self.serializer;
+    
+    NSString *accessToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"waterReporterTemporaryToken"];
+    
+    [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"waterReporterTemporaryToken"];
+    
+    NSLog(@"accessToken: %@", accessToken);
     
 }
 
@@ -147,9 +158,6 @@
     NSLog(@"postReport");
 
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:report.image];
-    NSURL *imageURL = [NSURL fileURLWithPath:filePath];
-    
-    User *user = [User MR_findFirst];
 
     //
     // After we save it to the system, we should send the user over to the "My Submission" tab
@@ -157,48 +165,15 @@
     //
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
-    NSString *dateString = [dateFormatter stringFromDate:report.date];
-    NSString *createdString = [dateFormatter stringFromDate:report.created];
-    
-    NSString *relationship;
-    NSString *is_a_pollution_report = @"false";
-    
-    if ([report.report_type isEqualToString:@"Activity Report"]) {
-        relationship = @"[{\"id\":1}]";
-    } else if ([report.report_type isEqualToString:@"Pollution Report"]) {
-        relationship = @"[{\"id\":2}]";
-        is_a_pollution_report = @"true";
-    }
-
+    NSString *dateString = [dateFormatter stringFromDate:report.report_date];
     
     NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
 
-    [json setObject:createdString forKey:@"created"];
-    [json setObject:@"public" forKey:@"status"];
-    [json setObject:user.email forKey:@"useremail_address"];
-    [json setObject:user.name forKey:@"username"];
-//    [json setObject:user.user_type forKey:@"usertitle"];
     [json setValue:report.geometry forKey:@"geometry"];
-    [json setObject:dateString forKey:@"date"];
-    [json setObject:report.comments forKey:@"comments"];
-    [json setObject:user.email forKey:@"useremail_address"];
-    [json setObject:user.name forKey:@"username"];
-    [json setObject:is_a_pollution_report forKey:@"is_a_pollution_report?"];
-//    [json setObject:user.user_type forKey:@"usertitle"];
-    [json setObject:relationship forKey:@"type_8f432efc18c545ea9578b4bdea860b4c"];
-    
-    if ([report.report_type isEqualToString:@"Pollution Report"]) {
-        [json setObject:[self findPollutionType:report.pollution_type] forKey:@"type_05a300e835024771a51a6d3114e82abc"];
-    }
+    [json setObject:dateString forKey:@"report_date"];
+    [json setObject:report.report_description forKey:@"report_description"];
 
-    if ([report.report_type isEqualToString:@"Activity Report"]) {
-        [json setObject:[self findActivityType:report.activity_type] forKey:@"type_0e9423a9a393481f82c4f22ff5954567"];
-    }
-    
-    [self.manager POST:@"https://api.commonscloud.org/v2/type_2c1bd72acccf416aada3a6824731acc9.json" parameters:(NSDictionary *)json constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        NSError *error;
-        [formData appendPartWithFileURL:imageURL name:@"attachment_76fc17d6574c401d9a20d18187f8083e" fileName:filePath mimeType:@"image/png" error:&error];
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.manager POST:@"http://api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self updateReportFeatureID:report response_id:[responseObject valueForKey:@"resource_id"]];
         
         if ([self countUnsubmittedReports] == 0) {
@@ -216,132 +191,6 @@
         self.isRefreshing = false;
         [self.tableView reloadData];
     }];
-}
-
-- (NSString *) findPollutionType:(NSString *)type
-{
-    
-    NSNumber *typeId;
-    
-    if ([type isEqualToString:@"Discolored water"]) {
-        typeId = @1;
-    }
-    else if ([type isEqualToString:@"Eroded stream banks"]) {
-        typeId = @2;
-    }
-    else if ([type isEqualToString:@"Excessive trash"]) {
-        typeId = @3;
-    }
-    else if ([type isEqualToString:@"Excessive algae"]) {
-        typeId = @17;
-    }
-    else if ([type isEqualToString:@"Exposed soil"]) {
-        typeId = @4;
-    }
-    else if ([type isEqualToString:@"Faulty construction entryway"]) {
-        typeId = @5;
-    }
-    else if ([type isEqualToString:@"Faulty silt fences"]) {
-        typeId = @6;
-    }
-    else if ([type isEqualToString:@"Fish kill"]) {
-        typeId = @7;
-    }
-    else if ([type isEqualToString:@"Foam"]) {
-        typeId = @8;
-    }
-    else if ([type isEqualToString:@"Livestock in stream"]) {
-        typeId = @9;
-    }
-    else if ([type isEqualToString:@"Oil and grease"]) {
-        typeId = @10;
-    }
-    else if ([type isEqualToString:@"Other"]) {
-        typeId = @11;
-    }
-    else if ([type isEqualToString:@"Pipe discharge"]) {
-        typeId = @12;
-    }
-    else if ([type isEqualToString:@"Sewer overflow"]) {
-        typeId = @13;
-    }
-    else if ([type isEqualToString:@"Stormwater"]) {
-        typeId = @14;
-    }
-    else if ([type isEqualToString:@"Winter manure application"]) {
-        typeId = @15;
-    }
-    else {
-        typeId = @11;
-    }
-    
-    return [NSString stringWithFormat:@"[{\"id\":%@}]", typeId];
-}
-
-- (NSString *) findActivityType:(NSString *)type
-{
-    
-    NSNumber *typeId;
-    
-    if ([type isEqualToString:@"Canoeing"]) {
-        typeId = @1;
-    }
-    else if ([type isEqualToString:@"Diving"]) {
-        typeId = @2;
-    }
-    else if ([type isEqualToString:@"Fishing"]) {
-        typeId = @3;
-    }
-    else if ([type isEqualToString:@"Flatwater kayaking"]) {
-        typeId = @4;
-    }
-    else if ([type isEqualToString:@"Hiking"]) {
-        typeId = @5;
-    }
-    else if ([type isEqualToString:@"Living the dream"]) {
-        typeId = @6;
-    }
-    else if ([type isEqualToString:@"Rock climbing"]) {
-        typeId = @7;
-    }
-    else if ([type isEqualToString:@"Sailing"]) {
-        typeId = @8;
-    }
-    else if ([type isEqualToString:@"Scouting wildlife"]) {
-        typeId = @9;
-    }
-    else if ([type isEqualToString:@"Snorkeling"]) {
-        typeId = @10;
-    }
-    else if ([type isEqualToString:@"Stand-up paddleboarding"]) {
-        typeId = @11;
-    }
-    else if ([type isEqualToString:@"Stream cleanup"]) {
-        typeId = @12;
-    }
-    else if ([type isEqualToString:@"Surfing"]) {
-        typeId = @13;
-    }
-    else if ([type isEqualToString:@"Swimming"]) {
-        typeId = @14;
-    }
-    else if ([type isEqualToString:@"Tubing"]) {
-        typeId = @15;
-    }
-    else if ([type isEqualToString:@"Water skiing"]) {
-        typeId = @16;
-    }
-    else if ([type isEqualToString:@"Whitewater kayaking"]) {
-        typeId = @17;
-    }
-    else if ([type isEqualToString:@"Whitewater rafting"]) {
-        typeId = @18;
-    }
-    else {
-        typeId = @6;
-    }
-    
-    return [NSString stringWithFormat:@"[{\"id\":%@}]", typeId];
 }
 
 -(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id
@@ -395,25 +244,15 @@
     return cell;
 }
 
-
-
 - (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath
 {
 
     Report *report = self.reports[indexPath.row];
-    NSString *reportType = report.report_type;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
-    NSString *dateString = [dateFormatter stringFromDate:report.date];
+    NSString *dateString = [dateFormatter stringFromDate:report.report_date];
 
-    NSString *text = @"";
-    
-    if([reportType isEqualToString:@"Activity Report"]){
-        text = [NSString stringWithFormat: @"Activity Report on %@", dateString];
-    }
-    else if([reportType isEqualToString:@"Pollution Report"]){
-        text = [NSString stringWithFormat: @"Pollution Report on %@", dateString];
-    }
+    NSString *text = [NSString stringWithFormat: @"Report on %@", dateString];
     
     if (report.feature_id) {
         cell.accessoryView = nil;

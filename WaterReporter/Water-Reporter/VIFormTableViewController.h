@@ -19,7 +19,6 @@
 
 // Template Information
 @property (strong, nonatomic) Report *report;
-@property (strong, nonatomic) NSString *reportType;
 @property (nonatomic) NSMutableArray *reports;
 
 @property (strong, nonatomic) NSString *template;
@@ -30,20 +29,10 @@
 // Template fields
 @property (strong, nonatomic) NSArray *fields;
 
-@property (strong, nonatomic) NSArray *pollutionFields;
-@property (strong, nonatomic) NSArray *activityFields;
+@property (strong, nonatomic) NSArray *reportFields;
 
 @property (strong, nonatomic) UIDatePicker *datePicker;
-@property (strong, nonatomic) UITextField *pollutionDateField;
-@property (strong, nonatomic) UITextField *activityDateField;
-
-@property (strong, nonatomic) UITextField *pollutionTypeField;
-@property (strong, nonatomic) UIPickerView *pollutionPickerView;
-@property (strong, nonatomic) NSArray *pollutionEnums;
-
-@property (strong, nonatomic) UITextField *activityTypeField;
-@property (strong, nonatomic) UIPickerView *activityPickerView;
-@property (strong, nonatomic) NSArray *activityEnums;
+@property (strong, nonatomic) UITextField *reportDateField;
 
 @property (strong, nonatomic) UITextField *commentsField;
 @property (strong, nonatomic) UITextField *geometryField;

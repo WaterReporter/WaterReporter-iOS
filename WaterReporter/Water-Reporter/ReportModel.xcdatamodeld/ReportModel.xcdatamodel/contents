@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Report" representedClassName="Report" syncable="YES">
-        <attribute name="activity_type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="feature_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="geometry" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="pollution_type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="report_type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="report_date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="report_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="report" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -21,7 +17,7 @@
         <relationship name="report" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Report" inverseName="owner" inverseEntity="Report" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Report" positionX="-54" positionY="18" width="128" height="225"/>
+        <element name="Report" positionX="-54" positionY="18" width="128" height="165"/>
         <element name="User" positionX="-63" positionY="-18" width="128" height="105"/>
     </elements>
 </model>

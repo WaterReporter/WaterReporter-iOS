@@ -32,46 +32,7 @@
     
     self.template = [[NSString alloc] init];
 
-    self.pollutionFields = @[@"Date", @"Pollution Type", @"Comments"];
-
-    self.pollutionEnums = @[
-        @"-- Pollution Types --",
-        @"Discolored water",
-        @"Eroded stream banks",
-        @"Excessive algae",
-        @"Excessive trash",
-        @"Exposed soil",
-        @"Faulty construction entryway",
-        @"Faulty silt fences",
-        @"Fish kill",
-        @"Foam",
-        @"Livestock in stream",
-        @"Oil and grease",
-        @"Other",
-        @"Pipe discharge",
-        @"Sewer overflow",
-        @"Stormwater",
-        @"Winter manure application",
-        @"-- Activity Types --",
-        @"Canoeing",
-        @"Diving",
-        @"Fishing",
-        @"Flatwater kayaking",
-        @"Hiking",
-        @"Living the dream",
-        @"Rock climbing",
-        @"Sailing",
-        @"Scouting wildlife",
-        @"Snorkeling",
-        @"Stand-up paddleboarding",
-        @"Stream cleanup",
-        @"Surfing",
-        @"Swimming",
-        @"Tubing",
-        @"Water skiing",
-        @"Whitewater kayaking",
-        @"Whitewater rafting"
-    ];
+    self.reportFields = @[@"Date", @"Comments"];
 
     // We need to make sure we are defining this class or else our Table View will throw
     // an error telling us we didn't define it for reuse. In addition make sure that we
@@ -103,83 +64,15 @@
     // Setup all date fields
     [self setupDatePicker];
     
-    self.activityDateField = [self makeTextField:dateString placeholder:@"Date"];
-    self.pollutionDateField = [self makeTextField:dateString placeholder:@"Date"];
+    self.reportDateField = [self makeTextField:dateString placeholder:@"Date"];
 
-    // Setup picker fields
-    self.activityTypeField = [self makeTextField:self.report.activity_type placeholder:@"Activity Type"];
-    self.activityTypeField.clearButtonMode = UITextFieldViewModeAlways;
-    [self.activityTypeField setUserInteractionEnabled:YES];
-
-    self.activityPickerView = [[UIPickerView alloc] init];
-    [self.activityPickerView sizeToFit];
-    [self.activityPickerView setDelegate:self];
-    [self.activityPickerView setDataSource:self];
-    self.activityPickerView.showsSelectionIndicator = YES;
-    self.activityPickerView.backgroundColor = [UIColor whiteColor];
-    [self.activityPickerView setUserInteractionEnabled:YES];
-
-    UITapGestureRecognizer *activityGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(activityViewTapGestureRecognized:)];
-    activityGestureRecognizer.cancelsTouchesInView = NO;
-    [activityGestureRecognizer setNumberOfTapsRequired:1];
-    [self.activityPickerView addGestureRecognizer:activityGestureRecognizer];
-
-    self.pollutionTypeField = [self makeTextField:self.report.pollution_type placeholder:@"Category"];
-    self.pollutionTypeField.clearButtonMode = UITextFieldViewModeAlways;
-    [self.pollutionTypeField setUserInteractionEnabled:YES];
-
-    self.pollutionPickerView = [[UIPickerView alloc] init];
-    [self.pollutionPickerView sizeToFit];
-    [self.pollutionPickerView setDelegate:self];
-    [self.pollutionPickerView setDataSource:self];
-    self.pollutionPickerView.showsSelectionIndicator = YES;
-    self.pollutionPickerView.backgroundColor = [UIColor whiteColor];
-    [self.pollutionPickerView setUserInteractionEnabled:YES];
-
-    UITapGestureRecognizer *pollutionGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pollutionViewTapGestureRecognized:)];
-    pollutionGestureRecognizer.cancelsTouchesInView = NO;
-    [pollutionGestureRecognizer setNumberOfTapsRequired:1];
-    [pollutionGestureRecognizer setNumberOfTouchesRequired:1];
-    [self.pollutionPickerView addGestureRecognizer:pollutionGestureRecognizer];
-
-    
-    // Setup generic text fields
-    self.commentsField = [self makeTextField:self.report.comments placeholder:@"Comments"];
+    //
+    // Create Comment Field
+    //
+    self.commentsField = [self makeTextField:self.report.report_description placeholder:@"Comments"];
     self.commentsField.clearButtonMode = UITextFieldViewModeAlways;
     
 
-}
-
-- (void) activityViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer
-{
-    NSLog(@"activityViewTapGestureRecognized tapped");
-
-    CGPoint touchPoint = [gestureRecognizer locationInView:gestureRecognizer.view.superview];
-    
-    CGRect frame = self.activityPickerView.frame;
-    CGRect selectorFrame = CGRectInset( frame, 0.0, self.activityPickerView.bounds.size.height * 0.85 / 2.0 );
-    
-    if( CGRectContainsPoint( selectorFrame, touchPoint) )
-    {
-        NSString *selected = [self.activityEnums objectAtIndex:[self.activityPickerView selectedRowInComponent:0]];
-        self.activityTypeField.text = selected;
-    }
-}
-
-- (void) pollutionViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer
-{
-    NSLog(@"pollutionViewTapGestureRecognized tapped");
-    
-    CGPoint touchPoint = [gestureRecognizer locationInView:gestureRecognizer.view.superview];
-    
-    CGRect frame = self.pollutionPickerView.frame;
-    CGRect selectorFrame = CGRectInset( frame, 0.0, self.pollutionPickerView.bounds.size.height * 0.85 / 2.0 );
-    
-    if( CGRectContainsPoint( selectorFrame, touchPoint) )
-    {
-        NSString *selected = [self.pollutionEnums objectAtIndex:[self.pollutionPickerView selectedRowInComponent:0]];
-        self.pollutionTypeField.text = selected;
-    }
 }
 
 - (void) setupFormToolbar
@@ -217,8 +110,7 @@
     // https://developer.apple.com/library/iOs/documentation/UIKit/Reference/UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/selectedSegmentIndex
     //
 
-    self.fields = [[NSArray alloc] initWithArray:self.pollutionFields];
-    self.reportType = @"Pollution Report";
+    self.fields = [[NSArray alloc] initWithArray:self.reportFields];
 }
 
 - (void) prepareMapForReport
@@ -317,14 +209,10 @@
     self.report.uuid = [[NSUUID UUID] UUIDString];
     self.report.feature_id = nil;
     self.report.created = date;
-    self.report.comments = self.commentsField.text;
-    self.report.activity_type = self.activityTypeField.text;
-    self.report.pollution_type = self.pollutionTypeField.text;
-    self.report.status = @"public";
-    self.report.report_type = self.reportType;
+    self.report.report_description = self.commentsField.text;
     self.report.owner = user;
     self.report.geometry = [self createGeoJSONPoint];
-    self.report.date = self.datePicker.date;
+    self.report.report_date = self.datePicker.date;
     
     self.report.image = self.path;
     
@@ -338,10 +226,7 @@
 {
     NSString *dateString = [self dateTodayAsString];
     
-    self.activityDateField.text = dateString;
-    self.activityTypeField.text = nil;
-    self.pollutionDateField.text = dateString;
-    self.pollutionTypeField.text = nil;
+    self.reportDateField.text = dateString;
     self.commentsField.text = nil;
     self.path = nil;
     self.reportLatitude = self.currentLocation.coordinate.latitude;
@@ -591,80 +476,20 @@
     [sender resignFirstResponder];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
-    // Handle the selection
-    
-    if(pickerView == self.activityPickerView){
-        NSString *selected = self.activityEnums[row];
-        self.activityTypeField.text = selected;
-    }
-    else if(pickerView == self.pollutionPickerView){
-        NSString *selected = self.pollutionEnums[row];
-        self.pollutionTypeField.text = selected;
-    }
-}
-
-// tell the picker how many rows are available for a given component
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    
-    NSUInteger numRows;
-    
-    if(pickerView == self.pollutionPickerView){
-        numRows = self.pollutionEnums.count;
-    }
-    else if(pickerView == self.activityPickerView){
-        numRows = self.activityEnums.count;
-    }
-    
-    return numRows;
-}
-
-// tell the picker how many components it will have
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return self.pollutionEnums.count;
-}
-
-// tell the picker the title for a given component
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [@"" stringByAppendingFormat:@"%@",self.pollutionEnums[row]];
-}
-
-// tell the picker the width of each row for a given component
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    int sectionWidth = 300;
-    
-    return sectionWidth;
-}
-
 - (void) dateSelection:(id)sender
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
     
-    if([self.reportType isEqualToString:@"Activity Report"]){
-        NSString *dateString = [dateFormatter stringFromDate:self.datePicker.date];
-        self.activityDateField.text = dateString;
-    }
-    else if([self.reportType isEqualToString:@"Pollution Report"]){
-        NSString *dateString = [dateFormatter stringFromDate:self.datePicker.date];
-        self.pollutionDateField.text = dateString;
-    }
+    NSString *dateString = [dateFormatter stringFromDate:self.datePicker.date];
+    self.reportDateField.text = dateString;
 
 }
 
 - (void) resignTextField
 {
-    [self.activityDateField endEditing:YES];
-    [self.activityDateField resignFirstResponder];
-
-    [self.pollutionDateField endEditing:YES];
-    [self.pollutionDateField resignFirstResponder];
-
-    [self.activityTypeField endEditing:YES];
-    [self.activityTypeField resignFirstResponder];
-
-    [self.pollutionTypeField endEditing:YES];
-    [self.pollutionTypeField resignFirstResponder];
+    [self.reportDateField endEditing:YES];
+    [self.reportDateField resignFirstResponder];
 }
 
 
@@ -752,40 +577,18 @@
     
 //    Report *report = self.reports[indexPath.row];
     
-    if([self.fields[indexPath.row] isEqualToString:@"Date"] && [self.reportType isEqualToString:@"Pollution Report"]){
+    if([self.fields[indexPath.row] isEqualToString:@"Date"]){
         NSLog(@"Pollution Date Field");
         
-        [cell setAccessoryView:self.pollutionDateField];
+        [cell setAccessoryView:self.reportDateField];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
         NSDate *date = [NSDate date];
         NSString *dateString = [dateFormatter stringFromDate:date];
         
-        self.pollutionDateField.inputView = self.datePicker;
-        self.pollutionDateField.inputAccessoryView = self.toolbar;
-        self.pollutionDateField.text = dateString;
-    }
-    else if([self.fields[indexPath.row] isEqualToString:@"Date"] && [self.reportType isEqualToString:@"Activity Report"]){
-        NSLog(@"Activity Date Field");
-
-        [cell setAccessoryView:self.activityDateField];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
-        NSDate *date = [NSDate date];
-        NSString *dateString = [dateFormatter stringFromDate:date];
-        self.activityDateField.inputView = self.datePicker;
-        self.activityDateField.inputAccessoryView = self.toolbar;
-        self.activityDateField.text = dateString;
-    }
-    else if([self.fields[indexPath.row] isEqualToString:@"Activity Type"]){
-        [cell setAccessoryView:self.activityTypeField];
-        self.activityTypeField.inputView = self.activityPickerView;
-        self.activityTypeField.inputAccessoryView = self.toolbar;
-    }
-    else if([self.fields[indexPath.row] isEqualToString:@"Pollution Type"]){
-        [cell setAccessoryView:self.pollutionTypeField];
-        self.pollutionTypeField.inputView = self.pollutionPickerView;
-        self.pollutionTypeField.inputAccessoryView = self.toolbar;
+        self.reportDateField.inputView = self.datePicker;
+        self.reportDateField.inputAccessoryView = self.toolbar;
+        self.reportDateField.text = dateString;
     }
     else if([self.fields[indexPath.row] isEqualToString:@"Comments"]){
         [cell setAccessoryView:self.commentsField];

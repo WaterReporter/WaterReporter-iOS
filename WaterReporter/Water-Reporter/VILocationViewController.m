@@ -163,8 +163,6 @@
         [self setupLocationManager];
     }
 
-    NSLog(@"??! %@", self.mapView.userLocation.location.coordinate);
-
     CLLocationCoordinate2D location = self.mapView.userLocation.location.coordinate;
     
     CLLocationDistance regionWidth = 1000;
@@ -267,7 +265,7 @@
     // Tapped Tab Button Apperance
     tabMyReports.selectedImage = [UIImage imageNamed:@"ReportsTabBarButtonSelected"];
 
-    tabMyReports.title = @"My Profile";
+    tabMyReports.title = @"Profile";
 }
 
 - (void)displayFormTableViewControllerTab
