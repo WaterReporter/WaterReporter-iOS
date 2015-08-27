@@ -1,9 +1,9 @@
 //
-//  VILoginTableViewController.h
-//  Fractracker
+//  VIRegistrationViewController.h
+//  Water-Reporter
 //
-//  Created by Viable Industries on 4/17/14.
-//  Copyright (c) 2014 Viable. All rights reserved.
+//  Created by Joshua Powell on 8/27/15.
+//  Copyright (c) 2015 Viable Industries, L.L.C. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -11,13 +11,14 @@
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 #import "User.h"
 #import "MBProgressHUD.h"
-#import "VIRegistrationViewController.h"
 
-@interface VILoginTableViewController : UITableViewController <UITextFieldDelegate>
+@interface VIRegistrationViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) User *user;
 @property (strong, nonatomic) UIToolbar *toolbar;
 
+@property (strong, nonatomic) UITextField *firstNameField;
+@property (strong, nonatomic) UITextField *lastNameField;
 @property (strong, nonatomic) UITextField *emailField;
 @property (strong, nonatomic) UITextField *passwordField;
 

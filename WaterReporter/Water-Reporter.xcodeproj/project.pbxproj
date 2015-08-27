@@ -12,6 +12,7 @@
 		94775476192F8BEA00EE4A63 /* VIPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 94775475192F8BEA00EE4A63 /* VIPointAnnotation.m */; };
 		94A689DE192BDBED006CE05D /* VIChildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94A689DD192BDBED006CE05D /* VIChildViewController.m */; };
 		C10177FE1926A33D00A1F7EF /* VISingleReportTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */; };
+		C12BF8ED1B8F9B52009174BD /* VIRegistrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12BF8EC1B8F9B52009174BD /* VIRegistrationViewController.m */; };
 		C12D7B03192533BC00C2B9F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B02192533BC00C2B9F5 /* Foundation.framework */; };
 		C12D7B05192533BC00C2B9F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */; };
 		C12D7B07192533BC00C2B9F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C12D7B06192533BC00C2B9F5 /* UIKit.framework */; };
@@ -63,6 +64,8 @@
 		C068EB82AA36A2EC1A465610 /* Pods-Water-Reporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Water-Reporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Water-Reporter/Pods-Water-Reporter.debug.xcconfig"; sourceTree = "<group>"; };
 		C10177FC1926A33D00A1F7EF /* VISingleReportTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VISingleReportTableViewController.h; sourceTree = "<group>"; };
 		C10177FD1926A33D00A1F7EF /* VISingleReportTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VISingleReportTableViewController.m; sourceTree = "<group>"; };
+		C12BF8EB1B8F9ABB009174BD /* VIRegistrationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIRegistrationViewController.h; sourceTree = "<group>"; };
+		C12BF8EC1B8F9B52009174BD /* VIRegistrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIRegistrationViewController.m; sourceTree = "<group>"; };
 		C12D7AFF192533BC00C2B9F5 /* Water-Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water-Reporter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C12D7B02192533BC00C2B9F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C12D7B04192533BC00C2B9F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -267,6 +270,8 @@
 				C12E243D1928EE95004A7FDD /* VITutorialViewController.m */,
 				94A689DC192BDBED006CE05D /* VIChildViewController.h */,
 				94A689DD192BDBED006CE05D /* VIChildViewController.m */,
+				C12BF8EB1B8F9ABB009174BD /* VIRegistrationViewController.h */,
+				C12BF8EC1B8F9B52009174BD /* VIRegistrationViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -423,6 +428,7 @@
 			files = (
 				C12D7B3F1925390300C2B9F5 /* VIReportsTableViewController.m in Sources */,
 				C12D7B4B1925528400C2B9F5 /* User.m in Sources */,
+				C12BF8ED1B8F9B52009174BD /* VIRegistrationViewController.m in Sources */,
 				C12E243B1928EE05004A7FDD /* VILoginTableViewController.m in Sources */,
 				C12D7B1C192533BC00C2B9F5 /* VILocationViewController.m in Sources */,
 				C12D7B541925533000C2B9F5 /* ImageSaver.m in Sources */,

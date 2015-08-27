@@ -12,7 +12,9 @@
 
 @implementation User
 
-@dynamic name;
+@dynamic user_id;
+@dynamic first_name;
+@dynamic last_name;
 @dynamic email;
 @dynamic password;
 @dynamic report;

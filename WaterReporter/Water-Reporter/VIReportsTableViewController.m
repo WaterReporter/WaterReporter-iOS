@@ -166,9 +166,9 @@
 
 - (void) userLogout
 {
-    [self.manager POST:@"http://api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
 
-        [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
+    [self.manager POST:@"http://api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
