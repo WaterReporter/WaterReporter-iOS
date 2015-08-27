@@ -184,10 +184,21 @@
     NSArray *images = report[@"properties"][@"images"];
     
     if (images && images.count) {
-        NSURL *photos = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"original"]];
+        
+        NSURL *photo;
+        
+        if (report[@"properties"][@"images"][0][@"properties"][@"square"]) {
+            photo = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"square"]];
+        } else {
+            photo = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"original"]];
+        }
     
-        NSData *jpgData = [NSData dataWithContentsOfURL:photos];
-        self.originalImage = [UIImage imageWithData:jpgData];
+        NSData * imageData = [[NSData alloc] initWithContentsOfURL:photo];
+        UIImage *image = [UIImage imageWithData:imageData scale:1.0];
+        self.originalImage = [UIImage imageWithCGImage:[image CGImage]
+                                                 scale:1.0
+                                           orientation: UIImageOrientationUp];
+        
         UIImage *resizedImage;
     
         if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
