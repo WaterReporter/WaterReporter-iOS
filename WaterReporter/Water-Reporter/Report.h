@@ -19,7 +19,7 @@
 @property (nonatomic, retain) NSDate * report_date;
 @property (nonatomic, retain) NSString * report_description;
 @property (nonatomic, retain) NSString * image;
-@property (nonatomic, retain) NSString * geometry;
+@property (nonatomic, retain) NSDictionary * geometry;
 @property (nonatomic, retain) User *owner;
 
 @end

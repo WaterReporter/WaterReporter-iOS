@@ -13,7 +13,7 @@
 #import "Report.h"
 #import "User.h"
 
-@interface VIFormTableViewController : UITableViewController<UIPickerViewDelegate, UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,CLLocationManagerDelegate,MKMapViewDelegate>
+@interface VIFormTableViewController : UITableViewController<UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate,CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 
@@ -56,8 +56,5 @@
 @property (strong, nonatomic) UIImageView *imageView;
 
 @property (strong, nonatomic) NSString *path;
-
-- (void) activityViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer;
-- (void) pollutionViewTapGestureRecognized:(UITapGestureRecognizer*)gestureRecognizer;
 
 @end

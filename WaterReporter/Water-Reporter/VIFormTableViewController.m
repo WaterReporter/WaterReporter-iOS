@@ -10,10 +10,6 @@
 #import "PhotoViewController.h"
 #import "VIFormTableViewController.h"
 
-@interface VIFormTableViewController ()
-
-@end
-
 @implementation VIFormTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -261,7 +257,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSString*) createGeoJSONPoint
+- (NSDictionary*) createGeoJSONPoint
 {
     
     if (self.reportLongitude == 0.000000) {
@@ -271,9 +267,18 @@
         NSLog(@"createGeoJSONPoint Could not detect %f", self.reportLongitude);
     }
     
-    NSString *before = @"{\"type\": \"GeometryCollection\",\"geometries\": [{\"type\": \"Point\",\"coordinates\": [";
-    NSString *after = @"]}]}";
-    NSString *geojson = [NSString stringWithFormat: @"%@%f,%f%@", before, self.reportLongitude, self.reportLatitude, after];
+    NSDictionary *geojson = @{
+                             @"type": @"GeometryCollection",
+                             @"geometries": @[
+                                     @{
+                                         @"type": @"Point",
+                                         @"coordinates": @[
+                                                 [NSNumber numberWithFloat:self.reportLongitude],
+                                                 [NSNumber numberWithFloat:self.reportLatitude]
+                                         ]
+                                     }
+                                 ]
+                             };
     
     return geojson;
 }
@@ -575,10 +580,7 @@
 
 - (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath {
     
-//    Report *report = self.reports[indexPath.row];
-    
     if([self.fields[indexPath.row] isEqualToString:@"Date"]){
-        NSLog(@"Pollution Date Field");
         
         [cell setAccessoryView:self.reportDateField];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

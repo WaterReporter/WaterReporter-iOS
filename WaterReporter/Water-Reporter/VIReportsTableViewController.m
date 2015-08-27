@@ -144,6 +144,7 @@
     self.reports = [[Report MR_findAllSortedBy:@"created" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]] mutableCopy];
 
     for (Report *report in self.reports) {
+        NSLog(@"report, %@", report);
         if (!report.feature_id) {
             [self postReport:report];
         }
@@ -157,7 +158,8 @@
     NSLog(@"postReport");
 
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:report.image];
-
+    NSURL *imageURL = [NSURL fileURLWithPath:filePath];
+    
     //
     // After we save it to the system, we should send the user over to the "My Submission" tab
     // and clear all the form fields
@@ -166,30 +168,50 @@
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:report.report_date];
     
-    NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
+    
+    [self.manager POST:@"http://api.waterreporter.org/v1/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        NSError *error;
+        [formData appendPartWithFileURL:imageURL name:@"image" fileName:filePath mimeType:@"image/jpg" error:&error];
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-    [json setValue:report.geometry forKey:@"geometry"];
-    [json setObject:dateString forKey:@"report_date"];
-    [json setObject:report.report_description forKey:@"report_description"];
-
-    [self.manager POST:@"http://api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self updateReportFeatureID:report response_id:[responseObject valueForKey:@"resource_id"]];
+        NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
         
-        if ([self countUnsubmittedReports] == 0) {
+        [json setValue:report.geometry forKey:@"geometry"];
+        [json setObject:dateString forKey:@"report_date"];
+        [json setObject:report.report_description forKey:@"report_description"];
+        [json setObject:@"open" forKey:@"state"];
+        [json setObject:@"true" forKey:@"is_public"];
+        [json setObject:@[@{@"id": responseObject[@"id"]}] forKey:@"images"];
+        
+        NSLog(@"Attempting to post %@", json);
+
+        [self.manager POST:@"http://api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+            NSLog(@"responseObject: %@", responseObject[@"id"]);
+    
+            [self updateReportFeatureID:report response_id:responseObject[@"id"]];
+    
+            if ([self countUnsubmittedReports] == 0) {
+                [self.refreshControl endRefreshing];
+                self.isRefreshing = false;
+                [self.tableView reloadData];
+            } else {
+                NSLog(@"We need to submit another one");
+                [self refreshTableView];
+            }
+    
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
             [self.refreshControl endRefreshing];
             self.isRefreshing = false;
             [self.tableView reloadData];
-        } else {
-            NSLog(@"We need to submit another one");
-            [self refreshTableView];
-        }
-
+        }];
+    
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        [self.refreshControl endRefreshing];
-        self.isRefreshing = false;
-        [self.tableView reloadData];
+        NSLog(@"IMAGE ERROR %@", error);
     }];
+
+
 }
 
 -(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id
@@ -275,11 +297,22 @@
     
     Report *report = self.reports[indexPath.row];
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    if (report.feature_id) {
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        singleReportTableViewController.report = report;
+        singleReportTableViewController.reportID = [report.feature_id stringValue];
+        
+        [self.navigationController pushViewController:singleReportTableViewController animated:YES];
+    } else {
+        //
+        // Let the user know why there was an error
+        //
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Slow Down" message:@"We're still proccessing your report, you'll be able to see it shortly" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        
+        [alert show];
+    }
     
-    singleReportTableViewController.report = report;
-    
-    [self.navigationController pushViewController:singleReportTableViewController animated:YES];
 }
 
 // Override to support conditional editing of the table view.

@@ -103,17 +103,12 @@
     //
     // Prepare and Load Avatar Into View
     //
-    NSString *avatar;
+    NSString *avatar = @"http://dev.waterreporter.org/images/badget--MissingUser.png";
     
-    if(report[@"properties"][@"owner"][@"properties"][@"picture"] != [NSNull null]){
+    if(report[@"properties"][@"owner"] != [NSNull null] && report[@"properties"][@"owner"][@"properties"][@"picture"] != [NSNull null]){
         avatar = report[@"properties"][@"owner"][@"properties"][@"picture"];
     }
-    else {
-        avatar = @"http://dev.waterreporter.org/images/badget--MissingUser.png";
-    }
     
-    NSLog(@"avatar %@", avatar);
-
     [self loadAvatar:avatar];
     
 
@@ -186,33 +181,36 @@
     //
     // Image
     //
-    NSURL *photos = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"original"]];
+    NSArray *images = report[@"properties"][@"images"];
     
-    NSLog(@"%@", photos);
+    if (images && images.count) {
+        NSURL *photos = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"original"]];
     
-    NSData *jpgData = [NSData dataWithContentsOfURL:photos];
-    self.originalImage = [UIImage imageWithData:jpgData];
-    UIImage *resizedImage;
+        NSData *jpgData = [NSData dataWithContentsOfURL:photos];
+        self.originalImage = [UIImage imageWithData:jpgData];
+        UIImage *resizedImage;
     
-    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        resizedImage = [self.originalImage resizedImageByMagick:@"745x550#"];
-    }else{
-        resizedImage = [self.originalImage resizedImageByMagick:@"300x235#"];
+        if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+            resizedImage = [self.originalImage resizedImageByMagick:@"745x550#"];
+        }else{
+            resizedImage = [self.originalImage resizedImageByMagick:@"300x235#"];
+        }
+    
+        self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
+        if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+            self.imageView.frame = CGRectMake(10, 220, resizedImage.size.width, resizedImage.size.height);
+        }else{
+            self.imageView.frame = CGRectMake(10, 142, resizedImage.size.width, resizedImage.size.height);
+        }
+    
+        [self.imageView setUserInteractionEnabled:YES];
+    
+        UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
+        [singleTap setNumberOfTapsRequired:1];
+        [self.imageView addGestureRecognizer:singleTap];
+        [self.view addSubview:self.imageView];
     }
     
-    self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
-    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        self.imageView.frame = CGRectMake(10, 220, resizedImage.size.width, resizedImage.size.height);
-    }else{
-        self.imageView.frame = CGRectMake(10, 142, resizedImage.size.width, resizedImage.size.height);
-    }
-    
-    [self.imageView setUserInteractionEnabled:YES];
-    
-    UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
-    [singleTap setNumberOfTapsRequired:1];
-    [self.imageView addGestureRecognizer:singleTap];
-    [self.view addSubview:self.imageView];
     
     // Comment
     if (report[@"properties"][@"report_description"]) {
@@ -252,9 +250,9 @@
 
 - (void) loadAvatar:(NSString *)imageUrl
 {
-    NSURL * imageURL = [NSURL URLWithString:imageUrl];
-    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-    
+    NSURL *imageURL = [NSURL URLWithString:imageUrl];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+
     UIImageView *avatarView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData]];
     
     if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {

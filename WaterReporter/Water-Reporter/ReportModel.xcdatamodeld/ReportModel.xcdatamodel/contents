@@ -3,7 +3,7 @@
     <entity name="Report" representedClassName="Report" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="feature_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="geometry" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="geometry" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="report_date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="report_description" optional="YES" attributeType="String" syncable="YES"/>
