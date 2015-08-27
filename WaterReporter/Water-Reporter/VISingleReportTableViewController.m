@@ -195,9 +195,7 @@
     
         NSData * imageData = [[NSData alloc] initWithContentsOfURL:photo];
         UIImage *image = [UIImage imageWithData:imageData scale:1.0];
-        self.originalImage = [UIImage imageWithCGImage:[image CGImage]
-                                                 scale:1.0
-                                           orientation: UIImageOrientationUp];
+        self.originalImage = [UIImage imageWithCGImage:[image CGImage] scale:1.0 orientation: UIImageOrientationUp];
         
         UIImage *resizedImage;
     

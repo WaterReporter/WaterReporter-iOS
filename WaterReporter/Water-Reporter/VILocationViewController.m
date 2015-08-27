@@ -133,6 +133,7 @@
         [self presentViewController:modalNav animated:NO completion:nil];
     }
     
+    NSLog(@"LocationViewController viewDidAppear");
 }
 
 - (void) preparePageController
