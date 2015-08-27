@@ -10,6 +10,7 @@
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 #import "Report.h"
 #import "VISingleReportTableViewController.h"
+#import "VILoginTableViewController.h"
 
 @interface VIReportsTableViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate>
 

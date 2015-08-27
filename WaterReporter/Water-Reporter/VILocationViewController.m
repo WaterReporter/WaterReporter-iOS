@@ -124,24 +124,13 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-//    self.userArray = [User MR_findAll];
-    
-//    if(self.userArray.count == 0){
-//
-//        VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
-//        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
-//        [self presentViewController:modalNav animated:YES completion:nil];
-//    }
-
     
     NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
-    
-    NSLog(@"ACCESS TOKEN? %@", accessToken);
     
     if (!accessToken) {
         VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
-        [self presentViewController:modalNav animated:YES completion:nil];
+        [self presentViewController:modalNav animated:NO completion:nil];
     }
     
 }
@@ -295,7 +284,7 @@
 {
     //center on userLocation the first time it's found
     if(!self.userLocationUpdated){
-        [self.mapView setCenterCoordinate:userLocation.location.coordinate animated:YES];
+        [self.mapView setCenterCoordinate:userLocation.location.coordinate animated:NO];
     }
     
     self.userLocationUpdated = YES;
@@ -318,15 +307,20 @@
     
     [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
     
-    NSLog(@"accessToken: %@", accessToken);
-    
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
         self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
-        NSLog(@"Error: %@", error);
+        
+        NSInteger statusCode = operation.response.statusCode;
+        
+        if (statusCode == 403) {
+            [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
+        }
+        
+        VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
+        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+        [self presentViewController:modalNav animated:NO completion:nil];
     }];
 }
 

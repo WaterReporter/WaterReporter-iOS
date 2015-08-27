@@ -29,11 +29,6 @@
     self.manager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
 
-//    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-
-//    self.manager.requestSerializer = self.serializer;
-
     return self;
 }
 
@@ -260,11 +255,9 @@
             //
             [self.hud hide:YES];
 
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:[NSString stringWithFormat:@"SWEET! We logged in and have an access token now. %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            
-            [alert show];
-
-            
+            //
+            // Hide the modal
+            //
             [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 

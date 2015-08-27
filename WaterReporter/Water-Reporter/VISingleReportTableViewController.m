@@ -187,7 +187,7 @@
         
         NSURL *photo;
         
-        if (report[@"properties"][@"images"][0][@"properties"][@"square"]) {
+        if (report[@"properties"][@"images"][0][@"properties"][@"square"] != [NSNull null] && [report[@"properties"][@"images"][0][@"properties"][@"square"] length] != 0) {
             photo = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"square"]];
         } else {
             photo = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"original"]];

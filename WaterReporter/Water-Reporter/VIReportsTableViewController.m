@@ -22,11 +22,17 @@
     
     self.title = @"Profile";
     
+    //
+    //
+    //
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
+    //
+    //
+    //
     NSURL *baseURL = [NSURL URLWithString:@"http://api.waterreporter.org/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
@@ -39,8 +45,14 @@
     
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
     
-    NSLog(@"accessToken: %@", accessToken);
+
+    //
+    //
+    //
+    UIBarButtonItem *logoutItem = [[UIBarButtonItem alloc] initWithTitle:@"Log out" style:UIBarButtonItemStylePlain target:self action:@selector(userLogout)];
     
+    self.navigationItem.rightBarButtonItem = logoutItem;
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -150,6 +162,22 @@
         }
     }
     
+}
+
+- (void) userLogout
+{
+    [self.manager POST:@"http://api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+        [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
+        
+        VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
+        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+        [self presentViewController:modalNav animated:NO completion:nil];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+
 }
 
 - (void) postReport:(Report*)report
