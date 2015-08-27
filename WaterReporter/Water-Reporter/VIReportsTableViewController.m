@@ -7,10 +7,9 @@
 //
 
 #import "VIReportsTableViewController.h"
+#import "Lockbox.h"
 
-@interface VIReportsTableViewController ()<UITableViewDataSource,UITableViewDelegate>
-
-@end
+#define kWaterReporterUserAccessToken        @"kWaterReporterUserAccessToken"
 
 @implementation VIReportsTableViewController
 
@@ -36,9 +35,9 @@
     [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     self.manager.requestSerializer = self.serializer;
     
-    NSString *accessToken = [[NSUserDefaults standardUserDefaults] stringForKey:@"waterReporterTemporaryToken"];
+    NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
     
-    [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"waterReporterTemporaryToken"];
+    [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
     
     NSLog(@"accessToken: %@", accessToken);
     

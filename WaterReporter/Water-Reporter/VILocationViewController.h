@@ -14,7 +14,7 @@
 #import "VIPointAnnotation.h"
 #import "VISingleReportTableViewController.h"
 
-@interface VILocationViewController : UIViewController<MKMapViewDelegate>
+@interface VILocationViewController : UIViewController<MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) NSArray *userArray;
 @property (strong, nonatomic) MBXMapView *mapView;

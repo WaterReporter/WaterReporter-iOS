@@ -8,9 +8,9 @@
 
 #import "VILocationViewController.h"
 
-@interface VILocationViewController ()
+#import "Lockbox.h"
 
-@end
+#define kWaterReporterUserAccessToken        @"kWaterReporterUserAccessToken"
 
 @implementation VILocationViewController
 
@@ -124,10 +124,21 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-    self.userArray = [User MR_findAll];
+//    self.userArray = [User MR_findAll];
     
-    if(self.userArray.count == 0){
+//    if(self.userArray.count == 0){
+//
+//        VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
+//        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+//        [self presentViewController:modalNav animated:YES completion:nil];
+//    }
 
+    
+    NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
+    
+    NSLog(@"ACCESS TOKEN? %@", accessToken);
+    
+    if (!accessToken) {
         VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
         [self presentViewController:modalNav animated:YES completion:nil];
@@ -300,7 +311,15 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
+
     [manager.requestSerializer setValue:@"no-cache, must-revalidate, max-age=0" forHTTPHeaderField:@"Cache-control"];
+    
+    NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
+    
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
+    
+    NSLog(@"accessToken: %@", accessToken);
+    
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
         self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];

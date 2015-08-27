@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 #import "User.h"
+#import "MBProgressHUD.h"
 
 @interface VILoginTableViewController : UITableViewController <UITextFieldDelegate>
 
@@ -27,5 +28,7 @@
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
+
+@property (nonatomic, strong) MBProgressHUD *hud;
 
 @end

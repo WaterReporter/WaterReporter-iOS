@@ -9,9 +9,7 @@
 #import "VILoginTableViewController.h"
 #import "Lockbox.h"
 
-@interface VILoginTableViewController ()
-
-@end
+#define kWaterReporterUserAccessToken        @"kWaterReporterUserAccessToken"
 
 @implementation VILoginTableViewController
 
@@ -24,16 +22,17 @@
     }
     
     NSURL *baseURL = [NSURL URLWithString:@"http://api.waterreporter.org/"];
+    
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
 
     self.manager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
 
-    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+//    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-    self.manager.requestSerializer = self.serializer;
+//    self.manager.requestSerializer = self.serializer;
 
     return self;
 }
@@ -214,19 +213,32 @@
 
 - (void) submitForm
 {
-    //save user data & dismiss modal
     
+    __block BOOL isAccessTokenSaved = NO;
+    NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
+    
+    //
+    // Setup up the loading indicator
+    //
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.mode = MBProgressHUDModeIndeterminate;
+    
+    [self.view bringSubviewToFront:self.hud];
+    
+    //
+    // Disable the Submit button to ensure only one request is sent
+    //
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+
     if([self NSStringIsValidEmail:self.emailField.text]){
         
-//        NSString *url = @"http://api.waterreporter.org/v1/auth/remote";
-        NSString *url = @"http://127.0.0.1:5000/v1/auth/remote";
+        NSString *url = @"http://api.waterreporter.org/v1/auth/remote";
+//        NSString *url = @"http://127.0.0.1:5000/v1/auth/remote";
 
 
         //
         // Create our URL Parameters
         //
-        NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
-        
         [json setObject:self.emailField.text forKey:@"email"];
         [json setObject:self.passwordField.text forKey:@"password"];
 
@@ -237,26 +249,56 @@
         [json setObject:@"json" forKey:@"state"];
 
         
-        NSDictionary *params = @{
-                                     @"email": self.emailField.text,
-                                     @"password": self.passwordField.text,
-                                     @"response_type": @"token",
-                                     @"client_id": @"SG92Aa2ejWqiYW4kI08r6lhSyKwnK1gDN2xrryku",
-                                     @"redirect_uri": @"http://127.0.0.1:9000/authorize",
-                                     @"scope": @"user",
-                                     @"state": @"json",
-                                 };
-        
         [self.manager POST:url parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
             NSString *accessToken = responseObject[@"access_token"];
             
-            NSLog(@"responseObject %@", responseObject);
-            NSLog(@"accessToken %@", accessToken);
+            isAccessTokenSaved = [Lockbox setString:accessToken forKey:kWaterReporterUserAccessToken];
+
+            //
+            // Hide the HUD/Loading Icon
+            //
+            [self.hud hide:YES];
+
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:[NSString stringWithFormat:@"SWEET! We logged in and have an access token now. %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             
-//            [self dismissViewControllerAnimated:YES completion:nil];
+            [alert show];
+
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
+
+            NSInteger statusCode = operation.response.statusCode;
+            NSInteger errorCode = error.code;
+            
+            NSString *statusMessage = @"";
+            
+            if (statusCode == 403) {
+                statusMessage = @"The email or password you provided was incorrect";
+            } else if (errorCode == -1009 || errorCode == -1004) {
+                statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
+            } else {
+                statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
+                NSLog(@"ERROR::::%@", error);
+            }
+
+            //
+            // Hide the HUD/Loading Icon
+            //
+            [self.hud hide:YES];
+            
+            //
+            // Re-enabled the Submit button so the user can change the incorrect items
+            // and resubmit the form.
+            //
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+            
+            //
+            // Let the user know why there was an error
+            //
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            
+            [alert show];
         }];
         
 

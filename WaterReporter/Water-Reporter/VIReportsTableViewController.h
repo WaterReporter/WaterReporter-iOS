@@ -11,7 +11,7 @@
 #import "Report.h"
 #import "VISingleReportTableViewController.h"
 
-@interface VIReportsTableViewController : UITableViewController
+@interface VIReportsTableViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic) BOOL isRefreshing;
 @property (strong, nonatomic) NSMutableArray *reports;
