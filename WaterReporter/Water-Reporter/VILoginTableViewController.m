@@ -250,20 +250,28 @@
     NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
     
     //
-    // Setup up the loading indicator
-    //
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    self.hud.mode = MBProgressHUDModeIndeterminate;
-    
-    [self.view bringSubviewToFront:self.hud];
-    
-    //
     // Disable the Submit button to ensure only one request is sent
     //
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    if([self NSStringIsValidEmail:self.emailField.text]){
+    if ([self.passwordField.text length] == 0 && ![self NSStringIsValidEmail:self.emailField.text]) {
+        [[[UIAlertView alloc] initWithTitle:@"Missing Information" message:@"Please fill out your email address and password to login" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
+    else if ([self.passwordField.text length] == 0) {
+        [[[UIAlertView alloc] initWithTitle:@"Missing Information" message:@"Don't forget to enter your password" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
+    else if([self NSStringIsValidEmail:self.emailField.text]){
         
+        //
+        // Setup up the loading indicator
+        //
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.hud.mode = MBProgressHUDModeIndeterminate;
+        
+        [self.view bringSubviewToFront:self.hud];
+
         NSString *url = @"http://api.waterreporter.org/v1/auth/remote";
 //        NSString *url = @"http://127.0.0.1:5000/v1/auth/remote";
 
@@ -336,6 +344,7 @@
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Your email address looks wrong, better double check it" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }
 @end

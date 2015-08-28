@@ -49,8 +49,21 @@
     UIBarButtonItem *submitItem = [[UIBarButtonItem alloc] initWithTitle:@"Submit" style:UIBarButtonItemStylePlain target:self action:@selector(submitForm)];
     
     self.navigationItem.rightBarButtonItem = submitItem;
+
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(closeForm)];
     
+    self.navigationItem.leftBarButtonItem = cancelItem;
+
     [self setupFormToolbar];
+}
+
+- (void) closeForm
+{
+    //
+    // Hide the modal
+    //
+    [self dismissViewControllerAnimated:YES completion:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
