@@ -317,11 +317,11 @@
         
         if (statusCode == 403) {
             [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
+            
+            VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
+            UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+            [self presentViewController:modalNav animated:NO completion:nil];
         }
-        
-        VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
-        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
-        [self presentViewController:modalNav animated:NO completion:nil];
     }];
 }
 

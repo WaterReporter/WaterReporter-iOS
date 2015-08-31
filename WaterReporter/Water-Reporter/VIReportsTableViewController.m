@@ -303,10 +303,18 @@
 
     NSString *text = [NSString stringWithFormat: @"Report on %@", dateString];
     
-    if (report.feature_id) {
+    if (![self connected] && !report.feature_id) {
+        cell.accessoryView = nil;
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    else if (report.feature_id) {
         cell.accessoryView = nil;
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
+    //
+    // Else If failed or no network, then show /!\ icon
+    //
     else {
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [spinner setFrame:CGRectMake(0, 0, 10, 10)];
