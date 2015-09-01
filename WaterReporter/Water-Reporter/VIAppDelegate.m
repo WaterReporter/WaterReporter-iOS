@@ -43,10 +43,29 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = tabBarCtrl;
     [self.window makeKeyAndVisible];
-
-    [MagicalRecord setupCoreDataStackWithStoreNamed:@"ReportModel.sqlite"];
+    
+    [self setupCoreData];
 
     return YES;
+}
+
+-(void)setupCoreData {
+
+    NSString *storeFileName = [MagicalRecord defaultStoreName];
+
+    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:storeFileName];
+
+    NSURL *storeURL = [NSPersistentStore MR_urlForStoreName:storeFileName];
+
+    NSError *error;
+    
+    NSDictionary *fileAttributes = [NSDictionary dictionaryWithObject:NSFileProtectionComplete forKey:NSFileProtectionKey];
+    
+    if (![[NSFileManager defaultManager] setAttributes:fileAttributes ofItemAtPath:[storeURL path] error:&error]) {
+        NSLog(@"Data Protection Unresolved error %@, %@", error, [error userInfo]);
+    }
+    
+    [self addSkipBackupAttributeToItemAtURL:storeURL];
 }
 
 - (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
@@ -61,6 +80,7 @@
     }
     return success;
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

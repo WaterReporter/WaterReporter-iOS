@@ -15,21 +15,21 @@
 
 @interface VILoginTableViewController : UITableViewController <UITextFieldDelegate>
 
-@property (strong, nonatomic) User *user;
-@property (strong, nonatomic) UIToolbar *toolbar;
+    @property (strong, nonatomic) User *user;
+    @property (strong, nonatomic) UIToolbar *toolbar;
 
-@property (strong, nonatomic) UITextField *emailField;
-@property (strong, nonatomic) UITextField *passwordField;
+    @property (strong, nonatomic) UITextField *emailField;
+    @property (strong, nonatomic) UITextField *passwordField;
 
-@property (strong, nonatomic) NSArray *fieldArray;
+    @property (strong, nonatomic) NSArray *fieldArray;
 
-- (UITextField *) makeTextField:(NSString *)text placeholder:(NSString *)placeholder;
-- (IBAction) textFieldFinished:(id)sender;
-- (void) submitForm;
+    @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+    @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
-@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
-@property (strong, nonatomic) AFJSONRequestSerializer *serializer;
+    @property (nonatomic, strong) MBProgressHUD *hud;
 
-@property (nonatomic, strong) MBProgressHUD *hud;
+    - (UITextField *) makeTextField:(NSString *)text placeholder:(NSString *)placeholder;
+    - (IBAction) textFieldFinished:(id)sender;
+    - (void) submitForm;
 
 @end

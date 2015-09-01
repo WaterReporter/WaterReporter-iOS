@@ -13,7 +13,7 @@
 #import "Report.h"
 #import "User.h"
 
-@interface VIFormTableViewController : UITableViewController<UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate,CLLocationManagerDelegate, MKMapViewDelegate>
+@interface VIFormTableViewController : UITableViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate,CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 

@@ -301,15 +301,32 @@
     
     NSData *imgData   = UIImageJPEGRepresentation(chosenImage, 0.5);
 	NSString *name    = [[NSUUID UUID] UUIDString];
-	self.path	  = [NSString stringWithFormat:@"Documents/%@.jpg", name];
-	NSString *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:self.path];
+	self.path = [NSString stringWithFormat:@"Documents/%@.jpg", name];
+	
+    NSString *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:self.path];
     [imgData writeToFile:jpgPath atomically:YES];
     
     UIImageWriteToSavedPhotosAlbum(chosenImage, self, @selector(thisImage:hasBeenSavedInPhotoAlbumWithError:usingContextInfo:), nil);
 
+    NSURL *imageURL = [NSURL URLWithString:jpgPath];
+    [self addSkipBackupAttributeToItemAtURL:imageURL];
+
     [self.tableView reloadData];
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
+{
+    assert([[NSFileManager defaultManager] fileExistsAtPath:[URL path]]);
+    
+    NSError *error = nil;
+    BOOL success = [URL setResourceValue: [NSNumber numberWithBool: YES]
+                                  forKey: NSURLIsExcludedFromBackupKey error: &error];
+    if(!success){
+        NSLog(@"Error excluding %@ from backup %@", [URL lastPathComponent], error);
+    }
+    return success;
 }
 
 - (void)thisImage:(UIImage *)image hasBeenSavedInPhotoAlbumWithError:(NSError *)error usingContextInfo:(void*)ctxInfo {
