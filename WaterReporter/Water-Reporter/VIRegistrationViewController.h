@@ -9,13 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
+#import "VITutorialViewController.h"
 #import "User.h"
 #import "MBProgressHUD.h"
+
+@class VITutorialViewController;
 
 @interface VIRegistrationViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) User *user;
 @property (strong, nonatomic) UIToolbar *toolbar;
+
+@property (strong, nonatomic) VITutorialViewController *tutorialVC;
 
 @property (strong, nonatomic) UITextField *firstNameField;
 @property (strong, nonatomic) UITextField *lastNameField;

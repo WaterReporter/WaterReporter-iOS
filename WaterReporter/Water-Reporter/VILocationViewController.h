@@ -9,17 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <MBXMapKit/MBXMapKit.h>
 #import <AFNetworking/AFNetworking.h>
-#import "VITutorialViewController.h"
 #import "VILoginTableViewController.h"
 #import "VIPointAnnotation.h"
 #import "VISingleReportTableViewController.h"
 
-@interface VILocationViewController : UIViewController<MKMapViewDelegate, CLLocationManagerDelegate>
+@interface VILocationViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) NSArray *userArray;
 @property (strong, nonatomic) MBXMapView *mapView;
 @property BOOL userLocationUpdated;
-@property (strong, nonatomic) VITutorialViewController *tutorialVC;
 @property (strong, nonatomic) NSArray *markers;
 @property (strong, nonatomic) NSString *annotationTitle;
 @property BOOL annotationPinType;

@@ -10,10 +10,6 @@
 
 #define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
 
-@interface VITutorialViewController ()
-
-@end
-
 @implementation VITutorialViewController
 
 - (void)viewDidLoad

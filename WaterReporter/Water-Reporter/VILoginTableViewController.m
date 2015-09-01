@@ -81,6 +81,9 @@
     //
     //
     [self setupFormToolbar];
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SettingsShowTutorialOnLaunch"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)didReceiveMemoryWarning
@@ -301,11 +304,10 @@
             // Hide the HUD/Loading Icon
             //
             [self.hud hide:YES];
-            
-            //
-            // Hide the modal
-            //
-            [self dismissViewControllerAnimated:YES completion:nil];
+        
+            self.tutorialVC = [[VITutorialViewController alloc] init];
+            [self presentViewController:self.tutorialVC animated:YES completion:nil];
+        
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSInteger statusCode = operation.response.statusCode;

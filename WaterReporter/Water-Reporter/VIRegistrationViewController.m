@@ -316,9 +316,10 @@
                     [self.hud hide:YES];
                     
                     //
-                    // Hide the modal
+                    // Hide the login and display the tutorial
                     //
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    self.tutorialVC = [[VITutorialViewController alloc] init];
+                    [self presentViewController:self.tutorialVC animated:YES completion:nil];
 
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@"Error %@", error);

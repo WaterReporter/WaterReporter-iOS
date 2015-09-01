@@ -30,15 +30,6 @@
     [self updateTabBarAppearance];
     [self setNeedsStatusBarAppearanceUpdate];
     
-    //show app walkthrough on first launch
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"])
-    {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SettingsShowTutorialOnLaunch"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        [self preparePageController];
-    }
-    
     if (!self.loadingMapForForm) {
         [self loadMapMarkers];
 
@@ -134,12 +125,6 @@
     }
     
     [self refreshMap];
-}
-
-- (void) preparePageController
-{
-    self.tutorialVC = [[VITutorialViewController alloc] init];
-    [self presentViewController:self.tutorialVC animated:YES completion:nil];
 }
 
 - (void) setupMapboxMapView:(NSString *)mapId

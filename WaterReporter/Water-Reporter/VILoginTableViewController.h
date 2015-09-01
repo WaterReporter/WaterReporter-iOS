@@ -12,6 +12,9 @@
 #import "User.h"
 #import "MBProgressHUD.h"
 #import "VIRegistrationViewController.h"
+#import "VITutorialViewController.h"
+
+@class VITutorialViewController;
 
 @interface VILoginTableViewController : UITableViewController <UITextFieldDelegate>
 
@@ -25,6 +28,8 @@
 
     @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
     @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
+
+    @property (strong, nonatomic) VITutorialViewController *tutorialVC;
 
     @property (nonatomic, strong) MBProgressHUD *hud;
 
