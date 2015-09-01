@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import "User.h"
-#import "NSString+MD5.h"
 
 @interface Gravatar : NSObject
 

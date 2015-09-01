@@ -69,7 +69,6 @@
 {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshInvoked:forState:) forControlEvents:UIControlEventValueChanged];
-
 }
 
 - (void) refreshTableView

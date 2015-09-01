@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Viable Industries, L.L.C. All rights reserved.
 //
 
-#import "ImageSaver.h"
 #import "PhotoViewController.h"
 #import "VIFormTableViewController.h"
 

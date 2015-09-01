@@ -7,28 +7,6 @@
 
 @implementation ImageSaver
 
-//+ (NSString*) saveImageToDisk:(UIImage*)image andToReport:(Report *)report {
-//	NSData *imgData   = UIImageJPEGRepresentation(image, 0.5);
-//	NSString *name    = [[NSUUID UUID] UUIDString];
-//	NSString *path	  = [NSString stringWithFormat:@"Documents/%@.jpg", name];
-//	NSString *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:path];
-//
-////    UIImageWriteToSavedPhotosAlbum(image, self, @selector(thisImage:hasBeenSavedInPhotoAlbumWithError:usingContextInfo:), nil);
-//
-//	if ([imgData writeToFile:jpgPath atomically:YES]) {
-//		report.image = path;
-//        return path;
-//	} else {
-//		[[[UIAlertView alloc] initWithTitle:@"Error"
-//									message:@"There was an error saving your photo. Try again."
-//								   delegate:nil
-//						  cancelButtonTitle:@"OK"
-//						  otherButtonTitles: nil] show];
-//		return @"";
-//	}
-//	return @"";
-//}
-
 + (BOOL)saveImageToDisk:(UIImage*)image andToReport:(Report *)report {
 	NSData *imgData   = UIImageJPEGRepresentation(image, 0.5);
 	NSString *name    = [[NSUUID UUID] UUIDString];
@@ -38,6 +16,7 @@
 	if ([imgData writeToFile:jpgPath atomically:YES]) {
             report.image = path;
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+//            [self addSkipBackupAttributeToItemAtURL:path];
             NSLog(@"Path: %@", path);
             NSLog(@"JPGPath: %@", jpgPath);
 	} else {

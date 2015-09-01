@@ -9,10 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "PhotoViewController.h"
-#import "ImageSaver.h"
 #import "Report.h"
 #import "User.h"
-#import "Gravatar.h"
 #import "UIImage+ResizeMagick.h"
 #import <AFNetworking/AFNetworking.h>
 #import "MBProgressHUD.h"
