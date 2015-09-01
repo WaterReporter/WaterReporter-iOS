@@ -108,8 +108,7 @@
 
 - (void)dismissTutorial
 {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"SettingsShowTutorialOnLaunch"];
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
 }
 
 @end
