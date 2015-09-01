@@ -9,7 +9,7 @@
 #import "VIReportsTableViewController.h"
 #import "Lockbox.h"
 
-#define kWaterReporterUserAccessToken        @"kWaterReporterUserAccessToken"
+#define kWaterReporterUserAccessToken @"kWaterReporterUserAccessToken"
 
 @implementation VIReportsTableViewController
 
@@ -192,7 +192,8 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:report.report_date];
-    
+        
+    [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
     
     [self.manager POST:@"http://api.waterreporter.org/v1/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSError *error;
