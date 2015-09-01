@@ -29,6 +29,8 @@
     self.manager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
 
+    [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
+
     return self;
 }
 

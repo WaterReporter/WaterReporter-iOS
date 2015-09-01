@@ -41,9 +41,7 @@
     [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     self.manager.requestSerializer = self.serializer;
     
-    NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
-    
-    [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
+    [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
     
 
     //
@@ -165,7 +163,7 @@
 
 - (void) userLogout
 {
-    [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
+    [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
 
     [self.manager POST:@"http://api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

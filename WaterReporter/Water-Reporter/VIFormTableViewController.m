@@ -66,7 +66,6 @@
     //
     self.commentsField = [self makeTextField:self.report.report_description placeholder:@"Comments"];
     self.commentsField.clearButtonMode = UITextFieldViewModeAlways;
-    
 
 }
 
