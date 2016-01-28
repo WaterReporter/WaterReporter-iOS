@@ -63,7 +63,11 @@
 }
 
 - (void) displayGroupsSelector {
-    NSLog(@"Show Groups selector.");
+
+    VIGroupsTableViewController *modal = [[VIGroupsTableViewController alloc] init];
+    UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+    [self presentViewController:modalNav animated:YES completion:nil];
+
 }
 
 - (BOOL)connected {
@@ -170,8 +174,6 @@
 
 - (void) userLogout
 {
-    [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
-
     [self.manager POST:@"http://stg.api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         //
@@ -181,6 +183,19 @@
         //
         [User MR_truncateAll];
         
+        //
+        // Reset the New Feature message
+        //
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"has_seen_groups"];
+        
+        //
+        // Remove the Access Token
+        //
+        [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
+
+        //
+        // Kick the user back to the login page
+        //
         VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
         [self presentViewController:modalNav animated:NO completion:nil];

@@ -34,6 +34,7 @@
 		C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243D1928EE95004A7FDD /* VITutorialViewController.m */; };
 		C189D6A119802BFB005E4848 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C189D6A019802BFB005E4848 /* MapKit.framework */; };
 		C1B7D30A193CB2AB0057E735 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C1B7D309193CB2AB0057E735 /* Settings.bundle */; };
+		C1D2A6871C5AA5B20087DEAE /* VIGroupsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D2A6861C5AA5B20087DEAE /* VIGroupsTableViewController.m */; };
 		C664F4215B7BDC28F7ECFC15 /* libPods-Water-Reporter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B664AE0B6D5BF93FAEA3B1E8 /* libPods-Water-Reporter.a */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,8 @@
 		C12E243D1928EE95004A7FDD /* VITutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VITutorialViewController.m; sourceTree = "<group>"; };
 		C189D6A019802BFB005E4848 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C1B7D309193CB2AB0057E735 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		C1D2A6861C5AA5B20087DEAE /* VIGroupsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIGroupsTableViewController.m; sourceTree = "<group>"; };
+		C1D2A6881C5AA5CB0087DEAE /* VIGroupsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIGroupsTableViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +252,8 @@
 				94A689DD192BDBED006CE05D /* VIChildViewController.m */,
 				C12BF8EB1B8F9ABB009174BD /* VIRegistrationViewController.h */,
 				C12BF8EC1B8F9B52009174BD /* VIRegistrationViewController.m */,
+				C1D2A6881C5AA5CB0087DEAE /* VIGroupsTableViewController.h */,
+				C1D2A6861C5AA5B20087DEAE /* VIGroupsTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -417,6 +422,7 @@
 				C12D7B13192533BC00C2B9F5 /* VIAppDelegate.m in Sources */,
 				C12D7B531925533000C2B9F5 /* PhotoViewController.m in Sources */,
 				C12D7B4819254F7E00C2B9F5 /* ReportModel.xcdatamodeld in Sources */,
+				C1D2A6871C5AA5B20087DEAE /* VIGroupsTableViewController.m in Sources */,
 				C12D7B4E1925528400C2B9F5 /* Report.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
