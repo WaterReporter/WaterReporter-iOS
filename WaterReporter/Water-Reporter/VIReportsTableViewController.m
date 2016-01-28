@@ -47,8 +47,10 @@
     //
     //
     //
+    UIBarButtonItem *groupsItem = [[UIBarButtonItem alloc] initWithTitle:@"Groups" style:UIBarButtonItemStylePlain target:self action:@selector(displayGroupsSelector)];
     UIBarButtonItem *logoutItem = [[UIBarButtonItem alloc] initWithTitle:@"Log out" style:UIBarButtonItemStylePlain target:self action:@selector(userLogout)];
     
+    self.navigationItem.leftBarButtonItem = groupsItem;
     self.navigationItem.rightBarButtonItem = logoutItem;
 
 }
@@ -58,6 +60,10 @@
     [self refreshTableView];
     [self.tableView reloadData];
     [self verifyUserGroups];
+}
+
+- (void) displayGroupsSelector {
+    NSLog(@"Show Groups selector.");
 }
 
 - (BOOL)connected {
@@ -405,7 +411,7 @@
             //
             // Since the user has no groups, you should display the new feataure message.
             //
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Feature!" message:@"You can now join a Groups. Tap the \"Groups\" button above to browse groups" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:@"Ok", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Feature!" message:@"You can now join a Groups. Tap the \"Groups\" button above to browse groups" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
             [alert show];
             
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"has_seen_groups"];
