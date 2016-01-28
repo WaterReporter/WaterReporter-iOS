@@ -279,7 +279,7 @@
 - (void)loadMapMarkers
 {
   
-    NSString *url = @"http://api.waterreporter.org/v1/data/report?results_per_page=1000";
+    NSString *url = @"https://api.waterreporter.org/v1/data/report?results_per_page=1000";
     
     NSLog(@"Load map markers");
     
@@ -396,12 +396,6 @@
         VIPointAnnotation *thisAnnotation = (VIPointAnnotation *)annotation;
         annotationView.annotation = thisAnnotation;
         
-        if (thisAnnotation.pollutionReport) {
-            annotationView.image = [UIImage imageNamed:@"pin-yellow"];
-        } else {
-            annotationView.image = [UIImage imageNamed:@"pin-green"];
-        }
-
         return annotationView;
     }
 

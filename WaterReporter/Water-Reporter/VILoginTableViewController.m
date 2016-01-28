@@ -21,7 +21,7 @@
         self.title = @"Log in";
     }
     
-    NSURL *baseURL = [NSURL URLWithString:@"http://api.waterreporter.org/"];
+    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/"];
     
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
@@ -277,8 +277,7 @@
         
         [self.view bringSubviewToFront:self.hud];
 
-        NSString *url = @"http://api.waterreporter.org/v1/auth/remote";
-//        NSString *url = @"http://127.0.0.1:5000/v1/auth/remote";
+        NSString *url = @"https://api.waterreporter.org/v1/auth/remote";
 
 
         //

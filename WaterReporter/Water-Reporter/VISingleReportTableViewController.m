@@ -40,7 +40,7 @@
     [self.view bringSubviewToFront:self.hud];
 
     if (self.reportID) {
-        NSString *url = [NSString stringWithFormat:@"%@%@", @"http://api.waterreporter.org/v1/data/report/", self.reportID];
+        NSString *url = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v1/data/report/", self.reportID];
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -103,7 +103,7 @@
     //
     // Prepare and Load Avatar Into View
     //
-    NSString *avatar = @"http://dev.waterreporter.org/images/badget--MissingUser.png";
+    NSString *avatar = @"https://www.waterreporter.org/images/badget--MissingUser.png";
     
     if(report[@"properties"][@"owner"] != [NSNull null] && report[@"properties"][@"owner"][@"properties"][@"picture"] != [NSNull null]){
         avatar = report[@"properties"][@"owner"][@"properties"][@"picture"];
@@ -282,7 +282,7 @@
 {
     
     NSString *reportTitle = [NSString stringWithFormat:@"I submitted a new %@ with WaterReporter", self.title];
-    NSString *reportURLString = [NSString stringWithFormat:@"http://www.waterreporter.org/reports/%@", self.reportID];
+    NSString *reportURLString = [NSString stringWithFormat:@"https://www.waterreporter.org/reports/%@", self.reportID];
     NSURL *reportURL = [NSURL URLWithString:reportURLString];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[reportTitle, reportURL] applicationActivities:nil];

@@ -33,7 +33,7 @@
     //
     //
     //
-    NSURL *baseURL = [NSURL URLWithString:@"http://api.waterreporter.org/"];
+    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
     
@@ -165,7 +165,7 @@
 {
     [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
 
-    [self.manager POST:@"http://api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.manager POST:@"https://api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
@@ -195,7 +195,7 @@
         
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
     
-    [self.manager POST:@"http://api.waterreporter.org/v1/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [self.manager POST:@"https://api.waterreporter.org/v1/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSError *error;
         [formData appendPartWithFileURL:imageURL name:@"image" fileName:filePath mimeType:@"image/jpg" error:&error];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -211,7 +211,7 @@
         
         NSLog(@"Attempting to post %@", json);
 
-        [self.manager POST:@"http://api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.manager POST:@"https://api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
     
             NSLog(@"responseObject: %@", responseObject[@"id"]);
     

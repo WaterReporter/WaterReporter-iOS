@@ -21,7 +21,7 @@
         self.title = @"Register";
     }
     
-    NSURL *baseURL = [NSURL URLWithString:@"http://api.waterreporter.org/"];
+    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/"];
     
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
@@ -262,7 +262,7 @@
         //
         self.navigationItem.rightBarButtonItem.enabled = NO;
         
-        NSString *url = @"http://api.waterreporter.org/v1/user/register";
+        NSString *url = @"https://api.waterreporter.org/v1/user/register";
         
         //
         // Create our URL Parameters
@@ -287,7 +287,7 @@
             
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             
-            [self.manager POST:@"http://api.waterreporter.org/v1/auth/remote" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self.manager POST:@"https://api.waterreporter.org/v1/auth/remote" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 NSString *accessToken = responseObject[@"access_token"];
                 
@@ -303,7 +303,7 @@
                 [userInformation setObject:self.user.first_name forKey:@"first_name"];
                 [userInformation setObject:self.user.last_name forKey:@"last_name"];
                 
-                NSString *userUpdateURL = [NSString stringWithFormat:@"%@%@", @"http://api.waterreporter.org/v1/data/user/", self.user.user_id];
+                NSString *userUpdateURL = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v1/data/user/", self.user.user_id];
                 
                 [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
 
