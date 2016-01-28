@@ -11,6 +11,7 @@
 #import "Report.h"
 #import "VISingleReportTableViewController.h"
 #import "VILoginTableViewController.h"
+#import "User.h"
 
 @interface VIReportsTableViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate>
 

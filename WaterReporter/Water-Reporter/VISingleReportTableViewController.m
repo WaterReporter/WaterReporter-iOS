@@ -40,7 +40,7 @@
     [self.view bringSubviewToFront:self.hud];
 
     if (self.reportID) {
-        NSString *url = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v1/data/report/", self.reportID];
+        NSString *url = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/report/", self.reportID];
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.responseSerializer = [AFJSONResponseSerializer serializer];

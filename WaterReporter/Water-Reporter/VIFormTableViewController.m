@@ -200,6 +200,8 @@
     self.report = [Report MR_createEntity];
     User *user = [User MR_findFirst];
     
+    NSLog(@"%@;%@;%@;%@;%@;", [user valueForKey:@"user_id"], [user valueForKey:@"first_name"], [user valueForKey:@"last_name"], [user valueForKey:@"email"], [user valueForKey:@"password"]);
+
     self.report.uuid = [[NSUUID UUID] UUIDString];
     self.report.feature_id = nil;
     self.report.created = date;
@@ -213,7 +215,6 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
-
 }
 
 - (void) resetFormContent

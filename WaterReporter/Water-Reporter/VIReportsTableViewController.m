@@ -33,7 +33,7 @@
     //
     //
     //
-    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://stg.api.waterreporter.org/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
     
@@ -57,6 +57,7 @@
     NSLog(@"viewDidAppear");
     [self refreshTableView];
     [self.tableView reloadData];
+    [self verifyUserGroups];
 }
 
 - (BOOL)connected {
@@ -165,7 +166,14 @@
 {
     [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
 
-    [self.manager POST:@"https://api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.manager POST:@"http://stg.api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        //
+        // Empty out the local user table because we shouldn't have other's
+        // user information hanging around if another user happened to be
+        // temporarily logged into the device.
+        //
+        [User MR_truncateAll];
         
         VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
         UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
@@ -195,7 +203,7 @@
         
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
     
-    [self.manager POST:@"https://api.waterreporter.org/v1/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [self.manager POST:@"http://stg.api.waterreporter.org/v1/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSError *error;
         [formData appendPartWithFileURL:imageURL name:@"image" fileName:filePath mimeType:@"image/jpg" error:&error];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -209,9 +217,7 @@
         [json setObject:@"true" forKey:@"is_public"];
         [json setObject:@[@{@"id": responseObject[@"id"]}] forKey:@"images"];
         
-        NSLog(@"Attempting to post %@", json);
-
-        [self.manager POST:@"https://api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.manager POST:@"http://stg.api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
     
             NSLog(@"responseObject: %@", responseObject[@"id"]);
     
@@ -378,6 +384,41 @@
     }
     [tableView endUpdates];
 
+}
+
+- (BOOL)verifyUserGroups {
+    
+    NSLog(@"verifyUserGroups");
+    
+    BOOL hasGroups = false;
+    User *user = [User MR_findFirst];
+    
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    
+    [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *userGroups = [NSArray arrayWithArray:responseObject[@"properties"][@"groups"]];
+        
+        NSLog(@"%hhd", [[NSUserDefaults standardUserDefaults] boolForKey:@"has_seen_groups"]);
+        
+        if ([userGroups count] == 0 && [[NSUserDefaults standardUserDefaults] boolForKey:@"has_seen_groups"] == 0) {
+            //
+            // Since the user has no groups, you should display the new feataure message.
+            //
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Feature!" message:@"You can now join a Groups. Tap the \"Groups\" button above to browse groups" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:@"Ok", nil];
+            [alert show];
+            
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"has_seen_groups"];
+        }
+        else {
+            
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"verifyUserGroups::error: %@", error);
+    }];
+    
+    return hasGroups;
 }
 
 @end

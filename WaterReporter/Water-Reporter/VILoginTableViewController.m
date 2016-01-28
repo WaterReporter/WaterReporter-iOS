@@ -9,7 +9,7 @@
 #import "VILoginTableViewController.h"
 #import "Lockbox.h"
 
-#define kWaterReporterUserAccessToken        @"kWaterReporterUserAccessToken"
+#define kWaterReporterUserAccessToken @"kWaterReporterUserAccessToken"
 
 @implementation VILoginTableViewController
 
@@ -21,7 +21,7 @@
         self.title = @"Log in";
     }
     
-    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/"];
+    NSURL *baseURL = [NSURL URLWithString:@"http://stg.api.waterreporter.org/"];
     
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
@@ -248,6 +248,28 @@
     [self presentViewController:modalNav animated:NO completion:nil];
 }
 
+- (void) retrieveUserData {
+    
+    [self.manager GET:@"http://stg.api.waterreporter.org/v1/data/me" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        //
+        // Use the response data to fill in our default user information
+        // and save it to our local database.
+        //
+        self.user.user_id = responseObject[@"id"];
+        self.user.first_name = responseObject[@"first_name"];
+        self.user.last_name = responseObject[@"last_name"];
+        
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"userSaved" object:nil];
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"verifyUserGroups::error: %@", error);
+    }];
+
+}
+
 - (void) submitForm
 {
     
@@ -277,7 +299,7 @@
         
         [self.view bringSubviewToFront:self.hud];
 
-        NSString *url = @"https://api.waterreporter.org/v1/auth/remote";
+        NSString *url = @"http://stg.api.waterreporter.org/v1/auth/remote";
 
 
         //
@@ -287,8 +309,8 @@
         [json setObject:self.passwordField.text forKey:@"password"];
 
         [json setObject:@"token" forKey:@"response_type"];
-        [json setObject:@"SG92Aa2ejWqiYW4kI08r6lhSyKwnK1gDN2xrryku" forKey:@"client_id"];
-        [json setObject:@"http://127.0.0.1:9000/authorize" forKey:@"redirect_uri"];
+        [json setObject:@"Ru8hamw7ixuCtsHs23Twf4UB12fyIijdQcLssqpd" forKey:@"client_id"];
+        [json setObject:@"http://stg.waterreporter.org/authorize" forKey:@"redirect_uri"];
         [json setObject:@"user" forKey:@"scope"];
         [json setObject:@"json" forKey:@"state"];
 
@@ -296,8 +318,23 @@
         [self.manager POST:url parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
             NSString *accessToken = responseObject[@"access_token"];
-            
+
             isAccessTokenSaved = [Lockbox setString:accessToken forKey:kWaterReporterUserAccessToken];
+
+            self.serializer = [AFJSONRequestSerializer serializer];
+            
+            [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            self.manager.requestSerializer = self.serializer;
+            
+            [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
+            
+            //
+            // After retrieving the accessToken, we need to save the basic user information so that we can later
+            // access it for submitting reports, accessing profile informaiton, and checking groups.
+            //
+            [self retrieveUserData];
+            
 
             //
             // Hide the HUD/Loading Icon
