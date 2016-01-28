@@ -56,11 +56,9 @@
     //
     //
     //
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelGroups)];
-    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:nil];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelGroups)];
     
     self.navigationItem.leftBarButtonItem = cancelItem;
-    self.navigationItem.rightBarButtonItem = saveItem;
     
     //
     // Create Navigation Toolbar
@@ -147,6 +145,18 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
     
     NSLog(@"joinSelectedGroup %@", self.groups[indexPath.row][@"id"]);
+    
+    User *user = [User MR_findFirst];
+    
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    
+    [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *userGroups = [NSArray arrayWithArray:responseObject[@"properties"][@"groups"]];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"verifyUserGroups::error: %@", error);
+    }];
 }
 
 - (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath
@@ -165,7 +175,7 @@
     UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [joinButton addTarget:self action:@selector(joinSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
 
-    [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
+    [joinButton setTitle:@"JOIN GROUP" forState:UIControlStateNormal];
     [joinButton setFrame:CGRectMake(0, 0, 48, 24)];
     joinButton.backgroundColor = [UIColor colorWithRed:0.4 green:0.74 blue:0.17 alpha:1];
     joinButton.tintColor = [UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0];
