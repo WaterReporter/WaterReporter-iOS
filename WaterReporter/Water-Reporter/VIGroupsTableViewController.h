@@ -22,6 +22,8 @@
 
 @property BOOL searchControllerWasActive;
 @property BOOL searchControllerSearchFieldWasFirstResponder;
+@property BOOL viewControllerActivatedFromProfilePage;
+
 
 -(void)cancelGroups;
 -(void)joinSelectedGroup:(id)sender;

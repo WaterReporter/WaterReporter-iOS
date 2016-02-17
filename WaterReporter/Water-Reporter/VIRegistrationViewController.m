@@ -271,8 +271,8 @@
         [json setObject:self.passwordField.text forKey:@"password"];
         
         [json setObject:@"token" forKey:@"response_type"];
-        [json setObject:@"SG92Aa2ejWqiYW4kI08r6lhSyKwnK1gDN2xrryku" forKey:@"client_id"];
-        [json setObject:@"http://127.0.0.1:9000/authorize" forKey:@"redirect_uri"];
+        [json setObject:@"Ru8hamw7ixuCtsHs23Twf4UB12fyIijdQcLssqpd" forKey:@"client_id"];
+        [json setObject:@"http://stg.waterreporter.org/authorize" forKey:@"redirect_uri"];
         [json setObject:@"user" forKey:@"scope"];
         [json setObject:@"json" forKey:@"state"];
         

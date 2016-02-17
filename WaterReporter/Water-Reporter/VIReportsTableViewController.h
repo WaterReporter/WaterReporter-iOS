@@ -22,6 +22,9 @@
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
+@property (strong, nonatomic) VIGroupsTableViewController *groupView;
+@property (strong, nonatomic) UINavigationController *groupNavigationController;
+
 -(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id;
 
 @end

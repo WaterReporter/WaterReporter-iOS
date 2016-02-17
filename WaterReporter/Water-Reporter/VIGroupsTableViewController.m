@@ -51,14 +51,21 @@
     self.manager.requestSerializer = self.serializer;
     
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
-    
+    NSLog(@"self.viewControllerActivatedFromProfilePage %hhd", self.viewControllerActivatedFromProfilePage);
     
     //
     //
     //
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelGroups)];
-    
-    self.navigationItem.leftBarButtonItem = cancelItem;
+    if (self.viewControllerActivatedFromProfilePage == 1) {
+        UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelGroups)];
+        
+        self.navigationItem.rightBarButtonItem = cancelItem;
+    } else {
+        UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelGroups)];
+        
+        self.navigationItem.rightBarButtonItem = cancelItem;
+    }
+
     
     //
     // Create Navigation Toolbar
@@ -175,7 +182,7 @@
     UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [joinButton addTarget:self action:@selector(joinSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
 
-    [joinButton setTitle:@"JOIN GROUP" forState:UIControlStateNormal];
+    [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
     [joinButton setFrame:CGRectMake(0, 0, 48, 24)];
     joinButton.backgroundColor = [UIColor colorWithRed:0.4 green:0.74 blue:0.17 alpha:1];
     joinButton.tintColor = [UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0];

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AFNetworking/AFHTTPRequestOperationManager.h>
 #import "VIChildViewController.h"
+#import "VIGroupsTableViewController.h"
+#import "User.h"
 
 @interface VITutorialViewController : UIViewController <UIPageViewControllerDataSource>
 
@@ -15,5 +18,9 @@
 
 @property NSUInteger pageIndex;
 @property (strong, nonatomic) UIPageControl *pageControl;
+
+@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+@property (strong, nonatomic) AFJSONRequestSerializer *serializer;
+@property (strong, nonatomic) VIGroupsTableViewController *groupsView;
 
 @end

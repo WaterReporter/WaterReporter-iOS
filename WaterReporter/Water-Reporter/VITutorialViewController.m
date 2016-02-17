@@ -108,7 +108,26 @@
 
 - (void)dismissTutorial
 {
-    [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasSeenNewFeatureGroups"] == 0) {
+        //
+        // Since the user has no groups, you should display the new feataure message.
+        //
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Feature!" message:@"You can now join a WaterReporter group and associate your reports with that group." delegate:self cancelButtonTitle:@"Maybe later" otherButtonTitles:@"Join a group", nil];
+        [alert show];
+        
+        self.groupsView = [[VIGroupsTableViewController alloc] init];
+        self.groupsView.viewControllerActivatedFromProfilePage = NO;
+        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:self.groupsView];
+        [self presentViewController:modalNav animated:NO completion:nil];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasSeenNewFeatureGroups"];
+    }
+    else {
+        [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+    }
+
+
 }
 
 @end

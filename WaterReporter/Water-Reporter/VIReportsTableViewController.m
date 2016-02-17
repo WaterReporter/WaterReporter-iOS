@@ -64,9 +64,12 @@
 
 - (void) displayGroupsSelector {
 
-    VIGroupsTableViewController *modal = [[VIGroupsTableViewController alloc] init];
-    UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
-    [self presentViewController:modalNav animated:YES completion:nil];
+    self.groupView = [[VIGroupsTableViewController alloc] init];
+    self.groupView.viewControllerActivatedFromProfilePage = YES;
+    
+    self.groupNavigationController = [[UINavigationController alloc] initWithRootViewController:self.groupView];
+
+    [self presentViewController:self.groupNavigationController animated:YES completion:nil];
 
 }
 
@@ -186,7 +189,7 @@
         //
         // Reset the New Feature message
         //
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"has_seen_groups"];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasSeenNewFeatureGroups"];
         
         //
         // Remove the Access Token
@@ -407,39 +410,31 @@
 
 }
 
-- (BOOL)verifyUserGroups {
+- (void)verifyUserGroups {
     
     NSLog(@"verifyUserGroups");
     
-    BOOL hasGroups = false;
-    User *user = [User MR_findFirst];
-    
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
-    
-    [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasSeenNewFeatureGroups"] == 0) {
+        //
+        // Since the user has no groups, you should display the new feataure message.
+        //
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Feature!" message:@"You can now join a WaterReporter group and associate your reports with that group." delegate:self cancelButtonTitle:@"Maybe later" otherButtonTitles:@"Join a group", nil];
+        [alert show];
         
-        NSArray *userGroups = [NSArray arrayWithArray:responseObject[@"properties"][@"groups"]];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasSeenNewFeatureGroups"];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        VIGroupsTableViewController *groupsView = [[VIGroupsTableViewController alloc] init];
+        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:groupsView];
+        [self presentViewController:modalNav animated:NO completion:nil];
         
-        NSLog(@"%hhd", [[NSUserDefaults standardUserDefaults] boolForKey:@"has_seen_groups"]);
-        
-        if ([userGroups count] == 0 && [[NSUserDefaults standardUserDefaults] boolForKey:@"has_seen_groups"] == 0) {
-            //
-            // Since the user has no groups, you should display the new feataure message.
-            //
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Feature!" message:@"You can now join a Groups. Tap the \"Groups\" button above to browse groups" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-            [alert show];
-            
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"has_seen_groups"];
-        }
-        else {
-            
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"verifyUserGroups::error: %@", error);
-    }];
-    
-    return hasGroups;
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasSeenNewFeatureGroups"];
+    }
 }
 
 @end
