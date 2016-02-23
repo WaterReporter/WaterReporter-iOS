@@ -40,7 +40,7 @@
 @property (strong, nonatomic) UITextField *commentsField;
 @property (strong, nonatomic) UITextField *geometryField;
 @property (strong, nonatomic) UITextField *imageField;
-@property (strong, nonatomic) NSMutableArray *groupsField;
+@property (strong, nonatomic) NSMutableSet *groupsField;
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) AFJSONRequestSerializer *serializer;

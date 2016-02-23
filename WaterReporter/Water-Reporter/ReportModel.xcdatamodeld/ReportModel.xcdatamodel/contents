@@ -29,7 +29,7 @@
     </entity>
     <elements>
         <element name="Group" positionX="-153" positionY="27" width="128" height="133"/>
-        <element name="Report" positionX="-315" positionY="-198" width="128" height="178"/>
+        <element name="Report" positionX="-315" positionY="-198" width="128" height="180"/>
         <element name="User" positionX="-522" positionY="9" width="128" height="135"/>
     </elements>
 </model>

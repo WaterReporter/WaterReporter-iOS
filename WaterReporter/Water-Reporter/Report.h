@@ -23,6 +23,6 @@
 @property (nonatomic, retain) NSString * image;
 @property (nonatomic, retain) NSDictionary * geometry;
 @property (nonatomic, retain) User *owner;
-@property (nonatomic, retain) NSSet *groups;
+@property (nonatomic, retain) NSMutableSet *groups;
 
 @end

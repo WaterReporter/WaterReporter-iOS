@@ -29,6 +29,7 @@
     self.template = [[NSString alloc] init];
 
     self.reportFields = @[@"Date", @"Comments"];
+    self.groupsField = [[NSMutableSet alloc] init];
 
     NSURL *baseURL = [NSURL URLWithString:@"http://stg.api.waterreporter.org/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
@@ -65,17 +66,18 @@
 
 - (void) loadUsersGroups
 {
-    User *user = [User MR_findFirst];
+    User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
     
+    NSLog(@"user %@", user);
+
     NSString *userEndpoint = [NSString stringWithFormat:@"%@%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"], @"/groups"];
     
+    NSLog(@"userEndpoint %@", userEndpoint);
+
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"loadUsersGroups responseObject %@", responseObject);
         self.groups = responseObject[@"features"];
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Could not retrieve organizations");
-        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }];
@@ -126,11 +128,6 @@
     [self.datePicker addTarget:self action:@selector(dateSelection:) forControlEvents:UIControlEventValueChanged];
 
 }
-
-- (void) fetchAllReports {
-    self.reports = [[Report findAllSortedBy:@"created" ascending:NO] mutableCopy];
-}
-
 
 - (void) setupFormTypes
 {
@@ -238,37 +235,39 @@
     self.report = [Report MR_createEntity];
     User *user = [User MR_findFirst];
     
-    NSLog(@"%@;%@;%@;%@;%@;", [user valueForKey:@"user_id"], [user valueForKey:@"first_name"], [user valueForKey:@"last_name"], [user valueForKey:@"email"], [user valueForKey:@"password"]);
-    
-    NSSet *groupList = [[NSSet alloc] init];
+    NSMutableSet *groupList = [[NSMutableSet alloc] init];
+
+    NSLog(@"self.groupsField %@", self.groupsField);
+
+    for (NSDictionary *group in self.groupsField) {
         
-    for (NSDictionary *group in self.groups) {
         Group *newGroup = [Group MR_createEntity];
-        
-        NSString *dateString = [dateFormatter stringFromDate:self.datePicker.date];
-        
-        newGroup.joined_on = dateString;
+                
         newGroup.organization_id = group[@"properties"][@"organization_id"];
         newGroup.user_id = group[@"properties"][@"user_id"];
         
+        [groupList addObject:newGroup];
+
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:@"groupSaved" object:nil];
     }
-    
-    self.report.groups = groupList;
 
+    NSLog(@"groupList %@", groupList);
+    
     self.report.uuid = [[NSUUID UUID] UUIDString];
     self.report.feature_id = nil;
     self.report.created = date;
     self.report.report_description = self.commentsField.text;
     self.report.owner = user;
-    
+    self.report.groups = groupList;
     self.report.geometry = [self createGeoJSONPoint];
     self.report.report_date = self.datePicker.date;
     
     
     self.report.image = self.path;
+    
+    NSLog(@"self.report.groups to be saved to CoreData %@", self.report.groups);
     
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
@@ -282,10 +281,9 @@
     self.reportDateField.text = dateString;
     self.commentsField.text = nil;
     self.path = nil;
+    self.groupsField = [[NSMutableSet alloc] init];
     self.reportLatitude = self.currentLocation.coordinate.latitude;
     self.reportLongitude = self.currentLocation.coordinate.longitude;
-    
-    NSLog(@"%@", self.report.image);
 }
 
 - (void) submitForm

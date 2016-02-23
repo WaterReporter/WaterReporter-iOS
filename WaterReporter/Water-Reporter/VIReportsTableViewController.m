@@ -244,16 +244,23 @@
         //
         // Prepare Groups
         //
-        NSLog(@"report.groups %@", report.groups);
+        NSMutableArray *groupList = [[NSMutableArray alloc] init];
         
-        for (NSDictionary *group in report.groups) {
-            NSLog(@"groupgroupgroupgroupgroupgroupgroupgroup %@", group);
+        NSLog(@"report.groups to be transformed %lu", (unsigned long)[report.groups count]);
+
+        for (Group *group in report.groups) {
+            [groupList addObject:@{@"id": group.organization_id}];
         }
         
+        [json setObject:groupList forKey:@"groups"];
+
+        NSLog(@"json before submission %@", json);
+
+        //
+        // Submit the final JSON object to the API
+        //
         [self.manager POST:@"http://stg.api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    
-            NSLog(@"responseObject: %@", responseObject[@"id"]);
-    
+        
             [self updateReportFeatureID:report response_id:responseObject[@"id"]];
     
             if ([self countUnsubmittedReports] == 0) {
