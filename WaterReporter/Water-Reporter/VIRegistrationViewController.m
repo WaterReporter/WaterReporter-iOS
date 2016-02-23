@@ -321,6 +321,15 @@
                     self.tutorialVC = [[VITutorialViewController alloc] init];
                     [self presentViewController:self.tutorialVC animated:YES completion:nil];
 
+                    self.user.user_id = responseObject[@"id"];
+                    self.user.first_name = responseObject[@"first_name"];
+                    self.user.last_name = responseObject[@"last_name"];
+                    self.user.email = responseObject[@"email"];
+                    
+                    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"userSaved" object:nil];
+                    
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@"Error %@", error);
                 }];

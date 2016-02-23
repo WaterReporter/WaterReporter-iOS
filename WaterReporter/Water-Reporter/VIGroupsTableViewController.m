@@ -76,6 +76,7 @@
     // Load the Groups list
     //
     [self loadGroups];
+    [self loadUsersGroups];
 }
 
 - (void) setupToolbar
@@ -96,6 +97,24 @@
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Could not retrieve organization");
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }];
+}
+
+- (void) loadUsersGroups
+{
+    User *user = [User MR_findFirst];
+    
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+
+    [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"loadUsersGroups responseObject %@", responseObject);
+        self.usersGroups = responseObject[@"properties"][@"groups"];
+        [self.tableView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Could not retrieve organizations");
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
@@ -146,6 +165,16 @@
     return cell;
 }
 
+- (NSString*) dateTodayAsString
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+    NSDate *date = [NSDate date];
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    
+    return dateString;
+}
+
 -(void)joinSelectedGroup:(id)sender
 {
     CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
@@ -155,43 +184,190 @@
     
     User *user = [User MR_findFirst];
     
+    NSLog(@"user: %@", user);
+    NSLog(@"email: %@", [user valueForKey:@"email"]);
+    NSLog(@"user_id: %@", [user valueForKey:@"user_id"]);
+    
     NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
     
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSArray *userGroups = [NSArray arrayWithArray:responseObject[@"properties"][@"groups"]];
+        NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
+        
+        //
+        // Prepare Group Object and Assign to Groups
+        //
+        NSMutableArray *groups = [[NSMutableArray alloc] init];
+        for (NSDictionary *group in responseObject[@"properties"][@"groups"]) {
+            NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
+            [newGroup setValue:group[@"id"] forKey:@"id"];
+            [groups addObject:newGroup];
+        }
+        NSLog(@"returned groups %@", groups);
+        
+        NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
+        [newGroup setValue:self.groups[indexPath.row][@"id"] forKey:@"organization_id"];
+        [newGroup setValue:[user valueForKey:@"user_id"] forKey:@"user_id"];
+        [newGroup setValue:[self dateTodayAsString] forKey:@"joined_on"];
+        [groups addObject:newGroup];
+        
+        NSLog(@"modified groups %@", groups);
+        
+        //
+        // Prepare Organization Object and Assign to Organizations
+        //
+        //        NSMutableArray *organization = [[NSMutableArray alloc] init];
+        //        [organization addObjectsFromArray:responseObject[@"properties"][@"organization"]];
+        //        NSLog(@"returned organizations %@", organization);
+        //
+        //        NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
+        //        [newOrganization setValue:self.groups[indexPath.row][@"id"] forKey:@"id"];
+        //        [organization addObject:newOrganization];
+        //
+        //        NSLog(@"modified organization %@", organization);
+        
+        
+        [json setValue:groups forKey:@"groups"];
+        
+        [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSString *message = [NSString stringWithFormat:@"You have successfully joined the %@ group", self.groups[indexPath.row][@"properties"][@"name"]];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+
+            [self loadUsersGroups];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"failure responseObject %@", error);
+        }];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"verifyUserGroups::error: %@", error);
+        NSLog(@"failure responseObject %@", error);
     }];
+    
+}
+
+-(void)leaveSelectedGroup:(id)sender
+{
+    CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
+    
+    NSLog(@"leaveSelectedGroup %@", self.groups[indexPath.row][@"id"]);
+    
+    User *user = [User MR_findFirst];
+    
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    
+    [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
+        
+        //
+        // Prepare Group Object and Assign to Groups
+        //
+        NSMutableArray *groups = [[NSMutableArray alloc] init];
+        NSLog(@"returned groups %@", groups);
+
+        for (NSDictionary *group in responseObject[@"properties"][@"groups"]) {
+            if (group[@"properties"][@"organization_id"] != self.groups[indexPath.row][@"id"]) {
+                NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
+                [newGroup setValue:group[@"id"] forKey:@"id"];
+                [groups addObject:newGroup];
+            }
+        }
+        NSLog(@"modified groups %@", groups);
+        
+        //
+        // Prepare Organization Object and Assign to Organizations
+        //
+        //        NSMutableArray *organization = [[NSMutableArray alloc] init];
+        //        [organization addObjectsFromArray:responseObject[@"properties"][@"organization"]];
+        //        NSLog(@"returned organizations %@", organization);
+        //
+        //        NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
+        //        [newOrganization setValue:self.groups[indexPath.row][@"id"] forKey:@"id"];
+        //        [organization addObject:newOrganization];
+        //
+        //        NSLog(@"modified organization %@", organization);
+        
+        
+        [json setValue:groups forKey:@"groups"];
+        
+        [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+            NSString *message = [NSString stringWithFormat:@"You have successfully left the %@ group", self.groups[indexPath.row][@"properties"][@"name"]];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+
+            [self loadUsersGroups];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"failure responseObject %@", error);
+        }];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"failure responseObject %@", error);
+    }];
+    
 }
 
 - (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath
 {
     
     NSString *group = self.groups[indexPath.row][@"properties"][@"name"];
+    NSLog(@"configureCell %@", group);
     
     cell.textLabel.font = [UIFont systemFontOfSize:13.0];
     cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:group attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:128.0/255.0 alpha:1.0]}];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    //
-    //
-    //
-    UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [joinButton addTarget:self action:@selector(joinSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
+    if ([self userIsMemberOfGroup:(int)self.groups[indexPath.row][@"id"]]) {
+        NSLog(@"User is a member of group %@ already, show the leave button", self.groups[indexPath.row][@"id"]);
+        UIButton *leaveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [leaveButton addTarget:self action:@selector(leaveSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [leaveButton setTitle:@"LEAVE" forState:UIControlStateNormal];
+        [leaveButton setFrame:CGRectMake(0, 0, 48, 24)];
+        leaveButton.backgroundColor = [UIColor colorWithRed:212.0f/255.0f green:212.0f/255.0f blue:212.0f/255.0f alpha:1.0];
+        leaveButton.tintColor = [UIColor colorWithRed:22.0f/255.0f green:22.0f/255.0f blue:22.0f/255.0f alpha:1.0];
+        
+        [leaveButton setTitleColor:[UIColor colorWithRed:22.0f/255.0f green:22.0f/255.0f blue:22.0f/255.0f alpha:1.0] forState:UIControlStateSelected];
+        
+        [leaveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
+        
+        cell.accessoryView = leaveButton;
+    }
+    else {
+        NSLog(@"User is not a member of group %@, show the join button", self.groups[indexPath.row][@"id"]);
+        UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [joinButton addTarget:self action:@selector(joinSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
+        [joinButton setFrame:CGRectMake(0, 0, 48, 24)];
+        joinButton.backgroundColor = [UIColor colorWithRed:0.4 green:0.74 blue:0.17 alpha:1];
+        joinButton.tintColor = [UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0];
+        
+        [joinButton setTitleColor:[UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0] forState:UIControlStateSelected];
+        
+        [joinButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
+        
+        cell.accessoryView = joinButton;
+    }
+    
+}
 
-    [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
-    [joinButton setFrame:CGRectMake(0, 0, 48, 24)];
-    joinButton.backgroundColor = [UIColor colorWithRed:0.4 green:0.74 blue:0.17 alpha:1];
-    joinButton.tintColor = [UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0];
+- (BOOL)userIsMemberOfGroup:(NSInteger)groupId {
     
-    [joinButton setTitleColor:[UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0] forState:UIControlStateSelected];
+    NSLog(@"userIsMemberOfGroup %@", self.usersGroups);
     
-    [joinButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
+    for (NSDictionary *group in self.usersGroups) {
+        NSLog(@"groupId %ld is equal to group[properties][organization_id] %@??", (long)groupId, group[@"properties"][@"organization_id"]);
+        
+        if (groupId == (int)group[@"properties"][@"organization_id"]) {
+            return true;
+        }
+    }
     
-    cell.accessoryView = joinButton;
+    return false;
 }
 
 

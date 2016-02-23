@@ -20,5 +20,6 @@
 @dynamic image;
 @dynamic geometry;
 @dynamic owner;
+@dynamic groups;
 
 @end

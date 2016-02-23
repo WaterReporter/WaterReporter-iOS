@@ -8,6 +8,7 @@
 
 #import "PhotoViewController.h"
 #import "VIFormTableViewController.h"
+#define kWaterReporterUserAccessToken @"kWaterReporterUserAccessToken"
 
 @implementation VIFormTableViewController
 
@@ -29,12 +30,27 @@
 
     self.reportFields = @[@"Date", @"Comments"];
 
+    NSURL *baseURL = [NSURL URLWithString:@"http://stg.api.waterreporter.org/"];
+    self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+    self.serializer = [AFJSONRequestSerializer serializer];
+    
+    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    self.manager.requestSerializer = self.serializer;
+    
+    [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
+
+    
     // We need to make sure we are defining this class or else our Table View will throw
     // an error telling us we didn't define it for reuse. In addition make sure that we
     // style the table to fit the rest of the application
     [self.tableView registerClass: [UITableViewCell class] forCellReuseIdentifier:@"reportCell"];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor colorWithWhite:242.0/255.0f alpha:1.0f];
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.opaque = NO;
 
     [self prepareMapForReport];
@@ -43,6 +59,26 @@
     [self setupFormFields];
 
     [self.tableView reloadData];
+    
+    [self loadUsersGroups];
+}
+
+- (void) loadUsersGroups
+{
+    User *user = [User MR_findFirst];
+    
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"], @"/groups"];
+    
+    [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"loadUsersGroups responseObject %@", responseObject);
+        self.groups = responseObject[@"features"];
+        [self.tableView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Could not retrieve organizations");
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }];
 }
 
 - (void) setupFormFields
@@ -105,6 +141,8 @@
     //
 
     self.fields = [[NSArray alloc] initWithArray:self.reportFields];
+    
+    NSLog(@"self.fields %@", self.fields);
 }
 
 - (void) prepareMapForReport
@@ -201,14 +239,34 @@
     User *user = [User MR_findFirst];
     
     NSLog(@"%@;%@;%@;%@;%@;", [user valueForKey:@"user_id"], [user valueForKey:@"first_name"], [user valueForKey:@"last_name"], [user valueForKey:@"email"], [user valueForKey:@"password"]);
+    
+    NSSet *groupList = [[NSSet alloc] init];
+        
+    for (NSDictionary *group in self.groups) {
+        Group *newGroup = [Group MR_createEntity];
+        
+        NSString *dateString = [dateFormatter stringFromDate:self.datePicker.date];
+        
+        newGroup.joined_on = dateString;
+        newGroup.organization_id = group[@"properties"][@"organization_id"];
+        newGroup.user_id = group[@"properties"][@"user_id"];
+        
+        [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"groupSaved" object:nil];
+    }
+    
+    self.report.groups = groupList;
 
     self.report.uuid = [[NSUUID UUID] UUIDString];
     self.report.feature_id = nil;
     self.report.created = date;
     self.report.report_description = self.commentsField.text;
     self.report.owner = user;
+    
     self.report.geometry = [self createGeoJSONPoint];
     self.report.report_date = self.datePicker.date;
+    
     
     self.report.image = self.path;
     
@@ -297,6 +355,9 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    
+    NSLog(@"imagePickerController::didFinishPickingMediaWithInfo %@", info);
+    
     UIImage *chosenImage = [info valueForKey:UIImagePickerControllerOriginalImage];
     
     NSData *imgData   = UIImageJPEGRepresentation(chosenImage, 0.5);
@@ -463,29 +524,32 @@
 
 - (UITextField *) makeTextField:(NSString *)text placeholder:(NSString *)placeholder
 {
-    UITextField *tf = [[UITextField alloc] init];
-    UIColor *color = [UIColor lightGrayColor];
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 10)];
+    UITextField *template = [[UITextField alloc] init];
     
-    tf.leftView = paddingView;
-    tf.leftViewMode = UITextFieldViewModeAlways;
-    tf.text = text;
-    tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:color}];
-    //    tf.frame = CGRectMake(0, 0, 290, 35);
-    tf.frame = CGRectMake(0, 0, self.view.bounds.size.width-30, 35);
-    tf.autocorrectionType = UITextAutocorrectionTypeDefault;
-    tf.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-    tf.adjustsFontSizeToFitWidth = YES;
-    tf.textColor = [UIColor colorWithRed:56.0f/255.0f green:84.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
-    tf.borderStyle = UITextBorderStyleNone;
-    tf.backgroundColor = [UIColor whiteColor];
-    tf.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:14.0];
-    tf.textColor = [UIColor darkGrayColor];
-    tf.clearButtonMode = UITextFieldViewModeAlways;
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        template = [[UITextField alloc] initWithFrame:CGRectMake(60, 0, self.tableView.bounds.size.width-96, 35)];
+    } else {
+        template = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width-30, 35)];
+    }
     
-    [tf addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    template.text = text;
+    template.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]}];
+    template.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 30)];
+    template.leftViewMode = UITextFieldViewModeAlways;
     
-    return tf;
+    template.autocorrectionType = UITextAutocorrectionTypeDefault;
+    template.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    template.adjustsFontSizeToFitWidth = YES;
+    template.textColor = [UIColor colorWithRed:56.0f/255.0f green:84.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
+    template.borderStyle = UITextBorderStyleNone;
+    template.backgroundColor = [UIColor whiteColor];
+    template.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:14.0];
+    template.textColor = [UIColor darkGrayColor];
+    template.clearButtonMode = UITextFieldViewModeAlways;
+    
+    [template addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
+    return template;
 }
 
 - (void) textFieldDidEndEditing:(UITextField *)textField
@@ -513,64 +577,78 @@
     [self.reportDateField resignFirstResponder];
 }
 
-
-#pragma mark - Table view data source
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 16)];
-//    [headerView addSubview:self.segmentedControl];
-    return headerView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 16.f;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
-    
-    UIButton *cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 55, self.view.bounds.size.width-30, 35)];
-    [cameraButton setTitle:@"Add a photo to your report" forState:UIControlStateNormal];
-    cameraButton.titleLabel.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:13.0];
-    cameraButton.backgroundColor = [UIColor colorWithRed:148.0/255.0f green:195.0/255.0f blue:22.0/255.0f alpha:1.0f];
-    [cameraButton addTarget:self action:@selector(selectCameraOrLibrary) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *locationButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 10, self.view.bounds.size.width-30, 35)];
-    NSString *locationLabel = @"Add a different location";
-    UIColor *locationButtonColor = [UIColor darkGrayColor];
-    if (isnan(self.reportLongitude) && isnan(self.reportLatitude)){
-        locationLabel = @"Set a location for your report";
-        locationButtonColor = [UIColor colorWithRed:148.0/255.0f green:195.0/255.0f blue:22.0/255.0f alpha:1.0f];
+    if (section == 0) {
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 90)];
+        
+        UIButton *cameraButton = [[UIButton alloc] init];
+        UIButton *locationButton = [[UIButton alloc] init];
+        
+        if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+            cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(48, 55, self.tableView.bounds.size.width-96, 35)];
+            locationButton = [[UIButton alloc] initWithFrame:CGRectMake(48, 10, self.tableView.bounds.size.width-96, 35)];
+        } else {
+            cameraButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 55, self.tableView.bounds.size.width-30, 35)];
+            locationButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 10, self.tableView.bounds.size.width-30, 35)];
+        }
+        
+        [cameraButton setTitle:@"Add a photo to your report" forState:UIControlStateNormal];
+        cameraButton.titleLabel.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:13.0];
+        cameraButton.backgroundColor = [UIColor colorWithRed:148.0/255.0f green:195.0/255.0f blue:22.0/255.0f alpha:1.0f];
+        [cameraButton addTarget:self action:@selector(selectCameraOrLibrary) forControlEvents:UIControlEventTouchUpInside];
+        
+        [locationButton setTitle:@"Add a location to your report" forState:UIControlStateNormal];
+        locationButton.titleLabel.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:13.0];
+        locationButton.backgroundColor = [UIColor colorWithRed:148.0/255.0f green:195.0/255.0f blue:22.0/255.0f alpha:1.0f];
+        [locationButton addTarget:self action:@selector(openMapView) forControlEvents:UIControlEventTouchUpInside];
+        
+        [footerView addSubview:cameraButton];
+        [footerView addSubview:locationButton];
+        
+        return footerView;
     }
-    [locationButton setTitle:locationLabel forState:UIControlStateNormal];
-    locationButton.titleLabel.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:13.0];
-    locationButton.backgroundColor = locationButtonColor;
-    [locationButton addTarget:self action:@selector(openMapView) forControlEvents:UIControlEventTouchUpInside];
-    
-    [footerView addSubview:cameraButton];
-    [footerView addSubview:locationButton];
-    
-    return footerView;
+    else {
+        return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 90.0f;
+    if (section == 0) {
+        return 90.0f;
+    }
+    
+    return 0.0f;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    int totalRows = 0;
+    
+    if (section == 0) {
+        totalRows = [self.fields count];
+    }
+    else if (section == 1) {
+        totalRows = [self.groups count];
+    }
+
     // Return the number of rows in the section.
-    return [self.fields count];
+    return totalRows;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    
+    if (section == 1) {
+        return @"Associate This Report With Group";
+    }
+    
+    return @"Report Details";
 }
 
 
@@ -596,23 +674,65 @@
 
 - (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath {
     
-    if([self.fields[indexPath.row] isEqualToString:@"Date"]){
-        
-        [cell setAccessoryView:self.reportDateField];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
-        NSDate *date = [NSDate date];
-        NSString *dateString = [dateFormatter stringFromDate:date];
-        
-        self.reportDateField.inputView = self.datePicker;
-        self.reportDateField.inputAccessoryView = self.toolbar;
-        self.reportDateField.text = dateString;
+    NSLog(@"indexPath.section %ld", (long)indexPath.section);
+    
+    if (indexPath.section == 0) {
+        if([self.fields[indexPath.row] isEqualToString:@"Date"]){
+            
+            [cell setAccessoryView:self.reportDateField];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+            NSDate *date = [NSDate date];
+            NSString *dateString = [dateFormatter stringFromDate:date];
+            
+            self.reportDateField.inputView = self.datePicker;
+            self.reportDateField.inputAccessoryView = self.toolbar;
+            self.reportDateField.text = dateString;
+            
+            cell.backgroundColor = [UIColor whiteColor];
+        }
+        else if([self.fields[indexPath.row] isEqualToString:@"Comments"]){
+            cell.backgroundColor = [UIColor whiteColor];
+            [cell setAccessoryView:self.commentsField];
+            [self.commentsField setReturnKeyType:UIReturnKeyDone];
+        }
     }
-    else if([self.fields[indexPath.row] isEqualToString:@"Comments"]){
-        [cell setAccessoryView:self.commentsField];
-        [self.commentsField setReturnKeyType:UIReturnKeyDone];
+    else if (indexPath.section == 1) {
+        
+        NSLog(@"self.groups[indexPath.row] %@", self.groups[indexPath.row]);
+        
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.textLabel.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:14.0];
+        cell.textLabel.textColor = [UIColor darkGrayColor];
+        
+        NSString *organizationName = self.groups[indexPath.row][@"properties"][@"organization"][@"properties" ][@"name"];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"%@", organizationName];
+        UISwitch *groupSwitch = [[UISwitch alloc] init];
+        [groupSwitch addTarget:self action:@selector(setState:) forControlEvents:UIControlEventValueChanged];
+        [cell setAccessoryView:groupSwitch];
+        
     }
 
+}
+
+- (void)setState:(id)sender
+{
+    CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
+
+    BOOL switchIsOn = [sender isOn];
+    
+    NSString *organizationName = self.groups[indexPath.row][@"properties"][@"organization"][@"properties" ][@"name"];
+    
+    if (switchIsOn) {
+        NSLog(@"Adding group %@ to Report", organizationName);
+        [self.groupsField addObject:self.groups[indexPath.row]];
+    }
+    else {
+        NSLog(@"Removing group %@ from Report", organizationName);
+        [self.groupsField removeObject:self.groups[indexPath.row]];
+    }
 }
 
 @end

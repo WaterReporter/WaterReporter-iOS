@@ -241,6 +241,15 @@
         [json setObject:@"true" forKey:@"is_public"];
         [json setObject:@[@{@"id": responseObject[@"id"]}] forKey:@"images"];
         
+        //
+        // Prepare Groups
+        //
+        NSLog(@"report.groups %@", report.groups);
+        
+        for (NSDictionary *group in report.groups) {
+            NSLog(@"groupgroupgroupgroupgroupgroupgroupgroup %@", group);
+        }
+        
         [self.manager POST:@"http://stg.api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
     
             NSLog(@"responseObject: %@", responseObject[@"id"]);

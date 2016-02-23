@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 4.3">
+    <entity name="Group" representedClassName="Group" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="is_admin" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="is_member" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="joined_on" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="organization_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="user_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="Report" representedClassName="Report" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="feature_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -8,6 +16,7 @@
         <attribute name="report_date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="report_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Group" syncable="YES"/>
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="report" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
@@ -19,7 +28,8 @@
         <relationship name="report" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Report" inverseName="owner" inverseEntity="Report" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Report" positionX="-54" positionY="18" width="128" height="165"/>
-        <element name="User" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="Group" positionX="-153" positionY="27" width="128" height="133"/>
+        <element name="Report" positionX="-315" positionY="-198" width="128" height="178"/>
+        <element name="User" positionX="-522" positionY="9" width="128" height="135"/>
     </elements>
 </model>

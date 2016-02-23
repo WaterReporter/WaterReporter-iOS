@@ -279,7 +279,7 @@
 - (void)loadMapMarkers
 {
   
-    NSString *url = @"http://stg.api.waterreporter.org/v1/data/organization";
+    NSString *url = @"http://stg.api.waterreporter.org/v1/data/report";
     
     NSLog(@"Load map markers");
     

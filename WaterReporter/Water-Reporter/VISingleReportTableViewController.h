@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "PhotoViewController.h"
+#import "Lockbox.h"
 #import "Report.h"
 #import "User.h"
 #import "UIImage+ResizeMagick.h"
@@ -25,6 +26,12 @@
 @property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, strong) NSString *userEmail;
 @property (nonatomic, strong) UILabel *loadingLabel;
+
+@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+@property (strong, nonatomic) AFJSONRequestSerializer *serializer;
+
+@property (strong, nonatomic) NSArray *groups;
+@property (strong, nonatomic) NSArray *usersGroups;
 
 @property (nonatomic, strong) MBProgressHUD *hud;
 

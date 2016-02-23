@@ -13,6 +13,7 @@
 @interface VIGroupsTableViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (strong, nonatomic) NSArray *groups;
+@property (strong, nonatomic) NSArray *usersGroups;
 @property (strong, nonatomic) UIToolbar *toolbar;
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;

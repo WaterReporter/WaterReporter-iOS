@@ -11,7 +11,9 @@
 #import <MBXMapKit/MBXMapKit.h>
 #import "VILocationViewController.h"
 #import "Report.h"
+#import "Group.h"
 #import "User.h"
+#import "Lockbox.h"
 
 @interface VIFormTableViewController : UITableViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate,CLLocationManagerDelegate, MKMapViewDelegate>
 
@@ -28,6 +30,7 @@
 
 // Template fields
 @property (strong, nonatomic) NSArray *fields;
+@property (strong, nonatomic) NSArray *groups;
 
 @property (strong, nonatomic) NSArray *reportFields;
 
@@ -37,6 +40,10 @@
 @property (strong, nonatomic) UITextField *commentsField;
 @property (strong, nonatomic) UITextField *geometryField;
 @property (strong, nonatomic) UITextField *imageField;
+@property (strong, nonatomic) NSMutableArray *groupsField;
+
+@property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
+@property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
 
 // Location Information

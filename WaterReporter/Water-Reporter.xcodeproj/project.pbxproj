@@ -32,6 +32,7 @@
 		C12D7B531925533000C2B9F5 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12D7B501925533000C2B9F5 /* PhotoViewController.m */; };
 		C12E243B1928EE05004A7FDD /* VILoginTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */; };
 		C12E243E1928EE95004A7FDD /* VITutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C12E243D1928EE95004A7FDD /* VITutorialViewController.m */; };
+		C16B6F7F1C7534F800580E8E /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = C16B6F7E1C7534F800580E8E /* Group.m */; };
 		C189D6A119802BFB005E4848 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C189D6A019802BFB005E4848 /* MapKit.framework */; };
 		C1B7D30A193CB2AB0057E735 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C1B7D309193CB2AB0057E735 /* Settings.bundle */; };
 		C1D2A6871C5AA5B20087DEAE /* VIGroupsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D2A6861C5AA5B20087DEAE /* VIGroupsTableViewController.m */; };
@@ -93,6 +94,8 @@
 		C12E243A1928EE05004A7FDD /* VILoginTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VILoginTableViewController.m; sourceTree = "<group>"; };
 		C12E243C1928EE95004A7FDD /* VITutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VITutorialViewController.h; sourceTree = "<group>"; };
 		C12E243D1928EE95004A7FDD /* VITutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VITutorialViewController.m; sourceTree = "<group>"; };
+		C16B6F7B1C7534CF00580E8E /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
+		C16B6F7E1C7534F800580E8E /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
 		C189D6A019802BFB005E4848 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C1B7D309193CB2AB0057E735 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		C1D2A6861C5AA5B20087DEAE /* VIGroupsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIGroupsTableViewController.m; sourceTree = "<group>"; };
@@ -227,6 +230,8 @@
 				C12D7B4A1925528400C2B9F5 /* User.m */,
 				94775474192F8BEA00EE4A63 /* VIPointAnnotation.h */,
 				94775475192F8BEA00EE4A63 /* VIPointAnnotation.m */,
+				C16B6F7B1C7534CF00580E8E /* Group.h */,
+				C16B6F7E1C7534F800580E8E /* Group.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -408,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C16B6F7F1C7534F800580E8E /* Group.m in Sources */,
 				C12D7B3F1925390300C2B9F5 /* VIReportsTableViewController.m in Sources */,
 				C12D7B4B1925528400C2B9F5 /* User.m in Sources */,
 				C12BF8ED1B8F9B52009174BD /* VIRegistrationViewController.m in Sources */,
