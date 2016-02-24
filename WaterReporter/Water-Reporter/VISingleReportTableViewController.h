@@ -21,7 +21,7 @@
 @interface VISingleReportTableViewController : UITableViewController
 
 @property (nonatomic, strong) NSString *reportID;
-@property (nonatomic, strong) Report *report;
+@property (nonatomic, strong) NSDictionary *report;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, strong) NSString *userEmail;
@@ -35,7 +35,12 @@
 
 @property (nonatomic, strong) MBProgressHUD *hud;
 
+@property (nonatomic, strong) NSDictionary *tempGroup;
+
 - (void) setupStaticSingleViewDetails:(NSDictionary *)report;
+
+-(void)joinSelectedGroup:(id)sender selectedGroup:(NSDictionary *)selectedGroup;
+-(void)leaveSelectedGroup:(id)sender selectedGroup:(NSDictionary *)selectedGroup;
 
 - (BOOL)userIsMemberOfGroup:(NSInteger)groupId;
 

@@ -49,7 +49,7 @@
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
             
-            NSDictionary *reportResponseObject = responseObject;
+            self.report = responseObject;
             
             User *user = [User MR_findFirst];
             
@@ -59,7 +59,7 @@
                 NSLog(@"loadUsersGroups responseObject %@", responseObject);
                 self.usersGroups = responseObject[@"properties"][@"groups"];
                 
-                [self setupStaticSingleViewDetails:reportResponseObject];
+                [self setupStaticSingleViewDetails:self.report];
                 
                 [self.tableView reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -87,8 +87,6 @@
     
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UserGroupsLoaded:) name:@"TestNotification" object:nil];
-
     [self loadUsersGroups];
     [self loadGroups];
 
@@ -102,7 +100,7 @@
     // Setup Title
     //
     NSString *reportType = @"Unknown";
-
+    
     if (report[@"properties"][@"territory"] != [NSNull null]) {
         if (report[@"properties"][@"territory"][@"properties"][@"huc_6_name"] != [NSNull null]) {
             reportType = report[@"properties"][@"territory"][@"properties"][@"huc_6_name"];
@@ -146,7 +144,7 @@
     
     [self loadAvatar:avatar];
     
-
+    
     //
     // Actual Report title now
     //
@@ -194,7 +192,7 @@
     }
     
     submittedDateLabel.textColor = [UIColor lightGrayColor];
-
+    
     NSString *dateString = report[@"properties"][@"report_date"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
@@ -211,7 +209,7 @@
     submittedDateLabel.text = [NSString stringWithFormat:@"on %@", formattedDateString];
     
     [self.view addSubview:submittedDateLabel];
-
+    
     //
     // Comment
     //
@@ -251,28 +249,28 @@
         } else {
             photo = [NSURL URLWithString:report[@"properties"][@"images"][0][@"properties"][@"original"]];
         }
-    
+        
         NSData * imageData = [[NSData alloc] initWithContentsOfURL:photo];
         UIImage *image = [UIImage imageWithData:imageData scale:1.0];
         self.originalImage = [UIImage imageWithCGImage:[image CGImage] scale:1.0 orientation: UIImageOrientationUp];
         
         UIImage *resizedImage;
-    
+        
         if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
             resizedImage = [self.originalImage resizedImageByMagick:@"745x550#"];
         }else{
             resizedImage = [self.originalImage resizedImageByMagick:@"300x235#"];
         }
-    
+        
         self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
         if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
             self.imageView.frame = CGRectMake(10, 220, resizedImage.size.width, resizedImage.size.height);
         }else{
             self.imageView.frame = CGRectMake(10, 142, resizedImage.size.width, resizedImage.size.height);
         }
-    
+        
         [self.imageView setUserInteractionEnabled:YES];
-    
+        
         UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
         [singleTap setNumberOfTapsRequired:1];
         [self.imageView addGestureRecognizer:singleTap];
@@ -290,17 +288,21 @@
         for (NSDictionary *group in report[@"properties"][@"groups"]) {
             CGRect groupsFrame;
             groupsFrame = CGRectMake(10, yPosition, 302, rowHeight);
-
+            
             UILabel *groupLabel = [[UILabel alloc] initWithFrame:groupsFrame];
             groupLabel.font = [UIFont systemFontOfSize:12.0];
             groupLabel.text = group[@"properties"][@"name"];
             groupLabel.numberOfLines = 1;
+            groupLabel.userInteractionEnabled = YES;
             
             yPosition = yPosition+rowHeight;
-
+            
             if ([self userIsMemberOfGroup:(int)group[@"id"]]) {
-                NSLog(@"User is a member of group %@ already, show the leave button", group[@"id"]);
+                NSLog(@"User is a member of group %d already, show the leave button", [[group objectForKey:@"id"] integerValue]);
+                
                 UIButton *leaveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                leaveButton.tag = [[group objectForKey:@"id"] integerValue];
+
                 [leaveButton addTarget:self action:@selector(leaveSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [leaveButton setTitle:@"LEAVE" forState:UIControlStateNormal];
@@ -316,8 +318,9 @@
                 [groupLabel bringSubviewToFront:leaveButton];
             }
             else {
-                NSLog(@"User is not a member of group %@, show the join button", group[@"id"]);
+                NSLog(@"User is not a member of group %d, show the join button", [[group objectForKey:@"id"] integerValue]);
                 UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                joinButton.tag = [[group objectForKey:@"id"] integerValue];
                 [joinButton addTarget:self action:@selector(joinSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
@@ -335,7 +338,7 @@
             
             [self.view addSubview:groupLabel];
         }
-
+        
     }
     
     [self.loadingLabel removeFromSuperview];
@@ -412,18 +415,14 @@
     return dateString;
 }
 
--(void)joinSelectedGroup:(id)sender
+-(void)joinSelectedGroup:(UIButton *)sender
 {
-    CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
+    NSNumber *groupId = [NSNumber numberWithInt:sender.tag];
     
-    NSLog(@"joinSelectedGroup %@", self.groups[indexPath.row][@"id"]);
-    
+    UILabel *cell = (UILabel *)[(UIView *)sender superview];
+    NSLog(@"joinSelectedGroup cell %@", cell);
+
     User *user = [User MR_findFirst];
-    
-    NSLog(@"user: %@", user);
-    NSLog(@"email: %@", [user valueForKey:@"email"]);
-    NSLog(@"user_id: %@", [user valueForKey:@"user_id"]);
     
     NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
     
@@ -443,37 +442,25 @@
         NSLog(@"returned groups %@", groups);
         
         NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
-        [newGroup setValue:self.groups[indexPath.row][@"id"] forKey:@"organization_id"];
+        
+        [newGroup setValue:groupId forKey:@"organization_id"];
         [newGroup setValue:[user valueForKey:@"user_id"] forKey:@"user_id"];
         [newGroup setValue:[self dateTodayAsString] forKey:@"joined_on"];
         [groups addObject:newGroup];
         
         NSLog(@"modified groups %@", groups);
         
-        //
-        // Prepare Organization Object and Assign to Organizations
-        //
-        //        NSMutableArray *organization = [[NSMutableArray alloc] init];
-        //        [organization addObjectsFromArray:responseObject[@"properties"][@"organization"]];
-        //        NSLog(@"returned organizations %@", organization);
-        //
-        //        NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
-        //        [newOrganization setValue:self.groups[indexPath.row][@"id"] forKey:@"id"];
-        //        [organization addObject:newOrganization];
-        //
-        //        NSLog(@"modified organization %@", organization);
-        
-        
         [json setValue:groups forKey:@"groups"];
         
         [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            NSString *message = [NSString stringWithFormat:@"You have successfully joined the %@ group", self.groups[indexPath.row][@"properties"][@"name"]];
+            NSString *groupName = [self whichGroup:sender.tag];
+            
+            NSString *message = [NSString stringWithFormat:@"You have successfully joined the %@ group", groupName];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
-            
-            [self loadUsersGroups];
-            [self loadGroups];
+
+            [self refreshView];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
         }];
@@ -481,6 +468,12 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"failure responseObject %@", error);
     }];
+    
+}
+
+-(void)refreshView {
+    
+    [self viewDidLoad];
     
 }
 
@@ -520,12 +513,22 @@
     }];
 }
 
--(void)leaveSelectedGroup:(id)sender
+//-(void)joinSelectedGroup:(UIButton *)sender
+//{
+//    NSLog(@"joinSelectedGroup > sender.tag %ld", (long)sender.tag);
+//    NSLog(@"joinSelectedGroup > superview %@", sender.superview);
+//}
+//
+//-(void)leaveSelectedGroup:(UIButton *)sender {
+//    NSLog(@"leaveSelectedGroup > sender.tag %ld", (long)sender.tag);
+//}
+
+
+-(void)leaveSelectedGroup:(UIButton *)sender
 {
-    CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
+    NSInteger groupId = sender.tag;
     
-    NSLog(@"leaveSelectedGroup %@", self.groups[indexPath.row][@"id"]);
+    NSLog(@"leaveSelectedGroup superview %@", sender.superview);
     
     User *user = [User MR_findFirst];
     
@@ -542,7 +545,7 @@
         NSLog(@"returned groups %@", groups);
         
         for (NSDictionary *group in responseObject[@"properties"][@"groups"]) {
-            if (group[@"properties"][@"organization_id"] != self.groups[indexPath.row][@"id"]) {
+            if ([[group[@"properties"] objectForKey:@"organization_id"] integerValue] != groupId) {
                 NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
                 [newGroup setValue:group[@"id"] forKey:@"id"];
                 [groups addObject:newGroup];
@@ -550,30 +553,17 @@
         }
         NSLog(@"modified groups %@", groups);
         
-        //
-        // Prepare Organization Object and Assign to Organizations
-        //
-        //        NSMutableArray *organization = [[NSMutableArray alloc] init];
-        //        [organization addObjectsFromArray:responseObject[@"properties"][@"organization"]];
-        //        NSLog(@"returned organizations %@", organization);
-        //
-        //        NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
-        //        [newOrganization setValue:self.groups[indexPath.row][@"id"] forKey:@"id"];
-        //        [organization addObject:newOrganization];
-        //
-        //        NSLog(@"modified organization %@", organization);
-        
-        
         [json setValue:groups forKey:@"groups"];
         
         [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            NSString *message = [NSString stringWithFormat:@"You have successfully left the %@ group", self.groups[indexPath.row][@"properties"][@"name"]];
+            NSString *groupName = [self whichGroup:sender.tag];
+
+            NSString *message = [NSString stringWithFormat:@"You have successfully left the %@ group", groupName];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
             
-            [self loadUsersGroups];
-            [self loadGroups];
+            [self refreshView];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
         }];
@@ -586,17 +576,35 @@
 
 - (BOOL)userIsMemberOfGroup:(NSInteger)groupId {
     
-    NSLog(@"userIsMemberOfGroup %@", self.usersGroups);
+    NSLog(@"userIsMemberOfGroup %@, %lu", self.usersGroups, (unsigned long)[self.usersGroups count]);
     
-    for (NSDictionary *group in self.usersGroups) {
-        NSLog(@"groupId %ld is equal to group[properties][organization_id] %@??", (long)groupId, group[@"properties"][@"organization_id"]);
-        
-        if (groupId == (int)group[@"properties"][@"organization_id"]) {
-            return true;
+    if ([self.usersGroups count] != 0) {
+        for (NSDictionary *group in self.usersGroups) {
+            NSLog(@"groupId %ld is equal to group[properties][organization_id] %@??", (long)groupId, group[@"properties"][@"organization_id"]);
+            
+            if (groupId == (int)group[@"properties"][@"organization_id"]) {
+                return true;
+            }
+        }
+    }    
+    
+    return false;
+}
+
+-(NSString *)whichGroup:(NSInteger)groupId {
+    
+    NSLog(@"whichGroup %ld", (long)groupId);
+    
+    if ([self.report count] != 0) {
+        for (NSDictionary *group in self.report[@"properties"][@"groups"]) {
+            NSLog(@"group id check %@", group);
+            if ([group[@"id"] integerValue] == groupId) {
+                return group[@"properties"][@"name"];
+            }
         }
     }
     
-    return false;
+    return @"Uknown Group";
 }
 
 @end
