@@ -399,6 +399,11 @@
 
 - (void)selectCameraOrLibrary
 {
+    //
+    // Make sure that all editing is closed prior to displaying the UIActionSheet
+    //
+    [self.view endEditing:YES];
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     
     actionSheet.delegate = self;
