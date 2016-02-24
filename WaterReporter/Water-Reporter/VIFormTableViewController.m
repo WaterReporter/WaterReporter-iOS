@@ -726,10 +726,14 @@
     if (switchIsOn) {
         NSLog(@"Adding group %@ to Report", organizationName);
         [self.groupsField addObject:self.groups[indexPath.row]];
+        NSLog(@"Added group %@ to Report: self.groupsField", self.groupsField);
+
     }
     else {
         NSLog(@"Removing group %@ from Report", organizationName);
         [self.groupsField removeObject:self.groups[indexPath.row]];
+        NSLog(@"Revmoed group %@ to Report: self.groupsField", self.groupsField);
+        
     }
 }
 
