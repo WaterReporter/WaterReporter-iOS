@@ -37,4 +37,6 @@
 
 - (void) setupStaticSingleViewDetails:(NSDictionary *)report;
 
+- (BOOL)userIsMemberOfGroup:(NSInteger)groupId;
+
 @end

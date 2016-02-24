@@ -48,7 +48,26 @@
         manager.responseSerializer = [AFJSONResponseSerializer serializer];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-            [self setupStaticSingleViewDetails:responseObject];
+            
+            NSDictionary *reportResponseObject = responseObject;
+            
+            User *user = [User MR_findFirst];
+            
+            NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+            
+            [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"loadUsersGroups responseObject %@", responseObject);
+                self.usersGroups = responseObject[@"properties"][@"groups"];
+                
+                [self setupStaticSingleViewDetails:reportResponseObject];
+                
+                [self.tableView reloadData];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"Could not retrieve organizations");
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                [alert show];
+            }];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             NSLog(@"Error: %@", error);
         }];
@@ -68,6 +87,8 @@
     
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(UserGroupsLoaded:) name:@"TestNotification" object:nil];
+
     [self loadUsersGroups];
     [self loadGroups];
 
@@ -472,6 +493,9 @@
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"loadUsersGroups responseObject %@", responseObject);
         self.usersGroups = responseObject[@"properties"][@"groups"];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UserGroupsLoaded" object:self];
+        
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Could not retrieve organizations");
@@ -559,7 +583,6 @@
     }];
     
 }
-
 
 - (BOOL)userIsMemberOfGroup:(NSInteger)groupId {
     

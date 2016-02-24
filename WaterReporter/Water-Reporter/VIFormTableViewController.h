@@ -64,4 +64,6 @@
 
 @property (strong, nonatomic) NSString *path;
 
+@property (strong, nonatomic) NSMutableDictionary *groupSwitches;
+
 @end

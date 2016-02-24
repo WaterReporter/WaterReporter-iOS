@@ -27,6 +27,7 @@
     self.title = @"";
     
     self.template = [[NSString alloc] init];
+    self.groupSwitches = [[NSMutableDictionary alloc] init];
 
     self.reportFields = @[@"Date", @"Comments"];
     self.groupsField = [[NSMutableSet alloc] init];
@@ -281,7 +282,8 @@
     self.reportDateField.text = dateString;
     self.commentsField.text = nil;
     self.path = nil;
-    self.groupsField = [[NSMutableSet alloc] init];
+    self.groupsField = nil;
+    self.groupSwitches = nil;
     self.reportLatitude = self.currentLocation.coordinate.latitude;
     self.reportLongitude = self.currentLocation.coordinate.longitude;
 }
@@ -711,9 +713,17 @@
         NSString *organizationName = self.groups[indexPath.row][@"properties"][@"organization"][@"properties" ][@"name"];
         
         cell.textLabel.text = [NSString stringWithFormat:@"%@", organizationName];
-        UISwitch *groupSwitch = [[UISwitch alloc] init];
-        [groupSwitch addTarget:self action:@selector(setState:) forControlEvents:UIControlEventValueChanged];
-        [cell setAccessoryView:groupSwitch];
+        
+        NSString *groupSwitchKey = self.groups[indexPath.row][@"properties"][@"id"];
+        
+        if (self.groupSwitches[groupSwitchKey]) {
+            NSLog(@"groupSwitch already exists!!!! %@", self.groupSwitches[groupSwitchKey]);
+        } else {
+            [self.groupSwitches setValue:[[UISwitch alloc] init] forKey:groupSwitchKey];
+            
+            [self.groupSwitches[groupSwitchKey] addTarget:self action:@selector(setState:) forControlEvents:UIControlEventValueChanged];
+            [cell setAccessoryView:self.groupSwitches[groupSwitchKey]];
+        }
         
     }
 
@@ -727,16 +737,19 @@
     BOOL switchIsOn = [sender isOn];
     
     NSString *organizationName = self.groups[indexPath.row][@"properties"][@"organization"][@"properties" ][@"name"];
-    
+    NSString *groupSwitchKey = self.groups[indexPath.row][@"properties"][@"id"];
+
     if (switchIsOn) {
         NSLog(@"Adding group %@ to Report", organizationName);
         [self.groupsField addObject:self.groups[indexPath.row]];
+        [self.groupSwitches[groupSwitchKey] setOn:YES];
         NSLog(@"Added group %@ to Report: self.groupsField", self.groupsField);
 
     }
     else {
         NSLog(@"Removing group %@ from Report", organizationName);
         [self.groupsField removeObject:self.groups[indexPath.row]];
+        [self.groupSwitches[groupSwitchKey] setOn:NO];
         NSLog(@"Revmoed group %@ to Report: self.groupsField", self.groupsField);
         
     }
