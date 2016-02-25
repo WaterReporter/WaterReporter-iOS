@@ -9,18 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
-#import "VITutorialViewController.h"
 #import "User.h"
 #import "MBProgressHUD.h"
+#import "VIGroupsTableViewController.h"
 
-@class VITutorialViewController;
+@class VIGroupsTableViewController;
 
 @interface VIRegistrationViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) User *user;
 @property (strong, nonatomic) UIToolbar *toolbar;
 
-@property (strong, nonatomic) VITutorialViewController *tutorialVC;
+//@property (strong, nonatomic) VITutorialViewController *tutorialVC;
 
 @property (strong, nonatomic) UITextField *firstNameField;
 @property (strong, nonatomic) UITextField *lastNameField;
@@ -37,5 +37,7 @@
 @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
 @property (nonatomic, strong) MBProgressHUD *hud;
+
+@property (strong, nonatomic) VIGroupsTableViewController *groupsView;
 
 @end

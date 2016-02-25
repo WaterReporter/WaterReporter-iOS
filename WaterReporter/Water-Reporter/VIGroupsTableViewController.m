@@ -57,11 +57,11 @@
     //
     //
     if (self.viewControllerActivatedFromProfilePage == 1) {
-        UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelGroups)];
+        UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneGroups)];
         
         self.navigationItem.rightBarButtonItem = cancelItem;
     } else {
-        UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelGroups)];
+        UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Skip" style:UIBarButtonItemStyleBordered target:self action:@selector(skipGroups)];
         
         self.navigationItem.rightBarButtonItem = cancelItem;
     }
@@ -96,7 +96,7 @@
         
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Could not retrieve organization");
+        NSLog(@"loadGroups: Could not retrieve organization");
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
@@ -114,16 +114,22 @@
         self.usersGroups = responseObject[@"properties"][@"groups"];
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Could not retrieve organizations");
+        NSLog(@"loadUsersGroups: Could not retrieve organizations");
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }];
 }
 
-- (void)cancelGroups
+- (void)doneGroups
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)skipGroups
+{
+    self.tutorialView = [[VITutorialViewController alloc] init];
+    [self presentViewController:self.tutorialView animated:YES completion:nil];
 }
 
 

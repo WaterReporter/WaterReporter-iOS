@@ -272,6 +272,11 @@
 
 - (void) submitForm
 {
+    //
+    // Dismiss all keyboards and inputs
+    //
+    [self.view endEditing:YES];
+    
     
     __block BOOL isAccessTokenSaved = NO;
     NSMutableDictionary *json = [[NSMutableDictionary alloc] init];

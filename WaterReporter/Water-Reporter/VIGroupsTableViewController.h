@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
+#import "VITutorialViewController.h"
 #import "User.h"
 
+@class VITutorialViewController;
+
 @interface VIGroupsTableViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
+
+@property (strong, nonatomic) VITutorialViewController *tutorialView;
 
 @property (strong, nonatomic) NSArray *groups;
 @property (strong, nonatomic) NSArray *usersGroups;
@@ -24,7 +30,6 @@
 @property BOOL searchControllerWasActive;
 @property BOOL searchControllerSearchFieldWasFirstResponder;
 @property BOOL viewControllerActivatedFromProfilePage;
-
 
 -(void)cancelGroups;
 -(void)joinSelectedGroup:(id)sender;

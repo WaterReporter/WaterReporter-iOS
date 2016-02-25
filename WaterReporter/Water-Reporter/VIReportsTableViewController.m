@@ -184,7 +184,9 @@
         // user information hanging around if another user happened to be
         // temporarily logged into the device.
         //
-        [User MR_truncateAll];
+        [User MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
+        [Report MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
+        [Group MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
         
         //
         // Reset the New Feature message
