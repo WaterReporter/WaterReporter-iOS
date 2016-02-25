@@ -180,12 +180,97 @@
     return dateString;
 }
 
--(void)joinSelectedGroup:(id)sender
+- (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath
 {
+    
+    NSString *group = self.groups[indexPath.row][@"properties"][@"name"];
+    NSLog(@"configureCell %@", group);
+    
+    cell.textLabel.font = [UIFont systemFontOfSize:13.0];
+    cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:group attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:128.0/255.0 alpha:1.0]}];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    if ([self userIsMemberOfGroup:(int)self.groups[indexPath.row][@"id"]]) {
+        NSLog(@"User is a member of group %@ already, show the leave button", self.groups[indexPath.row][@"id"]);
+        UIButton *leaveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [leaveButton addTarget:self action:@selector(leaveSelectedGroupAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [leaveButton setTitle:@"LEAVE" forState:UIControlStateNormal];
+        [leaveButton setFrame:CGRectMake(0, 0, 48, 24)];
+        leaveButton.backgroundColor = [UIColor colorWithRed:212.0f/255.0f green:212.0f/255.0f blue:212.0f/255.0f alpha:1.0];
+        leaveButton.tintColor = [UIColor colorWithRed:22.0f/255.0f green:22.0f/255.0f blue:22.0f/255.0f alpha:1.0];
+        
+        [leaveButton setTitleColor:[UIColor colorWithRed:22.0f/255.0f green:22.0f/255.0f blue:22.0f/255.0f alpha:1.0] forState:UIControlStateSelected];
+        
+        [leaveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
+        
+        cell.accessoryView = leaveButton;
+    }
+    else {
+        NSLog(@"User is not a member of group %@, show the join button", self.groups[indexPath.row][@"id"]);
+        UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [joinButton addTarget:self action:@selector(joinSelectedGroupAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
+        [joinButton setFrame:CGRectMake(0, 0, 48, 24)];
+        joinButton.backgroundColor = [UIColor colorWithRed:0.4 green:0.74 blue:0.17 alpha:1];
+        joinButton.tintColor = [UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0];
+        
+        [joinButton setTitleColor:[UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0] forState:UIControlStateSelected];
+        
+        [joinButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
+        
+        cell.accessoryView = joinButton;
+    }
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"didSelectRowAtIndexPath::Group %@", self.groups[indexPath.row][@"properties"][@"name"]);
+    
+    NSDictionary *group = self.groups[indexPath.row];
+    
+    if ([self userIsMemberOfGroup:(int)group[@"id"]]) {
+        [self leaveSelectedGroup:group];
+    } else {
+        [self joinSelectedGroup:group];
+    }
+}
+
+//
+//
+//
+//
+// GROUP FUNCTIONALITY
+//
+//
+//
+//
+-(void)temporaryLoadingAccessoryView:(id)sender {
+    CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
+
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner setFrame:CGRectMake(0, 0, 10, 10)];
+    [spinner startAnimating];
+    cell.accessoryView = spinner;
+}
+
+-(void)joinSelectedGroupAction:(id)sender {
     CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
     
-    NSLog(@"joinSelectedGroup %@", self.groups[indexPath.row][@"id"]);
+    [self temporaryLoadingAccessoryView:sender];
+    [self joinSelectedGroup:self.groups[indexPath.row]];
+}
+
+-(void)joinSelectedGroup:(NSDictionary *)group
+{
+    NSLog(@"joinSelectedGroup %@", group[@"id"]);
     
     User *user = [User MR_findFirst];
     
@@ -211,35 +296,21 @@
         NSLog(@"returned groups %@", groups);
         
         NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
-        [newGroup setValue:self.groups[indexPath.row][@"id"] forKey:@"organization_id"];
+        [newGroup setValue:group[@"id"] forKey:@"organization_id"];
         [newGroup setValue:[user valueForKey:@"user_id"] forKey:@"user_id"];
         [newGroup setValue:[self dateTodayAsString] forKey:@"joined_on"];
         [groups addObject:newGroup];
         
         NSLog(@"modified groups %@", groups);
         
-        //
-        // Prepare Organization Object and Assign to Organizations
-        //
-        //        NSMutableArray *organization = [[NSMutableArray alloc] init];
-        //        [organization addObjectsFromArray:responseObject[@"properties"][@"organization"]];
-        //        NSLog(@"returned organizations %@", organization);
-        //
-        //        NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
-        //        [newOrganization setValue:self.groups[indexPath.row][@"id"] forKey:@"id"];
-        //        [organization addObject:newOrganization];
-        //
-        //        NSLog(@"modified organization %@", organization);
-        
-        
         [json setValue:groups forKey:@"groups"];
         
         [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            NSString *message = [NSString stringWithFormat:@"You have successfully joined the %@ group", self.groups[indexPath.row][@"properties"][@"name"]];
+            NSString *message = [NSString stringWithFormat:@"You have successfully joined the %@ group", group[@"properties"][@"name"]];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
-
+            
             [self loadUsersGroups];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
@@ -251,12 +322,17 @@
     
 }
 
--(void)leaveSelectedGroup:(id)sender
-{
+-(void)leaveSelectedGroupAction:(id)sender {
     CGPoint buttonOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonOriginInTableView];
     
-    NSLog(@"leaveSelectedGroup %@", self.groups[indexPath.row][@"id"]);
+    [self temporaryLoadingAccessoryView:sender];
+    [self leaveSelectedGroup:self.groups[indexPath.row]];
+}
+
+-(void)leaveSelectedGroup:(NSDictionary *)group
+{
+    NSLog(@"leaveSelectedGroup %@", group[@"id"]);
     
     User *user = [User MR_findFirst];
     
@@ -271,38 +347,24 @@
         //
         NSMutableArray *groups = [[NSMutableArray alloc] init];
         NSLog(@"returned groups %@", groups);
-
-        for (NSDictionary *group in responseObject[@"properties"][@"groups"]) {
-            if (group[@"properties"][@"organization_id"] != self.groups[indexPath.row][@"id"]) {
+        
+        for (NSDictionary *thisGroup in responseObject[@"properties"][@"groups"]) {
+            if (thisGroup[@"properties"][@"organization_id"] != group[@"id"]) {
                 NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
-                [newGroup setValue:group[@"id"] forKey:@"id"];
+                [newGroup setValue:thisGroup[@"id"] forKey:@"id"];
                 [groups addObject:newGroup];
             }
         }
         NSLog(@"modified groups %@", groups);
         
-        //
-        // Prepare Organization Object and Assign to Organizations
-        //
-        //        NSMutableArray *organization = [[NSMutableArray alloc] init];
-        //        [organization addObjectsFromArray:responseObject[@"properties"][@"organization"]];
-        //        NSLog(@"returned organizations %@", organization);
-        //
-        //        NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
-        //        [newOrganization setValue:self.groups[indexPath.row][@"id"] forKey:@"id"];
-        //        [organization addObject:newOrganization];
-        //
-        //        NSLog(@"modified organization %@", organization);
-        
-        
         [json setValue:groups forKey:@"groups"];
         
         [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
-            NSString *message = [NSString stringWithFormat:@"You have successfully left the %@ group", self.groups[indexPath.row][@"properties"][@"name"]];
+            
+            NSString *message = [NSString stringWithFormat:@"You have successfully left the %@ group", group[@"properties"][@"name"]];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
-
+            
             [self loadUsersGroups];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
@@ -311,52 +373,6 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"failure responseObject %@", error);
     }];
-    
-}
-
-- (void)configureCell:(UITableViewCell*)cell atIndex:(NSIndexPath*)indexPath
-{
-    
-    NSString *group = self.groups[indexPath.row][@"properties"][@"name"];
-    NSLog(@"configureCell %@", group);
-    
-    cell.textLabel.font = [UIFont systemFontOfSize:13.0];
-    cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:group attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:128.0/255.0 alpha:1.0]}];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    if ([self userIsMemberOfGroup:(int)self.groups[indexPath.row][@"id"]]) {
-        NSLog(@"User is a member of group %@ already, show the leave button", self.groups[indexPath.row][@"id"]);
-        UIButton *leaveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [leaveButton addTarget:self action:@selector(leaveSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [leaveButton setTitle:@"LEAVE" forState:UIControlStateNormal];
-        [leaveButton setFrame:CGRectMake(0, 0, 48, 24)];
-        leaveButton.backgroundColor = [UIColor colorWithRed:212.0f/255.0f green:212.0f/255.0f blue:212.0f/255.0f alpha:1.0];
-        leaveButton.tintColor = [UIColor colorWithRed:22.0f/255.0f green:22.0f/255.0f blue:22.0f/255.0f alpha:1.0];
-        
-        [leaveButton setTitleColor:[UIColor colorWithRed:22.0f/255.0f green:22.0f/255.0f blue:22.0f/255.0f alpha:1.0] forState:UIControlStateSelected];
-        
-        [leaveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
-        
-        cell.accessoryView = leaveButton;
-    }
-    else {
-        NSLog(@"User is not a member of group %@, show the join button", self.groups[indexPath.row][@"id"]);
-        UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [joinButton addTarget:self action:@selector(joinSelectedGroup:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [joinButton setTitle:@"JOIN" forState:UIControlStateNormal];
-        [joinButton setFrame:CGRectMake(0, 0, 48, 24)];
-        joinButton.backgroundColor = [UIColor colorWithRed:0.4 green:0.74 blue:0.17 alpha:1];
-        joinButton.tintColor = [UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0];
-        
-        [joinButton setTitleColor:[UIColor colorWithRed:252.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0] forState:UIControlStateSelected];
-        
-        [joinButton.titleLabel setFont:[UIFont boldSystemFontOfSize:11.0f]];
-        
-        cell.accessoryView = joinButton;
-    }
     
 }
 

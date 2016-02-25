@@ -32,6 +32,8 @@
 @property BOOL viewControllerActivatedFromProfilePage;
 
 -(void)cancelGroups;
--(void)joinSelectedGroup:(id)sender;
+- (BOOL)userIsMemberOfGroup:(NSInteger)groupId;
+-(void)joinSelectedGroup:(NSDictionary *)group;
+-(void)leaveSelectedGroup:(NSDictionary *)group;
 
 @end
