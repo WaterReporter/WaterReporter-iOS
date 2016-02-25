@@ -108,24 +108,13 @@
 
 - (void)dismissTutorial
 {
-
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasSeenNewFeatureGroups"] == 0) {
-//        //
-//        // Since the user has no groups, you should display the new feataure message.
-//        //       
-//        self.groupsView = [[VIGroupsTableViewController alloc] init];
-//        self.groupsView.viewControllerActivatedFromProfilePage = NO;
-//        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:self.groupsView];
-//        [self presentViewController:modalNav animated:NO completion:nil];
-//        
-//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasSeenNewFeatureGroups"];
-//    }
-//    else {
-//        [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
-//    }
-    
-    [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
-    
+    if (self.viewControllerActivatedFromLoginPage) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"SettingsShowTutorialOnLaunch"];
+        [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"SettingsShowTutorialOnLaunch"];
+        [[[[self presentingViewController] presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 
 @end

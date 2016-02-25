@@ -290,7 +290,8 @@
             self.user.email = self.emailField.text;
             
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"userSaved" object:nil];
+
             [self.manager POST:@"http://stg.api.waterreporter.org/v1/auth/remote" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 
                 NSString *accessToken = responseObject[@"access_token"];
@@ -320,31 +321,16 @@
                     [self.hud hide:YES];
                     
                     //
-                    // Hide the login and display the tutorial
-                    //
-//                    self.tutorialVC = [[VITutorialViewController alloc] init];
-//                    [self presentViewController:self.tutorialVC animated:YES completion:nil];
-                    
-                    //
                     // A User who is registering for the first time does not have any
                     // groups associated with their User account, because of this we need
                     // to display the VIGroupsTableViewController so that they have the
                     // opportunity to select a group to associate themselves with.
                     //
                     self.groupsView = [[VIGroupsTableViewController alloc] init];
-                    self.groupsView.viewControllerActivatedFromProfilePage = YES;
+                    self.groupsView.viewControllerActivatedFromProfilePage = NO;
                     UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:self.groupsView];
                     [self presentViewController:modalNav animated:NO completion:nil];
 
-                    self.user.user_id = responseObject[@"id"];
-                    self.user.first_name = responseObject[@"first_name"];
-                    self.user.last_name = responseObject[@"last_name"];
-                    self.user.email = responseObject[@"email"];
-                    
-                    [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"userSaved" object:nil];
-                    
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@"Error %@", error);
                 }];

@@ -21,4 +21,6 @@
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
+@property BOOL viewControllerActivatedFromLoginPage;
+
 @end

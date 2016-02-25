@@ -14,6 +14,8 @@
 #import "VIGroupsTableViewController.h"
 #import "User.h"
 
+@class VIGroupsTableViewController;
+
 @interface VIReportsTableViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic) BOOL isRefreshing;
@@ -22,8 +24,7 @@
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
 
-@property (strong, nonatomic) VIGroupsTableViewController *groupView;
-@property (strong, nonatomic) UINavigationController *groupNavigationController;
+@property (strong, nonatomic) VIGroupsTableViewController *groupsView;
 
 -(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id;
 

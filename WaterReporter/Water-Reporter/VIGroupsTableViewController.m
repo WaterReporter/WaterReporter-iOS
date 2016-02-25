@@ -56,7 +56,8 @@
     //
     //
     //
-    if (self.viewControllerActivatedFromProfilePage == 1) {
+    NSLog(@"self.viewControllerActivatedFromProfilePage? %hhd", self.viewControllerActivatedFromProfilePage);
+    if (self.viewControllerActivatedFromProfilePage) {
         UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneGroups)];
         
         self.navigationItem.rightBarButtonItem = cancelItem;
@@ -76,7 +77,6 @@
     // Load the Groups list
     //
     [self loadGroups];
-    [self loadUsersGroups];
 }
 
 - (void) setupToolbar
@@ -93,21 +93,22 @@
     [self.manager GET:@"http://stg.api.waterreporter.org/v1/data/organization?results_per_page=100" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         self.groups = responseObject[@"features"];
-        
+
+        [self loadUsersGroups];
+
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"loadGroups: Could not retrieve organization");
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
     }];
 }
 
 - (void) loadUsersGroups
 {
-    User *user = [User MR_findFirst];
+    User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
     
     NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    
+    NSLog(@"loadUsersGroups userEndpoint %@", userEndpoint);
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"loadUsersGroups responseObject %@", responseObject);
@@ -115,9 +116,6 @@
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"loadUsersGroups: Could not retrieve organizations");
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
     }];
 }
 
@@ -129,6 +127,7 @@
 - (void)skipGroups
 {
     self.tutorialView = [[VITutorialViewController alloc] init];
+    self.tutorialView.viewControllerActivatedFromLoginPage = NO;
     [self presentViewController:self.tutorialView animated:YES completion:nil];
 }
 

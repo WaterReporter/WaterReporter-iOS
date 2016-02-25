@@ -81,9 +81,6 @@
     //
     //
     [self setupFormToolbar];
-    
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"SettingsShowTutorialOnLaunch"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)didReceiveMemoryWarning
@@ -346,9 +343,14 @@
             //
             [self.hud hide:YES];
         
-            self.tutorialVC = [[VITutorialViewController alloc] init];
-            [self presentViewController:self.tutorialVC animated:YES completion:nil];
-        
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"]) {
+                self.tutorialVC = [[VITutorialViewController alloc] init];
+                self.tutorialVC.viewControllerActivatedFromLoginPage = YES;
+                [self presentViewController:self.tutorialVC animated:YES completion:nil];
+            } else {
+                [[self presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+            }
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSInteger statusCode = operation.response.statusCode;

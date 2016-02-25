@@ -64,13 +64,11 @@
 
 - (void) displayGroupsSelector {
 
-    self.groupView = [[VIGroupsTableViewController alloc] init];
-    self.groupView.viewControllerActivatedFromProfilePage = YES;
+    self.groupsView = [[VIGroupsTableViewController alloc] init];
+    self.groupsView.viewControllerActivatedFromProfilePage = YES;
     
-    self.groupNavigationController = [[UINavigationController alloc] initWithRootViewController:self.groupView];
-
-    [self presentViewController:self.groupNavigationController animated:YES completion:nil];
-
+    UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:self.groupsView];
+    [self presentViewController:modalNav animated:NO completion:nil];
 }
 
 - (BOOL)connected {
@@ -178,36 +176,39 @@
 - (void) userLogout
 {
     [self.manager POST:@"http://stg.api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        //
-        // Empty out the local user table because we shouldn't have other's
-        // user information hanging around if another user happened to be
-        // temporarily logged into the device.
-        //
-        [User MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
-        [Report MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
-        [Group MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
-        
-        //
-        // Reset the New Feature message
-        //
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasSeenNewFeatureGroups"];
-        
-        //
-        // Remove the Access Token
-        //
-        [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
-
-        //
-        // Kick the user back to the login page
-        //
-        VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
-        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
-        [self presentViewController:modalNav animated:NO completion:nil];
-        
+        [self userLogoutCallback];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        [self userLogoutCallback];
     }];
+
+}
+
+- (void)userLogoutCallback {
+    //
+    // Empty out the local user table because we shouldn't have other's
+    // user information hanging around if another user happened to be
+    // temporarily logged into the device.
+    //
+    [User MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
+    [Report MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
+    [Group MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
+    
+    //
+    // Reset the New Feature message
+    //
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasSeenNewFeatureGroups"];
+    
+    //
+    // Remove the Access Token
+    //
+    [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
+    
+    //
+    // Kick the user back to the login page
+    //
+    VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
+    UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+    [self presentViewController:modalNav animated:NO completion:nil];
 
 }
 
@@ -447,9 +448,7 @@
 {
     if (buttonIndex == 1)
     {
-        VIGroupsTableViewController *groupsView = [[VIGroupsTableViewController alloc] init];
-        UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:groupsView];
-        [self presentViewController:modalNav animated:NO completion:nil];
+        [self displayGroupsSelector];
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasSeenNewFeatureGroups"];
     }
