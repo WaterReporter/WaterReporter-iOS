@@ -308,7 +308,7 @@
                 [userInformation setObject:self.user.first_name forKey:@"first_name"];
                 [userInformation setObject:self.user.last_name forKey:@"last_name"];
                 
-                NSString *userUpdateURL = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", self.user.user_id];
+                NSString *userUpdateURL = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", self.user.user_id];
                 
                 [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
 

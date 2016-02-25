@@ -59,11 +59,25 @@
     [self updateNavigationController];
     [self setupFormTypes];
     [self setupFormFields];
+    [self loadUsersGroups];
 
     [self.tableView reloadData];
-    
-    [self loadUsersGroups];
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    
+    if ([self.groupSwitches count] == 0 || [[NSUserDefaults standardUserDefaults] boolForKey:@"HasUpdatedUserGroups"]) {
+        
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasUpdatedUserGroups"];
+
+        self.groupsField = [[NSMutableSet alloc] init];
+        self.groupSwitches = [[NSMutableDictionary alloc] init];
+        [self loadUsersGroups];
+    }
+    
+    [self.tableView reloadData];
+}
+
 
 - (void) loadUsersGroups
 {
@@ -71,12 +85,15 @@
     
     NSLog(@"user %@", user);
 
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"], @"/groups"];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"], @"/groups"];
     
     NSLog(@"userEndpoint %@", userEndpoint);
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.groups = responseObject[@"features"];
+
+        [self setupGroupFields];
+        
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -106,6 +123,22 @@
     self.commentsField = [self makeTextField:self.report.report_description placeholder:@"Comments"];
     self.commentsField.clearButtonMode = UITextFieldViewModeAlways;
 
+}
+
+-(void)setupGroupFields {
+    //
+    // Create Group Switches
+    //
+    for (NSDictionary *thisGroup in self.groups) {
+        NSString *groupSwitchKey = thisGroup[@"properties"][@"id"];
+        
+        if (!self.groupSwitches[groupSwitchKey]) {
+            [self.groupSwitches setValue:[[UISwitch alloc] init] forKey:groupSwitchKey];
+            [self.groupSwitches[groupSwitchKey] addTarget:self action:@selector(setState:) forControlEvents:UIControlEventValueChanged];
+        } else {
+            NSLog(@"groupSwitch already exists!!!! %@", self.groupSwitches[groupSwitchKey]);
+        }
+    }
 }
 
 - (void) setupFormToolbar
@@ -139,8 +172,6 @@
     //
 
     self.fields = [[NSArray alloc] initWithArray:self.reportFields];
-    
-    NSLog(@"self.fields %@", self.fields);
 }
 
 - (void) prepareMapForReport
@@ -273,6 +304,10 @@
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
+
+    [self resetFormContent];
+    [self.tabBarController dismissViewControllerAnimated:NO completion:nil];
+    [self.tabBarController setSelectedIndex:2];
 }
 
 - (void) resetFormContent
@@ -293,8 +328,6 @@
 
     if (self.path) {
         [self saveFormContent];
-        [self resetFormContent];
-        [self.tabBarController setSelectedIndex:2];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"You forgot a photo" message:@"It looks like you forgot to add a photo to your report, why not do that before submitting." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
@@ -413,7 +446,7 @@
     [actionSheet addButtonWithTitle:@"Choose Existing Photo"];
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
     
-    [actionSheet showInView:[self.view window]];
+    [actionSheet showInView:self.view];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -670,7 +703,7 @@
     // in a weird place within the field.
     //
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor whiteColor];
     
 	[self configureCell:cell atIndex:indexPath];
 
@@ -683,7 +716,7 @@
     
     if (indexPath.section == 0) {
         if([self.fields[indexPath.row] isEqualToString:@"Date"]){
-            
+            NSLog(@"Draw the date field");
             [cell setAccessoryView:self.reportDateField];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
@@ -697,34 +730,29 @@
             cell.backgroundColor = [UIColor whiteColor];
         }
         else if([self.fields[indexPath.row] isEqualToString:@"Comments"]){
+            NSLog(@"Draw the Comments field");
             cell.backgroundColor = [UIColor whiteColor];
             [cell setAccessoryView:self.commentsField];
             [self.commentsField setReturnKeyType:UIReturnKeyDone];
         }
     }
     else if (indexPath.section == 1) {
-        
-        NSLog(@"self.groups[indexPath.row] %@", self.groups[indexPath.row]);
-        
+        NSLog(@"Draw the UISwitch in the Cell for %@", self.groups[indexPath.row][@"id"]);
         cell.backgroundColor = [UIColor whiteColor];
         cell.textLabel.font = [UIFont fontWithName:@"ArialRoundedMTBold" size:14.0];
         cell.textLabel.textColor = [UIColor darkGrayColor];
+        cell.textLabel.text = self.groups[indexPath.row][@"properties"][@"organization"][@"properties" ][@"name"];
+        [cell setAccessoryView:self.groupSwitches[self.groups[indexPath.row][@"properties"][@"id"]]];
         
-        NSString *organizationName = self.groups[indexPath.row][@"properties"][@"organization"][@"properties" ][@"name"];
+        NSLog(@"setAccessoryView %@", cell.accessoryView);
         
-        cell.textLabel.text = [NSString stringWithFormat:@"%@", organizationName];
-        
-        NSString *groupSwitchKey = self.groups[indexPath.row][@"properties"][@"id"];
-        
-        if (self.groupSwitches[groupSwitchKey]) {
-            NSLog(@"groupSwitch already exists!!!! %@", self.groupSwitches[groupSwitchKey]);
-        } else {
-            [self.groupSwitches setValue:[[UISwitch alloc] init] forKey:groupSwitchKey];
-            
-            [self.groupSwitches[groupSwitchKey] addTarget:self action:@selector(setState:) forControlEvents:UIControlEventValueChanged];
-            [cell setAccessoryView:self.groupSwitches[groupSwitchKey]];
-        }
-        
+        // TESTING
+        //
+        //
+        //
+        //
+        //cell.autoresizingMask = YES;
+        //cell.accessoryView.hidden = NO;
     }
 
 }
@@ -740,7 +768,7 @@
     NSString *groupSwitchKey = self.groups[indexPath.row][@"properties"][@"id"];
 
     if (switchIsOn) {
-        NSLog(@"Adding group %@ to Report", organizationName);
+        NSLog(@"Adding group %@ to Report %@", organizationName, self.groups[indexPath.row]);
         [self.groupsField addObject:self.groups[indexPath.row]];
         [self.groupSwitches[groupSwitchKey] setOn:YES];
         NSLog(@"Added group %@ to Report: self.groupsField", self.groupsField);

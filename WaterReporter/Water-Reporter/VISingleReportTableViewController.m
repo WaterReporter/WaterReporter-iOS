@@ -53,7 +53,7 @@
             
             User *user = [User MR_findFirst];
             
-            NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+            NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
             
             [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"loadUsersGroups responseObject %@", responseObject);
@@ -91,6 +91,10 @@
     [self loadGroups];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareReport)];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void) setupStaticSingleViewDetails:(NSDictionary *)report
@@ -141,8 +145,6 @@
     if(report[@"properties"][@"owner"] != [NSNull null] && report[@"properties"][@"owner"][@"properties"][@"picture"] != [NSNull null]){
         avatar = report[@"properties"][@"owner"][@"properties"][@"picture"];
     }
-    
-    [self loadAvatar:avatar];
     
     
     //
@@ -263,6 +265,7 @@
         }
         
         self.imageView = [[UIImageView alloc] initWithImage:resizedImage];
+
         if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
             self.imageView.frame = CGRectMake(10, 220, resizedImage.size.width, resizedImage.size.height);
         }else{
@@ -271,23 +274,24 @@
         
         [self.imageView setUserInteractionEnabled:YES];
         
-        UITapGestureRecognizer *singleTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage)];
-        [singleTap setNumberOfTapsRequired:1];
-        [self.imageView addGestureRecognizer:singleTap];
         [self.view addSubview:self.imageView];
     }
     
     //
-    // Comment
+    // Groups
     //
     if (report[@"properties"][@"groups"]) {
         
-        float yPosition = self.imageView.frame.size.height+152;
+        float yPosition = self.imageView.frame.size.height;
         float rowHeight = 40;
         
         for (NSDictionary *group in report[@"properties"][@"groups"]) {
             CGRect groupsFrame;
-            groupsFrame = CGRectMake(10, yPosition, 302, rowHeight);
+            if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
+                groupsFrame = CGRectMake(20, yPosition+230, 302, rowHeight);
+            }else{
+                reportTypeFrame = CGRectMake(10, yPosition+152, 302, rowHeight);
+            }
             
             UILabel *groupLabel = [[UILabel alloc] initWithFrame:groupsFrame];
             groupLabel.font = [UIFont systemFontOfSize:12.0];
@@ -345,36 +349,6 @@
     [self.hud hide:YES];
 }
 
-- (void) showImage
-{
-    PhotoViewController *photoVC = [[PhotoViewController alloc] init];
-    
-    photoVC.image = self.originalImage;
-    
-    [self.navigationController pushViewController:photoVC animated:YES];
-}
-
-- (void) loadAvatar:(NSString *)imageUrl
-{
-    NSURL *imageURL = [NSURL URLWithString:imageUrl];
-    NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-
-    UIImageView *avatarView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData]];
-    
-    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
-        avatarView.frame = CGRectMake(630, 30, 120, 120);
-        avatarView.layer.cornerRadius = 60;
-    }else{
-        avatarView.frame = CGRectMake(260, 14, 52, 52);
-        avatarView.layer.cornerRadius = 26;
-    }
-    
-    avatarView.clipsToBounds = YES;
-    
-    [self.view addSubview:avatarView];
-    [self.view sendSubviewToBack:avatarView];
-}
-
 - (void) shareReport
 {
     
@@ -396,7 +370,7 @@
         [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
         [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor darkGrayColor]}];
     }];
-    
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -424,7 +398,7 @@
 
     User *user = [User MR_findFirst];
     
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
     
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -481,7 +455,7 @@
 {
     User *user = [User MR_findFirst];
     
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
     
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"loadUsersGroups responseObject %@", responseObject);
@@ -532,7 +506,7 @@
     
     User *user = [User MR_findFirst];
     
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
     
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

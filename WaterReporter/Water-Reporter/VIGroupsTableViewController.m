@@ -106,7 +106,7 @@
 {
     User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
     
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
     
     NSLog(@"loadUsersGroups userEndpoint %@", userEndpoint);
 
@@ -274,11 +274,7 @@
     
     User *user = [User MR_findFirst];
     
-    NSLog(@"user: %@", user);
-    NSLog(@"email: %@", [user valueForKey:@"email"]);
-    NSLog(@"user_id: %@", [user valueForKey:@"user_id"]);
-    
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
     
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -312,6 +308,7 @@
             [alert show];
             
             [self loadUsersGroups];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasUpdatedUserGroups"];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
         }];
@@ -336,7 +333,7 @@
     
     User *user = [User MR_findFirst];
     
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"http://stg.api.waterreporter.org/v1/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
     
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -366,6 +363,7 @@
             [alert show];
             
             [self loadUsersGroups];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasUpdatedUserGroups"];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
         }];

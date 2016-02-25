@@ -57,6 +57,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"viewDidAppear");
+
+//    [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
     [self refreshTableView];
     [self.tableView reloadData];
     [self verifyUserGroups];

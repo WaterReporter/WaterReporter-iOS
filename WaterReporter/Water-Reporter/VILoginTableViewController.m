@@ -348,6 +348,7 @@
                 self.tutorialVC.viewControllerActivatedFromLoginPage = YES;
                 [self presentViewController:self.tutorialVC animated:YES completion:nil];
             } else {
+                [self.tabBarController setSelectedIndex:0];
                 [[self presentingViewController] dismissViewControllerAnimated:NO completion:nil];
             }
             
