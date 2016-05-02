@@ -17,11 +17,11 @@
 {
     [super viewDidLoad];
     NSLog(@"viewDidLoad");
- 
+
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    
+
     self.title = @"Profile";
-    
+
     //
     //
     //
@@ -29,27 +29,27 @@
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
-    
+
     //
     //
     //
-    NSURL *baseURL = [NSURL URLWithString:@"http://stg.api.waterreporter.org/"];
+    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/v2/"];
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
-    
+
     [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     self.manager.requestSerializer = self.serializer;
-    
+
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
-    
+
 
     //
     //
     //
     UIBarButtonItem *groupsItem = [[UIBarButtonItem alloc] initWithTitle:@"Groups" style:UIBarButtonItemStylePlain target:self action:@selector(displayGroupsSelector)];
     UIBarButtonItem *logoutItem = [[UIBarButtonItem alloc] initWithTitle:@"Log out" style:UIBarButtonItemStylePlain target:self action:@selector(userLogout)];
-    
+
     self.navigationItem.leftBarButtonItem = groupsItem;
     self.navigationItem.rightBarButtonItem = logoutItem;
 
@@ -60,7 +60,7 @@
 
 //    [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:NO completion:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
-    
+
     [self refreshTableView];
     [self.tableView reloadData];
     [self verifyUserGroups];
@@ -70,7 +70,7 @@
 
     self.groupsView = [[VIGroupsTableViewController alloc] init];
     self.groupsView.viewControllerActivatedFromProfilePage = YES;
-    
+
     UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:self.groupsView];
     [self presentViewController:modalNav animated:NO completion:nil];
 }
@@ -87,10 +87,10 @@
 
 - (void) refreshTableView
 {
-    
+
     NSLog(@"refreshTableView");
     __weak typeof(self) weakSelf = self;
-    
+
     if ([self shouldAttemptSubmission]) {
         NSLog(@"Submission found, we need to attempt to submit them");
         if (!self.isRefreshing) {
@@ -125,11 +125,11 @@
 - (int) shouldAttemptSubmission
 {
     NSLog(@"shouldAttemptSubmission");
-    
+
     if ([self countUnsubmittedReports] == 0) {
         return false;
     }
-    
+
     return true;
 }
 
@@ -144,24 +144,24 @@
             [unsubmittedReports addObject:report];
         }
     }
-    
+
     NSLog(@"count of unsubmitted reports %d", unsubmittedReports.count);
     return unsubmittedReports.count;
 }
 
 -(void) refreshInvoked:(id)sender forState:(UIControlState)state {
-    
+
     NSLog(@"refreshInvoked");
-    
+
     [self refreshTableView];
 
 }
 
 - (void) submitReports
 {
-    
+
     NSLog(@"submitReports");
-    
+
 
     //
     // Make sure we have the most recent list of reports before trying to submit them to the database
@@ -174,12 +174,12 @@
             [self postReport:report];
         }
     }
-    
+
 }
 
 - (void) userLogout
 {
-    [self.manager POST:@"http://stg.api.waterreporter.org/v1/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.manager POST:@"https://api.waterreporter.org/v2/auth/logout" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self userLogoutCallback];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self userLogoutCallback];
@@ -196,17 +196,17 @@
     [User MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
     [Report MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
     [Group MR_truncateAllInContext:[NSManagedObjectContext MR_defaultContext]];
-    
+
     //
     // Reset the New Feature message
     //
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasSeenNewFeatureGroups"];
-    
+
     //
     // Remove the Access Token
     //
     [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
-    
+
     //
     // Kick the user back to the login page
     //
@@ -218,12 +218,12 @@
 
 - (void) postReport:(Report*)report
 {
-    
+
     NSLog(@"postReport");
 
     NSString *filePath = [NSHomeDirectory() stringByAppendingPathComponent:report.image];
     NSURL *imageURL = [NSURL fileURLWithPath:filePath];
-    
+
     //
     // After we save it to the system, we should send the user over to the "My Submission" tab
     // and clear all the form fields
@@ -231,34 +231,34 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd/yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:report.report_date];
-        
+
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
-    
-    [self.manager POST:@"http://stg.api.waterreporter.org/v1/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+
+    [self.manager POST:@"https://api.waterreporter.org/v2/media/image" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSError *error;
         [formData appendPartWithFileURL:imageURL name:@"image" fileName:filePath mimeType:@"image/jpg" error:&error];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         NSMutableDictionary *json= [[NSMutableDictionary alloc] init];
-        
+
         [json setValue:report.geometry forKey:@"geometry"];
         [json setObject:dateString forKey:@"report_date"];
         [json setObject:report.report_description forKey:@"report_description"];
         [json setObject:@"open" forKey:@"state"];
         [json setObject:@"true" forKey:@"is_public"];
         [json setObject:@[@{@"id": responseObject[@"id"]}] forKey:@"images"];
-        
+
         //
         // Prepare Groups
         //
         NSMutableArray *groupList = [[NSMutableArray alloc] init];
-        
+
         NSLog(@"report.groups to be transformed %lu", (unsigned long)[report.groups count]);
 
         for (Group *group in report.groups) {
             [groupList addObject:@{@"id": group.organization_id}];
         }
-        
+
         [json setObject:groupList forKey:@"groups"];
 
         NSLog(@"json before submission %@", json);
@@ -266,10 +266,10 @@
         //
         // Submit the final JSON object to the API
         //
-        [self.manager POST:@"http://stg.api.waterreporter.org/v1/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+        [self.manager POST:@"https://api.waterreporter.org/v2/data/report" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
             [self updateReportFeatureID:report response_id:responseObject[@"id"]];
-    
+
             if ([self countUnsubmittedReports] == 0) {
                 [self.refreshControl endRefreshing];
                 self.isRefreshing = false;
@@ -278,14 +278,14 @@
                 NSLog(@"We need to submit another one");
                 [self refreshTableView];
             }
-    
+
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Error: %@", error);
             [self.refreshControl endRefreshing];
             self.isRefreshing = false;
             [self.tableView reloadData];
         }];
-    
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"IMAGE ERROR %@", error);
     }];
@@ -295,19 +295,19 @@
 
 -(void) updateReportFeatureID:(Report *)report response_id:(NSNumber *)feature_id
 {
-   
+
     Report *thisReport = [Report MR_findFirstByAttribute:@"uuid" withValue:report.uuid];
     thisReport.feature_id = feature_id;
-    
+
     [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reportSaved" object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     self.reports = [[Report MR_findAllSortedBy:@"created" ascending:NO inContext:[NSManagedObjectContext MR_defaultContext]] mutableCopy];
-    
+
     [self enableTableRefresh];
     [self.tableView reloadData];
 }
@@ -336,11 +336,11 @@
 {
     static NSString *CellIdentifier = @"Cell";
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+
 	[self configureCell:cell atIndex:indexPath];
-    
+
     return cell;
 }
 
@@ -353,7 +353,7 @@
     NSString *dateString = [dateFormatter stringFromDate:report.report_date];
 
     NSString *text = [NSString stringWithFormat: @"Report on %@", dateString];
-    
+
     if (![self connected] && !report.feature_id) {
         cell.accessoryView = nil;
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -381,25 +381,25 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VISingleReportTableViewController *singleReportTableViewController = [[VISingleReportTableViewController alloc] init];
-    
+
     Report *report = self.reports[indexPath.row];
-    
+
     if (report.feature_id) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
+
         singleReportTableViewController.report = report;
         singleReportTableViewController.reportID = [report.feature_id stringValue];
-        
+
         [self.navigationController pushViewController:singleReportTableViewController animated:YES];
     } else {
         //
         // Let the user know why there was an error
         //
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Slow Down" message:@"We're still proccessing your report, you'll be able to see it shortly" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        
+
         [alert show];
     }
-    
+
 }
 
 // Override to support conditional editing of the table view.
@@ -412,13 +412,13 @@
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     [tableView beginUpdates];
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
+
         // Remove Report from TableView
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- 
+
         // Remove Report from database
         Report *report = self.reports[indexPath.row];
         [report MR_deleteEntity];
@@ -434,16 +434,16 @@
 }
 
 - (void)verifyUserGroups {
-    
+
     NSLog(@"verifyUserGroups");
-    
+
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasSeenNewFeatureGroups"] == 0) {
         //
         // Since the user has no groups, you should display the new feataure message.
         //
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Feature!" message:@"You can now join a WaterReporter group and associate your reports with that group." delegate:self cancelButtonTitle:@"Maybe later" otherButtonTitles:@"Join a group", nil];
         [alert show];
-        
+
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasSeenNewFeatureGroups"];
     }
 }
@@ -453,7 +453,7 @@
     if (buttonIndex == 1)
     {
         [self displayGroupsSelector];
-        
+
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasSeenNewFeatureGroups"];
     }
 }

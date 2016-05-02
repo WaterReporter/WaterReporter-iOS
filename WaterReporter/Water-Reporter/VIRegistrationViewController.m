@@ -16,19 +16,19 @@
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    
+
     if (self) {
         self.title = @"Register";
     }
-    
-    NSURL *baseURL = [NSURL URLWithString:@"http://stg.api.waterreporter.org/"];
-    
+
+    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/v2/"];
+
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
-    
+
     self.manager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    
+
     [Lockbox setString:nil forKey:kWaterReporterUserAccessToken];
 
     return self;
@@ -37,23 +37,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.user = [User MR_createEntity];
-    
+
     self.fieldArray = @[@"First Name", @"Last Name", @"Email", @"Password", @"Submit"];
-    
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     self.tableView.backgroundColor = [UIColor colorWithWhite:242.0/255.0f alpha:1.0f];
-    
+
     self.tableView.opaque = NO;
-    
+
     UIBarButtonItem *submitItem = [[UIBarButtonItem alloc] initWithTitle:@"Submit" style:UIBarButtonItemStylePlain target:self action:@selector(submitForm)];
-    
+
     self.navigationItem.rightBarButtonItem = submitItem;
 
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(closeForm)];
-    
+
     self.navigationItem.leftBarButtonItem = cancelItem;
 
     [self setupFormToolbar];
@@ -99,21 +99,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fieldCell"];
-    
+
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fieldCell"];
     }
-    
+
     //
     // We need this to ensure that we don't get a goofy gray overlay when we tap
     // in a weird place within the field.
     //
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     cell.backgroundColor = [UIColor clearColor];
-    
+
     if([self.fieldArray[indexPath.row] isEqualToString:@"First Name"]){
         self.firstNameField = [self makeTextField:self.user.first_name placeholder:self.fieldArray[indexPath.row]];
         self.firstNameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
@@ -139,17 +139,17 @@
         self.passwordField.secureTextEntry = YES;
         [cell addSubview:self.passwordField];
     }
-    
+
     return cell;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
+
     if (section == 0){
         return 96.0f;
     }
-    
+
     return 0.0f;
 }
 
@@ -158,12 +158,12 @@
     if (section == 0){
         // 1. The view for the header
         UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 96)];
-        
+
         // 2. Set a custom background color and a border
         headerView.backgroundColor = [UIColor clearColor];
         headerView.layer.borderWidth = 0.0;
-        
-        
+
+
         // 3. Add a label
         UILabel* headerLabel = [[UILabel alloc] init];
         headerLabel.frame = CGRectMake(0, 24, tableView.frame.size.width, 48);
@@ -173,14 +173,14 @@
         headerLabel.text = @"Don't have an account yet?\nFill out the fields below.";
         headerLabel.textAlignment = NSTextAlignmentCenter;
         headerLabel.numberOfLines = 2;
-        
+
         // 4. Add the label to the header view
         [headerView addSubview:headerLabel];
-        
+
         // 5. Finally return
         return headerView;
     }
-    
+
     return nil;
 }
 
@@ -188,11 +188,11 @@
                     placeholder:(NSString *)placeholder
 {
     UITextField *tf = [[UITextField alloc] init];
-    
+
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 35)];
     tf.leftView = paddingView;
     tf.leftViewMode = UITextFieldViewModeAlways;
-    
+
     tf.text = text;
     tf.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName:[UIColor lightGrayColor]}];
     //    tf.frame = CGRectMake(10, 10, 300, 35);
@@ -205,14 +205,14 @@
     tf.backgroundColor = [UIColor whiteColor];
     tf.font = [UIFont systemFontOfSize:14.0];
     tf.textColor = [UIColor darkGrayColor];
-    
+
     [tf setReturnKeyType:UIReturnKeyDone];
-    
-    
+
+
     [tf addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    
+
     return tf;
-    
+
 }
 
 - (void) textFieldDidEndEditing:(UITextField *)textField
@@ -241,10 +241,10 @@
     // Dismiss all keyboards and inputs
     //
     [self.view endEditing:YES];
-    
+
     __block BOOL isAccessTokenSaved = NO;
     NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
-    
+
     if ([self.firstNameField.text length] == 0 || [self.lastNameField.text length] == 0) {
         [[[UIAlertView alloc] initWithTitle:@"Missing Information" message:@"Please tell us your first and last name" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
@@ -252,54 +252,54 @@
         [[[UIAlertView alloc] initWithTitle:@"Missing Information" message:@"Don't forget to choose a password" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
     else if([self NSStringIsValidEmail:self.emailField.text]){
-        
+
         //
         // Setup up the loading indicator
         //
         self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         self.hud.mode = MBProgressHUDModeIndeterminate;
-        
+
         [self.view bringSubviewToFront:self.hud];
-        
+
         //
         // Disable the Submit button to ensure only one request is sent
         //
         self.navigationItem.rightBarButtonItem.enabled = NO;
-        
-        NSString *url = @"http://stg.api.waterreporter.org/v1/user/register";
-        
+
+        NSString *url = @"https://api.waterreporter.org/v2/user/register";
+
         //
         // Create our URL Parameters
         //
         [json setObject:self.emailField.text forKey:@"email"];
         [json setObject:self.passwordField.text forKey:@"password"];
-        
+
         [json setObject:@"token" forKey:@"response_type"];
         [json setObject:@"Ru8hamw7ixuCtsHs23Twf4UB12fyIijdQcLssqpd" forKey:@"client_id"];
-        [json setObject:@"http://stg.waterreporter.org/authorize" forKey:@"redirect_uri"];
+        [json setObject:@"https://www.waterreporter.org/authorize" forKey:@"redirect_uri"];
         [json setObject:@"user" forKey:@"scope"];
         [json setObject:@"json" forKey:@"state"];
-        
+
         [self.manager POST:url parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
+
             NSLog(@"REGISTRATION SUCCESSFULL %@", responseObject);
-            
+
             self.user.user_id = [NSNumber numberWithInt:[responseObject[@"response"][@"user"][@"id"] integerValue]];
             self.user.first_name = self.firstNameField.text;
             self.user.last_name = self.lastNameField.text;
             self.user.email = self.emailField.text;
-            
+
             [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"userSaved" object:nil];
 
-            [self.manager POST:@"http://stg.api.waterreporter.org/v1/auth/remote" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                
+            [self.manager POST:@"https://api.waterreporter.org/v2/auth/remote" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
                 NSString *accessToken = responseObject[@"access_token"];
-                
+
                 isAccessTokenSaved = [Lockbox setString:accessToken forKey:kWaterReporterUserAccessToken];
-                
+
                 NSLog(@"Log successful %@ %@", accessToken, responseObject);
-                
+
                 //
                 // Save User's first and last name
                 //
@@ -307,9 +307,9 @@
 
                 [userInformation setObject:self.user.first_name forKey:@"first_name"];
                 [userInformation setObject:self.user.last_name forKey:@"last_name"];
-                
+
                 NSString *userUpdateURL = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", self.user.user_id];
-                
+
                 [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
 
                 [self.manager PATCH:userUpdateURL parameters:(NSDictionary *)userInformation success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -319,7 +319,7 @@
                     // Hide the HUD/Loading Icon
                     //
                     [self.hud hide:YES];
-                    
+
                     //
                     // A User who is registering for the first time does not have any
                     // groups associated with their User account, because of this we need
@@ -336,12 +336,12 @@
                 }];
 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                
+
                 NSInteger statusCode = operation.response.statusCode;
                 NSInteger errorCode = error.code;
-                
+
                 NSString *statusMessage = @"";
-                
+
                 if (statusCode == 403) {
                     statusMessage = @"The email or password you provided was incorrect";
                 } else if (errorCode == -1009 || errorCode == -1004) {
@@ -350,58 +350,58 @@
                     statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
                     NSLog(@"ERROR::::%@", error);
                 }
-                
+
                 //
                 // Hide the HUD/Loading Icon
                 //
                 [self.hud hide:YES];
-                
+
                 //
                 // Re-enabled the Submit button so the user can change the incorrect items
                 // and resubmit the form.
                 //
                 self.navigationItem.rightBarButtonItem.enabled = YES;
-                
+
                 //
                 // Let the user know why there was an error
                 //
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                
+
                 [alert show];
             }];
-            
+
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+
             NSInteger errorCode = error.code;
-            
+
             NSString *statusMessage = @"";
-            
+
             if (errorCode == -1009 || errorCode == -1004) {
                 statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
             } else {
                 statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
                 NSLog(@"ERROR::::%@", error);
             }
-            
+
             //
             // Hide the HUD/Loading Icon
             //
             [self.hud hide:YES];
-            
+
             //
             // Re-enabled the Submit button so the user can change the incorrect items
             // and resubmit the form.
             //
             self.navigationItem.rightBarButtonItem.enabled = YES;
-            
+
             //
             // Let the user know why there was an error
             //
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            
+
             [alert show];
         }];
-        
+
     }
     //else display an alert that user must enter valid email
     else

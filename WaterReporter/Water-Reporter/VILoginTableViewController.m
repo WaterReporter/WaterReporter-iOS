@@ -20,9 +20,9 @@
     if (self) {
         self.title = @"Log in";
     }
-    
-    NSURL *baseURL = [NSURL URLWithString:@"http://stg.api.waterreporter.org/"];
-    
+
+    NSURL *baseURL = [NSURL URLWithString:@"https://api.waterreporter.org/v2/"];
+
     self.manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
     self.serializer = [AFJSONRequestSerializer serializer];
 
@@ -36,7 +36,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
-    
+
     NSLog(@"ACCESSTOKEN VALUE? %@", accessToken);
 
     if ([accessToken length] != 0) {
@@ -48,33 +48,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     //
     //
     //
     self.user = [User MR_createEntity];
-    
+
     self.fieldArray = @[@"Email", @"Password", @"Submit"];
 
     //
     //
     //
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     self.tableView.backgroundColor = [UIColor colorWithWhite:242.0/255.0f alpha:1.0f];
-    
+
     self.tableView.opaque = NO;
-    
-    
+
+
     //
     //
     //
     UIBarButtonItem *submitItem = [[UIBarButtonItem alloc] initWithTitle:@"Submit" style:UIBarButtonItemStylePlain target:self action:@selector(submitForm)];
-    
+
     self.navigationItem.rightBarButtonItem = submitItem;
-    
+
     UIBarButtonItem *registerItem = [[UIBarButtonItem alloc] initWithTitle:@"Register" style:UIBarButtonItemStylePlain target:self action:@selector(displayRegistrationForm)];
-    
+
     self.navigationItem.leftBarButtonItem = registerItem;
 
     //
@@ -114,19 +114,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"fieldCell"];
-    
+
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fieldCell"];
     }
-    
+
     //
     // We need this to ensure that we don't get a goofy gray overlay when we tap
     // in a weird place within the field.
     //
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     cell.backgroundColor = [UIColor clearColor];
 
     if([self.fieldArray[indexPath.row] isEqualToString:@"Email"]){
@@ -142,17 +142,17 @@
         self.passwordField.secureTextEntry = YES;
         [cell addSubview:self.passwordField];
     }
-    
+
     return cell;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    
+
     if (section == 0){
         return 96.0f;
     }
-    
+
     return 0.0f;
 }
 
@@ -161,12 +161,12 @@
     if (section == 0){
         // 1. The view for the header
         UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 96)];
-        
+
         // 2. Set a custom background color and a border
         headerView.backgroundColor = [UIColor clearColor];
         headerView.layer.borderWidth = 0.0;
-        
-        
+
+
         // 3. Add a label
         UILabel* headerLabel = [[UILabel alloc] init];
         headerLabel.frame = CGRectMake(0, 24, tableView.frame.size.width, 48);
@@ -176,14 +176,14 @@
         headerLabel.text = @"Do you have an account?\nIf so, you can login below.";
         headerLabel.textAlignment = NSTextAlignmentCenter;
         headerLabel.numberOfLines = 2;
-        
+
         // 4. Add the label to the header view
         [headerView addSubview:headerLabel];
-        
+
         // 5. Finally return
         return headerView;
     }
-    
+
     return nil;
 }
 
@@ -191,7 +191,7 @@
                     placeholder:(NSString *)placeholder
 {
     UITextField *tf = [[UITextField alloc] init];
-    
+
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 35)];
     tf.leftView = paddingView;
     tf.leftViewMode = UITextFieldViewModeAlways;
@@ -208,12 +208,12 @@
     tf.backgroundColor = [UIColor whiteColor];
     tf.font = [UIFont systemFontOfSize:14.0];
     tf.textColor = [UIColor darkGrayColor];
-    
+
     [tf setReturnKeyType:UIReturnKeyDone];
 
-    
+
     [tf addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    
+
     return tf;
 
 }
@@ -246,9 +246,9 @@
 }
 
 - (void) retrieveUserData {
-    
-    [self.manager GET:@"http://stg.api.waterreporter.org/v1/data/me" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+
+    [self.manager GET:@"https://api.waterreporter.org/v2/data/me" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
         //
         // Use the response data to fill in our default user information
         // and save it to our local database.
@@ -256,9 +256,9 @@
         self.user.user_id = responseObject[@"id"];
         self.user.first_name = responseObject[@"first_name"];
         self.user.last_name = responseObject[@"last_name"];
-        
+
         [[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
-        
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"userSaved" object:nil];
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -273,11 +273,11 @@
     // Dismiss all keyboards and inputs
     //
     [self.view endEditing:YES];
-    
-    
+
+
     __block BOOL isAccessTokenSaved = NO;
     NSMutableDictionary *json = [[NSMutableDictionary alloc] init];
-    
+
     //
     // Disable the Submit button to ensure only one request is sent
     //
@@ -292,16 +292,16 @@
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     else if([self NSStringIsValidEmail:self.emailField.text]){
-        
+
         //
         // Setup up the loading indicator
         //
         self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         self.hud.mode = MBProgressHUDModeIndeterminate;
-        
+
         [self.view bringSubviewToFront:self.hud];
 
-        NSString *url = @"http://stg.api.waterreporter.org/v1/auth/remote";
+        NSString *url = @"https://api.waterreporter.org/v2/auth/remote";
 
 
         //
@@ -311,38 +311,38 @@
         [json setObject:self.passwordField.text forKey:@"password"];
 
         [json setObject:@"token" forKey:@"response_type"];
-        [json setObject:@"Ru8hamw7ixuCtsHs23Twf4UB12fyIijdQcLssqpd" forKey:@"client_id"];
-        [json setObject:@"http://stg.waterreporter.org/authorize" forKey:@"redirect_uri"];
+        [json setObject:@"SG92Aa2ejWqiYW4kI08r6lhSyKwnK1gDN2xrryku" forKey:@"client_id"];
+        [json setObject:@"https://www.waterreporter.org/authorize" forKey:@"redirect_uri"];
         [json setObject:@"user" forKey:@"scope"];
         [json setObject:@"json" forKey:@"state"];
 
-        
+
         [self.manager POST:url parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
+
             NSString *accessToken = responseObject[@"access_token"];
 
             isAccessTokenSaved = [Lockbox setString:accessToken forKey:kWaterReporterUserAccessToken];
 
             self.serializer = [AFJSONRequestSerializer serializer];
-            
+
             [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
             [self.serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
             self.manager.requestSerializer = self.serializer;
-            
+
             [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
-            
+
             //
             // After retrieving the accessToken, we need to save the basic user information so that we can later
             // access it for submitting reports, accessing profile informaiton, and checking groups.
             //
             [self retrieveUserData];
-            
+
 
             //
             // Hide the HUD/Loading Icon
             //
             [self.hud hide:YES];
-        
+
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsShowTutorialOnLaunch"]) {
                 self.tutorialVC = [[VITutorialViewController alloc] init];
                 self.tutorialVC.viewControllerActivatedFromLoginPage = YES;
@@ -351,14 +351,14 @@
                 [self.tabBarController setSelectedIndex:0];
                 [[self presentingViewController] dismissViewControllerAnimated:NO completion:nil];
             }
-            
+
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
             NSInteger statusCode = operation.response.statusCode;
             NSInteger errorCode = error.code;
-            
+
             NSString *statusMessage = @"";
-            
+
             if (statusCode == 403) {
                 statusMessage = @"The email or password you provided was incorrect";
             } else if (errorCode == -1009 || errorCode == -1004) {
@@ -372,19 +372,19 @@
             // Hide the HUD/Loading Icon
             //
             [self.hud hide:YES];
-            
+
             //
             // Re-enabled the Submit button so the user can change the incorrect items
             // and resubmit the form.
             //
             self.navigationItem.rightBarButtonItem.enabled = YES;
-            
+
             //
             // Let the user know why there was an error
             //
             [[[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
         }];
-        
+
 
     }
     //else display an alert that user must enter valid email
