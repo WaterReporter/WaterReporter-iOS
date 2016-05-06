@@ -51,6 +51,7 @@
     self.manager.requestSerializer = self.serializer;
 
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
+    
     NSLog(@"self.viewControllerActivatedFromProfilePage %hhd", self.viewControllerActivatedFromProfilePage);
 
     //
@@ -90,13 +91,20 @@
 
 - (void) loadGroups
 {
+
+    User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
+
     [self.manager GET:@"https://api.waterreporter.org/v2/data/organization?results_per_page=100" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         self.groups = responseObject[@"features"];
 
-//        [self loadUsersGroups];
+        [self.manager GET:[NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            self.usersGroups = responseObject[@"properties"][@"groups"];
+            [self.tableView reloadData];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"loadUsersGroups: Could not retrieve organizations");
+        }];
 
-        [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"loadGroups: Could not retrieve organization");
     }];
@@ -104,6 +112,7 @@
 
 - (void) loadUsersGroups
 {
+
     User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
 
     NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
@@ -192,8 +201,8 @@
     
     NSLog(@"self.groups[indexPath.row] %@", self.groups[indexPath.row][@"id"]);
 
-    if ([self userIsMemberOfGroup:(int)self.groups[indexPath.row][@"id"]]) {
-        NSLog(@"User is a member of group %@ already, show the leave button", self.groups[indexPath.row][@"id"]);
+    if ([self userIsMemberOfGroup:self.groups[indexPath.row][@"id"]]) {
+//        NSLog(@"User is a member of group %@ already, show the leave button", self.groups[indexPath.row][@"id"]);
         UIButton *leaveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [leaveButton addTarget:self action:@selector(leaveSelectedGroupAction:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -209,7 +218,7 @@
         cell.accessoryView = leaveButton;
     }
     else {
-        NSLog(@"User is not a member of group %@, show the join button", self.groups[indexPath.row][@"id"]);
+//        NSLog(@"User is not a member of group %@, show the join button", self.groups[indexPath.row][@"id"]);
         UIButton *joinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [joinButton addTarget:self action:@selector(joinSelectedGroupAction:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -229,11 +238,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectRowAtIndexPath::Group %@", self.groups[indexPath.row][@"properties"][@"name"]);
+    NSLog(@"didSelectRowAtIndexPath::Group %@", self.groups[indexPath.row][@"id"]);
 
     NSDictionary *group = self.groups[indexPath.row];
 
-    if ([self userIsMemberOfGroup:(int)group[@"id"]]) {
+    if ([self userIsMemberOfGroup:group[@"id"]]) {
         [self leaveSelectedGroup:group];
     } else {
         [self joinSelectedGroup:group];
@@ -302,13 +311,33 @@
 
         [json setValue:groups forKey:@"groups"];
 
+        //
+        // PREPARE ORGANIZATIONS
+        //
+        NSMutableArray *organizations = [[NSMutableArray alloc] init];
+        for (NSDictionary *org in responseObject[@"properties"][@"organization"]) {
+            NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
+            [newOrganization setValue:org[@"id"] forKey:@"id"];
+            [organizations addObject:newOrganization];
+        }
+        NSLog(@"returned organizations %@", organizations);
+        
+        NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
+        [newOrganization setValue:group[@"id"] forKey:@"id"];
+        [organizations addObject:newOrganization];
+        
+        NSLog(@"modified organizations %@", organizations);
+        
+        [json setValue:organizations forKey:@"organization"];
+        
+        
         [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
             NSString *message = [NSString stringWithFormat:@"You have successfully joined the %@ group", group[@"properties"][@"name"]];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
 
-            [self loadUsersGroups];
+            [self loadGroups];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasUpdatedUserGroups"];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
@@ -344,18 +373,35 @@
         // Prepare Group Object and Assign to Groups
         //
         NSMutableArray *groups = [[NSMutableArray alloc] init];
-        NSLog(@"returned groups %@", groups);
+        NSMutableArray *organizations = [[NSMutableArray alloc] init];
+        
 
+        //
+        // PREPARE GROUPS
+        //
         for (NSDictionary *thisGroup in responseObject[@"properties"][@"groups"]) {
-            if (thisGroup[@"properties"][@"organization_id"] != group[@"id"]) {
+            if (![thisGroup[@"properties"][@"organization_id"] isEqual:group[@"id"]]){
                 NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
                 [newGroup setValue:thisGroup[@"id"] forKey:@"id"];
                 [groups addObject:newGroup];
             }
         }
-        NSLog(@"modified groups %@", groups);
 
         [json setValue:groups forKey:@"groups"];
+
+        //
+        // PREPARE ORGANIZATIONS
+        //
+        for (NSDictionary *thisOrganization in responseObject[@"properties"][@"organization"]) {
+            if (![thisOrganization[@"properties"][@"id"] isEqual:group[@"id"]]){
+                NSLog(@"%@ IS NOT EQUAL %@", thisOrganization[@"properties"][@"id"], group[@"id"]);
+                NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
+                [newOrganization setValue:thisOrganization[@"id"] forKey:@"id"];
+                [organizations addObject:newOrganization];
+            }
+        }
+
+        [json setValue:organizations forKey:@"organization"];
 
         [self.manager PATCH:userEndpoint parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -363,7 +409,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations" message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
             [alert show];
 
-            [self loadUsersGroups];
+            [self loadGroups];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasUpdatedUserGroups"];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure responseObject %@", error);
@@ -375,35 +421,16 @@
 
 }
 
-- (void)loadMembershipChecking:(NSInteger)groupId {
-
-    User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
+- (BOOL)userIsMemberOfGroup:(id)groupId {
     
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
-        
-    [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.usersGroups = responseObject[@"properties"][@"groups"];
-        
-        [self userIsMemberOfGroup:groupId];
-
-        [self.tableView reloadData];
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"loadUsersGroups: Could not retrieve organizations");
-    }];
-    
-}
-
-- (BOOL)userIsMemberOfGroup:(NSInteger)groupId {
-
-    for (NSDictionary *group in self.usersGroups) {
-        if (groupId == (int)group[@"properties"][@"organization_id"]) {
-            return true;
-        } else {
-            return false;
+        for (NSDictionary *group in self.usersGroups) {
+            NSLog(@"Requesting access to %@ :: Already member of group%@", groupId, group[@"properties"][@"organization_id"]);
+            if ([groupId isEqual:group[@"properties"][@"organization_id"]]) {
+                return true;
+                return false;
+            }
         }
-    }
-    
+
     return false;
 }
 

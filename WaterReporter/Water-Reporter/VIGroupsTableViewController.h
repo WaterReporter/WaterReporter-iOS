@@ -31,7 +31,7 @@
 @property BOOL searchControllerSearchFieldWasFirstResponder;
 @property BOOL viewControllerActivatedFromProfilePage;
 
-- (BOOL)userIsMemberOfGroup:(NSInteger)groupId;
+- (BOOL)userIsMemberOfGroup:(id)groupId;
 -(void)joinSelectedGroup:(NSDictionary *)group;
 -(void)leaveSelectedGroup:(NSDictionary *)group;
 

@@ -33,38 +33,6 @@
             endingLineNumber = "273"
             landmarkName = "-saveFormContent"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[VIFormTableViewController saveFormContent]"
-                  moduleName = "Water-Reporter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joshuaisaacpowell/Desktop/WaterReporter-iOS/WaterReporter/Water-Reporter/VIFormTableViewController.m"
-                  timestampString = "480624218.279503"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "274"
-                  endingLineNumber = "274"
-                  offsetFromSymbolStart = "544">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[VIFormTableViewController saveFormContent]"
-                  moduleName = "Water-Reporter"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/joshuaisaacpowell/Desktop/WaterReporter-iOS/WaterReporter/Water-Reporter/VIFormTableViewController.m"
-                  timestampString = "480624218.279773"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "274"
-                  endingLineNumber = "274"
-                  offsetFromSymbolStart = "562">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
