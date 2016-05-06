@@ -18,7 +18,11 @@
     [super viewDidLoad];
 
     self.title = @"Join Groups";
-
+    
+    self.view.userInteractionEnabled = YES;
+    
+    [self loading];
+    
     //
     //
     //
@@ -26,6 +30,7 @@
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
+    self.tableView.separatorColor = [UIColor clearColor];
 
     //
     //
@@ -52,12 +57,12 @@
 
     [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
     
-    NSLog(@"self.viewControllerActivatedFromProfilePage %hhd", self.viewControllerActivatedFromProfilePage);
+//    NSLog(@"self.viewControllerActivatedFromProfilePage %hhd", self.viewControllerActivatedFromProfilePage);
 
     //
     //
     //
-    NSLog(@"self.viewControllerActivatedFromProfilePage? %hhd", self.viewControllerActivatedFromProfilePage);
+//    NSLog(@"self.viewControllerActivatedFromProfilePage? %hhd", self.viewControllerActivatedFromProfilePage);
     if (self.viewControllerActivatedFromProfilePage) {
         UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneGroups)];
 
@@ -68,7 +73,7 @@
         self.navigationItem.rightBarButtonItem = cancelItem;
     }
 
-
+    
     //
     // Create Navigation Toolbar
     //
@@ -78,6 +83,25 @@
     // Load the Groups list
     //
     [self loadGroups];
+}
+
+- (void) loading
+{
+    //
+    // Setup up the loading indicator
+    //
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.mode = MBProgressHUDModeIndeterminate;
+    
+    CGRect loadingFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    self.loadingLabel = [[UILabel alloc] initWithFrame:loadingFrame];
+    self.loadingLabel.backgroundColor = [UIColor whiteColor];
+    
+    
+    [self.view addSubview:self.loadingLabel];
+    
+    [self.view bringSubviewToFront:self.loadingLabel];
+    [self.view bringSubviewToFront:self.hud];
 }
 
 - (void) setupToolbar
@@ -97,16 +121,20 @@
     [self.manager GET:@"https://api.waterreporter.org/v2/data/organization?results_per_page=100" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         self.groups = responseObject[@"features"];
+        self.groupsFiltered = [self.groups mutableCopy];
 
         [self.manager GET:[NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.usersGroups = responseObject[@"properties"][@"groups"];
+
+            [self.loadingLabel removeFromSuperview];
+            [self.hud hide:YES];
             [self.tableView reloadData];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"loadUsersGroups: Could not retrieve organizations");
+//            NSLog(@"loadUsersGroups: Could not retrieve organizations");
         }];
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"loadGroups: Could not retrieve organization");
+//        NSLog(@"loadGroups: Could not retrieve organization");
     }];
 }
 
@@ -117,13 +145,13 @@
 
     NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
 
-    NSLog(@"loadUsersGroups userEndpoint %@", userEndpoint);
+//    NSLog(@"loadUsersGroups userEndpoint %@", userEndpoint);
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.usersGroups = responseObject[@"properties"][@"groups"];
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"loadUsersGroups: Could not retrieve organizations");
+//        NSLog(@"loadUsersGroups: Could not retrieve organizations");
     }];
 }
 
@@ -192,14 +220,14 @@
 {
 
     NSString *group = self.groups[indexPath.row][@"properties"][@"name"];
-    NSLog(@"configureCell %@", group);
+//    NSLog(@"configureCell %@", group);
 
     cell.textLabel.font = [UIFont systemFontOfSize:13.0];
     cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:group attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:128.0/255.0 alpha:1.0]}];
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSLog(@"self.groups[indexPath.row] %@", self.groups[indexPath.row][@"id"]);
+//    NSLog(@"self.groups[indexPath.row] %@", self.groups[indexPath.row][@"id"]);
 
     if ([self userIsMemberOfGroup:self.groups[indexPath.row][@"id"]]) {
 //        NSLog(@"User is a member of group %@ already, show the leave button", self.groups[indexPath.row][@"id"]);
@@ -238,7 +266,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectRowAtIndexPath::Group %@", self.groups[indexPath.row][@"id"]);
+//    NSLog(@"didSelectRowAtIndexPath::Group %@", self.groups[indexPath.row][@"id"]);
 
     NSDictionary *group = self.groups[indexPath.row];
 
@@ -280,7 +308,7 @@
 
 -(void)joinSelectedGroup:(NSDictionary *)group
 {
-    NSLog(@"joinSelectedGroup %@", group[@"id"]);
+//    NSLog(@"joinSelectedGroup %@", group[@"id"]);
 
     User *user = [User MR_findFirst];
 
@@ -299,7 +327,7 @@
             [newGroup setValue:group[@"id"] forKey:@"id"];
             [groups addObject:newGroup];
         }
-        NSLog(@"returned groups %@", groups);
+//        NSLog(@"returned groups %@", groups);
 
         NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
         [newGroup setValue:group[@"id"] forKey:@"organization_id"];
@@ -307,7 +335,7 @@
         [newGroup setValue:[self dateTodayAsString] forKey:@"joined_on"];
         [groups addObject:newGroup];
 
-        NSLog(@"modified groups %@", groups);
+//        NSLog(@"modified groups %@", groups);
 
         [json setValue:groups forKey:@"groups"];
 
@@ -320,13 +348,13 @@
             [newOrganization setValue:org[@"id"] forKey:@"id"];
             [organizations addObject:newOrganization];
         }
-        NSLog(@"returned organizations %@", organizations);
+//        NSLog(@"returned organizations %@", organizations);
         
         NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
         [newOrganization setValue:group[@"id"] forKey:@"id"];
         [organizations addObject:newOrganization];
         
-        NSLog(@"modified organizations %@", organizations);
+//        NSLog(@"modified organizations %@", organizations);
         
         [json setValue:organizations forKey:@"organization"];
         
@@ -359,7 +387,7 @@
 
 -(void)leaveSelectedGroup:(NSDictionary *)group
 {
-    NSLog(@"leaveSelectedGroup %@", group[@"id"]);
+//    NSLog(@"leaveSelectedGroup %@", group[@"id"]);
 
     User *user = [User MR_findFirst];
 
@@ -394,7 +422,7 @@
         //
         for (NSDictionary *thisOrganization in responseObject[@"properties"][@"organization"]) {
             if (![thisOrganization[@"properties"][@"id"] isEqual:group[@"id"]]){
-                NSLog(@"%@ IS NOT EQUAL %@", thisOrganization[@"properties"][@"id"], group[@"id"]);
+//                NSLog(@"%@ IS NOT EQUAL %@", thisOrganization[@"properties"][@"id"], group[@"id"]);
                 NSMutableDictionary *newOrganization = [[NSMutableDictionary alloc] init];
                 [newOrganization setValue:thisOrganization[@"id"] forKey:@"id"];
                 [organizations addObject:newOrganization];
@@ -424,7 +452,7 @@
 - (BOOL)userIsMemberOfGroup:(id)groupId {
     
         for (NSDictionary *group in self.usersGroups) {
-            NSLog(@"Requesting access to %@ :: Already member of group%@", groupId, group[@"properties"][@"organization_id"]);
+//            NSLog(@"Requesting access to %@ :: Already member of group%@", groupId, group[@"properties"][@"organization_id"]);
             if ([groupId isEqual:group[@"properties"][@"organization_id"]]) {
                 return true;
                 return false;
@@ -432,6 +460,123 @@
         }
 
     return false;
+}
+
+//-(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
+//{
+//    
+//    bool isFiltered;
+//    
+//    if(text.length == 0)
+//    {
+//        isFiltered = FALSE;
+//    }
+//    else
+//    {
+//        isFiltered = true;
+//        
+//        for (NSDictionary* group in self.groups)
+//        {
+//            NSRange nameRange = [group[@"properties"][@"name"] rangeOfString:text options:NSCaseInsensitiveSearch];
+//            if(nameRange.location != NSNotFound)
+//            {
+//                [self.groupsFiltered addObject:group];
+//            }
+//        }
+//    }
+//    
+//    [self.tableView reloadData];
+//}
+//
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+}
+
+- (void)presentSearchController:(UISearchController *)searchController {
+    
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+    // do something before the search controller is presented
+}
+
+- (void)didPresentSearchController:(UISearchController *)searchController {
+    // do something after the search controller is presented
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    // do something before the search controller is dismissed
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+    // do something after the search controller is dismissed
+}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    
+    // update the filtered array based on the search text
+    NSString *searchText = searchController.searchBar.text;
+    
+    NSLog(@"Search changed to: %@ %d", searchText, [searchText length]);
+
+    if ([searchText length] != 0) {
+
+        NSMutableArray *searchResults = [[NSMutableArray alloc] init];
+        
+        for (NSDictionary* group in self.groupsFiltered) {
+            NSRange nameRange = [group[@"properties"][@"name"] rangeOfString:searchText options:NSCaseInsensitiveSearch];
+            if(nameRange.location != NSNotFound)
+            {
+                [searchResults addObject:group];
+            }
+        }
+        
+        //    for (NSString *searchString in searchItems) {
+        //        NSLog(@"searchString %@ searchItems %@", searchString, searchItems);
+        //        // each searchString creates an OR predicate for: name, yearIntroduced, introPrice
+        //        //
+        //        // example if searchItems contains "iphone 599 2007":
+        //        //      name CONTAINS[c] "iphone"
+        //        //      name CONTAINS[c] "599", yearIntroduced ==[c] 599, introPrice ==[c] 599
+        //        //      name CONTAINS[c] "2007", yearIntroduced ==[c] 2007, introPrice ==[c] 2007
+        //        //
+        //        NSMutableArray *searchItemsPredicate = [NSMutableArray array];
+        //
+        //        // Below we use NSExpression represent expressions in our predicates.
+        //        // NSPredicate is made up of smaller, atomic parts: two NSExpressions (a left-hand value and a right-hand value)
+        //
+        //        // name field matching
+        //        NSExpression *lhs = [NSExpression expressionForKeyPath:@"name"];
+        //        NSExpression *rhs = [NSExpression expressionForConstantValue:searchString];
+        //        NSPredicate *finalPredicate = [NSComparisonPredicate
+        //                                       predicateWithLeftExpression:lhs
+        //                                       rightExpression:rhs
+        //                                       modifier:NSDirectPredicateModifier
+        //                                       type:NSContainsPredicateOperatorType
+        //                                       options:NSCaseInsensitivePredicateOption];
+        //        [searchItemsPredicate addObject:finalPredicate];
+        //
+        //
+        //        // at this OR predicate to our master AND predicate
+        //        NSCompoundPredicate *orMatchPredicates = [NSCompoundPredicate orPredicateWithSubpredicates:searchItemsPredicate];
+        //        [andMatchPredicates addObject:orMatchPredicates];
+        //    }
+        //
+        //    // match up the fields of the Product object
+        //    NSCompoundPredicate *finalCompoundPredicate =
+        //    [NSCompoundPredicate andPredicateWithSubpredicates:andMatchPredicates];
+        //    searchResults = [[searchResults filteredArrayUsingPredicate:finalCompoundPredicate] mutableCopy];
+        
+        // hand over the filtered results to our search results table
+        //    VIGroupsTableViewController *tableController = (VIGroupsTableViewController *)self.searchController.searchResultsController;
+        self.groups = searchResults;
+        
+    } else {
+        self.groups = self.groupsFiltered;
+    }
+
+    [self.tableView reloadData];
 }
 
 @end

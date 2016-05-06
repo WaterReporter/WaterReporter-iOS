@@ -19,8 +19,12 @@
 @property (strong, nonatomic) VITutorialViewController *tutorialView;
 
 @property (strong, nonatomic) NSArray *groups;
+@property (strong, nonatomic) NSMutableArray *groupsFiltered;
 @property (strong, nonatomic) NSArray *usersGroups;
 @property (strong, nonatomic) UIToolbar *toolbar;
+
+@property (nonatomic, strong) UILabel *loadingLabel;
+@property (nonatomic, strong) MBProgressHUD *hud;
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager *manager;
 @property (strong, nonatomic) AFJSONRequestSerializer *serializer;
