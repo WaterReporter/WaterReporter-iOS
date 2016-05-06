@@ -290,7 +290,7 @@
             if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) {
                 groupsFrame = CGRectMake(20, yPosition+230, 302, rowHeight);
             }else{
-                reportTypeFrame = CGRectMake(10, yPosition+152, 302, rowHeight);
+                groupsFrame = CGRectMake(10, yPosition+152, 302, rowHeight);
             }
 
             UILabel *groupLabel = [[UILabel alloc] initWithFrame:groupsFrame];
@@ -301,7 +301,7 @@
 
             yPosition = yPosition+rowHeight;
 
-            if ([self userIsMemberOfGroup:(int)group[@"id"]]) {
+            if ([self userIsMemberOfGroup:group[@"id"]]) {
                 NSLog(@"User is a member of group %d already, show the leave button", [[group objectForKey:@"id"] integerValue]);
 
                 UIButton *leaveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -537,20 +537,15 @@
 
 }
 
-- (BOOL)userIsMemberOfGroup:(NSInteger)groupId {
-
-    NSLog(@"userIsMemberOfGroup %@, %lu", self.usersGroups, (unsigned long)[self.usersGroups count]);
-
-    if ([self.usersGroups count] != 0) {
-        for (NSDictionary *group in self.usersGroups) {
-            NSLog(@"groupId %ld is equal to group[properties][organization_id] %@??", (long)groupId, group[@"properties"][@"organization_id"]);
-
-            if (groupId == (int)group[@"properties"][@"organization_id"]) {
-                return true;
-            }
+- (BOOL)userIsMemberOfGroup:(id)groupId {
+    
+    for (NSDictionary *group in self.usersGroups) {
+        if ([groupId isEqual:group[@"properties"][@"organization_id"]]) {
+            return true;
+            return false;
         }
     }
-
+    
     return false;
 }
 

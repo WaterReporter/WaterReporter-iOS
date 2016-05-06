@@ -452,7 +452,6 @@
 - (BOOL)userIsMemberOfGroup:(id)groupId {
     
         for (NSDictionary *group in self.usersGroups) {
-//            NSLog(@"Requesting access to %@ :: Already member of group%@", groupId, group[@"properties"][@"organization_id"]);
             if ([groupId isEqual:group[@"properties"][@"organization_id"]]) {
                 return true;
                 return false;
@@ -461,33 +460,6 @@
 
     return false;
 }
-
-//-(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
-//{
-//    
-//    bool isFiltered;
-//    
-//    if(text.length == 0)
-//    {
-//        isFiltered = FALSE;
-//    }
-//    else
-//    {
-//        isFiltered = true;
-//        
-//        for (NSDictionary* group in self.groups)
-//        {
-//            NSRange nameRange = [group[@"properties"][@"name"] rangeOfString:text options:NSCaseInsensitiveSearch];
-//            if(nameRange.location != NSNotFound)
-//            {
-//                [self.groupsFiltered addObject:group];
-//            }
-//        }
-//    }
-//    
-//    [self.tableView reloadData];
-//}
-//
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [searchBar resignFirstResponder];
@@ -532,44 +504,6 @@
             }
         }
         
-        //    for (NSString *searchString in searchItems) {
-        //        NSLog(@"searchString %@ searchItems %@", searchString, searchItems);
-        //        // each searchString creates an OR predicate for: name, yearIntroduced, introPrice
-        //        //
-        //        // example if searchItems contains "iphone 599 2007":
-        //        //      name CONTAINS[c] "iphone"
-        //        //      name CONTAINS[c] "599", yearIntroduced ==[c] 599, introPrice ==[c] 599
-        //        //      name CONTAINS[c] "2007", yearIntroduced ==[c] 2007, introPrice ==[c] 2007
-        //        //
-        //        NSMutableArray *searchItemsPredicate = [NSMutableArray array];
-        //
-        //        // Below we use NSExpression represent expressions in our predicates.
-        //        // NSPredicate is made up of smaller, atomic parts: two NSExpressions (a left-hand value and a right-hand value)
-        //
-        //        // name field matching
-        //        NSExpression *lhs = [NSExpression expressionForKeyPath:@"name"];
-        //        NSExpression *rhs = [NSExpression expressionForConstantValue:searchString];
-        //        NSPredicate *finalPredicate = [NSComparisonPredicate
-        //                                       predicateWithLeftExpression:lhs
-        //                                       rightExpression:rhs
-        //                                       modifier:NSDirectPredicateModifier
-        //                                       type:NSContainsPredicateOperatorType
-        //                                       options:NSCaseInsensitivePredicateOption];
-        //        [searchItemsPredicate addObject:finalPredicate];
-        //
-        //
-        //        // at this OR predicate to our master AND predicate
-        //        NSCompoundPredicate *orMatchPredicates = [NSCompoundPredicate orPredicateWithSubpredicates:searchItemsPredicate];
-        //        [andMatchPredicates addObject:orMatchPredicates];
-        //    }
-        //
-        //    // match up the fields of the Product object
-        //    NSCompoundPredicate *finalCompoundPredicate =
-        //    [NSCompoundPredicate andPredicateWithSubpredicates:andMatchPredicates];
-        //    searchResults = [[searchResults filteredArrayUsingPredicate:finalCompoundPredicate] mutableCopy];
-        
-        // hand over the filtered results to our search results table
-        //    VIGroupsTableViewController *tableController = (VIGroupsTableViewController *)self.searchController.searchResultsController;
         self.groups = searchResults;
         
     } else {
