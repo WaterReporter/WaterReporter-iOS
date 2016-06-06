@@ -1,4 +1,5 @@
-WaterReporter
-=============
+# Water Reporter
 
-An updated version of the WaterReporter iOS app
+## Version 3 Source Code
+
+### Getting Started
