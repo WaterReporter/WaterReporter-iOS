@@ -31,7 +31,7 @@
     [self setNeedsStatusBarAppearanceUpdate];
 
     if (!self.loadingMapForForm) {
-        [self loadMapMarkers];
+        [self refreshMap];
 
         UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(refreshMap)];
 
@@ -40,8 +40,6 @@
         UIBarButtonItem *toggleButton = [[UIBarButtonItem alloc] initWithTitle:@"Satellite" style:UIBarButtonItemStylePlain target:self action:@selector(toggleMap)];
 
         self.navigationItem.rightBarButtonItem = toggleButton;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
     }
 
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -78,11 +76,99 @@
 
 }
 
+- (void)buildResults:(NSString *)bounds
+{
+
+//    NSString *url = [NSString stringWithFormat:@"https://api.commonscloud.org/v2/%@/region.geojson", storage];
+//    
+//    NSString *geometry = [NSString stringWithFormat:@"%@%@%@", @"SRID=4326;POLYGON((", bounds, @"))"];
+//    
+//    NSLog(@"%@?geometry=%@", url, geometry);
+//    
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    [manager GET:url parameters:@{@"geometry": geometry} success:^(AFHTTPRequestOperation *operation, id responseObject){
+//        
+//        NSMutableArray *features = responseObject[@"features"];
+//        NSArray *markers = [[NSArray alloc] initWithArray:features];
+//        [self drawMapMarkers:markers];
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+//        NSLog(@"Error: %@", error);
+//    }];
+
+    
+    NSLog(@"buildResults with bounds %@", bounds);
+    
+    //
+    // Prepare any parameters necessary to make the request
+    //
+    NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
+    NSString *url = @"https://api.waterreporter.org/v2/data/report";
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+//    NSMutableDictionary *q = [[NSMutableDictionary alloc] init];
+//    NSMutableArray *filters = [[NSMutableArray alloc] init];
+//    NSMutableDictionary *boundsFilter = [[NSMutableDictionary alloc] init];
+
+//    NSString *boundaryString = [NSString stringWithFormat:@"SRID=4326;POLYGON((%@))", bounds];
+    
+//    [boundsFilter setValue:@"geometry" forKey:@"name"];
+//    [boundsFilter setValue:@"intersects" forKey:@"op"];
+//    [boundsFilter setValue:boundaryString forKey:@"val"];
+//    
+//    [filters addObject:boundsFilter];
+//    [q setValue:[NSString stringWithFormat:@"%@", filters] forKey:@"filters"];
+    
+    
+//    [parameters setValue:[NSString stringWithFormat:@"{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"%@\"}]}", boundaryString] forKey:@"q"];
+    [parameters setValue:@"{\"order_by\":[{\"field\":\"id\",\"direction\":\"desc\"}]}" forKey:@"q"];
+    [parameters setValue:@100 forKey:@"results_per_page"];
+
+    
+    //
+    // Setup our Reports request
+    //
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    [manager.requestSerializer setValue:@"no-cache, must-revalidate, max-age=0" forHTTPHeaderField:@"Cache-control"];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
+
+    [manager GET:url parameters:(NSDictionary *)parameters success:^(AFHTTPRequestOperation *operation, id responseObject){
+
+        NSMutableArray *features = responseObject[@"features"];
+        NSArray *markers = [[NSArray alloc] initWithArray:features];
+        NSLog(@"%d Markers returned from the request", [markers count]);
+        NSLog(@"parameters %@", parameters);
+        [self drawMapMarkers:markers];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        
+        NSInteger statusCode = operation.response.statusCode;
+        
+        if (statusCode == 403) {
+            [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
+            
+            VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
+            UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
+            [self presentViewController:modalNav animated:NO completion:nil];
+        }
+    }];
+    
+}
+
 - (void) refreshMap
 {
-    [self loadMapMarkers];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawMapMarkers) name:@"loadMapMarkersFinishedLoading" object:nil];
+    NSLog(@"Map refreshing...");
+    MKMapRect mRect = self.mapView.visibleMapRect;
+    
+    NSString* bounds = [self getBoundingBox:mRect];
+    
+    [self buildResults:bounds];
+    
 }
 
 - (void) toggleMap
@@ -276,47 +362,13 @@
     self.userLocationUpdated = YES;
 }
 
-- (void)loadMapMarkers
-{
-
-    NSString *url = @"https://api.waterreporter.org/v2/data/report?results_per_page=500";
-
-    NSLog(@"Load map markers");
-
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-
-    [manager.requestSerializer setValue:@"no-cache, must-revalidate, max-age=0" forHTTPHeaderField:@"Cache-control"];
-
-    NSString *accessToken = [Lockbox stringForKey:kWaterReporterUserAccessToken];
-
-    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
-
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject){
-        self.markers = [[NSArray alloc] initWithArray:responseObject[@"features"]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"loadMapMarkersFinishedLoading" object:nil];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-
-        NSInteger statusCode = operation.response.statusCode;
-
-        if (statusCode == 403) {
-            [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
-
-            VILoginTableViewController *modal = [[VILoginTableViewController alloc] init];
-            UINavigationController *modalNav = [[UINavigationController alloc] initWithRootViewController:modal];
-            [self presentViewController:modalNav animated:NO completion:nil];
-        }
-    }];
-}
-
-- (void)drawMapMarkers
+- (void)drawMapMarkers:(NSArray *)markers
 {
     NSMutableArray *mutableAnnotationArray = [[NSMutableArray alloc] init];
 
     [self.mapView removeAnnotations:self.mapView.annotations];
 
-    for(NSDictionary *marker in self.markers){
+    for(NSDictionary *marker in markers){
         VIPointAnnotation *annotation = [[VIPointAnnotation alloc] init];
         double latitude;
         double longitude;
@@ -377,8 +429,20 @@
             [mutableAnnotationArray addObject:annotation];
         }
     }
+    
     NSArray *annotationArray = [[NSArray alloc] initWithArray:mutableAnnotationArray];
+
     [self.mapView addAnnotations:annotationArray];
+}
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+//    MKZoomScale currentZoomScale = mapView.bounds.size.width / mapView.visibleMapRect.size.width;
+    
+//    if (currentZoomScale > 0.0044) {
+    [self refreshMap];
+//    }
+    
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
@@ -440,5 +504,44 @@
     return UIStatusBarStyleLightContent;
 }
 
+//
+// See http://www.softwarepassion.com/how-to-get-geographic-coordinates-of-the-visible-mkmapview-area-in-ios/
+//
+-(NSString *)getBoundingBox:(MKMapRect)mRect{
+    CLLocationCoordinate2D topLeft = [self getNWCoordinate:mRect];
+    CLLocationCoordinate2D topRight = [self getNECoordinate:mRect];
+    CLLocationCoordinate2D bottomRight = [self getSECoordinate:mRect];
+    CLLocationCoordinate2D bottomLeft = [self getSWCoordinate:mRect];
+    
+    
+    return [NSString stringWithFormat:@"%@ %@,%@ %@,%@ %@,%@ %@,%@ %@", [NSNumber numberWithDouble:topLeft.longitude],
+            [NSNumber numberWithDouble:topLeft.latitude],
+            [NSNumber numberWithDouble:topRight.longitude],
+            [NSNumber numberWithDouble:topRight.latitude],
+            [NSNumber numberWithDouble:bottomRight.longitude],
+            [NSNumber numberWithDouble:bottomRight.latitude],
+            [NSNumber numberWithDouble:bottomLeft.longitude],
+            [NSNumber numberWithDouble:bottomLeft.latitude],
+            [NSNumber numberWithDouble:topLeft.longitude],
+            [NSNumber numberWithDouble:topLeft.latitude]];
+    
+}
+-(CLLocationCoordinate2D)getNECoordinate:(MKMapRect)mRect{
+    return [self getCoordinateFromMapRectanglePoint:MKMapRectGetMaxX(mRect) y:mRect.origin.y];
+}
+-(CLLocationCoordinate2D)getNWCoordinate:(MKMapRect)mRect{
+    return [self getCoordinateFromMapRectanglePoint:MKMapRectGetMinX(mRect) y:mRect.origin.y];
+}
+-(CLLocationCoordinate2D)getSECoordinate:(MKMapRect)mRect{
+    return [self getCoordinateFromMapRectanglePoint:MKMapRectGetMaxX(mRect) y:MKMapRectGetMaxY(mRect)];
+}
+-(CLLocationCoordinate2D)getSWCoordinate:(MKMapRect)mRect{
+    return [self getCoordinateFromMapRectanglePoint:mRect.origin.x y:MKMapRectGetMaxY(mRect)];
+}
+
+-(CLLocationCoordinate2D)getCoordinateFromMapRectanglePoint:(double)x y:(double)y{
+    MKMapPoint swMapPoint = MKMapPointMake(x, y);
+    return MKCoordinateForMapPoint(swMapPoint);
+}
 
 @end
