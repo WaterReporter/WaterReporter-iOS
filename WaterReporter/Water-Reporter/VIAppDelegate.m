@@ -7,14 +7,25 @@
 //
 
 #import "VIAppDelegate.h"
+#import "Lockbox.h"
 
 #define COLOR_BRAND_BLUE_BASE [UIColor colorWithRed:20.0/255.0 green:165.0/255.0 blue:241.0/255.0 alpha:1.0]
 #define COLOR_BRAND_WHITE_BASE [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0]
+
+#define kWaterReporterUserAccessToken        @"kWaterReporterUserAccessToken"
 
 @implementation VIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasLaunchedPreviously"])
+    {
+        [Lockbox setString:@"" forKey:kWaterReporterUserAccessToken];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasLaunchedPreviously"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 
     // Change the NavigationController Toolbar and Status bar color to white
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
