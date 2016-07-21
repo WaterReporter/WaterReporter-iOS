@@ -361,12 +361,14 @@
 
             if (statusCode == 403) {
                 statusMessage = @"The email or password you provided was incorrect";
-            } else if (errorCode == -1009 || errorCode == -1004) {
-                statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
-            } else {
-                statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
-                NSLog(@"ERROR::::%@", error);
             }
+            
+//            else if (errorCode == -1009 || errorCode == -1004) {
+//                statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
+//            } else {
+//                statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
+//                NSLog(@"ERROR::::%@", error);
+//            }
 
             //
             // Hide the HUD/Loading Icon
