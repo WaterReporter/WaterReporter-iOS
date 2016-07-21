@@ -344,12 +344,14 @@
 
                 if (statusCode == 403) {
                     statusMessage = @"The email or password you provided was incorrect";
-                } else if (errorCode == -1009 || errorCode == -1004) {
-                    statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
-                } else {
-                    statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
-                    NSLog(@"ERROR::::%@", error);
                 }
+                
+//                else if (errorCode == -1009 || errorCode == -1004) {
+//                    statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
+//                } else {
+//                    statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
+//                    NSLog(@"ERROR::::%@", error);
+//                }
 
                 //
                 // Hide the HUD/Loading Icon
@@ -376,12 +378,12 @@
 
             NSString *statusMessage = @"";
 
-            if (errorCode == -1009 || errorCode == -1004) {
-                statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
-            } else {
-                statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
-                NSLog(@"ERROR::::%@", error);
-            }
+//            if (errorCode == -1009 || errorCode == -1004) {
+//                statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
+//            } else {
+//                statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
+//                NSLog(@"ERROR::::%@", error);
+//            }
 
             //
             // Hide the HUD/Loading Icon
@@ -397,9 +399,9 @@
             //
             // Let the user know why there was an error
             //
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//
+//            [alert show];
         }];
 
     }
