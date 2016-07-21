@@ -106,8 +106,8 @@
                 self.isRefreshing = false;
                 [self.tableView reloadData];
 
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:weakSelf cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                [alert show];
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"It looks like you don't have access to a data network right now." delegate:weakSelf cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+//                [alert show];
             }
             NSLog(@"PASSED CONDITOINAL .... did anything happen??");
         } else {
