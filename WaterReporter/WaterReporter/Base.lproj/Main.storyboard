@@ -97,12 +97,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Loaded by ProfileViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ko2-0H-RSs">
-                                <rect key="frame" x="193" y="316" width="215.5" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" text="Profile View" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="9CX-Bs-6Jv">
                                 <rect key="frame" x="196" y="266" width="209.5" height="42"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -110,12 +104,19 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Loaded by ProfileViewController" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ko2-0H-RSs">
+                                <rect key="frame" x="193" y="316" width="215.5" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Ko2-0H-RSs" firstAttribute="centerX" secondItem="9CX-Bs-6Jv" secondAttribute="centerX" id="022-G5-mCL"/>
-                            <constraint firstItem="Ko2-0H-RSs" firstAttribute="centerY" secondItem="Kkr-qZ-8Bz" secondAttribute="centerY" id="10W-xF-4MB"/>
                             <constraint firstItem="Ko2-0H-RSs" firstAttribute="top" secondItem="9CX-Bs-6Jv" secondAttribute="bottom" constant="8" symbolic="YES" id="CF1-m5-dJa"/>
+                            <constraint firstItem="9CX-Bs-6Jv" firstAttribute="centerX" secondItem="Kkr-qZ-8Bz" secondAttribute="centerX" id="KBV-I0-3cl"/>
+                            <constraint firstItem="9CX-Bs-6Jv" firstAttribute="centerY" secondItem="Kkr-qZ-8Bz" secondAttribute="centerY" id="fOz-Ya-Bd8"/>
                             <constraint firstItem="Ko2-0H-RSs" firstAttribute="centerX" secondItem="Kkr-qZ-8Bz" secondAttribute="centerX" id="tQi-9n-O0u"/>
                         </constraints>
                     </view>
