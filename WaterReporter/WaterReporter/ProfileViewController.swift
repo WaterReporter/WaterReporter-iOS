@@ -12,10 +12,12 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        NSLog("ProfileViewController::viewDidLoad");
+        NSLog("ProfileViewController::viewDidLoad")
+
+        //
+        // Set the Navigation Bar title
+        //
+        self.navigationItem.title = "Profile"
     }
     
     override func didReceiveMemoryWarning() {

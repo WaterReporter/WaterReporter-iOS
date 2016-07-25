@@ -12,17 +12,12 @@ class ActivityViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.title = "Activity"
-        
-        self.navigationItem.title = "Activity snt"
-
-        // Do any additional setup after loading the view, typically from a nib.
-        
         NSLog("ActivityViewController::viewDidLoad")
-
         
-        self.tabBarController!.title = "Activity tbct"
+        //
+        // Set the Navigation Bar title
+        //
+        self.navigationItem.title = "Activity"
     }
 
     

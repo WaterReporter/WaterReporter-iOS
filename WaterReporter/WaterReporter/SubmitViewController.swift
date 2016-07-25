@@ -12,10 +12,13 @@ class SubmitViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        NSLog("SubmitViewController::viewDidLoad");
+        NSLog("SubmitViewController::viewDidLoad")
+
+        //
+        // Set the Navigation Bar title
+        //
+        self.navigationItem.title = "New Report"
+
     }
 
     override func didReceiveMemoryWarning() {
