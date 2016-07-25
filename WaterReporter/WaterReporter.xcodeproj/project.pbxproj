@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAF981D464F42002881A6 /* Endpoints.swift */; };
+		C12CAF9D1D46507F002881A6 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAF9C1D46507F002881A6 /* Resources.swift */; };
+		C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */; };
 		C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267A1D4562FF00516871 /* AppDelegate.swift */; };
-		C1C8267D1D4562FF00516871 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267C1D4562FF00516871 /* ActivityViewController.swift */; };
 		C1C8267F1D4562FF00516871 /* SubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267E1D4562FF00516871 /* SubmitViewController.swift */; };
 		C1C826821D4562FF00516871 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1C826801D4562FF00516871 /* Main.storyboard */; };
 		C1C826841D4562FF00516871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1C826831D4562FF00516871 /* Assets.xcassets */; };
@@ -39,9 +41,11 @@
 /* Begin PBXFileReference section */
 		0C74856C1CF1F41E846FB7F0 /* Pods-WaterReporter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.release.xcconfig"; path = "Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter.release.xcconfig"; sourceTree = "<group>"; };
 		9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaterReporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C12CAF981D464F42002881A6 /* Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
+		C12CAF9C1D46507F002881A6 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
+		C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTableViewController.swift; sourceTree = "<group>"; };
 		C1C826771D4562FF00516871 /* WaterReporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterReporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C1C8267C1D4562FF00516871 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		C1C8267E1D4562FF00516871 /* SubmitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitViewController.swift; sourceTree = "<group>"; };
 		C1C826811D4562FF00516871 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C1C826831D4562FF00516871 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -100,6 +104,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C12CAF9A1D464FA8002881A6 /* _constants */ = {
+			isa = PBXGroup;
+			children = (
+				C12CAF981D464F42002881A6 /* Endpoints.swift */,
+			);
+			name = _constants;
+			sourceTree = "<group>";
+		};
+		C12CAF9B1D465064002881A6 /* _services */ = {
+			isa = PBXGroup;
+			children = (
+				C12CAF9C1D46507F002881A6 /* Resources.swift */,
+			);
+			name = _services;
+			sourceTree = "<group>";
+		};
 		C1C8266E1D4562FF00516871 = {
 			isa = PBXGroup;
 			children = (
@@ -125,14 +145,16 @@
 		C1C826791D4562FF00516871 /* WaterReporter */ = {
 			isa = PBXGroup;
 			children = (
+				C12CAF9B1D465064002881A6 /* _services */,
+				C12CAF9A1D464FA8002881A6 /* _constants */,
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
-				C1C8267C1D4562FF00516871 /* ActivityViewController.swift */,
 				C1C8267E1D4562FF00516871 /* SubmitViewController.swift */,
 				C1C826801D4562FF00516871 /* Main.storyboard */,
 				C1C826831D4562FF00516871 /* Assets.xcassets */,
 				C1C826851D4562FF00516871 /* LaunchScreen.storyboard */,
 				C1C826881D4562FF00516871 /* Info.plist */,
 				C1C826AA1D4567CB00516871 /* ProfileViewController.swift */,
+				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -341,7 +363,9 @@
 				C1C8267F1D4562FF00516871 /* SubmitViewController.swift in Sources */,
 				C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */,
 				C1C826AB1D4567CB00516871 /* ProfileViewController.swift in Sources */,
-				C1C8267D1D4562FF00516871 /* ActivityViewController.swift in Sources */,
+				C12CAF9D1D46507F002881A6 /* Resources.swift in Sources */,
+				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
+				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

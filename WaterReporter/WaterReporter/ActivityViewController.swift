@@ -18,6 +18,18 @@ class ActivityViewController: UIViewController {
         // Set the Navigation Bar title
         //
         self.navigationItem.title = "Activity"
+        
+        //
+        // TEST TO MAKE SURE OUR STRUCT WORKS
+        //
+        NSLog("%@", Endpoints.GET_MANY_REPORTS);
+        
+        //
+        // Test to see if our RESOURCE class works
+        //
+        let reports = Resource()
+        
+        reports.query(Endpoints.GET_MANY_REPORTS, parameters: ["":""])
     }
 
     
