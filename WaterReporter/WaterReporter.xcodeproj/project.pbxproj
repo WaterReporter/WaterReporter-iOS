@@ -16,6 +16,7 @@
 		C1C826921D4562FF00516871 /* WaterReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826911D4562FF00516871 /* WaterReporterTests.swift */; };
 		C1C8269D1D4562FF00516871 /* WaterReporterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */; };
 		C1C826AB1D4567CB00516871 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826AA1D4567CB00516871 /* ProfileViewController.swift */; };
+		DB6A1C777B474625213E2278 /* Pods_WaterReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C74856C1CF1F41E846FB7F0 /* Pods-WaterReporter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.release.xcconfig"; path = "Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter.release.xcconfig"; sourceTree = "<group>"; };
+		9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaterReporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C826771D4562FF00516871 /* WaterReporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterReporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C1C8267C1D4562FF00516871 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +54,7 @@
 		C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterReporterUITests.swift; sourceTree = "<group>"; };
 		C1C8269E1D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C1C826AA1D4567CB00516871 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D8993E8D85322C529237865F /* Pods-WaterReporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB6A1C777B474625213E2278 /* Pods_WaterReporter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7FFE09B31E393B34E8706DDF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D8993E8D85322C529237865F /* Pods-WaterReporter.debug.xcconfig */,
+				0C74856C1CF1F41E846FB7F0 /* Pods-WaterReporter.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8D47297EA2A5563E1BFF21AF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C1C8266E1D4562FF00516871 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +107,8 @@
 				C1C826901D4562FF00516871 /* WaterReporterTests */,
 				C1C8269B1D4562FF00516871 /* WaterReporterUITests */,
 				C1C826781D4562FF00516871 /* Products */,
+				7FFE09B31E393B34E8706DDF /* Pods */,
+				8D47297EA2A5563E1BFF21AF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,9 +162,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C1C826A11D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporter" */;
 			buildPhases = (
+				497EA64146C817055547E8A9 /* [CP] Check Pods Manifest.lock */,
 				C1C826731D4562FF00516871 /* Sources */,
 				C1C826741D4562FF00516871 /* Frameworks */,
 				C1C826751D4562FF00516871 /* Resources */,
+				5638007F391B3643A4028DE5 /* [CP] Embed Pods Frameworks */,
+				4DD5DFA53F77A2AA5B49A492 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -257,6 +284,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		497EA64146C817055547E8A9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4DD5DFA53F77A2AA5B49A492 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5638007F391B3643A4028DE5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C1C826731D4562FF00516871 /* Sources */ = {
@@ -408,6 +483,7 @@
 		};
 		C1C826A21D4562FF00516871 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8993E8D85322C529237865F /* Pods-WaterReporter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -420,6 +496,7 @@
 		};
 		C1C826A31D4562FF00516871 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C74856C1CF1F41E846FB7F0 /* Pods-WaterReporter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -495,6 +572,7 @@
 				C1C826A31D4562FF00516871 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C1C826A41D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporterTests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +581,7 @@
 				C1C826A61D4562FF00516871 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C1C826A71D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporterUITests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +590,7 @@
 				C1C826A91D4562FF00516871 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
