@@ -275,7 +275,7 @@
         [json setObject:self.passwordField.text forKey:@"password"];
 
         [json setObject:@"token" forKey:@"response_type"];
-        [json setObject:@"Ru8hamw7ixuCtsHs23Twf4UB12fyIijdQcLssqpd" forKey:@"client_id"];
+        [json setObject:@"SG92Aa2ejWqiYW4kI08r6lhSyKwnK1gDN2xrryku" forKey:@"client_id"];
         [json setObject:@"https://www.waterreporter.org/authorize" forKey:@"redirect_uri"];
         [json setObject:@"user" forKey:@"scope"];
         [json setObject:@"json" forKey:@"state"];
@@ -295,7 +295,7 @@
             [self.manager POST:@"https://api.waterreporter.org/v2/auth/remote" parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
                 NSString *accessToken = responseObject[@"access_token"];
-
+                
                 isAccessTokenSaved = [Lockbox setString:accessToken forKey:kWaterReporterUserAccessToken];
 
                 NSLog(@"Log successful %@ %@", accessToken, responseObject);
@@ -344,14 +344,12 @@
 
                 if (statusCode == 403) {
                     statusMessage = @"The email or password you provided was incorrect";
+                } else if (errorCode == -1009 || errorCode == -1004) {
+                    statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
+                } else {
+                    statusMessage = @"We're not sure what went wrong, try submitting the registration form again.";
+                    NSLog(@"ERROR::::%@", error);
                 }
-                
-//                else if (errorCode == -1009 || errorCode == -1004) {
-//                    statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
-//                } else {
-//                    statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
-//                    NSLog(@"ERROR::::%@", error);
-//                }
 
                 //
                 // Hide the HUD/Loading Icon
@@ -378,12 +376,12 @@
 
             NSString *statusMessage = @"";
 
-//            if (errorCode == -1009 || errorCode == -1004) {
-//                statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
-//            } else {
-//                statusMessage = @"We're not sure what went wrong, please make sure you have data coverage.";
-//                NSLog(@"ERROR::::%@", error);
-//            }
+            if (errorCode == -1009 || errorCode == -1004) {
+                statusMessage = @"We're having trouble with your internet connection, please make sure you have data coverage.";
+            } else {
+                statusMessage = @"We're not sure what went wrong, try submitting the registration form again.";
+                NSLog(@"ERROR::::%@", error);
+            }
 
             //
             // Hide the HUD/Loading Icon
@@ -399,9 +397,9 @@
             //
             // Let the user know why there was an error
             //
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//
-//            [alert show];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:statusMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+
+            [alert show];
         }];
 
     }
