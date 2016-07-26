@@ -6,12 +6,18 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import Foundation
+import Alamofire
 import UIKit
 
 class ActivityTableViewController: UITableViewController {
     
+    var reports = [AnyObject]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -20,14 +26,26 @@ class ActivityTableViewController: UITableViewController {
         //
         // Set the Navigation Bar title
         //
-        self.navigationItem.title = "Activity TVC"
+        self.navigationItem.title = "Activity"
+        
+//        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         //
-        // Test to see if our RESOURCE class works
+        // Send a request to the defined endpoint with the given parameters
         //
-        let reports = Resource()
-        
-        reports.query(Endpoints.GET_MANY_REPORTS, parameters: ["":""])
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: ["":""])
+            .responseJSON { response in
+                
+                switch response.result {
+                    
+                case .Success(let value):
+                    self.reports = value["features"] as! [AnyObject]
+                    self.tableView.reloadData()
+                case .Failure(let error):
+                    break
+                }
+                
+        }
         
         self.tableView.backgroundColor = UIColor.whiteColor()
     }
@@ -41,23 +59,45 @@ class ActivityTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return self.reports.count
     }
 
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! TableViewCell
+        
+        let report = self.reports[indexPath.row].objectForKey("properties")
 
-        // Configure the cell...
+        let reportDescription = report?.objectForKey("report_description")
+        let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
+        let reportImageURL = reportImages?.objectForKey("square")
+
+        let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
+        let reportOwnerName = ((reportOwner?.objectForKey("first_name"))! as! String) + " " + ((reportOwner?.objectForKey("last_name"))! as! String)
+        let reportOwnerImageURL = reportOwner?.objectForKey("picture")
+        
+        let reportTerritory = report?.objectForKey("territory")?.objectForKey("properties")
+        let reportTerritoryName = ((reportTerritory?.objectForKey("huc_8_name"))! as! String) + " Watershed"
+        
+        cell.reportUserName.text = reportOwnerName
+        cell.reportTerritoryName.text = reportTerritoryName
+        cell.reportDescription.text = reportDescription as! String
+        
+        ImageLoader.sharedLoader.imageForUrl(reportOwnerImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
+            cell.reportOwnerImage.image = image!
+            cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2;
+            cell.reportOwnerImage.clipsToBounds = true;
+        })
+        ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
+            cell.reportImage.image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
+        })
 
         return cell
     }
-    */
+
 
     /*
     // Override to support conditional editing of the table view.

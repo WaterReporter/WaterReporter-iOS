@@ -11,7 +11,7 @@ import Foundation
 
 class Resource {
     
-    func query(endpoint: String, parameters: [String: AnyObject]) {
+    func query(endpoint: String, parameters: [String: AnyObject]?) {
 
         //
         // Send a request to the defined endpoint with the given parameters
@@ -19,13 +19,22 @@ class Resource {
         Alamofire.request(.GET, endpoint, parameters: parameters)
             .responseJSON { response in
                 
-                if let JSON = response.result.value {
-                    print("JSON: \(JSON)")
+                switch response.result {
+                    
+                    case .Success(let value):
+                        self.returnValue(value as! NSDictionary)
+                    
+                    case .Failure(let error):
+                        break
                 }
                 
         }
     }
     
+    func returnValue(data: NSDictionary) -> NSDictionary {
+        NSLog("%@", data)
+        return data
+    }
     
 }
 
