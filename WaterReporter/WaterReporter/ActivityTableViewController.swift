@@ -27,9 +27,10 @@ class ActivityTableViewController: UITableViewController {
         // Set the Navigation Bar title
         //
         self.navigationItem.title = "Activity"
-        
-//        self.tableView.rowHeight = UITableViewAutomaticDimension
-        
+
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+//        self.tableView.estimatedRowHeight = 680.0; // set to whatever your "average" cell height is
+
         //
         // Send a request to the defined endpoint with the given parameters
         //
@@ -91,8 +92,13 @@ class ActivityTableViewController: UITableViewController {
             cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2;
             cell.reportOwnerImage.clipsToBounds = true;
         })
+        
         ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
             cell.reportImage.image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
+            
+            // @todo
+            //     Make the height of the image view dynamic (cell.reportImage.frame.size.height) based
+            //     on the actual height of the image (cell.reportImage.image.size.height)
         })
 
         return cell
