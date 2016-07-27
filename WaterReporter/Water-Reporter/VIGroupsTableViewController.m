@@ -116,34 +116,32 @@
 - (void) loadGroups
 {
 
-    User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
     [self.manager GET:@"https://api.waterreporter.org/v2/data/organization?results_per_page=100" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         self.groups = responseObject[@"features"];
         self.groupsFiltered = [self.groups mutableCopy];
 
-        [self.manager GET:[NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.manager GET:[NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.usersGroups = responseObject[@"properties"][@"groups"];
 
             [self.loadingLabel removeFromSuperview];
             [self.hud hide:YES];
             [self.tableView reloadData];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            NSLog(@"loadUsersGroups: Could not retrieve organizations");
         }];
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"loadGroups: Could not retrieve organization");
     }];
 }
 
 - (void) loadUsersGroups
 {
 
-    User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId];
 
 //    NSLog(@"loadUsersGroups userEndpoint %@", userEndpoint);
 
@@ -308,11 +306,9 @@
 
 -(void)joinSelectedGroup:(NSDictionary *)group
 {
-//    NSLog(@"joinSelectedGroup %@", group[@"id"]);
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
-    User *user = [User MR_findFirst];
-
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId];
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -331,7 +327,7 @@
 
         NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
         [newGroup setValue:group[@"id"] forKey:@"organization_id"];
-        [newGroup setValue:[user valueForKey:@"user_id"] forKey:@"user_id"];
+        [newGroup setValue:userId forKey:@"user_id"];
         [newGroup setValue:[self dateTodayAsString] forKey:@"joined_on"];
         [groups addObject:newGroup];
 
@@ -387,11 +383,9 @@
 
 -(void)leaveSelectedGroup:(NSDictionary *)group
 {
-//    NSLog(@"leaveSelectedGroup %@", group[@"id"]);
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
-    User *user = [User MR_findFirst];
-
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId];
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 

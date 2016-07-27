@@ -81,11 +81,9 @@
 
 - (void) loadUsersGroups
 {
-    User *user = [User MR_findFirstInContext:[NSManagedObjectContext MR_defaultContext]];
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
-    NSLog(@"user %@", user);
-
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"], @"/groups"];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@%@", @"https://api.waterreporter.org/v2/data/user/", userId, @"/groups"];
 
     NSLog(@"userEndpoint %@", userEndpoint);
 

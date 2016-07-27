@@ -32,6 +32,8 @@
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.hud.mode = MBProgressHUDModeIndeterminate;
 
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
+
     CGRect loadingFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     self.loadingLabel = [[UILabel alloc] initWithFrame:loadingFrame];
     self.loadingLabel.backgroundColor = [UIColor whiteColor];
@@ -51,9 +53,7 @@
 
             self.report = responseObject;
 
-            User *user = [User MR_findFirst];
-
-            NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
+            NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId];
 
             [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"loadUsersGroups responseObject %@", responseObject);
@@ -392,13 +392,13 @@
 -(void)joinSelectedGroup:(UIButton *)sender
 {
     NSNumber *groupId = [NSNumber numberWithInt:sender.tag];
+    
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
     UILabel *cell = (UILabel *)[(UIView *)sender superview];
     NSLog(@"joinSelectedGroup cell %@", cell);
 
-    User *user = [User MR_findFirst];
-
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId];
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -418,7 +418,7 @@
         NSMutableDictionary *newGroup = [[NSMutableDictionary alloc] init];
 
         [newGroup setValue:groupId forKey:@"organization_id"];
-        [newGroup setValue:[user valueForKey:@"user_id"] forKey:@"user_id"];
+        [newGroup setValue:userId forKey:@"user_id"];
         [newGroup setValue:[self dateTodayAsString] forKey:@"joined_on"];
         [groups addObject:newGroup];
 
@@ -453,9 +453,9 @@
 
 - (void) loadUsersGroups
 {
-    User *user = [User MR_findFirst];
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId];
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"loadUsersGroups responseObject %@", responseObject);
@@ -466,9 +466,6 @@
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Could not retrieve organizations");
-
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Groups Error" message:@"Groups are temporarily unavailable" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//        [alert show];
     }];
 }
 
@@ -493,9 +490,9 @@
 
     NSLog(@"leaveSelectedGroup superview %@", sender.superview);
 
-    User *user = [User MR_findFirst];
+    NSNumber *userId = [NSNumber numberWithInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
-    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", [user valueForKey:@"user_id"]];
+    NSString *userEndpoint = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", userId];
 
     [self.manager GET:userEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 

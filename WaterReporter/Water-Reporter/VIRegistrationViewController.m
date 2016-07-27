@@ -283,8 +283,12 @@
         [self.manager POST:url parameters:(NSDictionary *)json success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
             NSLog(@"REGISTRATION SUCCESSFULL %@", responseObject);
-
-            self.user.user_id = [NSNumber numberWithInt:[responseObject[@"response"][@"user"][@"id"] integerValue]];
+            
+            NSDecimalNumber *userId = [NSDecimalNumber decimalNumberWithString:responseObject[@"response"][@"user"][@"id"]];
+            
+            [[NSUserDefaults standardUserDefaults] setInteger:[userId integerValue] forKey:@"DefaultUserId"];
+            
+            self.user.user_id = userId;
             self.user.first_name = self.firstNameField.text;
             self.user.last_name = self.lastNameField.text;
             self.user.email = self.emailField.text;
@@ -308,7 +312,7 @@
                 [userInformation setObject:self.user.first_name forKey:@"first_name"];
                 [userInformation setObject:self.user.last_name forKey:@"last_name"];
 
-                NSString *userUpdateURL = [NSString stringWithFormat:@"%@%@", @"https://api.waterreporter.org/v2/data/user/", self.user.user_id];
+                NSString *userUpdateURL = [NSString stringWithFormat:@"%@%ld", @"https://api.waterreporter.org/v2/data/user/", (long)[[NSUserDefaults standardUserDefaults] integerForKey:@"DefaultUserId"]];
 
                 [self.manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", [Lockbox stringForKey:kWaterReporterUserAccessToken]] forHTTPHeaderField:@"Authorization"];
 
