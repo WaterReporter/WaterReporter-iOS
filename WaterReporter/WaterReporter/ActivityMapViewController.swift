@@ -11,10 +11,11 @@ import UIKit
 
 class ActivityMapViewController: UIViewController {
     
-    var toPass:AnyObject!
+    var reportObject:AnyObject!
     
-    @IBOutlet weak var coordinates: UILabel!
-    
+    var reportLongitude:String!
+    var reportLatitude:String!
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,11 +25,6 @@ class ActivityMapViewController: UIViewController {
         let rightBarButton = UIBarButtonItem(title: "Get Directions", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(openDirectionsURL(_:)))
         
         self.navigationItem.rightBarButtonItem = rightBarButton
-        
-        print("ActivityMapViewController.toPass received")
-        print(toPass)
-        
-        coordinates.text = "something"
     }
     
     override func didReceiveMemoryWarning() {
@@ -37,6 +33,27 @@ class ActivityMapViewController: UIViewController {
     }
     
     func openDirectionsURL(sender: UIBarButtonItem) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//31.8424200949044,-85.7692766189575")!)
+        
+        //
+        // Set coordinates to use for directions
+        //
+        let reportCoordinates = reportObject?.objectForKey("geometry")!.objectForKey("geometries")![0].objectForKey("coordinates")
+        
+        reportLongitude = String(reportCoordinates![0])
+        reportLatitude = String(reportCoordinates![1])
+
+        if ((reportLongitude) != nil && (reportLatitude) != nil) {
+            UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + reportLatitude + "," + reportLongitude)!)
+        } else {
+            self.alertMissingCoordinates()
+        }
+    }
+    
+    func alertMissingCoordinates() {
+        let alertController = UIAlertController(title: "No coordinates found", message:
+            "We cannot display directions for this report because of missing coordinates.", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }

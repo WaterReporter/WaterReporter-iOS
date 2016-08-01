@@ -61,7 +61,7 @@ class ActivityTableViewController: UITableViewController {
         
         if segue.identifier == "reportToActivityMap" {
             print("sender.tag")
-            destViewController.toPass = self.reports[(sender?.tag)!]
+            destViewController.reportObject = self.reports[(sender?.tag)!]
         }
     }
     
