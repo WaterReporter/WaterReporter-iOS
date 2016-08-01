@@ -7,15 +7,15 @@
 //
 
 import Foundation
+import Mapbox
 import UIKit
 
 class ActivityMapViewController: UIViewController {
     
     var reportObject:AnyObject!
+    var reportLongitude:Double!
+    var reportLatitude:Double!
     
-    var reportLongitude:String!
-    var reportLatitude:String!
-        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,6 +25,16 @@ class ActivityMapViewController: UIViewController {
         let rightBarButton = UIBarButtonItem(title: "Get Directions", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(openDirectionsURL(_:)))
         
         self.navigationItem.rightBarButtonItem = rightBarButton
+        
+        //
+        // Setup default coordinates based on the Report selected on the previous page
+        //
+        self.setCoordinateDefaults()
+        
+        //
+        // Setup map view and add it to the view controller
+        //
+        self.setupMap()
     }
     
     override func didReceiveMemoryWarning() {
@@ -32,18 +42,38 @@ class ActivityMapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func openDirectionsURL(sender: UIBarButtonItem) {
+    func setupMap() {
+        let mapView = MGLMapView(frame: view.bounds)
+
+        mapView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: reportLatitude, longitude: reportLongitude), zoomLevel: 15, animated: false)
         
         //
-        // Set coordinates to use for directions
+        // Add default center pin to the map
         //
+        self.addReportToMap(mapView, latitude: reportLatitude, longitude: reportLongitude)
+        
+        
+        view.addSubview(mapView)
+    }
+    
+    func addReportToMap(mapView: AnyObject, latitude: Double, longitude: Double) {
+        let selectedReportAnnotation = MGLPointAnnotation()
+        selectedReportAnnotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        mapView.addAnnotation(selectedReportAnnotation)
+    }
+    
+    func setCoordinateDefaults() {
         let reportCoordinates = reportObject?.objectForKey("geometry")!.objectForKey("geometries")![0].objectForKey("coordinates")
         
-        reportLongitude = String(reportCoordinates![0])
-        reportLatitude = String(reportCoordinates![1])
-
+        reportLongitude = (reportCoordinates![0] as? NSNumber)!.doubleValue
+        reportLatitude = (reportCoordinates![1] as? NSNumber)!.doubleValue
+    }
+    
+    func openDirectionsURL(sender: UIBarButtonItem) {
+        
         if ((reportLongitude) != nil && (reportLatitude) != nil) {
-            UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + reportLatitude + "," + reportLongitude)!)
+            UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportLatitude) + "," + String(reportLongitude))!)
         } else {
             self.alertMissingCoordinates()
         }
