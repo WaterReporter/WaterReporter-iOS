@@ -27,8 +27,8 @@ class ActivityTableViewController: UITableViewController {
         //
         self.navigationItem.title = "Activity"
 
+//        self.tableView.estimatedRowHeight = 600.0; // set to whatever your "average" cell height is
 //        self.tableView.rowHeight = UITableViewAutomaticDimension;
-//        self.tableView.estimatedRowHeight = 400.0; // set to whatever your "average" cell height is
 
         //
         // Send a request to the defined endpoint with the given parameters
@@ -57,10 +57,9 @@ class ActivityTableViewController: UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destViewController = segue.destinationViewController as! ActivityMapViewController
         
         if segue.identifier == "reportToActivityMap" {
-            print("sender.tag")
+            let destViewController = segue.destinationViewController as! ActivityMapViewController
             destViewController.reportObject = self.reports[(sender?.tag)!]
         }
     }
@@ -108,7 +107,17 @@ class ActivityTableViewController: UITableViewController {
         })
         
         ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
-            cell.reportImage.image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
+            let image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
+            cell.reportImage.image = image
+            print("image size")
+            print(image.size.width)
+            print(image.size.height)
+            print("imageview size")
+            print(cell.reportImage.frame.size.width)
+            print(cell.reportImage.frame.size.height)
+//            cell.reportImage.frame = CGRectMake(cell.reportImage.frame.origin.x, cell.reportImage.frame.origin.y, image.size.width, image.size.height)
+            cell.reportImage.frame.size.width = 640
+            cell.reportImage.frame.size.height = 640
         })
 
         cell.reportGetDirectionsButton.tag = indexPath.row

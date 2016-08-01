@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoiZGV2ZWxvcGVkc2ltcGxlIiwiYSI6ImNpcmNmMnpkbzAxZTdnOG5rcWZrNTlvNHAifQ.JCwac6CSTnUrmcf-eFHLfA</string>
+	<string>pk.eyJ1IjoicmRhd2VzMSIsImEiOiJjaXJjZnI0eWwwMWU4Zzhua2NkNWh4bXZmIn0.QSLUXCX49PSp_MVW2qNSKw</string>
 	<key>NSLocationUsageDescription</key>
 	<string>We use your location to make report locations more accurate.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
