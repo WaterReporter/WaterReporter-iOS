@@ -10,6 +10,8 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
 
+    var reportObject : AnyObject?
+
     @IBOutlet weak var reportUserName: UILabel!
     @IBOutlet weak var reportTerritoryName: UILabel!
     @IBOutlet weak var reportDescription: UILabel!
@@ -19,10 +21,11 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportCommentIcon: UIImageView!
     @IBOutlet weak var reportMapIcon: UIImageView!
     @IBOutlet weak var reportGroups: UILabel!
+    @IBOutlet weak var reportGetDirectionsButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        // Initialization code        
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -30,5 +33,6 @@ class TableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+
 
 }

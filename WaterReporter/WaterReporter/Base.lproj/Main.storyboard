@@ -75,7 +75,7 @@
                                             <rect key="frame" x="16" y="257" width="18" height="18"/>
                                             <state key="normal" image="Icon--MapPin"/>
                                             <connections>
-                                                <segue destination="0uJ-jt-H35" kind="show" id="VtS-u3-zqh"/>
+                                                <segue destination="0uJ-jt-H35" kind="show" identifier="reportToActivityMap" id="VtS-u3-zqh"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vAv-oZ-7LT">
@@ -159,6 +159,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="reportDescription" destination="uzf-nX-7zv" id="9Mg-8P-pXh"/>
+                                    <outlet property="reportGetDirectionsButton" destination="jzA-J4-UR2" id="fbV-Ih-EC1"/>
                                     <outlet property="reportGroups" destination="4Sg-oM-EMq" id="uX6-lG-hHM"/>
                                     <outlet property="reportImage" destination="Fxw-iA-4dw" id="ykS-n1-s4a"/>
                                     <outlet property="reportOwnerImage" destination="4hV-IB-V95" id="WWH-zQ-gTx"/>
@@ -228,7 +229,7 @@
         <!--Activity Map-->
         <scene sceneID="j1G-Cu-ZFV">
             <objects>
-                <viewController title="Activity Map" id="0uJ-jt-H35" sceneMemberID="viewController">
+                <viewController title="Activity Map" id="0uJ-jt-H35" customClass="ActivityMapViewController" customModule="WaterReporter" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="o7x-fu-dL6"/>
                         <viewControllerLayoutGuide type="bottom" id="DNc-N1-AUo"/>
@@ -236,8 +237,19 @@
                     <view key="view" contentMode="scaleToFill" id="q4g-DW-6G7">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xRU-sN-VtN">
+                                <rect key="frame" x="91" y="104" width="359" height="252"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="coordinates" destination="xRU-sN-VtN" id="mmh-TI-B3c"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rru-i3-hWz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

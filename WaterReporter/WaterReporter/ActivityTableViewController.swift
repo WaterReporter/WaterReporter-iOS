@@ -17,7 +17,6 @@ class ActivityTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -56,7 +55,16 @@ class ActivityTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let destViewController = segue.destinationViewController as! ActivityMapViewController
+        
+        if segue.identifier == "reportToActivityMap" {
+            print("sender.tag")
+            destViewController.toPass = self.reports[(sender?.tag)!]
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -72,7 +80,6 @@ class ActivityTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! TableViewCell
         
         let report = self.reports[indexPath.row].objectForKey("properties")
-        print(report)
         let reportDescription = report?.objectForKey("report_description")
         let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
         let reportImageURL = reportImages?.objectForKey("square")
@@ -85,6 +92,8 @@ class ActivityTableViewController: UITableViewController {
         let reportTerritoryName = ((reportTerritory?.objectForKey("huc_8_name"))! as! String) + " Watershed"
         
 //        let reportGroups = report?.objectForKey("groups")!.objectForKey("features") as! [Dictionary<String, AnyObject>]
+
+        cell.reportObject = report
 
         cell.reportUserName.text = reportOwnerName
         cell.reportTerritoryName.text = reportTerritoryName
@@ -101,10 +110,11 @@ class ActivityTableViewController: UITableViewController {
         ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
             cell.reportImage.image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
         })
-        
+
+        cell.reportGetDirectionsButton.tag = indexPath.row
+
         return cell
     }
-
 
     /*
     // Override to support conditional editing of the table view.
