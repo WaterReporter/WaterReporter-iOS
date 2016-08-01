@@ -28,8 +28,8 @@ class ActivityTableViewController: UITableViewController {
         //
         self.navigationItem.title = "Activity"
 
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
-//        self.tableView.estimatedRowHeight = 680.0; // set to whatever your "average" cell height is
+//        self.tableView.rowHeight = UITableViewAutomaticDimension;
+//        self.tableView.estimatedRowHeight = 400.0; // set to whatever your "average" cell height is
 
         //
         // Send a request to the defined endpoint with the given parameters
@@ -43,6 +43,7 @@ class ActivityTableViewController: UITableViewController {
                     self.reports = value["features"] as! [AnyObject]
                     self.tableView.reloadData()
                 case .Failure(let error):
+                    print(error)
                     break
                 }
                 
@@ -71,7 +72,7 @@ class ActivityTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! TableViewCell
         
         let report = self.reports[indexPath.row].objectForKey("properties")
-
+        print(report)
         let reportDescription = report?.objectForKey("report_description")
         let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
         let reportImageURL = reportImages?.objectForKey("square")
@@ -83,9 +84,13 @@ class ActivityTableViewController: UITableViewController {
         let reportTerritory = report?.objectForKey("territory")?.objectForKey("properties")
         let reportTerritoryName = ((reportTerritory?.objectForKey("huc_8_name"))! as! String) + " Watershed"
         
+//        let reportGroups = report?.objectForKey("groups")!.objectForKey("features") as! [Dictionary<String, AnyObject>]
+
         cell.reportUserName.text = reportOwnerName
         cell.reportTerritoryName.text = reportTerritoryName
         cell.reportDescription.text = reportDescription as! String
+        
+        cell.reportGroups.text = "Group 1 Test, Group 2 Test"
         
         ImageLoader.sharedLoader.imageForUrl(reportOwnerImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
             cell.reportOwnerImage.image = image!
@@ -95,12 +100,8 @@ class ActivityTableViewController: UITableViewController {
         
         ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
             cell.reportImage.image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
-            
-            // @todo
-            //     Make the height of the image view dynamic (cell.reportImage.frame.size.height) based
-            //     on the actual height of the image (cell.reportImage.image.size.height)
         })
-
+        
         return cell
     }
 

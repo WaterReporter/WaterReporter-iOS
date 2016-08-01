@@ -25,6 +25,7 @@ class Resource {
                         self.returnValue(value as! NSDictionary)
                     
                     case .Failure(let error):
+                        print(error)
                         break
                 }
                 
