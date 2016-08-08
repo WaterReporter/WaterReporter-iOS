@@ -84,22 +84,40 @@ class ActivityTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! TableViewCell
         
+        //
+        // REPORT OBJECT
+        //
         let report = self.reports[indexPath.row].objectForKey("properties")
+        cell.reportObject = report
+
         let reportDescription = report?.objectForKey("report_description")
-        let reportDate = report!.objectForKey("report_date")
+        let reportDate = report?.objectForKey("report_date")
         let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
         let reportImageURL = reportImages?.objectForKey("square")
 
         let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
         let reportOwnerImageURL = reportOwner?.objectForKey("picture")
         
-        let reportTerritory = report?.objectForKey("territory")?.objectForKey("properties")
-        let reportTerritoryName = ((reportTerritory?.objectForKey("huc_8_name"))! as! String) + " Watershed"
         
+        //
+        // Territory
+        //
+        let reportTerritory = report?.objectForKey("territory") as? NSDictionary
+
+        var reportTerritoryName: String? = "Unknown Watershed"
+        if let thisReportTerritory = reportTerritory?.objectForKey("properties")?.objectForKey("huc_8_name") as? String {
+            reportTerritoryName = (thisReportTerritory) + " Watershed"
+        }
+        
+        cell.reportTerritoryName.text = reportTerritoryName
+        
+        
+        //
+        // GROUPS
+        //
 //        let reportGroups = report?.objectForKey("groups")!.objectForKey("features") as! [Dictionary<String, AnyObject>]
 
-        cell.reportObject = report
-
+        
         //
         // USER NAME
         //
@@ -110,7 +128,6 @@ class ActivityTableViewController: UITableViewController {
             cell.reportUserName.text = "Unknown Reporter"
         }
         
-        cell.reportTerritoryName.text = reportTerritoryName
         cell.reportDescription.text = reportDescription as? String
     
         //
@@ -138,13 +155,6 @@ class ActivityTableViewController: UITableViewController {
         ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
             let image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
             cell.reportImage.image = image
-//            print("image size")
-//            print(image.size.width)
-//            print(image.size.height)
-//            print("imageview size")
-//            print(cell.reportImage.frame.size.width)
-//            print(cell.reportImage.frame.size.height)
-//            cell.reportImage.frame = CGRectMake(cell.reportImage.frame.origin.x, cell.reportImage.frame.origin.y, image.size.width, image.size.height)
             cell.reportImage.frame.size.width = 640
             cell.reportImage.frame.size.height = 640
         })
