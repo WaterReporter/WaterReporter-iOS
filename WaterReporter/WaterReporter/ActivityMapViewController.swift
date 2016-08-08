@@ -64,10 +64,12 @@ class ActivityMapViewController: UIViewController {
     }
     
     func setCoordinateDefaults() {
-        let reportCoordinates = reportObject?.objectForKey("geometry")!.objectForKey("geometries")![0].objectForKey("coordinates")
+        let reportGeometry = reportObject?.objectForKey("geometry")
+        let reportGeometries = reportGeometry!.objectForKey("geometries")
+        let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
         
-        reportLongitude = (reportCoordinates![0] as? NSNumber)!.doubleValue
-        reportLatitude = (reportCoordinates![1] as? NSNumber)!.doubleValue
+        reportLongitude = reportCoordinates[0]
+        reportLatitude = reportCoordinates[1]
     }
     
     func openDirectionsURL(sender: UIBarButtonItem) {

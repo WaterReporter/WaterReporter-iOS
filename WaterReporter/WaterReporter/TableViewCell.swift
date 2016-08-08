@@ -22,6 +22,7 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportMapIcon: UIImageView!
     @IBOutlet weak var reportGroups: UILabel!
     @IBOutlet weak var reportGetDirectionsButton: UIButton!
+    @IBOutlet weak var reportDate: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

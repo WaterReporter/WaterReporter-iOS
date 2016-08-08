@@ -33,17 +33,23 @@ class ActivityTableViewController: UITableViewController {
         //
         // Send a request to the defined endpoint with the given parameters
         //
-        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: ["":""])
+        let parameters = [
+            "q": "{\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"}]}"
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters)
             .responseJSON { response in
                 
                 switch response.result {
+                    case .Success(let value):
+                        self.reports = value["features"] as! [AnyObject]
+                        self.tableView.reloadData()
+                        print(value["features"])
                     
-                case .Success(let value):
-                    self.reports = value["features"] as! [AnyObject]
-                    self.tableView.reloadData()
-                case .Failure(let error):
-                    print(error)
-                    break
+                    case .Failure(let error):
+                        print(error)
+                        
+                        break
                 }
                 
         }
@@ -80,11 +86,11 @@ class ActivityTableViewController: UITableViewController {
         
         let report = self.reports[indexPath.row].objectForKey("properties")
         let reportDescription = report?.objectForKey("report_description")
+        let reportDate = report!.objectForKey("report_date")
         let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
         let reportImageURL = reportImages?.objectForKey("square")
 
         let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
-        let reportOwnerName = ((reportOwner?.objectForKey("first_name"))! as! String) + " " + ((reportOwner?.objectForKey("last_name"))! as! String)
         let reportOwnerImageURL = reportOwner?.objectForKey("picture")
         
         let reportTerritory = report?.objectForKey("territory")?.objectForKey("properties")
@@ -94,36 +100,79 @@ class ActivityTableViewController: UITableViewController {
 
         cell.reportObject = report
 
-        cell.reportUserName.text = reportOwnerName
-        cell.reportTerritoryName.text = reportTerritoryName
-        cell.reportDescription.text = reportDescription as! String
+        //
+        // USER NAME
+        //
+        if let firstName = reportOwner?.objectForKey("first_name"),
+           let lastName = reportOwner?.objectForKey("last_name") {
+            cell.reportUserName.text = (firstName as! String) + " " + (lastName as! String)
+        } else {
+            cell.reportUserName.text = "Unknown Reporter"
+        }
         
+        cell.reportTerritoryName.text = reportTerritoryName
+        cell.reportDescription.text = reportDescription as? String
+    
+        //
+        // GROUPS
+        //
         cell.reportGroups.text = "Group 1 Test, Group 2 Test"
         
-        ImageLoader.sharedLoader.imageForUrl(reportOwnerImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
-            cell.reportOwnerImage.image = image!
-            cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2;
-            cell.reportOwnerImage.clipsToBounds = true;
-        })
+        //
+        // IMAGES
+        //
+        if let thisReportOwnerImageUrl = reportOwnerImageURL as? String  {
+            ImageLoader.sharedLoader.imageForUrl(thisReportOwnerImageUrl, completionHandler:{(image: UIImage?, url: String) in
+                cell.reportOwnerImage.image = image!
+                cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2;
+                cell.reportOwnerImage.clipsToBounds = true;
+            })
+        } else {
+            ImageLoader.sharedLoader.imageForUrl("https://www.waterreporter.org/images/badget--MissingUser.png", completionHandler:{(image: UIImage?, url: String) in
+                cell.reportOwnerImage.image = image!
+                cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2;
+                cell.reportOwnerImage.clipsToBounds = true;
+            })
+        }
         
         ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
             let image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
             cell.reportImage.image = image
-            print("image size")
-            print(image.size.width)
-            print(image.size.height)
-            print("imageview size")
-            print(cell.reportImage.frame.size.width)
-            print(cell.reportImage.frame.size.height)
+//            print("image size")
+//            print(image.size.width)
+//            print(image.size.height)
+//            print("imageview size")
+//            print(cell.reportImage.frame.size.width)
+//            print(cell.reportImage.frame.size.height)
 //            cell.reportImage.frame = CGRectMake(cell.reportImage.frame.origin.x, cell.reportImage.frame.origin.y, image.size.width, image.size.height)
             cell.reportImage.frame.size.width = 640
             cell.reportImage.frame.size.height = 640
         })
-
+        
+        //
+        // DATE
+        //
+        let dateString = reportDate as! String
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
+        let stringToFormat = dateFormatter.dateFromString(dateString)
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        
+        let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+        
+        if let thisDisplayDate: String? = displayDate {
+            cell.reportDate.text = thisDisplayDate
+        }
+        
+        //
+        // PASS ON DATA TO TABLE CELL
+        //
         cell.reportGetDirectionsButton.tag = indexPath.row
 
         return cell
     }
+
 
     /*
     // Override to support conditional editing of the table view.
