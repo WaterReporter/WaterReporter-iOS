@@ -17,12 +17,12 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportDescription: UILabel!
     @IBOutlet weak var reportOwnerImage: UIImageView!
     @IBOutlet weak var reportImage: UIImageView!
-    @IBOutlet weak var reportCommentCount: UILabel!
     @IBOutlet weak var reportCommentIcon: UIImageView!
     @IBOutlet weak var reportMapIcon: UIImageView!
     @IBOutlet weak var reportGroups: UILabel!
     @IBOutlet weak var reportGetDirectionsButton: UIButton!
     @IBOutlet weak var reportDate: UILabel!
+    @IBOutlet weak var reportCommentCount: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

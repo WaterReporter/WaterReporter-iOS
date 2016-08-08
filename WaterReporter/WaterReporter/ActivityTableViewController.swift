@@ -24,6 +24,13 @@ class ActivityTableViewController: UITableViewController {
         super.viewWillAppear(true)
         
         //
+        // Make sure we are starting out with any empty reports array
+        //
+        self.reports = []
+        self.page = 1
+         self.tableView.reloadData()
+        
+        //
         // Set the Navigation Bar title
         //
         self.navigationItem.title = "Activity"
@@ -32,8 +39,10 @@ class ActivityTableViewController: UITableViewController {
         
         self.tableView.backgroundColor = UIColor.whiteColor()
     }
+
     
     func loadReports() {
+        
         //
         // Send a request to the defined endpoint with the given parameters
         //
@@ -42,14 +51,14 @@ class ActivityTableViewController: UITableViewController {
             "page": self.page
         ]
         
-        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters as! [String : AnyObject])
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
                 switch response.result {
                 case .Success(let value):
                     self.reports += value["features"] as! [AnyObject]
                     self.tableView.reloadData()
-                    
+
                     print(value["features"])
                     self.page += 1
                     
@@ -107,14 +116,33 @@ class ActivityTableViewController: UITableViewController {
         // Territory
         //
         let reportTerritory = report?.objectForKey("territory") as? NSDictionary
-
+        
         var reportTerritoryName: String? = "Unknown Watershed"
         if let thisReportTerritory = reportTerritory?.objectForKey("properties")?.objectForKey("huc_8_name") as? String {
             reportTerritoryName = (thisReportTerritory) + " Watershed"
         }
         
         cell.reportTerritoryName.text = reportTerritoryName
+
         
+        //
+        // Comment Count
+        //
+        let reportComments = report?.objectForKey("comments") as! NSArray
+        
+        var reportCommentsCountText: String = "0 comments"
+        
+        if reportComments.count == 1 {
+            reportCommentsCountText = "1 comment"
+        }
+        else if reportComments.count >= 1 {
+            reportCommentsCountText = reportComments.count as! String + " comments"
+        } else {
+            print("No objects")
+        }
+        
+        cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
+
         
         //
         // GROUPS

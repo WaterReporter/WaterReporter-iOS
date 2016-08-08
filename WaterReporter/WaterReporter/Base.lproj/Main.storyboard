@@ -160,6 +160,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
+                                    <outlet property="reportCommentCount" destination="tnf-6Y-yAX" id="beb-mD-e2U"/>
                                     <outlet property="reportDate" destination="T40-KM-JjO" id="lt2-Bq-4JH"/>
                                     <outlet property="reportDescription" destination="uzf-nX-7zv" id="9Mg-8P-pXh"/>
                                     <outlet property="reportGetDirectionsButton" destination="jzA-J4-UR2" id="fbV-Ih-EC1"/>
