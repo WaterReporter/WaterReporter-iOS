@@ -13,6 +13,7 @@ import UIKit
 class ActivityTableViewController: UITableViewController {
     
     var reports = [AnyObject]()
+    var page: Int = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,34 +28,37 @@ class ActivityTableViewController: UITableViewController {
         //
         self.navigationItem.title = "Activity"
 
-//        self.tableView.estimatedRowHeight = 600.0; // set to whatever your "average" cell height is
-//        self.tableView.rowHeight = UITableViewAutomaticDimension;
-
+        self.loadReports()
+        
+        self.tableView.backgroundColor = UIColor.whiteColor()
+    }
+    
+    func loadReports() {
         //
         // Send a request to the defined endpoint with the given parameters
         //
         let parameters = [
-            "q": "{\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"}]}"
+            "q": "{\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "page": self.page
         ]
         
-        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters)
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters as! [String : AnyObject])
             .responseJSON { response in
                 
                 switch response.result {
-                    case .Success(let value):
-                        self.reports = value["features"] as! [AnyObject]
-                        self.tableView.reloadData()
-                        print(value["features"])
+                case .Success(let value):
+                    self.reports += value["features"] as! [AnyObject]
+                    self.tableView.reloadData()
                     
-                    case .Failure(let error):
-                        print(error)
-                        
-                        break
+                    print(value["features"])
+                    self.page += 1
+                    
+                case .Failure(let error):
+                    print(error)
+                    break
                 }
                 
         }
-        
-        self.tableView.backgroundColor = UIColor.whiteColor()
     }
 
     override func didReceiveMemoryWarning() {
@@ -115,7 +119,26 @@ class ActivityTableViewController: UITableViewController {
         //
         // GROUPS
         //
-//        let reportGroups = report?.objectForKey("groups")!.objectForKey("features") as! [Dictionary<String, AnyObject>]
+        let reportGroups = report?.objectForKey("groups") as? NSArray
+        var reportGroupsNames: String? = ""
+        
+        let reportGroupsTotal = reportGroups!.count
+        var reportGroupsIncrementer = 1;
+        
+        for _group in reportGroups! as NSArray {
+            let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as! String
+
+            if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
+                reportGroupsNames = thisGroupName
+            }
+            else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
+                reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
+            }
+            
+            reportGroupsIncrementer += 1
+        }
+
+        cell.reportGroups.text = reportGroupsNames
 
         
         //
@@ -129,11 +152,6 @@ class ActivityTableViewController: UITableViewController {
         }
         
         cell.reportDescription.text = reportDescription as? String
-    
-        //
-        // GROUPS
-        //
-        cell.reportGroups.text = "Group 1 Test, Group 2 Test"
         
         //
         // IMAGES
@@ -179,6 +197,16 @@ class ActivityTableViewController: UITableViewController {
         // PASS ON DATA TO TABLE CELL
         //
         cell.reportGetDirectionsButton.tag = indexPath.row
+        
+        
+        //
+        // CONTIUOUS SCROLL
+        //
+        if (indexPath.row == self.reports.count - 1)
+        {
+            print("LOAD 10 MORE")
+            self.loadReports()
+        }
 
         return cell
     }
