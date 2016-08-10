@@ -14,6 +14,7 @@ import UIKit
 class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     
     var reports = [AnyObject]() // THIS NEEDS TO BE A SET NOT AN ARRAY
+
     var reportObject:AnyObject!
     var reportLongitude:Double!
     var reportLatitude:Double!
@@ -109,7 +110,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func loadAllReportsInRegion(mapView: AnyObject) {
-
+        
         //
         // Send a request to the defined endpoint with the given parameters
         //
@@ -124,7 +125,9 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
                 
                 switch response.result {
                 case .Success(let value):
-                    self.reports = value["features"] as! [AnyObject]
+                    
+                    let returnValue = value["features"] as! [AnyObject]
+                    self.reports = returnValue // WE NEED TO FILTER DOWN SO THERE ARE NO DUPLICATE REPORTS LOADED ONTO THE MAP
                     self.addReportsToMap(mapView, reports:self.reports)
                     
                 case .Failure(let error):
@@ -232,6 +235,44 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         nextViewController.reports = [annotation.report]
 
         self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+        self.loadAllReportsInRegion(mapView)
+    }
+    
+    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        // Try to reuse the existing ‘pisa’ annotation image, if it exists.
+        var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("pisa")
+        
+        if annotationImage == nil {
+            
+            var image: UIImage
+            
+//            if annotation.report.objectForKey("id") as! NSNumber == reportObject.objectForKey("id") as! NSNumber {
+//                image = UIImage(named: "Icon--ReportPinHighlighted")!
+//            } else {
+                image = UIImage(named: "Icon--ReportPin")!
+//            }
+           
+//            let report = annotation.report
+//            let reportImages = report.objectForKey("images")![0]?.objectForKey("properties")
+//            let reportImageURL = reportImages?.objectForKey("thumbnail") as! String
+//            
+//            ImageLoader.sharedLoader.imageForUrl(reportImageURL, completionHandler:{(image: UIImage?, url: String) in
+//                let image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
+//
+//                annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "pisa")
+//
+//            })
+
+            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "pisa")
+
+            return annotationImage;
+
+        }
+        
+        return annotationImage
     }
     
 }
