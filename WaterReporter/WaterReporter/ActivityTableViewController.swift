@@ -25,9 +25,14 @@ class ActivityTableViewController: UITableViewController {
         //   IT SHOULD ONLY BE ACTIVATED ON TAB CHANGE --NOT-- WHEN THE
         //   `viewWillAppear`
         //
-        self.reports = []
-        self.page = 1
-        self.tableView.reloadData()
+        //        self.reports = []
+        //        self.page = 1
+        //        self.tableView.reloadData()
+        
+        
+        //
+        // Load 10 newest reports from API on Activity View load
+        //
         self.loadReports()
     }
     
