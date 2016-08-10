@@ -28,7 +28,10 @@ class ActivityTableViewController: UITableViewController {
         //
         self.reports = []
         self.page = 1
-         self.tableView.reloadData()
+        self.tableView.reloadData()
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.estimatedRowHeight = 600.0;
         
         //
         // Set the Navigation Bar title
