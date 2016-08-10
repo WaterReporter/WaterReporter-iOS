@@ -98,7 +98,15 @@ class ActivityTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
         let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! TableViewCell
+        
+        //
+        // Make sure we aren't loading old images into the new cells as
+        // additional reports are loaded
+        //
+        cell.reportImage.image = nil
+        cell.reportOwnerImage.image = nil
         
         //
         // REPORT OBJECT
