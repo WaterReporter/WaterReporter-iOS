@@ -6,12 +6,14 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import Alamofire
 import Foundation
 import Mapbox
 import UIKit
 
 class ActivityMapViewController: UIViewController {
     
+    var reports = [AnyObject]()
     var reportObject:AnyObject!
     var reportLongitude:Double!
     var reportLatitude:Double!
@@ -53,7 +55,14 @@ class ActivityMapViewController: UIViewController {
         //
         self.addReportToMap(mapView, latitude: reportLatitude, longitude: reportLongitude)
         
+        //
+        // Load additional region based pins
+        //
+        self.loadAllReportsInRegion(mapView)
         
+        //
+        // Add map to subview
+        //
         view.addSubview(mapView)
     }
     
@@ -61,6 +70,57 @@ class ActivityMapViewController: UIViewController {
         let selectedReportAnnotation = MGLPointAnnotation()
         selectedReportAnnotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         mapView.addAnnotation(selectedReportAnnotation)
+    }
+    
+    func loadAllReportsInRegion(mapView: AnyObject) {
+
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let region = getViewportBoundaryString(mapView.visibleCoordinateBounds)
+        let polygon = "SRID=4326;POLYGON((" + region + "))"
+        let parameters = [
+            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+        ]
+        
+        print("region")
+        print(region)
+        print("polygon")
+        print(polygon)
+        print("parameters")
+        print(parameters)
+        
+
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+//                    self.reports = value["features"] as! [AnyObject]
+                    
+                    print(value)
+                    
+                case .Failure(let error):
+                    print(error)
+                    break
+                }
+                
+        }
+        
+        
+    }
+    
+    func getViewportBoundaryString(boundary: MGLCoordinateBounds) -> String {
+        
+        print("boundary")
+        print(boundary)
+        
+        let topLeft: String = String(format:"%f %f", boundary.ne.longitude, boundary.sw.latitude)
+        let topRight: String = String(format:"%f %f", boundary.ne.longitude, boundary.ne.latitude)
+        let bottomRight: String = String(format:"%f %f", boundary.sw.longitude, boundary.ne.latitude)
+        let bottomLeft: String = String(format:"%f %f", boundary.sw.longitude, boundary.sw.latitude)
+
+        return [topLeft, topRight, bottomRight, bottomLeft, topLeft].joinWithSeparator(",")
     }
     
     func setCoordinateDefaults() {

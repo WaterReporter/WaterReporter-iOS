@@ -6,8 +6,8 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
-import Foundation
 import Alamofire
+import Foundation
 import UIKit
 
 class ActivityTableViewController: UITableViewController {
@@ -17,19 +17,23 @@ class ActivityTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
         
         //
         // Make sure we are starting out with any empty reports array
         //
+        // ! THIS IS A TERRIBLE SOLUTION, HOWEVER, IF IT IS TO BE USED
+        //   IT SHOULD ONLY BE ACTIVATED ON TAB CHANGE --NOT-- WHEN THE
+        //   `viewWillAppear`
+        //
         self.reports = []
         self.page = 1
         self.tableView.reloadData()
-        
+        self.loadReports()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 600.0;
         
@@ -37,8 +41,6 @@ class ActivityTableViewController: UITableViewController {
         // Set the Navigation Bar title
         //
         self.navigationItem.title = "Activity"
-
-        self.loadReports()
         
         self.tableView.backgroundColor = UIColor.whiteColor()
     }
@@ -239,9 +241,7 @@ class ActivityTableViewController: UITableViewController {
         //
         // CONTIUOUS SCROLL
         //
-        if (indexPath.row == self.reports.count - 1)
-        {
-            print("LOAD 10 MORE")
+        if (indexPath.row == self.reports.count - 1) {
             self.loadReports()
         }
 
