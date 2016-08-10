@@ -13,6 +13,7 @@ import UIKit
 class ActivityTableViewController: UITableViewController {
     
     var reports = [AnyObject]()
+    var singleReport: Bool = false
     var page: Int = 1
     
     override func viewDidLoad() {
@@ -33,7 +34,9 @@ class ActivityTableViewController: UITableViewController {
         //
         // Load 10 newest reports from API on Activity View load
         //
-        self.loadReports()
+        if (!singleReport) {
+            self.loadReports()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -41,6 +44,13 @@ class ActivityTableViewController: UITableViewController {
 
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 600.0;
+        
+        //
+        // Special directions for Single Report view
+        //
+        if (singleReport) {
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        }
         
         //
         // Set the Navigation Bar title
@@ -246,7 +256,7 @@ class ActivityTableViewController: UITableViewController {
         //
         // CONTIUOUS SCROLL
         //
-        if (indexPath.row == self.reports.count - 1) {
+        if (indexPath.row == self.reports.count - 1 && !singleReport) {
             self.loadReports()
         }
 

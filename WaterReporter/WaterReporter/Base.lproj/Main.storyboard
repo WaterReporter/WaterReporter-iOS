@@ -10,7 +10,7 @@
         <!--Activity-->
         <scene sceneID="iNO-Yl-Awc">
             <objects>
-                <tableViewController title="Activity" id="Uai-zl-fOX" customClass="ActivityTableViewController" customModule="WaterReporter" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ActivityTableViewController" title="Activity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Uai-zl-fOX" customClass="ActivityTableViewController" customModule="WaterReporter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="347" sectionHeaderHeight="28" sectionFooterHeight="28" id="rR4-v7-FKe">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

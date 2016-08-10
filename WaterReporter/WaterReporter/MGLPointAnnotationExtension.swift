@@ -33,24 +33,24 @@ private var reportIdKey: UInt8 = 0 // We still need this boilerplate
 
 extension MGLAnnotation {
     
-    var reportId: NSNumber { // cat is *effectively* a stored property
+    var report: AnyObject { // cat is *effectively* a stored property
         get {
             return associatedObject(self, key: &reportIdKey)
-            { return 0 } // Set the initial value of the var
+            { return [:] } // Set the initial value of the var
         }
         set { associateObject(self, key: &reportIdKey, value: newValue) }
     }
     
 }
 
-extension MGLPointAnnotation {
-    
-    var reportId: NSNumber { // cat is *effectively* a stored property
-        get {
-            return associatedObject(self, key: &reportIdKey)
-            { return 0 } // Set the initial value of the var
-        }
-        set { associateObject(self, key: &reportIdKey, value: newValue) }
-    }
-    
-}
+//extension MGLPointAnnotation {
+//    
+//    var reportId: NSNumber { // cat is *effectively* a stored property
+//        get {
+//            return associatedObject(self, key: &reportIdKey)
+//            { return 0 } // Set the initial value of the var
+//        }
+//        set { associateObject(self, key: &reportIdKey, value: newValue) }
+//    }
+//    
+//}

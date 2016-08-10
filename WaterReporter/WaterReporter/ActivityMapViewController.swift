@@ -76,7 +76,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         var _subtitle: String = "Reported on "
         let _date = report.objectForKey("properties")?.objectForKey("report_date") as! String
         
-        thisAnnotation.reportId = report.objectForKey("id") as! NSNumber
+        thisAnnotation.report = report
         
         let dateString = _date
         let dateFormatter = NSDateFormatter()
@@ -215,12 +215,23 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func mapView(mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
-        // Hide the callout view.
-        // mapView.deselectAnnotation(annotation, animated: false)
         
-        print("getDetailView")
-        print(annotation.reportId)
+        //
+        // Hide the pop up
+        //
+        mapView.deselectAnnotation(annotation, animated: false)
         
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ActivityTableViewController") as! ActivityTableViewController
+        
+        nextViewController.singleReport = true
+        nextViewController.reports = [annotation.report]
+
+        self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
 }
