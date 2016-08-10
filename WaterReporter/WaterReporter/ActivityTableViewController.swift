@@ -201,8 +201,6 @@ class ActivityTableViewController: UITableViewController {
         ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
             let image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
             cell.reportImage.image = image
-            cell.reportImage.frame.size.width = 640
-            cell.reportImage.frame.size.height = 640
         })
         
         //
