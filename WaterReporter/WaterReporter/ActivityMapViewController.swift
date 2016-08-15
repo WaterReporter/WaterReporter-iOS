@@ -22,18 +22,8 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //
-        // Set the "Get Directions" Bar Button
-        //
-        let rightBarButton = UIBarButtonItem(title: "Get Directions", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(openDirectionsURL(_:)))
-        
-        self.navigationItem.rightBarButtonItem = rightBarButton
-        
-        //
-        // Setup default coordinates based on the Report selected on the previous page
-        //
         self.setCoordinateDefaults()
-        
+
         //
         // Setup map view and add it to the view controller
         //
@@ -181,23 +171,6 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         
         reportLongitude = reportCoordinates[0]
         reportLatitude = reportCoordinates[1]
-    }
-    
-    func openDirectionsURL(sender: UIBarButtonItem) {
-        
-        if ((reportLongitude) != nil && (reportLatitude) != nil) {
-            UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportLatitude) + "," + String(reportLongitude))!)
-        } else {
-            self.alertMissingCoordinates()
-        }
-    }
-    
-    func alertMissingCoordinates() {
-        let alertController = UIAlertController(title: "No coordinates found", message:
-            "We cannot display directions for this report because of missing coordinates.", preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
