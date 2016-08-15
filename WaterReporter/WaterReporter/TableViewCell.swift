@@ -23,10 +23,11 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportGetDirectionsButton: UIButton!
     @IBOutlet weak var reportDate: UILabel!
     @IBOutlet weak var reportCommentCount: UIButton!
+    @IBOutlet weak var reportDirectionsButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code        
+        // Initialization code
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

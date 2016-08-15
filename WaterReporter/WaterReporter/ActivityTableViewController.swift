@@ -164,7 +164,7 @@ class ActivityTableViewController: UITableViewController {
             reportCommentsCountText = "1 comment"
         }
         else if reportComments.count >= 1 {
-            reportCommentsCountText = reportComments.count as! String + " comments"
+            //reportCommentsCountText = reportComments.count as! String + " comments"
         } else {
             print("No objects")
         }
@@ -251,6 +251,9 @@ class ActivityTableViewController: UITableViewController {
         // PASS ON DATA TO TABLE CELL
         //
         cell.reportGetDirectionsButton.tag = indexPath.row
+
+        cell.reportDirectionsButton.tag = indexPath.row
+        cell.reportDirectionsButton.addTarget(self, action: #selector(openDirectionsURL(_:)), forControlEvents: .TouchUpInside)
         
         
         //
@@ -262,7 +265,21 @@ class ActivityTableViewController: UITableViewController {
 
         return cell
     }
+    
+    func openDirectionsURL(sender: UIBarButtonItem) {
+        
+        let reportId = sender.tag
+        let report = self.reports[reportId]
 
+        let reportGeometry = report.objectForKey("geometry")
+        let reportGeometries = reportGeometry!.objectForKey("geometries")
+        let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
+        
+        let reportLongitude = reportCoordinates[0]
+        let reportLatitude = reportCoordinates[1]
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportCoordinates[1]) + "," + String(reportCoordinates[0]))!)
+    }
 
     /*
     // Override to support conditional editing of the table view.
