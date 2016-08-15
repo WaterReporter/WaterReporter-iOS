@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:WaterReporter.xcodeproj">
+      location = "group:/Users/joshuaisaacpowell/Code/WaterReporter-iOS-ORIG/WaterReporter-iOS/WaterReporter/Water-Reporter.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

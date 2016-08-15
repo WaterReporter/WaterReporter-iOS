@@ -75,17 +75,17 @@
 		C15965851D5B9C59009099EF /* MGLPointAnnotationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLPointAnnotationExtension.swift; sourceTree = "<group>"; };
 		C17243D61D4FD3C2007ADD0E /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMapViewController.swift; sourceTree = "<group>"; };
-		C1C826771D4562FF00516871 /* WaterReporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterReporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1C826771D4562FF00516871 /* Water-Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water-Reporter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C1C8267E1D4562FF00516871 /* SubmitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitViewController.swift; sourceTree = "<group>"; };
 		C1C826811D4562FF00516871 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C1C826831D4562FF00516871 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C1C826861D4562FF00516871 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C1C826881D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C1C8268D1D4562FF00516871 /* WaterReporterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WaterReporterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1C8268D1D4562FF00516871 /* Water-Reporter.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water-Reporter.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C826911D4562FF00516871 /* WaterReporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterReporterTests.swift; sourceTree = "<group>"; };
 		C1C826931D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C1C826981D4562FF00516871 /* WaterReporterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WaterReporterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1C826981D4562FF00516871 /* Water-Reporter.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water-Reporter.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterReporterUITests.swift; sourceTree = "<group>"; };
 		C1C8269E1D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C1C826AA1D4567CB00516871 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -181,9 +181,9 @@
 		C1C826781D4562FF00516871 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C1C826771D4562FF00516871 /* WaterReporter.app */,
-				C1C8268D1D4562FF00516871 /* WaterReporterTests.xctest */,
-				C1C826981D4562FF00516871 /* WaterReporterUITests.xctest */,
+				C1C826771D4562FF00516871 /* Water-Reporter.app */,
+				C1C8268D1D4562FF00516871 /* Water-Reporter.xctest */,
+				C1C826981D4562FF00516871 /* Water-Reporter.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -228,9 +228,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C1C826761D4562FF00516871 /* WaterReporter */ = {
+		C1C826761D4562FF00516871 /* Water-Reporter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C1C826A11D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporter" */;
+			buildConfigurationList = C1C826A11D4562FF00516871 /* Build configuration list for PBXNativeTarget "Water-Reporter" */;
 			buildPhases = (
 				497EA64146C817055547E8A9 /* [CP] Check Pods Manifest.lock */,
 				C1C826731D4562FF00516871 /* Sources */,
@@ -245,14 +245,14 @@
 			);
 			dependencies = (
 			);
-			name = WaterReporter;
+			name = "Water-Reporter";
 			productName = WaterReporter;
-			productReference = C1C826771D4562FF00516871 /* WaterReporter.app */;
+			productReference = C1C826771D4562FF00516871 /* Water-Reporter.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C1C8268C1D4562FF00516871 /* WaterReporterTests */ = {
+		C1C8268C1D4562FF00516871 /* Water-ReporterTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C1C826A41D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporterTests" */;
+			buildConfigurationList = C1C826A41D4562FF00516871 /* Build configuration list for PBXNativeTarget "Water-ReporterTests" */;
 			buildPhases = (
 				C1C826891D4562FF00516871 /* Sources */,
 				C1C8268A1D4562FF00516871 /* Frameworks */,
@@ -263,14 +263,14 @@
 			dependencies = (
 				C1C8268F1D4562FF00516871 /* PBXTargetDependency */,
 			);
-			name = WaterReporterTests;
+			name = "Water-ReporterTests";
 			productName = WaterReporterTests;
-			productReference = C1C8268D1D4562FF00516871 /* WaterReporterTests.xctest */;
+			productReference = C1C8268D1D4562FF00516871 /* Water-Reporter.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C1C826971D4562FF00516871 /* WaterReporterUITests */ = {
+		C1C826971D4562FF00516871 /* Water-ReporterUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C1C826A71D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporterUITests" */;
+			buildConfigurationList = C1C826A71D4562FF00516871 /* Build configuration list for PBXNativeTarget "Water-ReporterUITests" */;
 			buildPhases = (
 				C1C826941D4562FF00516871 /* Sources */,
 				C1C826951D4562FF00516871 /* Frameworks */,
@@ -281,9 +281,9 @@
 			dependencies = (
 				C1C8269A1D4562FF00516871 /* PBXTargetDependency */,
 			);
-			name = WaterReporterUITests;
+			name = "Water-ReporterUITests";
 			productName = WaterReporterUITests;
-			productReference = C1C826981D4562FF00516871 /* WaterReporterUITests.xctest */;
+			productReference = C1C826981D4562FF00516871 /* Water-Reporter.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -310,7 +310,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C1C826721D4562FF00516871 /* Build configuration list for PBXProject "WaterReporter" */;
+			buildConfigurationList = C1C826721D4562FF00516871 /* Build configuration list for PBXProject "Water-Reporter" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -323,9 +323,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C1C826761D4562FF00516871 /* WaterReporter */,
-				C1C8268C1D4562FF00516871 /* WaterReporterTests */,
-				C1C826971D4562FF00516871 /* WaterReporterUITests */,
+				C1C826761D4562FF00516871 /* Water-Reporter */,
+				C1C8268C1D4562FF00516871 /* Water-ReporterTests */,
+				C1C826971D4562FF00516871 /* Water-ReporterUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -460,12 +460,12 @@
 /* Begin PBXTargetDependency section */
 		C1C8268F1D4562FF00516871 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C1C826761D4562FF00516871 /* WaterReporter */;
+			target = C1C826761D4562FF00516871 /* Water-Reporter */;
 			targetProxy = C1C8268E1D4562FF00516871 /* PBXContainerItemProxy */;
 		};
 		C1C8269A1D4562FF00516871 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C1C826761D4562FF00516871 /* WaterReporter */;
+			target = C1C826761D4562FF00516871 /* Water-Reporter */;
 			targetProxy = C1C826991D4562FF00516871 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -588,8 +588,8 @@
 				INFOPLIST_FILE = WaterReporter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.viable.Water-Reporter";
+				PRODUCT_NAME = "Water-Reporter";
 			};
 			name = Debug;
 		};
@@ -606,8 +606,8 @@
 				INFOPLIST_FILE = WaterReporter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporter;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.viable.Water-Reporter";
+				PRODUCT_NAME = "Water-Reporter";
 			};
 			name = Release;
 		};
@@ -618,8 +618,8 @@
 				INFOPLIST_FILE = WaterReporterTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WaterReporter.app/WaterReporter";
+				PRODUCT_NAME = "Water-Reporter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Water-Reporter.app/Water-Reporter";
 			};
 			name = Debug;
 		};
@@ -630,8 +630,8 @@
 				INFOPLIST_FILE = WaterReporterTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WaterReporter.app/WaterReporter";
+				PRODUCT_NAME = "Water-Reporter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Water-Reporter.app/Water-Reporter";
 			};
 			name = Release;
 		};
@@ -641,7 +641,7 @@
 				INFOPLIST_FILE = WaterReporterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Water-Reporter";
 				TEST_TARGET_NAME = WaterReporter;
 			};
 			name = Debug;
@@ -652,7 +652,7 @@
 				INFOPLIST_FILE = WaterReporterUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Water-Reporter";
 				TEST_TARGET_NAME = WaterReporter;
 			};
 			name = Release;
@@ -660,7 +660,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C1C826721D4562FF00516871 /* Build configuration list for PBXProject "WaterReporter" */ = {
+		C1C826721D4562FF00516871 /* Build configuration list for PBXProject "Water-Reporter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C1C8269F1D4562FF00516871 /* Debug */,
@@ -669,7 +669,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C1C826A11D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporter" */ = {
+		C1C826A11D4562FF00516871 /* Build configuration list for PBXNativeTarget "Water-Reporter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C1C826A21D4562FF00516871 /* Debug */,
@@ -678,7 +678,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C1C826A41D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporterTests" */ = {
+		C1C826A41D4562FF00516871 /* Build configuration list for PBXNativeTarget "Water-ReporterTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C1C826A51D4562FF00516871 /* Debug */,
@@ -687,7 +687,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C1C826A71D4562FF00516871 /* Build configuration list for PBXNativeTarget "WaterReporterUITests" */ = {
+		C1C826A71D4562FF00516871 /* Build configuration list for PBXNativeTarget "Water-ReporterUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C1C826A81D4562FF00516871 /* Debug */,
