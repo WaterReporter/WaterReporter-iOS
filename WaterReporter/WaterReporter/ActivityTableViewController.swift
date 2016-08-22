@@ -101,6 +101,11 @@ class ActivityTableViewController: UITableViewController {
             let destViewController = segue.destinationViewController as! ActivityMapViewController
             destViewController.reportObject = self.reports[(sender?.tag)!]
         }
+        else if segue.identifier == "reportToUserProfile" {
+            let destViewController = segue.destinationViewController as! UserProfileViewController
+            let reportOwner = self.reports[(sender?.tag)!].objectForKey("properties")?.objectForKey("owner")?.objectForKey("properties")
+            destViewController.reportOwner = reportOwner
+        }
     }
     
     // MARK: - Table view data source
@@ -212,6 +217,7 @@ class ActivityTableViewController: UITableViewController {
         //
         // IMAGES
         //
+        cell.reportOwnerImageButton.tag = indexPath.row
         if let thisReportOwnerImageUrl = reportOwnerImageURL as? String  {
             ImageLoader.sharedLoader.imageForUrl(thisReportOwnerImageUrl, completionHandler:{(image: UIImage?, url: String) in
                 cell.reportOwnerImage.image = image!
