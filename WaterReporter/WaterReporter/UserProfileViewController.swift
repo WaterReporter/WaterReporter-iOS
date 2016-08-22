@@ -31,6 +31,12 @@ class UserProfileViewController: UIViewController {
         //
         // Load Basic User Profile Information
         //
+        self.setupUserProfile()
+        
+    }
+    
+    func setupUserProfile() {
+        
         //
         // User Profile Name
         //
@@ -42,11 +48,57 @@ class UserProfileViewController: UIViewController {
         reportOwnerFullName = reportOwnerFirstName + " " + reportOwnerLastName
         
         self.userProfileName.text = reportOwnerFullName
-    }
-    
-    func setupUserProfile() {
-        
 
+        //
+        // User Profile Title/Organization
+        //
+        var reportOwnerOrganizationTitle: String? = ""
+        
+        let _title = reportOwner?.objectForKey("title") as? String
+        let _organization = reportOwner?.objectForKey("organization_name") as? String
+        
+        if _title != nil && _organization != nil {
+            reportOwnerOrganizationTitle = _title! + " at " + _organization!
+        }
+        else if _title != nil && _organization == nil {
+            reportOwnerOrganizationTitle = _title!
+        }
+        else if _title == nil && _organization != nil {
+            reportOwnerOrganizationTitle = _organization!
+        }
+        else {
+            self.userProfileOrganizationTitle.hidden = true
+        }
+        
+        self.userProfileOrganizationTitle.text = reportOwnerOrganizationTitle
+        
+        //
+        // User Profile Description/Bio
+        //
+        let reportOwnerDescription = reportOwner?.objectForKey("description") as? String
+        
+        if reportOwnerDescription == nil {
+            self.userProfileBiography.hidden = true
+        }
+        
+        self.userProfileBiography.text = reportOwnerDescription
+        
+        //
+        // User Profile Description/Bio
+        //
+        if let thisReportOwnerImageUrl = reportOwner?.objectForKey("picture") as? String  {
+            ImageLoader.sharedLoader.imageForUrl(thisReportOwnerImageUrl, completionHandler:{(image: UIImage?, url: String) in
+                self.userProfileImage.image = image!
+                self.userProfileImage.layer.cornerRadius = self.userProfileImage.frame.size.width / 2;
+                self.userProfileImage.clipsToBounds = true;
+            })
+        } else {
+            ImageLoader.sharedLoader.imageForUrl("https://www.waterreporter.org/images/badget--MissingUser.png", completionHandler:{(image: UIImage?, url: String) in
+                self.userProfileImage.image = image!
+                self.userProfileImage.layer.cornerRadius = self.userProfileImage.frame.size.width / 2;
+                self.userProfileImage.clipsToBounds = true;
+            })
+        }
 
     }
 
