@@ -288,16 +288,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="Actions (00)"/>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IEQ-Nc-ZcU">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="215" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IEQ-Nc-ZcU">
                                 <rect key="frame" x="0.0" y="248" width="600" height="295"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="QYR-Lk-Xxu">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SingleReport" rowHeight="200" id="QYR-Lk-Xxu" customClass="UserProfileTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QYR-Lk-Xxu" id="JPa-hT-rej">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="199.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ROW!!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTQ-sl-cwd">
+                                                    <rect key="frame" x="21" y="16" width="54" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="FTQ-sl-cwd" firstAttribute="centerY" secondItem="JPa-hT-rej" secondAttribute="centerY" id="1Vh-at-IzU"/>
+                                                <constraint firstItem="FTQ-sl-cwd" firstAttribute="top" secondItem="JPa-hT-rej" secondAttribute="topMargin" constant="8" id="2dN-cQ-gJZ"/>
+                                                <constraint firstItem="FTQ-sl-cwd" firstAttribute="leading" secondItem="JPa-hT-rej" secondAttribute="leadingMargin" constant="13" id="lOU-fm-AZE"/>
+                                                <constraint firstItem="FTQ-sl-cwd" firstAttribute="centerX" secondItem="JPa-hT-rej" secondAttribute="centerX" id="nxj-3G-F6A"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="FTQ-sl-cwd" secondAttribute="bottom" constant="154.5" id="pBy-J2-Sx2"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="1Vh-at-IzU"/>
+                                                    <exclude reference="nxj-3G-F6A"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -351,6 +372,7 @@
                             <constraint firstItem="yok-Dx-IMc" firstAttribute="top" secondItem="uoS-Hm-VhK" secondAttribute="bottom" constant="338" id="fGc-Vn-Kzo"/>
                             <constraint firstItem="Job-Sk-ZTy" firstAttribute="top" secondItem="9iT-Zy-nHo" secondAttribute="bottom" constant="8" id="gtA-SP-BZg"/>
                             <constraint firstItem="gjq-I6-CLZ" firstAttribute="centerX" secondItem="cVe-Ey-SPU" secondAttribute="centerX" constant="16" id="h1B-kF-H3X"/>
+                            <constraint firstItem="gRc-E7-rkq" firstAttribute="top" secondItem="uoS-Hm-VhK" secondAttribute="bottom" constant="16" id="hoX-vc-FrE"/>
                             <constraint firstItem="2xe-JY-ov4" firstAttribute="leading" secondItem="uoS-Hm-VhK" secondAttribute="trailing" constant="8" id="jHp-py-VxF"/>
                             <constraint firstItem="2xe-JY-ov4" firstAttribute="leading" secondItem="uoS-Hm-VhK" secondAttribute="trailing" constant="16" id="p3g-yb-2dY"/>
                             <constraint firstItem="IsF-5F-gj9" firstAttribute="top" secondItem="Job-Sk-ZTy" secondAttribute="bottom" constant="16" id="pxv-d3-dio"/>
@@ -403,6 +425,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="tableView" destination="IEQ-Nc-ZcU" id="yUf-NN-kki"/>
                         <outlet property="userProfileActionsButton" destination="gjq-I6-CLZ" id="19M-ME-1dT"/>
                         <outlet property="userProfileBiography" destination="IsF-5F-gj9" id="Nev-4q-fXq"/>
                         <outlet property="userProfileGroupsButton" destination="5QV-uc-RFa" id="8SY-GW-7Oj"/>

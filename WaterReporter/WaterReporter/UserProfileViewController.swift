@@ -10,9 +10,14 @@ import Alamofire
 import Foundation
 import UIKit
 
-class UserProfileViewController: UIViewController {
+class UserProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var reportOwner:AnyObject!
+    var reports = [AnyObject]()
+    var page: Int = 1
+
+    
+    @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var userProfileName: UILabel!
@@ -25,13 +30,23 @@ class UserProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("UserProfile loaded and using report object")
-        print(reportOwner)
-        
         //
         // Load Basic User Profile Information
         //
         self.setupUserProfile()
+        
+        //
+        // Setup Table View for User's Reports
+        //
+        self.tableView.registerClass(UserProfileTableViewCell.self, forCellReuseIdentifier: "SingleReport")
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
+        //
+        // Load Basic Submissions Data
+        //
+        self.loadSubmissions()
         
     }
     
@@ -101,7 +116,58 @@ class UserProfileViewController: UIViewController {
         }
 
     }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("number of reports or table cells to show")
+        print(self.reports.count)
+        return self.reports.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! UserProfileTableViewCell
+        
+//        cell.userReportsTerritoryName.text = "Grr"
+        
+        return cell
+    }
 
+    func loadSubmissions() {
+        
+        print("loadSubmissions")
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let parameters = [
+            "q": "{\"filters\": [{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":274}], \"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "page": self.page
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters as? [String : AnyObject])
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    self.reports += value["features"] as! [AnyObject]
+                    self.tableView.reloadData()
+                    
+                    print(value["features"])
+                    self.page += 1
+                    
+                case .Failure(let error):
+                    print(error)
+                    break
+                }
+                
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
