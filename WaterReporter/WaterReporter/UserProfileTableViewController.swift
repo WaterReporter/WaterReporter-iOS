@@ -15,6 +15,7 @@ class UserProfileTableViewController: UITableViewController {
     var reportOwner:AnyObject!
     var reports = [AnyObject]()
     var page: Int = 1
+    var currentTab: String = ""
     
     @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var userProfileName: UILabel!
@@ -118,6 +119,22 @@ class UserProfileTableViewController: UITableViewController {
     func loadSubmissions() {
         
         print("loadSubmissions")
+
+        //
+        //
+        //
+        if (self.currentTab == "submissions") {
+            return
+        }
+
+        self.currentTab = "submissions"
+
+        //
+        // Reset all list variables
+        //
+        self.page = 1
+        reports = [AnyObject]()
+        self.tableView.reloadData()
         
         //
         // Send a request to the defined endpoint with the given parameters
@@ -152,6 +169,18 @@ class UserProfileTableViewController: UITableViewController {
         print("loadActions")
         
         //
+        //
+        //
+        if (self.currentTab == "actions") {
+            return
+        }
+        
+        //
+        //
+        //
+        self.currentTab = "actions"
+        
+        //
         // Reset all list variables
         //
         self.page = 1
@@ -169,10 +198,7 @@ class UserProfileTableViewController: UITableViewController {
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                
-                print("response")
-                print(response)
-                
+                                
                 switch response.result {
                 case .Success(let value):
                     self.reports += value["features"] as! [AnyObject]
@@ -194,38 +220,49 @@ class UserProfileTableViewController: UITableViewController {
         print("loadGroups")
 
         //
+        //
+        //
+        if (self.currentTab == "groups") {
+            return
+        }
+        
+        self.currentTab = "groups"
+        
+        //
         // Reset all list variables
         //
         self.page = 1
         reports = [AnyObject]()
         self.tableView.reloadData()
-
-//        //
-//        // Send a request to the defined endpoint with the given parameters
-//        //
-//        let userProfileId = reportOwner?.objectForKey("id")?.stringValue
-//        let parameters = [
-//            "q": "{\"filters\": [{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":" + userProfileId! + "}], \"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
-//            "page": self.page
-//        ]
-//        
-//        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters as? [String : AnyObject])
-//            .responseJSON { response in
-//                
-//                switch response.result {
-//                case .Success(let value):
-//                    self.reports += value["features"] as! [AnyObject]
-//                    self.tableView.reloadData()
-//                    
-//                    print(value["features"])
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let userProfileId = reportOwner?.objectForKey("id")?.stringValue
+        let parameters = [
+            "q": "",
+            "page": 1
+        ]
+        
+        let userEndpoint = Endpoints.GET_MANY_USER + "/" + userProfileId! + "/groups"
+        
+        Alamofire.request(.GET, userEndpoint, parameters: parameters as? [String : String])
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    self.reports += value["features"] as! [AnyObject]
+                    self.tableView.reloadData()
+                    
+                    print(value["features"])
 //                    self.page += 1
-//                    
-//                case .Failure(let error):
-//                    print(error)
-//                    break
-//                }
-//                
-//        }
+                    
+                case .Failure(let error):
+                    print(error)
+                    break
+                }
+                
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -233,19 +270,7 @@ class UserProfileTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    // MARK: - Table view data source
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.reports.count
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func createReportCell(indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! UserProfileTableViewCell
         
@@ -255,6 +280,20 @@ class UserProfileTableViewController: UITableViewController {
         //
         cell.userReportImage.image = nil
         cell.userReportImage.image = nil
+
+        //
+        // Hide unused cells
+        //
+        cell.userReportImage.hidden = false
+        cell.userReportDate.hidden = false
+        cell.userReportTerritoryName.hidden = false
+        cell.userReportButtonMap.hidden = false
+        cell.userReportButtonProfile.hidden = false
+        cell.userReportGroups.hidden = false
+        cell.userReportDescription.hidden = false
+        cell.userReportCommentsCount.hidden = false
+        cell.userReportButtonComments.hidden = false
+        cell.userReportButtonDirections.hidden = false
         
         //
         // REPORT OBJECT
@@ -397,6 +436,88 @@ class UserProfileTableViewController: UITableViewController {
         
         return cell
     }
+
+    func createGroupCell(indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! UserProfileTableViewCell
+        
+        //
+        // Make sure we aren't loading old images into the new cells as
+        // additional reports are loaded
+        //
+        cell.userReportOwnerImage.image = nil
+        
+        //
+        // Hide unused cells
+        //
+        cell.userReportImage.hidden = true
+        cell.userReportDate.hidden = true
+        cell.userReportTerritoryName.hidden = true
+        cell.userReportButtonMap.hidden = true
+        cell.userReportButtonProfile.hidden = true
+        cell.userReportGroups.hidden = true
+        cell.userReportDescription.hidden = true
+        cell.userReportCommentsCount.hidden = true
+        cell.userReportButtonComments.hidden = true
+        cell.userReportButtonDirections.hidden = true
+        
+        //
+        // REPORT OBJECT
+        //
+        let group = self.reports[indexPath.row].objectForKey("properties")?.objectForKey("organization")?.objectForKey("properties")
+        cell.reportObject = group
+        
+        let reportGroupName = group?.objectForKey("name") as? String
+        let reportGroupImageURL = group?.objectForKey("picture")
+        
+        //
+        // USER NAME
+        //
+        cell.userReportOwnerName.text = reportGroupName
+        
+        //
+        // IMAGES
+        //
+        cell.userReportButtonProfile.tag = indexPath.row
+        if let thisReportOwnerImageUrl = reportGroupImageURL as? String  {
+            ImageLoader.sharedLoader.imageForUrl(thisReportOwnerImageUrl, completionHandler:{(image: UIImage?, url: String) in
+                cell.userReportOwnerImage.image = image!
+                cell.userReportOwnerImage.layer.cornerRadius = cell.userReportOwnerImage.frame.size.width / 2
+                cell.userReportOwnerImage.clipsToBounds = true
+                
+                cell.userReportOwnerImage.layer.borderColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).CGColor
+                cell.userReportOwnerImage.layer.borderWidth = 1
+            })
+        }
+        
+        return cell
+    }
+
+    
+    // MARK: - Table view data source
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.reports.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell: UITableViewCell
+        
+        if (self.currentTab == "groups") {
+            cell = createGroupCell(indexPath)
+        }
+        else {
+            cell = createReportCell(indexPath)
+        }
+        
+        return cell
+    }
     
     func openDirectionsURL(sender: UIBarButtonItem) {
         
@@ -415,29 +536,14 @@ class UserProfileTableViewController: UITableViewController {
 
     
     func openActionsTab(sender: UIButton) {
-        print("openActionsTab")
-    
-        //
-        // Load Basic Submissions Data
-        //
         self.loadActions()
     }
 
     func openGroupsTab(sender: UIButton) {
-        print("openGroupsTab")
-
-        //
-        // Load Basic Submissions Data
-        //
         self.loadGroups()
     }
 
     func openSubmissionsTab(sender: UIButton) {
-        print("openSubmissionsTab")
-
-        //
-        // Load Basic Submissions Data
-        //
         self.loadSubmissions()
     }
 
