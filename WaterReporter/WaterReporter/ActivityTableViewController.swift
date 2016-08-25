@@ -102,7 +102,7 @@ class ActivityTableViewController: UITableViewController {
             destViewController.reportObject = self.reports[(sender?.tag)!]
         }
         else if segue.identifier == "reportToUserProfile" {
-            let destViewController = segue.destinationViewController as! UserProfileViewController
+            let destViewController = segue.destinationViewController as! UserProfileTableViewController
             let reportOwner = self.reports[(sender?.tag)!].objectForKey("properties")?.objectForKey("owner")?.objectForKey("properties")
             destViewController.reportOwner = reportOwner
         }
@@ -265,7 +265,7 @@ class ActivityTableViewController: UITableViewController {
         //
         // CONTIUOUS SCROLL
         //
-        if (indexPath.row == self.reports.count - 1 && !singleReport) {
+        if (indexPath.row == self.reports.count - 5 && !singleReport) {
             self.loadReports()
         }
 

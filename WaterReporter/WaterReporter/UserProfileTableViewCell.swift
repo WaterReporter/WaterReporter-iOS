@@ -12,7 +12,19 @@ class UserProfileTableViewCell: UITableViewCell {
     
     var reportObject : AnyObject?
         
-    @IBOutlet weak var userReportsTerritoryName: UILabel!
+    @IBOutlet weak var userReportImage: UIImageView!
+    
+    @IBOutlet weak var userReportDescription: UILabel!
+    @IBOutlet weak var userReportGroups: UILabel!
+    @IBOutlet weak var userReportOwnerImage: UIImageView!
+    @IBOutlet weak var userReportOwnerName: UILabel!
+    @IBOutlet weak var userReportTerritoryName: UILabel!
+    @IBOutlet weak var userReportDate: UILabel!
+    @IBOutlet weak var userReportButtonMap: UIButton!
+    @IBOutlet weak var userReportButtonComments: UIButton!
+    @IBOutlet weak var userReportCommentsCount: UIButton!
+    @IBOutlet weak var userReportButtonDirections: UIButton!
+    @IBOutlet weak var userReportButtonProfile: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
