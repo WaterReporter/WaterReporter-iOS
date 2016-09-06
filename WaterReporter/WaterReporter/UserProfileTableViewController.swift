@@ -487,14 +487,46 @@ class UserProfileTableViewController: UITableViewController {
                 
                 cell.userReportOwnerImage.layer.borderColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0).CGColor
                 cell.userReportOwnerImage.layer.borderWidth = 1
+
+//                cell.userReportOwnerImage.userInteractionEnabled = true
+//                cell.userReportOwnerImage.addGestureRecognizer(tapGestureRecognizer)
             })
         }
         
+        //
+        // When a group row is tapped we need to load the related organization profile
+        //
+//        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(UserProfileTableViewController.imageTapped(_:)))
+//        cell.addGestureRecognizer(tapGestureRecognizer)
+        
         return cell
     }
+    
+//    func imageTapped(img: AnyObject)
+//    {
+//        print("load organization profile")
+//    }
 
     
+    
     // MARK: - Table view data source
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let group = self.reports[indexPath.row].objectForKey("properties")?.objectForKey("organization")?.objectForKey("properties")
+
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("OrganizationProfileTableViewController") as! OrganizationProfileTableViewController
+        
+        nextViewController.group = group
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+
+    }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
