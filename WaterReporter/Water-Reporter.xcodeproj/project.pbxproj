@@ -23,7 +23,7 @@
 		C17243D71D4FD3C2007ADD0E /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C17243D61D4FD3C2007ADD0E /* Mapbox.framework */; };
 		C17243D81D4FD3C2007ADD0E /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C17243D61D4FD3C2007ADD0E /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C18CA43E1D94448500E4659E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18CA43D1D94448500E4659E /* RegisterViewController.swift */; };
-		C1A4AA931D94326900C6EF66 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A4AA921D94326900C6EF66 /* LoginViewController.swift */; };
+		C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */; };
 		C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */; };
 		C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267A1D4562FF00516871 /* AppDelegate.swift */; };
 		C1C8267F1D4562FF00516871 /* SubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267E1D4562FF00516871 /* SubmitViewController.swift */; };
@@ -86,7 +86,7 @@
 		C15965851D5B9C59009099EF /* MGLPointAnnotationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLPointAnnotationExtension.swift; sourceTree = "<group>"; };
 		C17243D61D4FD3C2007ADD0E /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		C18CA43D1D94448500E4659E /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		C1A4AA921D94326900C6EF66 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMapViewController.swift; sourceTree = "<group>"; };
 		C1C826771D4562FF00516871 /* Water-Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water-Reporter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -214,7 +214,7 @@
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
 				C1C8267E1D4562FF00516871 /* SubmitViewController.swift */,
 				C1C826801D4562FF00516871 /* Main.storyboard */,
-				C1A4AA921D94326900C6EF66 /* LoginViewController.swift */,
+				C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */,
 				C18CA43D1D94448500E4659E /* RegisterViewController.swift */,
 				C139109B1D787C8B00806F01 /* OrganizationProfileTableViewController.swift */,
 				C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */,
@@ -458,7 +458,7 @@
 				C12CAF9D1D46507F002881A6 /* Resources.swift in Sources */,
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
 				C14448B81D6B7234000564BF /* UserProfileTableViewCell.swift in Sources */,
-				C1A4AA931D94326900C6EF66 /* LoginViewController.swift in Sources */,
+				C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */,
 				C12CAFA51D4680FD002881A6 /* Feature.swift in Sources */,
 				C12CAFA11D466659002881A6 /* TableViewCell.swift in Sources */,
 				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,

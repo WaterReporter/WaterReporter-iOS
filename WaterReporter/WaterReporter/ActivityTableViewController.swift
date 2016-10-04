@@ -20,24 +20,7 @@ class ActivityTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //
-        // Make sure we are starting out with any empty reports array
-        //
-        // ! THIS IS A TERRIBLE SOLUTION, HOWEVER, IF IT IS TO BE USED
-        //   IT SHOULD ONLY BE ACTIVATED ON TAB CHANGE --NOT-- WHEN THE
-        //   `viewWillAppear`
-        //
-        //        self.reports = []
-        //        self.page = 1
-        //        self.tableView.reloadData()
         
-        
-        //
-        // Load 10 newest reports from API on Activity View load
-        //
-        if (!singleReport) {
-            self.loadReports()
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -51,6 +34,25 @@ class ActivityTableViewController: UITableViewController {
             print("User account found")
             print(_account)
 
+            //
+            // Make sure we are starting out with any empty reports array
+            //
+            // ! THIS IS A TERRIBLE SOLUTION, HOWEVER, IF IT IS TO BE USED
+            //   IT SHOULD ONLY BE ACTIVATED ON TAB CHANGE --NOT-- WHEN THE
+            //   `viewWillAppear`
+            //
+            self.reports = []
+            self.page = 1
+            self.tableView.reloadData()
+            
+            
+            //
+            // Load 10 newest reports from API on Activity View load
+            //
+            if (!singleReport) {
+                self.loadReports()
+            }
+            
         } else {
             print("No User account found")
 
@@ -59,14 +61,9 @@ class ActivityTableViewController: UITableViewController {
             //
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
 
-            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
-
-            //        nextViewController.singleReport = true
-            //        nextViewController.reports = [annotation.report]
+            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
             
             self.presentViewController(nextViewController, animated: false, completion: nil)
-
-//            self.navigationController?.pushViewController(nextViewController, animated: true)
 
         }
 
