@@ -8,6 +8,7 @@
 
 import Alamofire
 import Foundation
+import Locksmith
 import UIKit
 
 class ActivityTableViewController: UITableViewController {
@@ -41,6 +42,33 @@ class ActivityTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        
+        //
+        // Before doing anything else make sure that the user is logged
+        // in to the WaterReporter.org platform.
+        //
+        if let _account = Locksmith.loadDataForUserAccount("currentUserAccount") {
+            print("User account found")
+            print(_account)
+
+        } else {
+            print("No User account found")
+
+            //
+            // Load the activity controller from the storyboard
+            //
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
+            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+
+            //        nextViewController.singleReport = true
+            //        nextViewController.reports = [annotation.report]
+            
+            self.presentViewController(nextViewController, animated: false, completion: nil)
+
+//            self.navigationController?.pushViewController(nextViewController, animated: true)
+
+        }
 
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 600.0;
