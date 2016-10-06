@@ -10,7 +10,7 @@ import Alamofire
 import Foundation
 import UIKit
 
-class LoginTableViewController: UITableViewController {
+class REgs: UITableViewController {
     
     @IBOutlet weak var navigationButtonLogin: UIButton!
     @IBOutlet weak var navigationButtonSignUp: UIButton!
@@ -60,13 +60,22 @@ class LoginTableViewController: UITableViewController {
         buttonLogin.addTarget(self, action: #selector(buttonClickLogin(_:)), forControlEvents: .TouchUpInside)
         
         
-        //        navigationSignupButton.addTarget(self, action: #selector(buttonClickSignUp(_:)), forControlEvents: .TouchUpInside)
-        //        navigationForgotPasswordButton.addTarget(self, action: #selector(buttonClickSignUp(_:)), forControlEvents: .TouchUpInside)
+        navigationButtonSignUp.addTarget(self, action: #selector(navigationButtonClickSignUp(_:)), forControlEvents: .TouchUpInside)
+        buttonForgotYourPassword.addTarget(self, action: #selector(navigationButtonClickForgotPassword(_:)), forControlEvents: .TouchUpInside)
         
     }
     
     func buttonClickLogin(sender:UIButton) {
         print("buttonClickLogin")
+        
+        let emailAddress = self.textfieldEmailAddress
+        let password = self.textfieldPassword
+        
+        print("emailAddress")
+        print(emailAddress)
+        
+        print("password")
+        print(password)
         
         //
         // 1. Get Email Address Field
@@ -76,6 +85,34 @@ class LoginTableViewController: UITableViewController {
         // 4a. Dismiss and go to activity
         // 4b. Show error message
         //
+
+        self.dismissViewControllerAnimated(false, completion: nil)
+
+    }
+    
+    func navigationButtonClickSignUp(sender:UIButton) {
+        
+        print("navigationButtonClickSignUp")
+        
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterTableViewController") as! RegisterTableViewController
+        
+        self.presentViewController(nextViewController, animated: false, completion: nil)
+        
+    }
+
+    func navigationButtonClickForgotPassword(sender:UIButton) {
+        
+        print("navigationButtonClickForgotPassword")
+
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ForgotPasswordTableViewController") as! ForgotPasswordTableViewController
+        
+        self.presentViewController(nextViewController, animated: false, completion: nil)
+        
     }
     
     //    func buttonClickSignUp(sender:UIButton) {
