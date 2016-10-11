@@ -36,9 +36,8 @@ class RegisterTableViewController: UITableViewController {
         let border = CALayer()
         let buttonWidth = self.navigationButtonSignUp.frame.width
         let borderWidth = buttonWidth/2
-        let borderColor = UIColor(red:0.10, green:0.67, blue:0.87, alpha: 1.00).CGColor
         
-        border.borderColor = borderColor
+        border.borderColor = CGColor.borderColorBrand()
         border.borderWidth = 3.0
         border.frame = CGRectMake(borderWidth/2, self.navigationButtonSignUp.frame.size.height - 3.0, borderWidth, self.navigationButtonSignUp.frame.size.height)
         
@@ -54,7 +53,7 @@ class RegisterTableViewController: UITableViewController {
         // Alter the appearence of the Log In button
         //
         self.buttonSignUp.layer.borderWidth = 1.0
-        self.buttonSignUp.layer.borderColor = borderColor
+        self.buttonSignUp.layer.borderColor = CGColor.borderColorBrand()
         self.buttonSignUp.layer.cornerRadius = 4.0
         
         buttonSignUp.addTarget(self, action: #selector(buttonClickLogin(_:)), forControlEvents: .TouchUpInside)
@@ -72,10 +71,10 @@ class RegisterTableViewController: UITableViewController {
         
         print("password")
         print(password)
-
+        
         print("password again")
         print(password)
-
+        
         
         //
         // 1. Get Email Address Field
@@ -106,13 +105,13 @@ class RegisterTableViewController: UITableViewController {
         return 5
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
-        
-        return cell
-    }
-    
+//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        
+//        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+//        
+//        return cell
+//    }
+//    
     /*
      // Override to support conditional editing of the table view.
      override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

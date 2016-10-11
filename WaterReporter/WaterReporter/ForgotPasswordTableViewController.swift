@@ -12,6 +12,9 @@ import UIKit
 
 class ForgotPasswordTableViewController: UITableViewController {
     
+    @IBOutlet weak var textfieldEmailAddress: UITextField!
+    @IBOutlet weak var buttonResetPassword: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,6 +25,28 @@ class ForgotPasswordTableViewController: UITableViewController {
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
         
+        //
+        // Set all table row separators to appear transparent
+        //
+        self.tableView.separatorColor = UIColor(white: 1.0, alpha: 0.0)
+        
+        //
+        //
+        //
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(goBack))
+        navigationItem.leftBarButtonItem = cancelButton
+
+        //
+        // Alter the appearence of the Log In button
+        //
+        buttonResetPassword.layer.borderWidth = 1.0
+        buttonResetPassword.layer.borderColor = CGColor.borderColorBrand()
+        buttonResetPassword.layer.cornerRadius = 4.0
+
+    }
+    
+    func goBack(){
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -30,8 +55,12 @@ class ForgotPasswordTableViewController: UITableViewController {
         
         NSLog("LoginViewController::didReceiveMemoryWarning")
     }
-
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -43,12 +72,12 @@ class ForgotPasswordTableViewController: UITableViewController {
         return 3
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
-        
-        return cell
-    }
+//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        
+//        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+//        
+//        return cell
+//    }
     
     /*
      // Override to support conditional editing of the table view.

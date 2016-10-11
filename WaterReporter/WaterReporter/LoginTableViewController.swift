@@ -10,7 +10,7 @@ import Alamofire
 import Foundation
 import UIKit
 
-class REgs: UITableViewController {
+class LoginTableViewController: UITableViewController {
     
     @IBOutlet weak var navigationButtonLogin: UIButton!
     @IBOutlet weak var navigationButtonSignUp: UIButton!
@@ -36,9 +36,8 @@ class REgs: UITableViewController {
         let border = CALayer()
         let buttonWidth = self.navigationButtonLogin.frame.width
         let borderWidth = buttonWidth/2
-        let borderColor = UIColor(red:0.10, green:0.67, blue:0.87, alpha: 1.00).CGColor
         
-        border.borderColor = borderColor
+        border.borderColor = CGColor.borderColorBrand()
         border.borderWidth = 3.0
         border.frame = CGRectMake(borderWidth/2, self.navigationButtonLogin.frame.size.height - 3.0, borderWidth, self.navigationButtonLogin.frame.size.height)
         
@@ -54,14 +53,10 @@ class REgs: UITableViewController {
         // Alter the appearence of the Log In button
         //
         self.buttonLogin.layer.borderWidth = 1.0
-        self.buttonLogin.layer.borderColor = borderColor
+        self.buttonLogin.layer.borderColor = CGColor.borderColorBrand()
         self.buttonLogin.layer.cornerRadius = 4.0
         
         buttonLogin.addTarget(self, action: #selector(buttonClickLogin(_:)), forControlEvents: .TouchUpInside)
-        
-        
-        navigationButtonSignUp.addTarget(self, action: #selector(navigationButtonClickSignUp(_:)), forControlEvents: .TouchUpInside)
-        buttonForgotYourPassword.addTarget(self, action: #selector(navigationButtonClickForgotPassword(_:)), forControlEvents: .TouchUpInside)
         
     }
     
@@ -86,34 +81,37 @@ class REgs: UITableViewController {
         // 4b. Show error message
         //
 
-        self.dismissViewControllerAnimated(false, completion: nil)
+    }
 
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
-    func navigationButtonClickSignUp(sender:UIButton) {
-        
-        print("navigationButtonClickSignUp")
-        
-        
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterTableViewController") as! RegisterTableViewController
-        
-        self.presentViewController(nextViewController, animated: false, completion: nil)
-        
-    }
+//    func navigationButtonClickSignUp(sender:UIButton) {
+//        
+//        print("navigationButtonClickSignUp")
+//        
+//        
+//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+//        
+//        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterTableViewController") as! RegisterTableViewController
+//        
+//        self.presentViewController(nextViewController, animated: false, completion: nil)
+//        
+//    }
 
-    func navigationButtonClickForgotPassword(sender:UIButton) {
-        
-        print("navigationButtonClickForgotPassword")
-
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ForgotPasswordTableViewController") as! ForgotPasswordTableViewController
-        
-        self.presentViewController(nextViewController, animated: false, completion: nil)
-        
-    }
+//    func navigationButtonClickForgotPassword(sender:UIButton) {
+//        
+//        print("navigationButtonClickForgotPassword")
+//
+//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+//        
+//        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ForgotPasswordTableViewController") as! ForgotPasswordTableViewController
+//        
+//        self.presentViewController(nextViewController, animated: false, completion: nil)
+//        
+//    }
     
     //    func buttonClickSignUp(sender:UIButton) {
     //        //

@@ -61,11 +61,11 @@ class ActivityTableViewController: UITableViewController {
             //
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
 
-//            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
+            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
 //            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ForgotPasswordTableViewController") as! ForgotPasswordTableViewController
 
 //            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterTableViewController") as! RegisterTableViewController
-            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("UserProfileEditTableViewController") as! UserProfileEditTableViewController
+//            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("UserProfileEditTableViewController") as! UserProfileEditTableViewController
             
             self.presentViewController(nextViewController, animated: false, completion: nil)
 
