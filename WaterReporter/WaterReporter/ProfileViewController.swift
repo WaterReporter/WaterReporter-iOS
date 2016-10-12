@@ -18,6 +18,25 @@ class ProfileViewController: UIViewController {
         // Set the Navigation Bar title
         //
         self.navigationItem.title = "Profile"
+
+        let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(attemptLogout))
+        navigationItem.rightBarButtonItem = logoutButton
+        
+    }
+    
+    func attemptLogout() {
+        //
+        // Remove the access token from storage
+        
+        //
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountAccessToken")
+        
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
+        self.presentViewController(nextViewController, animated: false, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {

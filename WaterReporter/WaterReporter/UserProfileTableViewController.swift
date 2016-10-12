@@ -47,6 +47,7 @@ class UserProfileTableViewController: UITableViewController {
         userProfileButtonSubmissions.addTarget(self, action: #selector(openSubmissionsTab(_:)), forControlEvents: .TouchUpInside)
         userProfileButtonActions.addTarget(self, action: #selector(openActionsTab(_:)), forControlEvents: .TouchUpInside)
         userProfileButtonGroups.addTarget(self, action: #selector(openGroupsTab(_:)), forControlEvents: .TouchUpInside)
+    
     }
     
     func setupUserProfile() {

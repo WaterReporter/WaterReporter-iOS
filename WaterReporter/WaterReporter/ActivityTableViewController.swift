@@ -18,9 +18,7 @@ class ActivityTableViewController: UITableViewController {
     var page: Int = 1
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
+        super.viewDidLoad()        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -30,7 +28,7 @@ class ActivityTableViewController: UITableViewController {
         // Before doing anything else make sure that the user is logged
         // in to the WaterReporter.org platform.
         //
-        if let _account = Locksmith.loadDataForUserAccount("currentUserAccount") {
+        if let _account = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") {
             print("User account found")
             print(_account)
 
@@ -309,9 +307,6 @@ class ActivityTableViewController: UITableViewController {
         let reportGeometry = report.objectForKey("geometry")
         let reportGeometries = reportGeometry!.objectForKey("geometries")
         let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
-        
-        let reportLongitude = reportCoordinates[0]
-        let reportLatitude = reportCoordinates[1]
         
         UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportCoordinates[1]) + "," + String(reportCoordinates[0]))!)
     }

@@ -11,9 +11,12 @@ import UIKit
 
 extension CGColor {
 
-    class func borderColorBrand() -> CGColor {
-        return UIColor(red:0.10, green:0.67, blue:0.87, alpha: 1.00).CGColor
-        
+    class func colorBrand(alpha:CGFloat = 1.00) -> CGColor {
+        return UIColor(red:0.10, green:0.67, blue:0.87, alpha: alpha).CGColor
+    }
+
+    class func colorDisabled(alpha:CGFloat = 1.00) -> CGColor {
+        return UIColor(red:0.64, green:0.64, blue:0.64, alpha: alpha).CGColor
     }
     
 }

@@ -18,7 +18,10 @@ class RegisterTableViewController: UITableViewController {
     @IBOutlet weak var textfieldEmailAddress: UITextField!
     @IBOutlet weak var textfieldPassword: UITextField!
     @IBOutlet weak var textfieldPasswordAgain: UITextField!
+
     @IBOutlet weak var buttonSignUp: UIButton!
+    
+    @IBOutlet weak var indicatorSignUp: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +40,7 @@ class RegisterTableViewController: UITableViewController {
         let buttonWidth = self.navigationButtonSignUp.frame.width
         let borderWidth = buttonWidth/2
         
-        border.borderColor = CGColor.borderColorBrand()
+        border.borderColor = CGColor.colorBrand()
         border.borderWidth = 3.0
         border.frame = CGRectMake(borderWidth/2, self.navigationButtonSignUp.frame.size.height - 3.0, borderWidth, self.navigationButtonSignUp.frame.size.height)
         
@@ -53,37 +56,278 @@ class RegisterTableViewController: UITableViewController {
         // Alter the appearence of the Log In button
         //
         self.buttonSignUp.layer.borderWidth = 1.0
-        self.buttonSignUp.layer.borderColor = CGColor.borderColorBrand()
+        self.buttonSignUp.setTitleColor(UIColor.colorBrand(0.35), forState: .Normal)
+        self.buttonSignUp.setTitleColor(UIColor.colorBrand(), forState: .Highlighted)
+        self.buttonSignUp.layer.borderColor = CGColor.colorBrand(0.35)
         self.buttonSignUp.layer.cornerRadius = 4.0
         
-        buttonSignUp.addTarget(self, action: #selector(buttonClickLogin(_:)), forControlEvents: .TouchUpInside)
+        buttonSignUp.addTarget(self, action: #selector(buttonClickSignUp(_:)), forControlEvents: .TouchUpInside)
+
+        //
+        // Watch the Email Address and Password field's for changes.
+        // We will be enabling and disabling the "Login Button" based
+        // on whether or not the fields contain content.
+        //
+        textfieldEmailAddress.addTarget(self, action: #selector(RegisterTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        textfieldPassword.addTarget(self, action: #selector(RegisterTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        textfieldPasswordAgain.addTarget(self, action: #selector(RegisterTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        
+        //
+        // Hide the "Log in attempt" indicator by default, we do not
+        // need this indicator until a user interacts with the login
+        // button
+        //
+        self.isReady()
     }
     
-    func buttonClickLogin(sender:UIButton) {
-        print("buttonClickLogin")
+    
+    //
+    // Basic Login Button Feedback States
+    //
+    func isReady() {
+        buttonSignUp.hidden = false
+        buttonSignUp.enabled = false
+        indicatorSignUp.hidden = true
+    }
+    
+    func isLoading() {
+        buttonSignUp.hidden = true
+        indicatorSignUp.hidden = false
+        indicatorSignUp.startAnimating()
+    }
+    
+    func isFinishedLoadingWithError() {
+        buttonSignUp.hidden = false
+        indicatorSignUp.hidden = true
+        indicatorSignUp.stopAnimating()
+    }
+    
+    func enableLoginButton() {
+        buttonSignUp.enabled = true
+        buttonSignUp.setTitleColor(UIColor.colorBrand(), forState: .Normal)
+    }
+    
+    func disableLoginButton() {
+        buttonSignUp.enabled = false
+        buttonSignUp.setTitleColor(UIColor.colorBrand(0.35), forState: .Normal)
+    }
+    
+    func displayErrorMessage(title: String, message: String) {
         
-        let emailAddress = self.textfieldEmailAddress
-        let password = self.textfieldPassword
-        let passwordAgain = self.textfieldPasswordAgain
+        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
         
-        print("emailAddress")
-        print(emailAddress)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
         
-        print("password")
-        print(password)
-        
-        print("password again")
-        print(password)
-        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    
+    //
+    //
+    //
+    func textFieldDidChange(textField: UITextField) {
         
         //
-        // 1. Get Email Address Field
-        // 2. Get Password Field
-        // 3. Send request with that information to api.
-        // 4. Handle response
-        // 4a. Dismiss and go to activity
-        // 4b. Show error message
+        // - IF a textfield is not an empty string, enable the login button
+        // - ELSE disable the button so that a user cannot tap it to submit an invalid request
         //
+        if (self.textfieldEmailAddress.text == "" || self.textfieldPassword.text == "" || self.textfieldPasswordAgain.text == "") {
+            self.disableLoginButton()
+        } else {
+            let passwordCheck = self.passwordsAreMatching(self.textfieldPassword.text!, passwordAgain:self.textfieldPasswordAgain.text!)
+            
+            if (passwordCheck) {
+                print("passwords match")
+                self.enableLoginButton()
+            }
+            else {
+                print("passwords are not matching, show some feedback")
+            }
+        }
+        
+    }
+    
+    
+    //
+    //
+    //
+    func buttonClickSignUp(sender:UIButton) {
+        
+        //
+        // Hide the log in button so that the user cannot tap
+        // it more than once. If they did tap it more than once
+        // this would cause multiple requests to be sent to the
+        // server and then multiple responses back to the app
+        // which could cause the wrong `access_token` to be saved
+        // to the user's Locksmith keychain.
+        //
+        self.isLoading()
+        
+        //
+        // Send the email address and password along to the Authentication endpoint
+        // for verification and processing
+        //
+        self.attemptRegistration(self.textfieldEmailAddress.text!, password: self.textfieldPassword.text!)
+    }
+
+    func attemptRegistration(email: String, password: String) {
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let parameters = [
+            "email": email,
+            "password": password,
+        ]
+        
+        Alamofire.request(.POST, Endpoints.POST_USER_REGISTER, parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    
+                    if let responseCode = value.objectForKey("meta")!.objectForKey("code") {
+                        print("attemptRegistration::IF: responseCode")
+                        print(responseCode)
+                        
+                        self.responseRegistration(responseCode as! NSNumber)
+                    }
+                    else if let responseCode = value.objectForKey("code") {
+                        print("attemptRegistration::ELSE: responseCode")
+                        self.responseRegistration(responseCode as! NSNumber)
+                    }
+                    break
+                case .Failure(let error):
+                    print("Error")
+                    print(error)
+                    self.isFinishedLoadingWithError()
+                    self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
+                    break
+                }
+                
+        }
+    }
+    
+    func responseRegistration(responseCode: NSNumber) {
+        
+        switch responseCode {
+            case 200:
+                print("Code: 200")
+                self.attemptAuthentication(self.textfieldEmailAddress.text!, password: self.textfieldPassword.text!)
+                break
+            case 400:
+                print("Code: 400")
+                break
+            default:
+                print("unknown status code")
+                print(responseCode)
+                break
+        }
+
+    }
+
+    func attemptAuthentication(email: String, password: String) {
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let parameters = [
+            "email": email,
+            "password": password,
+            "response_type": Environment.RESPONSE_TYPE,
+            "client_id": Environment.CLIENT_ID,
+            "redirect_uri": Environment.REDIRECT_URI,
+            "scope": Environment.SCOPE,
+            "state": Environment.STATE
+        ]
+        
+        Alamofire.request(.POST, Endpoints.POST_AUTH_REMOTE, parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    
+                    print("value after successful POST_AUTH_REMOTE")
+                    print(value)
+                    
+                    if let responseCode = value.objectForKey("meta")?.objectForKey("code") {
+                        print("attemptAuthentication::IF: responseCode")
+                        self.responseAuthentication(responseCode as! NSNumber, value: value)
+                    }
+                    else if let responseCode = value.objectForKey("code") {
+                        print("attemptAuthentication::ELSE: responseCode")
+                        self.responseAuthentication(responseCode as! NSNumber, value: value)
+                    }
+                    else if let accessToken = value.objectForKey("access_token") {
+                        print("no response codes ....")
+                        let responseCode: NSNumber = 200
+                        self.responseAuthentication(responseCode, value: value)
+                    }
+                case .Failure(let error):
+                    self.isFinishedLoadingWithError()
+                    self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
+                    break
+                }
+                
+        }
+    }
+    
+    func responseAuthentication(responseCode: NSNumber, value: AnyObject) {
+        
+        switch responseCode {
+            case 200:
+                NSUserDefaults.standardUserDefaults().setValue(value.objectForKey("access_token"), forKeyPath: "currentUserAccountAccessToken")
+                self.presentActivityViewController()
+                break
+            case 400:
+                self.isFinishedLoadingWithError()
+                self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
+                break
+            default:
+                print("unknown status code")
+                print(responseCode)
+                break
+        }
+    }
+
+    
+    func passwordsAreMatching(password: String, passwordAgain: String) -> Bool {
+        
+        let passwordsAreMatching = (password == passwordAgain)
+        
+        if (passwordsAreMatching) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    func presentActivityViewController() {
+        
+        self.dismissViewControllerAnimated(true, completion: nil) // NOTHING HAPPENED
+        
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ActivityTableViewController") as! ActivityTableViewController
+        
+        self.navigationController!.presentViewController(nextViewController, animated: true, completion: nil)
+    }
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        let nextTage = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTage) as UIResponder!
+        
+        if (nextResponder != nil){
+            nextResponder?.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        
+        return false
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,69 +336,5 @@ class RegisterTableViewController: UITableViewController {
         
         NSLog("LoginViewController::didReceiveMemoryWarning")
     }
-
-    
-    // MARK: - Table view data source
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
-    
-//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        
-//        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
-//        
-//        return cell
-//    }
-//    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-     // Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
 
 }

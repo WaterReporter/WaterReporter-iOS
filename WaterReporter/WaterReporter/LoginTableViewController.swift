@@ -8,6 +8,7 @@
 
 import Alamofire
 import Foundation
+import Locksmith
 import UIKit
 
 class LoginTableViewController: UITableViewController {
@@ -20,9 +21,16 @@ class LoginTableViewController: UITableViewController {
     @IBOutlet weak var buttonForgotYourPassword: UIButton!
     @IBOutlet weak var buttonLogin: UIButton!
     
+    @IBOutlet weak var indicatorLogin: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //
+        // Make doubly sure that there is no `currentUserAccountAccessToken`
+        //
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountAccessToken")
+
         //
         // Make sure we are getting 'auto layout' specific sizes
         // otherwise any math we do will be messed up
@@ -37,7 +45,7 @@ class LoginTableViewController: UITableViewController {
         let buttonWidth = self.navigationButtonLogin.frame.width
         let borderWidth = buttonWidth/2
         
-        border.borderColor = CGColor.borderColorBrand()
+        border.borderColor = CGColor.colorBrand()
         border.borderWidth = 3.0
         border.frame = CGRectMake(borderWidth/2, self.navigationButtonLogin.frame.size.height - 3.0, borderWidth, self.navigationButtonLogin.frame.size.height)
         
@@ -53,88 +61,184 @@ class LoginTableViewController: UITableViewController {
         // Alter the appearence of the Log In button
         //
         self.buttonLogin.layer.borderWidth = 1.0
-        self.buttonLogin.layer.borderColor = CGColor.borderColorBrand()
+        self.buttonLogin.setTitleColor(UIColor.colorBrand(0.35), forState: .Normal)
+        self.buttonLogin.setTitleColor(UIColor.colorBrand(), forState: .Highlighted)
+        self.buttonLogin.layer.borderColor = CGColor.colorBrand(0.35)
         self.buttonLogin.layer.cornerRadius = 4.0
         
         buttonLogin.addTarget(self, action: #selector(buttonClickLogin(_:)), forControlEvents: .TouchUpInside)
         
+        //
+        // Watch the Email Address and Password field's for changes.
+        // We will be enabling and disabling the "Login Button" based
+        // on whether or not the fields contain content.
+        //
+        textfieldEmailAddress.addTarget(self, action: #selector(LoginTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        textfieldPassword.addTarget(self, action: #selector(LoginTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        
+        //
+        // Hide the "Log in attempt" indicator by default, we do not
+        // need this indicator until a user interacts with the login
+        // button
+        //
+        self.isReady()
     }
     
-    func buttonClickLogin(sender:UIButton) {
-        print("buttonClickLogin")
-        
-        let emailAddress = self.textfieldEmailAddress
-        let password = self.textfieldPassword
-        
-        print("emailAddress")
-        print(emailAddress)
-        
-        print("password")
-        print(password)
-        
-        //
-        // 1. Get Email Address Field
-        // 2. Get Password Field
-        // 3. Send request with that information to api.
-        // 4. Handle response
-        // 4a. Dismiss and go to activity
-        // 4b. Show error message
-        //
-
+    
+    //
+    // Basic Login Button Feedback States
+    //
+    func isReady() {
+        buttonLogin.hidden = false
+        buttonLogin.enabled = false
+        indicatorLogin.hidden = true
     }
 
+    func isLoading() {
+        buttonLogin.hidden = true
+        indicatorLogin.hidden = false
+        indicatorLogin.startAnimating()
+    }
+    
+    func isFinishedLoadingWithError() {
+        buttonLogin.hidden = false
+        indicatorLogin.hidden = true
+        indicatorLogin.stopAnimating()
+    }
+    
+    func enableLoginButton() {
+        buttonLogin.enabled = true
+        self.buttonLogin.setTitleColor(UIColor.colorBrand(), forState: .Normal)
+    }
+    
+    func disableLoginButton() {
+        buttonLogin.enabled = false
+        self.buttonLogin.setTitleColor(UIColor.colorBrand(0.35), forState: .Normal)
+    }
+    
+    func displayErrorMessage(title: String, message: String) {
+        
+        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    
+    //
+    //
+    //
+    func textFieldDidChange(textField: UITextField) {
+        
+        //
+        // - IF a textfield is not an empty string, enable the login button
+        // - ELSE disable the button so that a user cannot tap it to submit an invalid request
+        //
+        if (self.textfieldEmailAddress.text == "" || self.textfieldPassword.text == "") {
+            self.disableLoginButton()
+        } else {
+            self.enableLoginButton()
+        }
+        
+    }
+    
+    
+    //
+    //
+    //
+    func buttonClickLogin(sender:UIButton) {
+        
+        //
+        // Hide the log in button so that the user cannot tap
+        // it more than once. If they did tap it more than once
+        // this would cause multiple requests to be sent to the
+        // server and then multiple responses back to the app
+        // which could cause the wrong `access_token` to be saved
+        // to the user's Locksmith keychain.
+        //
+        self.isLoading()
+        
+        //
+        // Send the email address and password along to the Authentication endpoint
+        // for verification and processing
+        //
+        self.attemptAuthentication(self.textfieldEmailAddress.text!, password: self.textfieldPassword.text!)
+        
+    }
+    
+    func attemptAuthentication(email: String, password: String) {
+    
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let parameters = [
+            "email": email,
+            "password": password,
+            "response_type": Environment.RESPONSE_TYPE,
+            "client_id": Environment.CLIENT_ID,
+            "redirect_uri": Environment.REDIRECT_URI,
+            "scope": Environment.SCOPE,
+            "state": Environment.STATE
+        ]
+        
+        Alamofire.request(.POST, Endpoints.POST_AUTH_REMOTE, parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                    case .Success(let value):
+                        
+                        print(value)
+
+                        if let responseCode = value["code"] {
+                            
+                            if responseCode != nil {
+                                print("!= nil")
+                                self.isFinishedLoadingWithError()
+                                self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
+                            }
+                            else {
+                                print("nil")
+                                NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
+                                self.presentActivityViewController()
+                            }
+                        }
+
+                    case .Failure(let error):
+                        print(error)
+                        self.isFinishedLoadingWithError()
+                        self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
+                        break
+                }
+                
+        }
+    }
+    
+    func presentActivityViewController() {
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ActivityTableViewController") as! ActivityTableViewController
+        
+        self.navigationController!.pushViewController(nextViewController, animated: true)
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+
+        let nextTage = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTage) as UIResponder!
+        
+        if (nextResponder != nil){
+            nextResponder?.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        
         return false
     }
-    
-//    func navigationButtonClickSignUp(sender:UIButton) {
-//        
-//        print("navigationButtonClickSignUp")
-//        
-//        
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        
-//        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterTableViewController") as! RegisterTableViewController
-//        
-//        self.presentViewController(nextViewController, animated: false, completion: nil)
-//        
-//    }
-
-//    func navigationButtonClickForgotPassword(sender:UIButton) {
-//        
-//        print("navigationButtonClickForgotPassword")
-//
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        
-//        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ForgotPasswordTableViewController") as! ForgotPasswordTableViewController
-//        
-//        self.presentViewController(nextViewController, animated: false, completion: nil)
-//        
-//    }
-    
-    //    func buttonClickSignUp(sender:UIButton) {
-    //        //
-    //        // Load the activity controller from the storyboard
-    //        //
-    //        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-    //
-    //        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
-    //
-    //        self.presentViewController(nextViewController, animated: false, completion: nil)
-    //    }
-    //
-    //    func buttonClickForgotPassword(sender:UIButton) {
-    //        //
-    //        // Load the activity controller from the storyboard
-    //        //
-    //        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-    //
-    //        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterViewController") as! RegisterViewController
-    //
-    //        self.presentViewController(nextViewController, animated: false, completion: nil)
-    //    }
-    
+        
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
