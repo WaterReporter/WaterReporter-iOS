@@ -35,11 +35,11 @@
 		C1C8269D1D4562FF00516871 /* WaterReporterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */; };
 		C1C826AB1D4567CB00516871 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826AA1D4567CB00516871 /* ProfileViewController.swift */; };
 		C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */; };
-		C1D7DDFD1DA6872E00771F04 /* UserProfileEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFC1DA6872E00771F04 /* UserProfileEditTableViewController.swift */; };
 		C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */; };
 		C1F224E71DAD74C400363A8F /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E61DAD74C400363A8F /* UITextField.swift */; };
 		C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E81DAD813A00363A8F /* UIColor.swift */; };
 		C1F230121DAE83CB00DA2854 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1F230101DAE83CB00DA2854 /* Main.storyboard */; };
+		C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,11 +111,11 @@
 		C1C8269E1D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C1C826AA1D4567CB00516871 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordTableViewController.swift; sourceTree = "<group>"; };
-		C1D7DDFC1DA6872E00771F04 /* UserProfileEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileEditTableViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
 		C1F224E61DAD74C400363A8F /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = SOURCE_ROOT; };
 		C1F224E81DAD813A00363A8F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		C1F230111DAE83CB00DA2854 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileEditTableViewController.swift; sourceTree = "<group>"; };
 		D8993E8D85322C529237865F /* Pods-WaterReporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,6 +231,7 @@
 				C12CAF9A1D464FA8002881A6 /* _constants */,
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
 				C1F230101DAE83CB00DA2854 /* Main.storyboard */,
+				C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */,
 				C1C8267E1D4562FF00516871 /* SubmitViewController.swift */,
 				C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */,
 				C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */,
@@ -244,7 +245,6 @@
 				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
 				C14448B31D6B4B75000564BF /* UserProfileTableViewController.swift */,
 				C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */,
-				C1D7DDFC1DA6872E00771F04 /* UserProfileEditTableViewController.swift */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -465,12 +465,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1D7DDFD1DA6872E00771F04 /* UserProfileEditTableViewController.swift in Sources */,
 				C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */,
 				C1F224E71DAD74C400363A8F /* UITextField.swift in Sources */,
 				C12CAFAA1D4698E3002881A6 /* UIImageOrientationFix.swift in Sources */,
 				C12CAFA31D46698B002881A6 /* Features.swift in Sources */,
 				C1C8267F1D4562FF00516871 /* SubmitViewController.swift in Sources */,
+				C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */,
 				C139109C1D787C8B00806F01 /* OrganizationProfileTableViewController.swift in Sources */,
 				C12CAFA71D46902D002881A6 /* ImageLoader.swift in Sources */,
 				C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */,

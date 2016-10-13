@@ -23,6 +23,15 @@ class LoginTableViewController: UITableViewController {
     
     @IBOutlet weak var indicatorLogin: UIActivityIndicatorView!
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+    
+        if let _account = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") {
+            self.dismissViewControllerAnimated(false, completion: nil);
+        }
+    
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +60,13 @@ class LoginTableViewController: UITableViewController {
         
         self.navigationButtonLogin.layer.addSublayer(border)
         self.navigationButtonLogin.layer.masksToBounds = true
+        
+        //
+        //
+        //
+        if let _email_address = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountEmailAddress") {
+            self.textfieldEmailAddress.text = _email_address as! String
+        }
         
         //
         // Set all table row separators to appear transparent
@@ -200,7 +216,11 @@ class LoginTableViewController: UITableViewController {
                             else {
                                 print("nil")
                                 NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
-                                self.presentActivityViewController()
+                                NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
+                                
+                                self.dismissViewControllerAnimated(true, completion: {
+                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                })
                             }
                         }
 
@@ -212,17 +232,6 @@ class LoginTableViewController: UITableViewController {
                 }
                 
         }
-    }
-    
-    func presentActivityViewController() {
-        //
-        // Load the activity controller from the storyboard
-        //
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ActivityTableViewController") as! ActivityTableViewController
-        
-        self.navigationController!.pushViewController(nextViewController, animated: true)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

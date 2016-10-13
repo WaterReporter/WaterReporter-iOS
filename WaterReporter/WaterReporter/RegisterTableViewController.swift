@@ -23,6 +23,15 @@ class RegisterTableViewController: UITableViewController {
     
     @IBOutlet weak var indicatorSignUp: UIActivityIndicatorView!
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        if let _account = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") {
+            self.dismissViewControllerAnimated(false, completion: nil);
+        }
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -276,8 +285,16 @@ class RegisterTableViewController: UITableViewController {
         
         switch responseCode {
             case 200:
+                print("responseAuthentication after registration >> 200")
+
+                //
+                // Save the access_token and the user's email address for use later
+                //
                 NSUserDefaults.standardUserDefaults().setValue(value.objectForKey("access_token"), forKeyPath: "currentUserAccountAccessToken")
-                self.presentActivityViewController()
+                NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
+                
+                self.dismissViewControllerAnimated(true, completion: nil)
+                
                 break
             case 400:
                 self.isFinishedLoadingWithError()
@@ -302,20 +319,6 @@ class RegisterTableViewController: UITableViewController {
         return false;
     }
     
-    func presentActivityViewController() {
-        
-        self.dismissViewControllerAnimated(true, completion: nil) // NOTHING HAPPENED
-        
-        //
-        // Load the activity controller from the storyboard
-        //
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ActivityTableViewController") as! ActivityTableViewController
-        
-        self.navigationController!.presentViewController(nextViewController, animated: true, completion: nil)
-    }
-
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         let nextTage = textField.tag + 1;

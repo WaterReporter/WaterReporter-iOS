@@ -44,7 +44,7 @@ class ForgotPasswordTableViewController: UITableViewController {
         buttonResetPassword.layer.borderWidth = 1.0
         buttonResetPassword.layer.borderColor = CGColor.colorBrand()
         buttonResetPassword.layer.cornerRadius = 4.0
-
+        
         //
         // Set all table row separators to appear transparent
         //
@@ -67,13 +67,23 @@ class ForgotPasswordTableViewController: UITableViewController {
         // on whether or not the fields contain content.
         //
         textfieldEmailAddress.addTarget(self, action: #selector(LoginTableViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
-        
+
         //
-        // Hide the "Log in attempt" indicator by default, we do not
-        // need this indicator until a user interacts with the login
-        // button
         //
-        self.isReady()
+        //
+        if let _email_address = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountEmailAddress") {
+            self.textfieldEmailAddress.text = _email_address as! String
+            self.isReady()
+            self.enableLoginButton()
+        }
+        else {
+            //
+            // Hide the "Log in attempt" indicator by default, we do not
+            // need this indicator until a user interacts with the login
+            // button
+            //
+            self.isReady()
+        }
     }
     
     
@@ -112,7 +122,7 @@ class ForgotPasswordTableViewController: UITableViewController {
         
         let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
         
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
@@ -155,8 +165,7 @@ class ForgotPasswordTableViewController: UITableViewController {
         // Send the email address and password along to the Authentication endpoint
         // for verification and processing
         //
-
-        
+        self.attemptPasswordReset(self.textfieldEmailAddress.text!)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -169,7 +178,6 @@ class ForgotPasswordTableViewController: UITableViewController {
     //
     // MARK: - Custom methods and functions
     //
-    
     func goBack(){
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -178,71 +186,59 @@ class ForgotPasswordTableViewController: UITableViewController {
         textField.resignFirstResponder()
         return true
     }
-    
-    
-    //
-    // MARK: - Table view data source
-    //
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+
+    func attemptPasswordReset(email: String) {
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let parameters = [
+            "email": email
+        ]
+        
+        Alamofire.request(.POST, Endpoints.POST_PASSWORD_RESET, parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    
+                    print(value)
+                    
+                    if let responseCode = value["code"] {
+                        
+                        if responseCode != nil {
+                            print("!= nil")
+                            self.isFinishedLoadingWithError()
+                            self.displayErrorMessage("An Error Occurred", message:"Please check the email address you entered and try again.")
+                        }
+                        else {
+                            print("nil")
+//                            self.displayErrorMessage("We sent you an email", message:"We have sent an email to " + self.textfieldEmailAddress.text! + " with further instructions to help you reset your password.")
+//                            self.dismissViewControllerAnimated(true, completion: nil)
+                            
+                            let alertController = UIAlertController(title: "We sent you an email", message:"We‘ve sent an email to " + self.textfieldEmailAddress.text! + " with further instructions to help you reset your password.", preferredStyle: UIAlertControllerStyle.Alert)
+                            
+                            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default) {
+                                    UIAlertAction in
+                                    self.dismissViewControllerAnimated(true, completion: {
+                                        self.dismissViewControllerAnimated(true, completion: nil)
+                                    })
+                                })
+                            
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                            
+                            self.isReady()
+                        }
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                    self.isFinishedLoadingWithError()
+                    self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
+                    break
+                }
+                
+        }
     }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        
-//        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
-//        
-//        return cell
-//    }
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     if editingStyle == .Delete {
-     // Delete the row from the data source
-     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-     } else if editingStyle == .Insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

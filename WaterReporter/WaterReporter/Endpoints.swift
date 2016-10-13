@@ -17,6 +17,7 @@ struct Endpoints {
     static let POST_AUTH_REMOTE = "https://api.waterreporter.org/v2/auth/remote"
     static let GET_AUTH_AUTHORIZE = "https://www.waterreporter.org/authorize"
     static let POST_USER_REGISTER = "https://api.waterreporter.org/v2/user/register"
+    static let POST_PASSWORD_RESET = "https://api.waterreporter.org/v2/reset"
     
     static let GET_MANY_ORGANIZATIONS = "https://api.waterreporter.org/v2/data/organization"
     
