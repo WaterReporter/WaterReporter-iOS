@@ -24,9 +24,11 @@
 		C17243D81D4FD3C2007ADD0E /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C17243D61D4FD3C2007ADD0E /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */; };
 		C18D76A91DAD87EB0012584C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18D76A81DAD87EB0012584C /* Environment.swift */; };
+		C1915C501DB002D3001815BB /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1915C4F1DB002D3001815BB /* LaunchViewController.swift */; };
 		C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19538F91DAD6896003C6FC5 /* CGColor.swift */; };
 		C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */; };
 		C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */; };
+		C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */; };
 		C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267A1D4562FF00516871 /* AppDelegate.swift */; };
 		C1C8267F1D4562FF00516871 /* SubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267E1D4562FF00516871 /* SubmitViewController.swift */; };
 		C1C826841D4562FF00516871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1C826831D4562FF00516871 /* Assets.xcassets */; };
@@ -94,9 +96,11 @@
 		C17243D61D4FD3C2007ADD0E /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterTableViewController.swift; sourceTree = "<group>"; };
 		C18D76A81DAD87EB0012584C /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		C1915C4F1DB002D3001815BB /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C19538F91DAD6896003C6FC5 /* CGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGColor.swift; sourceTree = "<group>"; };
 		C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMapViewController.swift; sourceTree = "<group>"; };
+		C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileSettingsTableViewController.swift; sourceTree = "<group>"; };
 		C1C826771D4562FF00516871 /* Water-Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water-Reporter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C1C8267E1D4562FF00516871 /* SubmitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitViewController.swift; sourceTree = "<group>"; };
@@ -231,6 +235,9 @@
 				C12CAF9A1D464FA8002881A6 /* _constants */,
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
 				C1F230101DAE83CB00DA2854 /* Main.storyboard */,
+				C1915C4F1DB002D3001815BB /* LaunchViewController.swift */,
+				C14448B31D6B4B75000564BF /* UserProfileTableViewController.swift */,
+				C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */,
 				C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */,
 				C1C8267E1D4562FF00516871 /* SubmitViewController.swift */,
 				C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */,
@@ -243,7 +250,6 @@
 				C1C826881D4562FF00516871 /* Info.plist */,
 				C1C826AA1D4567CB00516871 /* ProfileViewController.swift */,
 				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
-				C14448B31D6B4B75000564BF /* UserProfileTableViewController.swift */,
 				C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */,
 			);
 			path = WaterReporter;
@@ -470,6 +476,7 @@
 				C12CAFAA1D4698E3002881A6 /* UIImageOrientationFix.swift in Sources */,
 				C12CAFA31D46698B002881A6 /* Features.swift in Sources */,
 				C1C8267F1D4562FF00516871 /* SubmitViewController.swift in Sources */,
+				C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */,
 				C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */,
 				C139109C1D787C8B00806F01 /* OrganizationProfileTableViewController.swift in Sources */,
 				C12CAFA71D46902D002881A6 /* ImageLoader.swift in Sources */,
@@ -489,6 +496,7 @@
 				C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */,
 				C12CAFA51D4680FD002881A6 /* Feature.swift in Sources */,
 				C12CAFA11D466659002881A6 /* TableViewCell.swift in Sources */,
+				C1915C501DB002D3001815BB /* LaunchViewController.swift in Sources */,
 				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

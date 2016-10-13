@@ -16,7 +16,7 @@ class ActivityTableViewController: UITableViewController {
     var reports = [AnyObject]()
     var singleReport: Bool = false
     var page: Int = 1
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()        
     }
@@ -24,49 +24,25 @@ class ActivityTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
+        print("SHOW THE USER PROFILE EDIT HERE")
+        
         //
-        // Before doing anything else make sure that the user is logged
-        // in to the WaterReporter.org platform.
+        // Make sure we are starting out with any empty reports array
         //
-        if let _account = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") {
-            print("User account found")
-            print(_account)
-
-            //
-            // Make sure we are starting out with any empty reports array
-            //
-            // ! THIS IS A TERRIBLE SOLUTION, HOWEVER, IF IT IS TO BE USED
-            //   IT SHOULD ONLY BE ACTIVATED ON TAB CHANGE --NOT-- WHEN THE
-            //   `viewWillAppear`
-            //
-            self.reports = []
-            self.page = 1
-            self.tableView.reloadData()
-            
-            
-            //
-            // Load 10 newest reports from API on Activity View load
-            //
-            if (!singleReport) {
-                self.loadReports()
-            }
-            
-        } else {
-            print("No User account found")
-
-            //
-            // Load the activity controller from the storyboard
-            //
-            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-
-            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
-//            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ForgotPasswordTableViewController") as! ForgotPasswordTableViewController
-
-//            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterTableViewController") as! RegisterTableViewController
-//            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("UserProfileEditTableViewController") as! UserProfileEditTableViewController
-            
-            self.presentViewController(nextViewController, animated: false, completion: nil)
-
+        // ! THIS IS A TERRIBLE SOLUTION, HOWEVER, IF IT IS TO BE USED
+        //   IT SHOULD ONLY BE ACTIVATED ON TAB CHANGE --NOT-- WHEN THE
+        //   `viewWillAppear`
+        //
+        self.reports = []
+        self.page = 1
+        self.tableView.reloadData()
+        
+        
+        //
+        // Load 10 newest reports from API on Activity View load
+        //
+        if (!singleReport) {
+            self.loadReports()
         }
 
         self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -85,6 +61,8 @@ class ActivityTableViewController: UITableViewController {
         self.navigationItem.title = "Activity"
         
         self.tableView.backgroundColor = UIColor.whiteColor()
+        
+        self.navigationItem.setHidesBackButton(true, animated:true);
     }
 
     
@@ -310,6 +288,8 @@ class ActivityTableViewController: UITableViewController {
         
         UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportCoordinates[1]) + "," + String(reportCoordinates[0]))!)
     }
+    
+    
 
     /*
     // Override to support conditional editing of the table view.

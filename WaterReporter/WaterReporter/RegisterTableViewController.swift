@@ -199,11 +199,11 @@ class RegisterTableViewController: UITableViewController {
                         print("attemptRegistration::IF: responseCode")
                         print(responseCode)
                         
-                        self.responseRegistration(responseCode as! NSNumber)
+                        self.responseRegistration(responseCode as! NSNumber, meta: value)
                     }
                     else if let responseCode = value.objectForKey("code") {
                         print("attemptRegistration::ELSE: responseCode")
-                        self.responseRegistration(responseCode as! NSNumber)
+                        self.responseRegistration(responseCode as! NSNumber, meta: value)
                     }
                     break
                 case .Failure(let error):
@@ -217,7 +217,7 @@ class RegisterTableViewController: UITableViewController {
         }
     }
     
-    func responseRegistration(responseCode: NSNumber) {
+    func responseRegistration(responseCode: NSNumber, meta: AnyObject?) {
         
         switch responseCode {
             case 200:
@@ -225,7 +225,17 @@ class RegisterTableViewController: UITableViewController {
                 self.attemptAuthentication(self.textfieldEmailAddress.text!, password: self.textfieldPassword.text!)
                 break
             case 400:
-                print("Code: 400")
+                print("400 meta feedback")
+                print(meta)
+                
+                var _message = "Please check the email address and password you entered and try again."
+                
+                if (meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("email") != nil) {
+                    _message = self.textfieldEmailAddress.text! + " is already associated with an account."
+                }
+                
+                self.isFinishedLoadingWithError()
+                self.displayErrorMessage("Something went wrong", message: _message)
                 break
             default:
                 print("unknown status code")
@@ -272,7 +282,7 @@ class RegisterTableViewController: UITableViewController {
                         let responseCode: NSNumber = 200
                         self.responseAuthentication(responseCode, value: value)
                     }
-                case .Failure(let error):
+                case .Failure(let _):
                     self.isFinishedLoadingWithError()
                     self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
                     break
@@ -287,13 +297,25 @@ class RegisterTableViewController: UITableViewController {
             case 200:
                 print("responseAuthentication after registration >> 200")
 
-                //
-                // Save the access_token and the user's email address for use later
-                //
-                NSUserDefaults.standardUserDefaults().setValue(value.objectForKey("access_token"), forKeyPath: "currentUserAccountAccessToken")
+                var attemptToDismissLoginTableViewController: Bool = true;
+                
+                NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
                 NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
                 
-                self.dismissViewControllerAnimated(true, completion: nil)
+                //
+                //
+                //
+                self.textfieldPassword.text = ""
+                self.isReady()
+                
+                self.dismissViewControllerAnimated(true, completion: {
+                    attemptToDismissLoginTableViewController = false
+                    self.performSegueWithIdentifier("showActivityTableViewControllerFromRegistrationViewController", sender: self)
+                })
+                
+                if (attemptToDismissLoginTableViewController) {
+                    self.performSegueWithIdentifier("showActivityTableViewControllerFromRegistrationViewController", sender: self)
+                }
                 
                 break
             case 400:

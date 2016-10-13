@@ -215,12 +215,28 @@ class LoginTableViewController: UITableViewController {
                             }
                             else {
                                 print("nil")
+                                
+                                var attemptToDismissLoginTableViewController: Bool = true;
+                                
                                 NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
                                 NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
                                 
+                                //
+                                //
+                                //
+                                self.textfieldPassword.text = ""
+                                self.isReady()
+
                                 self.dismissViewControllerAnimated(true, completion: {
-                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                    attemptToDismissLoginTableViewController = false
+                                    self.performSegueWithIdentifier("showActivityTableViewControllerFromInitialViewController", sender: self)
+                                    
                                 })
+                                
+                                if (attemptToDismissLoginTableViewController) {
+                                    self.performSegueWithIdentifier("showActivityTableViewControllerFromInitialViewController", sender: self)
+                                }
+                                
                             }
                         }
 

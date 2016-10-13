@@ -16,6 +16,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+
+        //
+        // Before doing anything else make sure that the user is logged
+        // in to the WaterReporter.org platform.
+        //
+        if let _account = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") {
+            _ = _account
+            print("AppDelegate::didFinishLaunchingWithOptions::AccountFound")
+        }
+        else {
+            print("AppDelegate::didFinishLaunchingWithOptions::NotFound")
+
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            
+            let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
+            
+            self.window?.makeKeyAndVisible()
+            self.window?.rootViewController = nextViewController
+
+        }
+        
         return true
     }
 

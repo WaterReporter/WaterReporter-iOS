@@ -18,5 +18,13 @@ extension UIColor {
     class func colorDisabled(alpha:CGFloat = 1.00) -> UIColor {
         return UIColor(red:0.64, green:0.64, blue:0.64, alpha: alpha)
     }
-    
+
+    class func colorDarkGray(alpha:CGFloat = 1.00) -> UIColor {
+        return UIColor(red:0.10, green:0.10, blue:0.10, alpha: alpha)
+    }
+
+    class func colorBackground(alpha:CGFloat = 1.00) -> UIColor {
+        return UIColor(red:0.97, green:0.97, blue:0.97, alpha: alpha)
+    }
+
 }
