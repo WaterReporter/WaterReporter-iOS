@@ -8,7 +8,6 @@
 
 import Alamofire
 import Foundation
-import Locksmith
 import UIKit
 
 class LoginTableViewController: UITableViewController {

@@ -347,13 +347,16 @@
 					C1C826761D4562FF00516871 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = T8H47R7JRG;
+						LastSwiftMigration = 0800;
 					};
 					C1C8268C1D4562FF00516871 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = C1C826761D4562FF00516871;
 					};
 					C1C826971D4562FF00516871 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = C1C826761D4562FF00516871;
 					};
 				};
@@ -418,7 +421,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		4DD5DFA53F77A2AA5B49A492 /* [CP] Copy Pods Resources */ = {
@@ -652,6 +655,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.viable.Water-Reporter";
 				PRODUCT_NAME = "Water-Reporter";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -670,6 +674,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.viable.Water-Reporter";
 				PRODUCT_NAME = "Water-Reporter";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -681,6 +686,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterTests;
 				PRODUCT_NAME = "Water-Reporter";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Water-Reporter.app/Water-Reporter";
 			};
 			name = Debug;
@@ -693,6 +699,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterTests;
 				PRODUCT_NAME = "Water-Reporter";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Water-Reporter.app/Water-Reporter";
 			};
 			name = Release;
@@ -704,6 +711,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterUITests;
 				PRODUCT_NAME = "Water-Reporter";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WaterReporter;
 			};
 			name = Debug;
@@ -715,6 +723,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.viableindustries.WaterReporterUITests;
 				PRODUCT_NAME = "Water-Reporter";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = WaterReporter;
 			};
 			name = Release;

@@ -14,7 +14,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 
     var imageReportImagePreviewIsSet:Bool = false
     var imageReportLocationPreviewIsSet:Bool = false
-    var mapView: MGLMapView = MGLMapView()
     var thisLocationManager: CLLocationManager = CLLocationManager()
     
     @IBOutlet weak var textareaReportComment: UITextView!
@@ -31,9 +30,33 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBOutlet var buttonReportLocationUpdate: UIButton!
     
     @IBOutlet weak var navigationBarButtonSave: UIBarButtonItem!
-    @IBOutlet weak var mapReportLocation: UIView!
     
     @IBOutlet weak var tableViewCellReportImage: UITableViewCell!
+    
+    @IBOutlet weak var textfieldReportDate: UITextField!
+    
+    @IBOutlet weak var mapReportLocation: MGLMapView!
+    @IBAction func textfieldIsEditingReportDate(sender: UITextField) {
+        let datePickerView:UIDatePicker = UIDatePicker()
+        
+        datePickerView.datePickerMode = UIDatePickerMode.Date
+        
+        sender.inputView = datePickerView
+        
+        datePickerView.addTarget(self, action: #selector(NewReportTableViewController.datePickerValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+    }
+    
+    func datePickerValueChanged(sender:UIDatePicker) {
+        
+        let dateFormatter = NSDateFormatter()
+        
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        
+        textfieldReportDate.text = dateFormatter.stringFromDate(sender.date)
+        
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -45,6 +68,13 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         super.viewDidLoad()
         NSLog("SubmitViewController::viewDidLoad")
 
+        //
+        // Make sure we are getting 'auto layout' specific sizes
+        // otherwise any math we do will be messed up
+        //
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+        
         self.navigationItem.title = "New Report"
 
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
@@ -65,9 +95,18 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         //
         //
-        mapView.frame = mapReportLocation.bounds
-        mapView.delegate = self
-        mapView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        self.setupMap()
+        
+        
+        //
+        // Set Default Date
+        //
+        let dateFormatter = NSDateFormatter()
+        let date = NSDate()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        textfieldReportDate.text = dateFormatter.stringFromDate(date)
+
 
         //
         //
@@ -75,6 +114,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.isReady()
     }
 
+    
+    func setupMap() {
+        
+        mapReportLocation.styleURL = NSURL(string: "mapbox://styles/rdawes1/circfufio0013h4nlhibdw240")
+
+        mapReportLocation.setUserTrackingMode(MGLUserTrackingMode.Follow, animated: true)
+    }
+
+    
     //
     // MARK: Table View Controller Customization
     //
@@ -98,19 +146,19 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         var rowHeight:CGFloat = 44.0
         
         switch indexPath.section {
-            case 0:
+            case 2:
                 if (indexPath.row == 0) {
                     rowHeight = 148.0
                 }
             
-            case 1:
+            case 0:
                 if (imageReportImagePreviewIsSet && indexPath.row == 0) {
                     rowHeight = 280.0
                 }
                 else {
                     rowHeight = 44.0
                 }
-            case 2:
+            case 3:
                 if (imageReportLocationPreviewIsSet && indexPath.row == 0) {
                     rowHeight = 280.0
                 }
@@ -215,21 +263,9 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 //    }
     
     @IBAction func startLocationServices(sender: AnyObject) {
-
-        thisLocationManager.requestWhenInUseAuthorization()
-        thisLocationManager.startUpdatingLocation()
-
-        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse){
-            
-            
-            mapView.setCenterCoordinate((thisLocationManager.location?.coordinate)!, animated:true)
-            
-//            mapView.setCenterCoordinate(CLLocationCoordinate2D(latitude: (thisLocationManager.location?.coordinate.latitude)!, longitude: (thisLocationManager.location?.coordinate.longitude)!), zoomLevel: 14, animated: true)
-            
-            self.imageReportLocationPreviewIsSet = true
-            self.isReadyWithLocation()
-            self.tableView.reloadData()
-        }
+        self.imageReportLocationPreviewIsSet = true
+        self.isReadyWithLocation()
+        self.tableView.reloadData()
     }
     
     func mapView(mapView: MGLMapView, didUpdateUserLocation userLocation: MGLUserLocation?) {

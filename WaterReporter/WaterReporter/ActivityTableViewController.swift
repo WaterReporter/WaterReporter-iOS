@@ -8,7 +8,6 @@
 
 import Alamofire
 import Foundation
-import Locksmith
 import UIKit
 
 class ActivityTableViewController: UITableViewController {
@@ -19,13 +18,7 @@ class ActivityTableViewController: UITableViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()        
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-        
-        print("SHOW THE USER PROFILE EDIT HERE")
-        
+
         //
         // Make sure we are starting out with any empty reports array
         //
@@ -44,7 +37,7 @@ class ActivityTableViewController: UITableViewController {
         if (!singleReport) {
             self.loadReports()
         }
-
+        
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 600.0;
         
@@ -63,6 +56,11 @@ class ActivityTableViewController: UITableViewController {
         self.tableView.backgroundColor = UIColor.whiteColor()
         
         self.navigationItem.setHidesBackButton(true, animated:true);
+
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
     }
 
     

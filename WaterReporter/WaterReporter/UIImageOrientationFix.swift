@@ -68,16 +68,16 @@ extension UIImage {
                 break
         }
         
-        let ctx: CGContextRef = CGBitmapContextCreate(nil, Int(size.width), Int(size.height), CGImageGetBitsPerComponent(CGImage), 0, CGImageGetColorSpace(CGImage), CGImageAlphaInfo.PremultipliedLast.rawValue)!
+        let ctx: CGContextRef = CGBitmapContextCreate(nil, Int(size.width), Int(size.height), CGImageGetBitsPerComponent(CGImage!), 0, CGImageGetColorSpace(CGImage!)!, CGImageAlphaInfo.PremultipliedLast.rawValue)!
         
         CGContextConcatCTM(ctx, transform)
         
         switch imageOrientation {
             case UIImageOrientation.Left, UIImageOrientation.LeftMirrored, UIImageOrientation.Right, UIImageOrientation.RightMirrored:
-                CGContextDrawImage(ctx, CGRectMake(0, 0, size.height, size.width), CGImage)
+                CGContextDrawImage(ctx, CGRectMake(0, 0, size.height, size.width), CGImage!)
                 break
             default:
-                CGContextDrawImage(ctx, CGRectMake(0, 0, size.width, size.height), CGImage)
+                CGContextDrawImage(ctx, CGRectMake(0, 0, size.width, size.height), CGImage!)
                 break
         }
         
