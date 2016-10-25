@@ -40,7 +40,9 @@ class ActivityTableViewController: UITableViewController {
         
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 600.0;
-        
+        self.tableView.backgroundColor = UIColor.whiteColor()
+        self.tableView.scrollsToTop = true
+
         //
         // Special directions for Single Report view
         //
@@ -53,9 +55,12 @@ class ActivityTableViewController: UITableViewController {
         //
         self.navigationItem.title = "Activity"
         
-        self.tableView.backgroundColor = UIColor.whiteColor()
-        
         self.navigationItem.setHidesBackButton(true, animated:true);
+        
+        //
+        // Setup pull to refresh functionality for our TableView
+        //
+        self.refreshControl?.addTarget(self, action: #selector(ActivityTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
 
     }
     
@@ -64,7 +69,7 @@ class ActivityTableViewController: UITableViewController {
     }
 
     
-    func loadReports() {
+    func loadReports(isRefreshingReportsList: Bool = false) {
         
         //
         // Send a request to the defined endpoint with the given parameters
@@ -79,7 +84,20 @@ class ActivityTableViewController: UITableViewController {
                 
                 switch response.result {
                 case .Success(let value):
-                    self.reports += value["features"] as! [AnyObject]
+                    
+                    //
+                    // Choose whether or not the reports should refresh or
+                    // whether loaded reports should be appended to the existing
+                    // list of reports
+                    //
+                    if (isRefreshingReportsList) {
+                        self.reports = value["features"] as! [AnyObject]
+                        self.refreshControl?.endRefreshing()
+                    }
+                    else {
+                        self.reports += value["features"] as! [AnyObject]
+                    }
+
                     self.tableView.reloadData()
 
                     print(value["features"])
@@ -130,8 +148,8 @@ class ActivityTableViewController: UITableViewController {
         // Make sure we aren't loading old images into the new cells as
         // additional reports are loaded
         //
-        cell.reportImage.image = nil
-        cell.reportOwnerImage.image = nil
+//        cell.reportImage.image = nil
+//        cell.reportOwnerImage.image = nil
         
         //
         // REPORT OBJECT
@@ -287,6 +305,22 @@ class ActivityTableViewController: UITableViewController {
         UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportCoordinates[1]) + "," + String(reportCoordinates[0]))!)
     }
     
+    func refreshTableView(refreshControl: UIRefreshControl) {
+        
+        //
+        // Load 10 newest reports from API on Activity View load
+        //
+        if (!singleReport) {
+            
+            self.page = 1
+            self.reports = []
+            
+            self.loadReports(true)
+        } else {
+            self.refreshControl?.endRefreshing()
+        }
+        
+    }
     
 
     /*
@@ -333,5 +367,5 @@ class ActivityTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
