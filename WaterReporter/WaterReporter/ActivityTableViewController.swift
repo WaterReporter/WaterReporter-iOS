@@ -17,55 +17,73 @@ class ActivityTableViewController: UITableViewController {
     var page: Int = 1
         
     override func viewDidLoad() {
-        super.viewDidLoad()        
-
-        //
-        // Make sure we are starting out with any empty reports array
-        //
-        // ! THIS IS A TERRIBLE SOLUTION, HOWEVER, IF IT IS TO BE USED
-        //   IT SHOULD ONLY BE ACTIVATED ON TAB CHANGE --NOT-- WHEN THE
-        //   `viewWillAppear`
-        //
-        self.reports = []
-        self.page = 1
-        self.tableView.reloadData()
+        super.viewDidLoad()
         
+        //
+        // Enable scroll to top of UITableView when title 
+        // bar is tapped
+        //
+        self.tableView.scrollEnabled = true
+        self.tableView.scrollsToTop = true
         
         //
         // Load 10 newest reports from API on Activity View load
         //
         if (!singleReport) {
+            
+            if (self.refreshControl == nil) {
+                self.refreshControl = UIRefreshControl()
+            }
+            
+            self.reports = []
+            self.page = 1
+            self.tableView.reloadData()
+
+            //
+            // Set the Navigation Bar title
+            //
+            self.navigationItem.title = "Activity"
+            
+            self.navigationItem.setHidesBackButton(true, animated:true);
+            
+            //
+            // Setup pull to refresh functionality for our TableView
+            //
+            self.refreshControl?.addTarget(self, action: #selector(ActivityTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
+
             self.loadReports()
         }
         
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
-        self.tableView.estimatedRowHeight = 600.0;
-        self.tableView.backgroundColor = UIColor.whiteColor()
-        self.tableView.scrollsToTop = true
-
-        //
-        // Special directions for Single Report view
-        //
-        if (singleReport) {
-            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        }
-        
-        //
-        // Set the Navigation Bar title
-        //
-        self.navigationItem.title = "Activity"
-        
-        self.navigationItem.setHidesBackButton(true, animated:true);
-        
-        //
-        // Setup pull to refresh functionality for our TableView
-        //
-        self.refreshControl?.addTarget(self, action: #selector(ActivityTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
-
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        
+        //
+        // We need to execute the necessary code here to make
+        // sure the Report Single view displays from the map view
+        // and other views
+        //
+        print("Needs to reload for single report")
+
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.estimatedRowHeight = 600.0;
+        self.tableView.backgroundColor = UIColor.whiteColor()
+        self.tableView.scrollsToTop = true
+        
+        //
+        // Special directions for Single Report view
+        //
+        if (singleReport) {
+            
+            //
+            // For single report view we need to disable pull-to-refresh
+            //
+            self.refreshControl = nil
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+            self.tableView.reloadData()
+        }
+        
     }
 
     

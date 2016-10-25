@@ -228,12 +228,22 @@ class RegisterTableViewController: UITableViewController {
                 print("400 meta feedback")
                 print(meta)
                 
+                // Set a default message just in case the system doesn't give us anything to work with
                 var _message = "Please check the email address and password you entered and try again."
                 
+                // Attempt to use the system supplied email or password message
                 if (meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("email") != nil) {
-                    _message = self.textfieldEmailAddress.text! + " is already associated with an account."
+                    let rawEmailMessageList: AnyObject = meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("email")!
+                    let emailMessageList = (rawEmailMessageList as! NSArray) as Array
+                    _message = String(emailMessageList[0])
+                }
+                else if (meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("password") != nil) {
+                    let rawPasswordMessageList: AnyObject = meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("password")!
+                    let passwordMessageList = (rawPasswordMessageList as! NSArray) as Array
+                    _message = String(passwordMessageList[0])
                 }
                 
+                // return the message to the user's device
                 self.isFinishedLoadingWithError()
                 self.displayErrorMessage("Something went wrong", message: _message)
                 break
