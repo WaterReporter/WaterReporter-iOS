@@ -8,6 +8,7 @@
 
 import Alamofire
 import Foundation
+import SwiftyJSON
 import UIKit
 
 class UserProfileEditTableViewController: UITableViewController {
@@ -21,7 +22,9 @@ class UserProfileEditTableViewController: UITableViewController {
     @IBOutlet weak var textfieldTitlePosition: UITextField!
     @IBOutlet weak var textfieldPublicEmail: UITextField!
     
-    @IBOutlet weak var textfieldBio: UITextField!
+    @IBOutlet weak var textfieldBio: UITextView!
+    
+    var userProfile: JSON?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +38,22 @@ class UserProfileEditTableViewController: UITableViewController {
         
         navigationButtonBarItemSave.target = self
         navigationButtonBarItemSave.action = #selector(buttonSaveUserProfileEditTableViewController(_:))
+        
+        
+        //
+        //
+        //
+        textfieldBio.text = "Bio"
+        textfieldBio.textColor = UIColor.lightGrayColor()
+        
+        print("Current user token")
+        print(NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken"))
+        
+        if let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") {
+            self.attemptLoadUserProfile()
+        } else {
+            self.attemptRetrieveUserID()
+        }
         
     }
     
@@ -134,6 +153,20 @@ class UserProfileEditTableViewController: UITableViewController {
         return false
     }
     
+    func textViewDidBeginEditing(textView: UITextView) {
+        if textView.textColor == UIColor.lightGrayColor() {
+            textView.text = nil
+            textView.textColor = UIColor.blackColor()
+        }
+    }
+
+    func textViewDidEndEditing(textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Bio"
+            textView.textColor = UIColor.lightGrayColor()
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -141,4 +174,88 @@ class UserProfileEditTableViewController: UITableViewController {
         NSLog("LoginViewController::didReceiveMemoryWarning")
     }
     
+    //
+    // MARK: Server Request/Response functionality
+    //
+    
+    func attemptLoadUserProfile() {
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+
+        if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") {
+            let revisedEndpoint = Endpoints.GET_USER_PROFILE + String(userId)
+            
+            Alamofire.request(.GET, revisedEndpoint, headers: headers, encoding: .JSON).responseJSON { response in
+                if let value = response.result.value {
+                    self.userProfile = JSON(value)
+                    self.updateUserProfileFields()
+                }
+            }
+
+        }
+        
+    }
+
+    func attemptRetrieveUserID() {
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    let json = JSON(value)
+                    
+                    if let data: AnyObject = json.rawValue {
+                        NSUserDefaults.standardUserDefaults().setValue(data["id"], forKeyPath: "currentUserAccountUID")
+                        
+                        self.attemptLoadUserProfile()
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                }
+        }
+    }
+    
+    func updateUserProfileFields() {
+        print("updateUserProfileFields")
+        print(self.userProfile)
+        
+        if let userFirstName = self.userProfile?["properties"]["first_name"].string {
+            self.textfieldFirstName.text = userFirstName
+        }
+
+        if let userLastName = self.userProfile?["properties"]["last_name"].string {
+            self.textfieldLastName.text = userLastName
+        }
+
+        if let userTitle = self.userProfile?["properties"]["title"].string {
+            self.textfieldTitlePosition.text = userTitle
+        }
+
+        if let userOrganizationName = self.userProfile?["properties"]["organization_name"].string {
+            self.textfieldOrganizationName.text = userOrganizationName
+        }
+
+        if let userPublicEmail = self.userProfile?["properties"]["public_email"].string {
+            self.textfieldPublicEmail.text = userPublicEmail
+        }
+
+        if let userDescription = self.userProfile?["properties"]["description"].string {
+            self.textfieldBio.text = userDescription
+        }
+
+        
+        self.tableView.reloadData()
+        
+    }
+
 }

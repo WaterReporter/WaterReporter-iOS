@@ -13,6 +13,7 @@ class UserProfileSettingsTableViewController: UITableViewController {
     
     @IBOutlet weak var buttonEditProfile: UIButton!
     @IBOutlet weak var buttonUserLogOut: UIButton!
+    @IBOutlet weak var buttonGroups: UIButton!
     
     @IBOutlet weak var switchNotificationCommentMyReport: UISwitch!
     @IBOutlet weak var switchNotificationAdminClosesMyReport: UISwitch!
@@ -66,6 +67,7 @@ class UserProfileSettingsTableViewController: UITableViewController {
         var attemptToDismissLoginTableViewController: Bool = true;
 
         NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountAccessToken")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountUID")
         
         dismissViewControllerAnimated(true, completion: {
             attemptToDismissLoginTableViewController = false

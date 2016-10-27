@@ -214,6 +214,7 @@ class LoginTableViewController: UITableViewController {
                             }
                             else {
                                 print("nil")
+                                print(value)
                                 
                                 var attemptToDismissLoginTableViewController: Bool = true;
                                 
