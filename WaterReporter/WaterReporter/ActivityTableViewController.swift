@@ -8,6 +8,7 @@
 
 import Alamofire
 import Foundation
+import Kingfisher
 import UIKit
 
 class ActivityTableViewController: UITableViewController {
@@ -197,7 +198,7 @@ class ActivityTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.reports.count
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCellWithIdentifier("SingleReport", forIndexPath: indexPath) as! TableViewCell
@@ -206,8 +207,6 @@ class ActivityTableViewController: UITableViewController {
         // Make sure we aren't loading old images into the new cells as
         // additional reports are loaded
         //
-//        cell.reportImage.image = nil
-//        cell.reportOwnerImage.image = nil
         
         //
         // REPORT OBJECT
@@ -218,10 +217,9 @@ class ActivityTableViewController: UITableViewController {
         let reportDescription = report?.objectForKey("report_description")
         let reportDate = report?.objectForKey("report_date")
         let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
-        let reportImageURL = reportImages?.objectForKey("square")
 
         let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
-        let reportOwnerImageURL = reportOwner?.objectForKey("picture")
+        
         
         
         //
@@ -294,28 +292,44 @@ class ActivityTableViewController: UITableViewController {
         cell.reportDescription.text = reportDescription as? String
         
         //
-        // IMAGES
+        // REPORT > OWNER > PICTURE
         //
         cell.reportOwnerImageButton.tag = indexPath.row
-        if let thisReportOwnerImageUrl = reportOwnerImageURL as? String  {
-            ImageLoader.sharedLoader.imageForUrl(thisReportOwnerImageUrl, completionHandler:{(image: UIImage?, url: String) in
-                cell.reportOwnerImage.image = image!
-                cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2;
-                cell.reportOwnerImage.clipsToBounds = true;
-            })
-        } else {
-            ImageLoader.sharedLoader.imageForUrl("https://www.waterreporter.org/images/badget--MissingUser.png", completionHandler:{(image: UIImage?, url: String) in
-                cell.reportOwnerImage.image = image!
-                cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2;
-                cell.reportOwnerImage.clipsToBounds = true;
-            })
+        
+        var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
+                
+        if let thisReportOwnerImageURL = reportOwner?.objectForKey("picture") {
+            reportOwnerImageURL = NSURL(string: String(thisReportOwnerImageURL))
         }
         
-        ImageLoader.sharedLoader.imageForUrl(reportImageURL as! String, completionHandler:{(image: UIImage?, url: String) in
-            let image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
-            cell.reportImage.image = image
+        cell.reportOwnerImage.kf_indicatorType = .Activity
+        cell.reportOwnerImage.kf_showIndicatorWhenLoading = true
+        
+        cell.reportOwnerImage.kf_setImageWithURL(reportOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+            (image, error, cacheType, imageUrl) in
+                cell.reportOwnerImage.image = image
+                cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2
+                cell.reportOwnerImage.clipsToBounds = true
         })
         
+        //
+        // REPORT > IMAGE
+        //
+        var reportImageURL:NSURL!
+        
+        if let thisReportImageURL = reportImages?.objectForKey("square") {
+            reportImageURL = NSURL(string: String(thisReportImageURL))
+        }
+        
+        cell.reportImage.kf_indicatorType = .Activity
+        cell.reportImage.kf_showIndicatorWhenLoading = true
+        
+        cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+            (image, error, cacheType, imageUrl) in
+                cell.reportImage.image = image
+                cell.reportImage.clipsToBounds = true
+        })
+
         //
         // DATE
         //
@@ -347,7 +361,7 @@ class ActivityTableViewController: UITableViewController {
         if (indexPath.row == self.reports.count - 5 && !singleReport) {
             self.loadReports()
         }
-
+        
         return cell
     }
     
@@ -425,5 +439,4 @@ class ActivityTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    
 }

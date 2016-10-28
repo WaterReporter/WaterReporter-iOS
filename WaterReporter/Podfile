@@ -5,4 +5,5 @@ use_frameworks!
 target 'Water-Reporter' do
   pod 'Alamofire', '3.5'
   pod 'SwiftyJSON', '2.4'
+  pod 'Kingfisher', '2.6.1'
 end

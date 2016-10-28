@@ -61,5 +61,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>WaterReporter requires access to your photo library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>WaterReporter requires access to your camera</string>
 </dict>
 </plist>

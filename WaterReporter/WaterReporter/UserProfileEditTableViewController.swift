@@ -11,7 +11,8 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
-class UserProfileEditTableViewController: UITableViewController {
+
+class UserProfileEditTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
     @IBOutlet weak var navigationButtonBarItemCancel: UIBarButtonItem!
     @IBOutlet weak var navigationButtonBarItemSave: UIBarButtonItem!
@@ -29,6 +30,9 @@ class UserProfileEditTableViewController: UITableViewController {
     
     @IBOutlet weak var indicatorLoadingProfileLabel: UILabel!
     @IBOutlet weak var indicatorSavingProfileLabel: UILabel!
+    
+    @IBOutlet weak var userProfileChangeImage: UIButton!
+    @IBOutlet weak var userProfileImageView: UIImageView!
     
     var userProfile: JSON?
     var loadingView: UIView!
@@ -56,13 +60,6 @@ class UserProfileEditTableViewController: UITableViewController {
         navigationButtonBarItemCancel.target = self
         navigationButtonBarItemCancel.action = #selector(buttonDismissUserProfileEditTableViewController(_:))
         
-        
-        //
-        //
-        //
-        textfieldBio.text = "Bio"
-        textfieldBio.textColor = UIColor.lightGrayColor()
-        
         print(NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken"))
         
         if let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") {
@@ -71,6 +68,8 @@ class UserProfileEditTableViewController: UITableViewController {
             self.attemptRetrieveUserID()
         }
         
+        userProfileChangeImage.addTarget(self, action: #selector(UserProfileEditTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
+
     }
     
     func loading() {
@@ -95,6 +94,13 @@ class UserProfileEditTableViewController: UITableViewController {
         //
         self.indicatorSavingProfileLabel.hidden = true
         self.indicatorLoadingProfileLabel.hidden = false
+        
+        //
+        // Setup the bio field if there is no value
+        //
+        textfieldBio.text = "Bio"
+        textfieldBio.textColor = UIColor.lightGrayColor()
+
 
     }
     
@@ -155,17 +161,6 @@ class UserProfileEditTableViewController: UITableViewController {
             "Authorization": "Bearer " + (accessToken! as! String)
         ]
         
-        let parameters = [
-            "first_name": self.textfieldFirstName.text!,
-            "last_name": self.textfieldLastName.text!,
-            "organization_name": self.textfieldOrganizationName.text!,
-            "title": self.textfieldTitlePosition.text!,
-            "public_email": self.textfieldPublicEmail.text!,
-            "telephone": "[{\"number\":\"" + self.textfieldTelephone.text! + "\"}]",
-            "description": self.textfieldBio.text!
-        ]
-
-        
         Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: headers, encoding: .JSON)
             .responseJSON { response in
             
@@ -180,7 +175,7 @@ class UserProfileEditTableViewController: UITableViewController {
                     }
 
                     if (userId != "") {
-                        self.attemptUserProfileSave(userId!, headers: headers, parameters: parameters)
+                        self.attemptUserProfileSave(userId!, headers: headers)
                     }
                     
                     print(value)
@@ -194,27 +189,104 @@ class UserProfileEditTableViewController: UITableViewController {
         
     }
     
-    func attemptUserProfileSave(userId: String, headers: [String: String], parameters: [String: String]) {
+    func attemptUserProfileSave(userId: String, headers: [String: String]) {
         
         let _endpoint = Endpoints.POST_USER_PROFILE + userId;
         
-        Alamofire.request(.PATCH, _endpoint, parameters: parameters, headers: headers, encoding: .JSON)
-            .responseJSON { response in
-                
-                switch response.result {
-                case .Success(let value):
-                    self.dismissViewControllerAnimated(true, completion: {
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    })
-                    
-                case .Failure(let error):
-                    print("attemptUserProfileSave::Failure")
-                    print(error)
-                    break
-                }
-                
+        var parameters: [String: AnyObject] = [
+            "first_name": self.textfieldFirstName.text!,
+            "last_name": self.textfieldLastName.text!,
+            "organization_name": self.textfieldOrganizationName.text!,
+            "title": self.textfieldTitlePosition.text!,
+            "public_email": self.textfieldPublicEmail.text!,
+            "description": self.textfieldBio.text!
+        ]
+        
+        if (self.textfieldTelephone.text != self.userProfile?["properties"]["telephone"][0]["properties"]["number"].string && self.textfieldTelephone.text != nil) {
+            let telephoneNumber = [
+                "number": self.textfieldTelephone.text!
+            ]
+            let telephone: [AnyObject] = [telephoneNumber]
+            
+            parameters["telephone"] = telephone
         }
         
+        if (self.userProfileImageView.image != nil) {
+            print("image exists, let's try to upload it")
+            
+            Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
+                
+                    // import image to request
+                    if let imageData = UIImageJPEGRepresentation(self.userProfileImageView.image!, 1) {
+                        multipartFormData.appendBodyPart(data: imageData, name: "image", fileName: "myImage.jpg", mimeType: "image/jpeg")
+                    }
+                    
+                }, encodingCompletion: {
+                    encodingResult in
+                    switch encodingResult {
+                        case .Success(let upload, _, _):
+                            upload.responseJSON { response in
+                                print("Image uploaded \(response)")
+                                
+                                if let value = response.result.value {
+                                    let imageResponse = JSON(value)
+                                    
+                                    let image = [
+                                        "id": String(imageResponse["id"].rawValue)
+                                    ]
+                                    let images: [AnyObject] = [image]
+                                    
+                                    parameters["images"] = images
+                                    
+                                    print("parameters \(parameters)")
+                                    
+                                    Alamofire.request(.PATCH, _endpoint, parameters: parameters, headers: headers, encoding: .JSON)
+                                        .responseJSON { response in
+
+                                            print("Response \(response)")
+
+                                            switch response.result {
+                                            case .Success(let value):
+                                                self.dismissViewControllerAnimated(true, completion: {
+                                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                                })
+                                                
+                                            case .Failure(let error):
+                                                print("attemptUserProfileSave::Failure")
+                                                print(error)
+                                                break
+                                            }
+                                            
+                                    }
+                                }
+                            }
+                        case .Failure(let encodingError):
+                            print(encodingError)
+                    }
+            })
+
+        } else {
+            print("no image exists >>> parameters \(parameters)")
+            Alamofire.request(.PATCH, _endpoint, parameters: parameters, headers: headers, encoding: .JSON)
+                .responseJSON { response in
+                    
+                    print("Response \(response)")
+                    
+                    switch response.result {
+                        case .Success(let value):
+                            self.dismissViewControllerAnimated(true, completion: {
+                                self.dismissViewControllerAnimated(true, completion: nil)
+                            })
+                            
+                        case .Failure(let error):
+                            print("attemptUserProfileSave::Failure")
+                            print(error)
+                            break
+                    }
+                    
+            }
+        }
+
     }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -233,8 +305,11 @@ class UserProfileEditTableViewController: UITableViewController {
     
     func textViewDidBeginEditing(textView: UITextView) {
         if textView.textColor == UIColor.lightGrayColor() {
-            textView.text = nil
             textView.textColor = UIColor.blackColor()
+            
+            if textView.text == "Bio" {
+              textView.text = nil
+            }
         }
     }
 
@@ -306,8 +381,6 @@ class UserProfileEditTableViewController: UITableViewController {
     }
     
     func updateUserProfileFields() {
-        print("updateUserProfileFields")
-        print(self.userProfile)
         
         if let userFirstName = self.userProfile?["properties"]["first_name"].string {
             self.textfieldFirstName.text = userFirstName
@@ -331,11 +404,83 @@ class UserProfileEditTableViewController: UITableViewController {
 
         if let userDescription = self.userProfile?["properties"]["description"].string {
             self.textfieldBio.text = userDescription
+            self.textfieldBio.textColor = UIColor.blackColor()
+        }
+
+        if let userTelephone = self.userProfile?["properties"]["telephone"][0]["properties"]["number"].string {
+            self.textfieldTelephone.text = userTelephone
+        }
+        
+        if let imageUrl = NSURL(string: (self.userProfile?["properties"]["images"][0]["properties"]["thumbnail"].string!)!),
+           let data = NSData(contentsOfURL: imageUrl) {
+            self.userProfileImageView.layer.cornerRadius = self.userProfileImageView.frame.size.width / 2;
+            self.userProfileImageView.image = UIImage(data: data)
         }
 
         
         self.tableView.reloadData()
         
     }
+    
+    //
+    //
+    //
+    // MARK: Photo Functionality
+    //
+    //
+    //
+    @IBAction func attemptOpenPhotoTypeSelector(sender: AnyObject) {
+        
+        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .Default, handler:self.cameraActionHandler)
+        thisActionSheet.addAction(cameraAction)
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default, handler:self.photoLibraryActionHandler)
+        thisActionSheet.addAction(photoLibraryAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        thisActionSheet.addAction(cancelAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+        
+    }
+    
+    func cameraActionHandler(action:UIAlertAction) -> Void {
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
+            imagePicker.allowsEditing = true
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func photoLibraryActionHandler(action:UIAlertAction) -> Void {
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary)) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            imagePicker.allowsEditing = true
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        userProfileImageView.image = image
+        self.dismissViewControllerAnimated(true, completion: {
+//            self.isReadyWithImage()
+//            self.imageReportImagePreviewIsSet = true
+            self.tableView.reloadData()
+        })
+    }
+    
+    func attemptRemoveImageFromPreview(sender: AnyObject) {
+        userProfileImageView.image = nil
+        
+//        self.isReadyAfterRemove()
+        tableView.reloadData()
+    }
+
 
 }
