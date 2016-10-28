@@ -24,7 +24,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var buttonReportImageAddIcon: UIImageView!
     @IBOutlet weak var imageReportImagePreview: UIImageView!
     
-    @IBOutlet weak var indicatorReportLocationUpdating: UIActivityIndicatorView!
     @IBOutlet var buttonReportLocationIcon: UIImageView!
     @IBOutlet weak var buttonReportLocation: UIButton!
     @IBOutlet var buttonReportLocationUpdate: UIButton!
