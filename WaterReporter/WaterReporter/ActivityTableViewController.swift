@@ -16,6 +16,8 @@ class ActivityTableViewController: UITableViewController {
     var singleReport: Bool = false
     var page: Int = 1
         
+    @IBOutlet var indicatorLoadingView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,6 +32,11 @@ class ActivityTableViewController: UITableViewController {
         // Load 10 newest reports from API on Activity View load
         //
         if (!singleReport) {
+
+            //
+            // Display loading indicator
+            //
+            self.loading()
             
             if (self.refreshControl == nil) {
                 self.refreshControl = UIRefreshControl()
@@ -56,8 +63,36 @@ class ActivityTableViewController: UITableViewController {
         
     }
     
+    func loading() {
+        
+        //
+        // Create a view that covers the entire screen
+        //
+        self.indicatorLoadingView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+        self.indicatorLoadingView.backgroundColor = UIColor.whiteColor()
+        
+        self.view.addSubview(self.indicatorLoadingView)
+        self.view.bringSubviewToFront(self.indicatorLoadingView)
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+
+    }
+    
+    func loadingComplete() {
+        
+        //
+        // Remove loading screen
+        //
+        self.indicatorLoadingView.removeFromSuperview()
+
+        if (!singleReport) {
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        
         
         //
         // We need to execute the necessary code here to make
@@ -120,6 +155,11 @@ class ActivityTableViewController: UITableViewController {
 
                     print(value["features"])
                     self.page += 1
+                    
+                    //
+                    // Dismiss the loading indicator
+                    //
+                    self.loadingComplete()
                     
                 case .Failure(let error):
                     print(error)
