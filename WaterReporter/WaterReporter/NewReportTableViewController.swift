@@ -10,10 +10,11 @@ import CoreLocation
 import Mapbox
 import UIKit
 
-class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate {
-
+class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate, NewReportLocationSelectorDelegate {
+    
+    var userSelectedCoorindates: CLLocationCoordinate2D!
+    
     var imageReportImagePreviewIsSet:Bool = false
-    var imageReportLocationPreviewIsSet:Bool = false
     var thisLocationManager: CLLocationManager = CLLocationManager()
     
     @IBOutlet weak var textareaReportComment: UITextView!
@@ -24,10 +25,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var buttonReportImageAddIcon: UIImageView!
     @IBOutlet weak var imageReportImagePreview: UIImageView!
     
-    @IBOutlet var buttonReportLocationIcon: UIImageView!
-    @IBOutlet weak var buttonReportLocation: UIButton!
-    @IBOutlet var buttonReportLocationUpdate: UIButton!
-    
     @IBOutlet weak var navigationBarButtonSave: UIBarButtonItem!
     
     @IBOutlet weak var tableViewCellReportImage: UITableViewCell!
@@ -35,6 +32,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var textfieldReportDate: UITextField!
     
     @IBOutlet weak var mapReportLocation: MGLMapView!
+
+    @IBOutlet weak var mapReportLocationButton: UIButton!
     @IBAction func textfieldIsEditingReportDate(sender: UITextField) {
         let datePickerView:UIDatePicker = UIDatePicker()
         
@@ -66,6 +65,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     override func viewDidLoad() {
         super.viewDidLoad()
         NSLog("SubmitViewController::viewDidLoad")
+        
+        print("userSelectedCoorindates \(userSelectedCoorindates)")
 
         //
         // Make sure we are getting 'auto layout' specific sizes
@@ -81,9 +82,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         textareaReportComment.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
         buttonReportImage.addTarget(self, action: #selector(NewReportTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
         buttonReportImageRemove.addTarget(self, action: #selector(NewReportTableViewController.attemptRemoveImageFromPreview(_:)), forControlEvents: .TouchUpInside)
-        
-        buttonReportLocation.addTarget(self, action: #selector(NewReportTableViewController.startLocationServices(_:)), forControlEvents: .TouchUpInside)
-//        buttonReportLocationUpdate.addTarget(self, action: #selector(NewReportTableViewController.startLocationServices(_:)), forControlEvents: .TouchUpInside)
         
         //
         // Setup Navigation Bar
@@ -105,7 +103,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         textfieldReportDate.text = dateFormatter.stringFromDate(date)
-
 
         //
         //
@@ -133,11 +130,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         header.textLabel!.textColor = UIColor.colorDarkGray(0.5)
 
         header.contentView.backgroundColor = UIColor.colorBackground(1.00)
-        
     }
     
     @IBAction func buttonSaveNewReportTableViewController(sender: UIBarButtonItem) {
-        print("SAVE THE FORM")
+        print("SAVE THE FORM \(self.userSelectedCoorindates)")
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -151,18 +147,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 }
             
             case 0:
-                if (imageReportImagePreviewIsSet && indexPath.row == 0) {
-                    rowHeight = 280.0
+                if indexPath.row == 0 {
+                    rowHeight = 232.0
                 }
                 else {
                     rowHeight = 44.0
                 }
             case 3:
-                if (imageReportLocationPreviewIsSet && indexPath.row == 0) {
-                    rowHeight = 280.0
-                }
-                else {
-                    rowHeight = 44.0
+                if (indexPath.row == 0) {
+                    rowHeight = 232.0
                 }
             default:
                 rowHeight = 44.0
@@ -170,6 +163,13 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         return rowHeight
     }
+
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "setLocationForNewReport" {
+//            let destViewController = segue.destinationViewController as! NewReportLocationSelector
+//            destViewController.delegate = self
+//        }
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -181,8 +181,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // MARK: Custom functionality
     //
     func isReady() {
-        imageReportImagePreview.hidden = true;
-        mapReportLocation.hidden = true;
         buttonReportImageRemove.hidden = true;
         buttonReportImageRemoveIcon.hidden = true;
     }
@@ -191,78 +189,27 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         buttonReportImage.hidden = false;
         buttonReportImageAddIcon.hidden = false;
         
-        imageReportImagePreview.hidden = true;
         buttonReportImageRemove.hidden = true;
         buttonReportImageRemoveIcon.hidden = true;
     }
     
     func isReadyWithLocation() {
         mapReportLocation.hidden = false;
-        buttonReportLocation.hidden = true;
-        buttonReportLocationIcon.hidden = true;
     }
 
     func isUpdatingReportLocation() {
         print("isUpdatingReportLocation")
-        buttonReportLocation.hidden = true;
-        buttonReportLocationIcon.hidden = true;
     }
 
     func isReadyWithImage() {
-        
-//        buttonReportImage.hidden = true;
-//        buttonReportImageAddIcon.hidden = true;
-//
-//        imageReportImagePreview.hidden = false;
-//        buttonReportImageRemove.hidden = false;
-//        buttonReportImageRemoveIcon.hidden = false;
-//
-//        imageReportImagePreview.alpha = 0;
-//        buttonReportImageRemove.alpha = 0;
-//        buttonReportImageRemoveIcon.alpha = 0;
-//        
-//        UIView.animateWithDuration(8, animations: {
-//            self.imageReportImagePreview.alpha = 1;
-//            self.buttonReportImageRemove.alpha = 1;
-//            self.buttonReportImageRemoveIcon.alpha = 1;
-//        })
-//        
-        
-        
         buttonReportImage.hidden = true;
         buttonReportImageAddIcon.hidden = true;
         
-        imageReportImagePreview.hidden = false;
         buttonReportImageRemove.hidden = false;
         buttonReportImageRemoveIcon.hidden = false;
     }
 
-//    func loadImageFromUrl(url: String, view: UIImageView){
-//        
-//        // Create Url from string
-//        let url = NSURL(string: url)!
-//        
-//        print(url)
-//                
-//        // Download task:
-//        // - sharedSession = global NSURLCache, NSHTTPCookieStorage and NSURLCredentialStorage objects.
-//        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (responseData, responseUrl, error) -> Void in
-//            // if responseData is not null...
-//            if let data = responseData{
-//                
-//                // execute in UI thread
-//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                    view.image = UIImage(data: data)
-//                })
-//            }
-//        }
-//        
-//        // Run task
-//        task.resume()
-//    }
-    
-    @IBAction func startLocationServices(sender: AnyObject) {
-        self.imageReportLocationPreviewIsSet = true
+    func startLocationServices(sender: AnyObject) {
         self.isReadyWithLocation()
         self.tableView.reloadData()
     }
@@ -312,15 +259,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         imageReportImagePreview.image = image
         self.dismissViewControllerAnimated(true, completion: {
             self.isReadyWithImage()
-            self.imageReportImagePreviewIsSet = true
             self.tableView.reloadData()
         })
     }
     
     func attemptRemoveImageFromPreview(sender: AnyObject) {
         imageReportImagePreview.image = nil
-        imageReportImagePreviewIsSet = false
-        
         self.isReadyAfterRemove()
         tableView.reloadData()
     }
@@ -337,6 +281,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
         
         return false
+    }
+    
+    // Child Delegate
+    func sendCoordinates(coordinates: CLLocationCoordinate2D) {
+        print("PARENT:sendCoordinates see \(coordinates)")
     }
 
 

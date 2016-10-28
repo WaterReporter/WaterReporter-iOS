@@ -17,6 +17,7 @@
 		C12CAFA71D46902D002881A6 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAFA61D46902D002881A6 /* ImageLoader.swift */; };
 		C12CAFAA1D4698E3002881A6 /* UIImageOrientationFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAFA91D4698E3002881A6 /* UIImageOrientationFix.swift */; };
 		C139109C1D787C8B00806F01 /* OrganizationProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C139109B1D787C8B00806F01 /* OrganizationProfileTableViewController.swift */; };
+		C141055A1DC3E3CB00E538FA /* NewReportLocationSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14105591DC3E3CB00E538FA /* NewReportLocationSelector.swift */; };
 		C14448B41D6B4B75000564BF /* UserProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14448B31D6B4B75000564BF /* UserProfileTableViewController.swift */; };
 		C14448B81D6B7234000564BF /* UserProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14448B71D6B7234000564BF /* UserProfileTableViewCell.swift */; };
 		C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15965851D5B9C59009099EF /* MGLPointAnnotationExtension.swift */; };
@@ -90,6 +91,7 @@
 		C12CAFA61D46902D002881A6 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		C12CAFA91D4698E3002881A6 /* UIImageOrientationFix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageOrientationFix.swift; sourceTree = "<group>"; };
 		C139109B1D787C8B00806F01 /* OrganizationProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganizationProfileTableViewController.swift; sourceTree = "<group>"; };
+		C14105591DC3E3CB00E538FA /* NewReportLocationSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportLocationSelector.swift; sourceTree = "<group>"; };
 		C14448B31D6B4B75000564BF /* UserProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewController.swift; sourceTree = "<group>"; };
 		C14448B71D6B7234000564BF /* UserProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C15965851D5B9C59009099EF /* MGLPointAnnotationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLPointAnnotationExtension.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				C1C826AA1D4567CB00516871 /* ProfileViewController.swift */,
 				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
 				C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */,
+				C14105591DC3E3CB00E538FA /* NewReportLocationSelector.swift */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
 				C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */,
 				C14448B41D6B4B75000564BF /* UserProfileTableViewController.swift in Sources */,
+				C141055A1DC3E3CB00E538FA /* NewReportLocationSelector.swift in Sources */,
 				C12CAF9D1D46507F002881A6 /* Resources.swift in Sources */,
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
 				C18D76A91DAD87EB0012584C /* Environment.swift in Sources */,

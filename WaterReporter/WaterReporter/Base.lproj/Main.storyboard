@@ -816,7 +816,8 @@
                                             <frame key="frameInset" width="600" height="231"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5ti-1F-3TM">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5ti-1F-3TM">
+                                                    <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="200" id="gd6-nh-Nvh"/>
                                                     </constraints>
@@ -829,11 +830,11 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="32" id="22F-bq-i8c">
-                                        <rect key="frame" x="0.0" y="324" width="600" height="32"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="48" id="22F-bq-i8c">
+                                        <rect key="frame" x="0.0" y="324" width="600" height="48"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="22F-bq-i8c" id="IAc-dj-jVV">
-                                            <frame key="frameInset" width="600" height="31"/>
+                                            <frame key="frameInset" width="600" height="47"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7d-ZU-hwc">
@@ -893,7 +894,7 @@
                             <tableViewSection headerTitle="Report Date" id="0um-tO-rjE">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="64" id="c2G-nf-TGj">
-                                        <rect key="frame" x="0.0" y="384" width="600" height="64"/>
+                                        <rect key="frame" x="0.0" y="400" width="600" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c2G-nf-TGj" id="hNV-75-zPv">
                                             <frame key="frameInset" width="600" height="63.5"/>
@@ -923,7 +924,7 @@
                             <tableViewSection headerTitle="Comment" id="tkG-XY-LxL">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="148" id="awF-Cb-mJr">
-                                        <rect key="frame" x="0.0" y="476" width="600" height="148"/>
+                                        <rect key="frame" x="0.0" y="492" width="600" height="148"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="awF-Cb-mJr" id="5kj-TF-NE4">
                                             <frame key="frameInset" width="600" height="147.5"/>
@@ -947,90 +948,43 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Report Location" id="5kW-Ok-kcg">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="280" id="p3E-B5-0QP">
-                                        <rect key="frame" x="0.0" y="652" width="600" height="280"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="232" id="p3E-B5-0QP">
+                                        <rect key="frame" x="0.0" y="668" width="600" height="232"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3E-B5-0QP" id="eGl-NO-xwp">
-                                            <frame key="frameInset" width="600" height="279.5"/>
+                                            <frame key="frameInset" width="600" height="231"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3NT-6L-Yei">
-                                                    <inset key="contentEdgeInsets" minX="36" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" title="add location"/>
-                                                </button>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--AddButton" translatesAutoresizingMaskIntoConstraints="NO" id="3ap-qH-g7e">
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="24" id="0dd-Kw-D6H"/>
-                                                        <constraint firstAttribute="height" constant="24" id="5YX-Gh-mZ0"/>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="I6D-1c-lOq"/>
-                                                    </constraints>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="I6D-1c-lOq"/>
-                                                        </mask>
-                                                    </variation>
-                                                </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZMm-Y5-AU1">
-                                                    <state key="normal" title="Update Location"/>
-                                                </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ihr-X8-cLD" customClass="MGLMapView">
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="200" id="jOS-NW-wH2"/>
                                                     </constraints>
                                                 </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hBP-B7-WOD">
+                                                    <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <segue destination="sa1-vc-JFT" kind="show" identifier="setLocationForNewReport" id="lai-Tz-aeP"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="leading" secondItem="eGl-NO-xwp" secondAttribute="leadingMargin" constant="8" id="0AY-zQ-cAi"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="3ap-qH-g7e" secondAttribute="bottom" constant="16" id="12l-f3-NA7"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Ihr-X8-cLD" secondAttribute="trailing" constant="8" id="1Bf-58-uuE"/>
-                                                <constraint firstItem="3ap-qH-g7e" firstAttribute="centerY" secondItem="3NT-6L-Yei" secondAttribute="centerY" id="1yD-Gb-dLQ"/>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="leading" secondItem="eGl-NO-xwp" secondAttribute="leadingMargin" constant="8" id="2Ii-r7-C05"/>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="centerY" secondItem="eGl-NO-xwp" secondAttribute="centerY" id="2RX-IY-Jsc"/>
-                                                <constraint firstItem="ZMm-Y5-AU1" firstAttribute="top" secondItem="Ihr-X8-cLD" secondAttribute="bottom" constant="16" id="2xQ-lj-zJn"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="3NT-6L-Yei" secondAttribute="trailing" constant="8" id="3QJ-1O-m4C"/>
                                                 <constraint firstItem="Ihr-X8-cLD" firstAttribute="leading" secondItem="eGl-NO-xwp" secondAttribute="leadingMargin" constant="8" id="6Yu-n0-ifM"/>
-                                                <constraint firstItem="ZMm-Y5-AU1" firstAttribute="leading" secondItem="eGl-NO-xwp" secondAttribute="leadingMargin" constant="8" id="6uy-4R-0Tr"/>
-                                                <constraint firstAttribute="leadingMargin" secondItem="3ap-qH-g7e" secondAttribute="leading" constant="-8" id="8YL-bJ-zG1"/>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="leading" secondItem="eGl-NO-xwp" secondAttribute="leadingMargin" constant="8" id="FJf-Qv-SEf"/>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="centerY" secondItem="eGl-NO-xwp" secondAttribute="centerY" id="GDi-Br-99z"/>
+                                                <constraint firstItem="hBP-B7-WOD" firstAttribute="width" secondItem="Ihr-X8-cLD" secondAttribute="width" id="FjB-c3-biQ"/>
                                                 <constraint firstItem="Ihr-X8-cLD" firstAttribute="centerX" secondItem="eGl-NO-xwp" secondAttribute="centerX" id="HLe-66-s1b"/>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="centerY" secondItem="eGl-NO-xwp" secondAttribute="centerY" id="IVH-br-xrZ"/>
                                                 <constraint firstItem="Ihr-X8-cLD" firstAttribute="top" secondItem="eGl-NO-xwp" secondAttribute="topMargin" constant="16" id="IhR-Of-ltZ"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="3NT-6L-Yei" secondAttribute="trailing" constant="-8" id="JQ4-8p-7wy"/>
                                                 <constraint firstItem="Ihr-X8-cLD" firstAttribute="top" secondItem="eGl-NO-xwp" secondAttribute="topMargin" constant="16" id="JdY-BL-Igg"/>
-                                                <constraint firstItem="3ap-qH-g7e" firstAttribute="centerY" secondItem="3NT-6L-Yei" secondAttribute="centerY" id="LWB-p0-D7q"/>
-                                                <constraint firstItem="3ap-qH-g7e" firstAttribute="leading" secondItem="eGl-NO-xwp" secondAttribute="leadingMargin" constant="-24" id="LpU-Ca-nok"/>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="leading" secondItem="3ap-qH-g7e" secondAttribute="trailing" constant="-24" id="Nzr-vR-fq3"/>
-                                                <constraint firstItem="3NT-6L-Yei" firstAttribute="leading" secondItem="3ap-qH-g7e" secondAttribute="trailing" constant="-24" id="Twy-5x-EML"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="3NT-6L-Yei" secondAttribute="bottom" constant="16" id="XGZ-pA-eNn"/>
-                                                <constraint firstItem="ZMm-Y5-AU1" firstAttribute="leading" secondItem="Ihr-X8-cLD" secondAttribute="trailing" constant="-568" id="Xkh-sr-Jfd"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="3NT-6L-Yei" secondAttribute="trailing" constant="8" id="cxZ-RN-8GV"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="ZMm-Y5-AU1" secondAttribute="trailing" constant="8" id="iaI-WD-ULh"/>
-                                                <constraint firstItem="3ap-qH-g7e" firstAttribute="top" secondItem="3NT-6L-Yei" secondAttribute="bottom" constant="-27" id="si0-nK-qw7"/>
+                                                <constraint firstItem="hBP-B7-WOD" firstAttribute="centerY" secondItem="Ihr-X8-cLD" secondAttribute="centerY" id="cVR-8C-91G"/>
+                                                <constraint firstItem="hBP-B7-WOD" firstAttribute="height" secondItem="Ihr-X8-cLD" secondAttribute="height" id="kTI-5M-COO"/>
+                                                <constraint firstItem="hBP-B7-WOD" firstAttribute="centerX" secondItem="Ihr-X8-cLD" secondAttribute="centerX" id="mcF-cX-ebG"/>
                                                 <constraint firstItem="Ihr-X8-cLD" firstAttribute="centerY" secondItem="eGl-NO-xwp" secondAttribute="centerY" id="tP6-pr-yoG"/>
-                                                <constraint firstItem="3ap-qH-g7e" firstAttribute="centerY" secondItem="3NT-6L-Yei" secondAttribute="centerY" id="tVJ-7z-W9u"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="2Ii-r7-C05"/>
-                                                    <exclude reference="2RX-IY-Jsc"/>
-                                                    <exclude reference="3QJ-1O-m4C"/>
-                                                    <exclude reference="FJf-Qv-SEf"/>
-                                                    <exclude reference="GDi-Br-99z"/>
-                                                    <exclude reference="JQ4-8p-7wy"/>
-                                                    <exclude reference="Nzr-vR-fq3"/>
-                                                    <exclude reference="Twy-5x-EML"/>
-                                                    <exclude reference="XGZ-pA-eNn"/>
-                                                    <exclude reference="12l-f3-NA7"/>
-                                                    <exclude reference="1yD-Gb-dLQ"/>
-                                                    <exclude reference="LpU-Ca-nok"/>
-                                                    <exclude reference="si0-nK-qw7"/>
-                                                    <exclude reference="tVJ-7z-W9u"/>
                                                     <exclude reference="HLe-66-s1b"/>
                                                     <exclude reference="JdY-BL-Igg"/>
                                                     <exclude reference="tP6-pr-yoG"/>
-                                                    <exclude reference="Xkh-sr-Jfd"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1040,7 +994,7 @@
                             <tableViewSection headerTitle="Groups" id="qXO-d9-kvA">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="LGT-56-K9W">
-                                        <rect key="frame" x="0.0" y="960" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="928" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LGT-56-K9W" id="K4d-z6-29P">
                                             <frame key="frameInset" width="600" height="43.5"/>
@@ -1048,7 +1002,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1gZ-Ou-l3W">
-                                        <rect key="frame" x="0.0" y="1004" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="972" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1gZ-Ou-l3W" id="0cW-e2-Smy">
                                             <frame key="frameInset" width="600" height="43.5"/>
@@ -1056,7 +1010,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="2dB-YF-7rj">
-                                        <rect key="frame" x="0.0" y="1048" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="1016" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2dB-YF-7rj" id="Ejg-nc-Qpm">
                                             <frame key="frameInset" width="600" height="43.5"/>
@@ -1081,9 +1035,6 @@
                         <outlet property="buttonReportImageAddIcon" destination="GlN-DK-ooj" id="1b4-fT-Wxp"/>
                         <outlet property="buttonReportImageRemove" destination="TDC-AY-axa" id="4xp-i6-1Dl"/>
                         <outlet property="buttonReportImageRemoveIcon" destination="F4g-6d-Sfi" id="PK3-cS-GVE"/>
-                        <outlet property="buttonReportLocation" destination="3NT-6L-Yei" id="4fw-3F-ZVj"/>
-                        <outlet property="buttonReportLocationIcon" destination="3ap-qH-g7e" id="ZjX-ru-RhC"/>
-                        <outlet property="buttonReportLocationUpdate" destination="ZMm-Y5-AU1" id="aQG-pu-HuE"/>
                         <outlet property="imageReportImagePreview" destination="5ti-1F-3TM" id="Nfb-2f-BLF"/>
                         <outlet property="mapReportLocation" destination="Ihr-X8-cLD" id="JmA-cl-a8T"/>
                         <outlet property="navigationBarButtonSave" destination="oYS-Z8-twV" id="kuj-vX-nZe"/>
@@ -1094,7 +1045,85 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BSB-nm-2Io" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1683" y="658"/>
+            <point key="canvasLocation" x="1986" y="675"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="C1x-if-a0S">
+            <objects>
+                <navigationController id="sa1-vc-JFT" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bfu-eN-jh5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2or-va-XQe" kind="relationship" relationship="rootViewController" id="vW2-SK-d0t"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jAl-qj-KLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3049" y="639"/>
+        </scene>
+        <!--Delegate-->
+        <scene sceneID="9Rr-PS-3kJ">
+            <objects>
+                <viewController id="2or-va-XQe" customClass="NewReportLocationSelector" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cYz-Dl-7eR"/>
+                        <viewControllerLayoutGuide type="bottom" id="00r-Fr-n6N"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="NewReportLocationSelector" id="GqO-mr-yC8" customClass="NewReport">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i05-ED-dv3" customClass="MGLMapView">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="2or-va-XQe" id="0EF-ef-VCS"/>
+                                </connections>
+                            </view>
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ld2-JX-Wlo">
+                                <color key="backgroundColor" red="1" green="0.082352941176470587" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="1" green="0.082352941176470587" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="3cE-If-Kh8"/>
+                                    <constraint firstAttribute="width" constant="32" id="WoI-vR-Kx5"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="16"/>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="i05-ED-dv3" firstAttribute="centerX" secondItem="GqO-mr-yC8" secondAttribute="centerX" id="82Z-Ia-z33"/>
+                            <constraint firstItem="Ld2-JX-Wlo" firstAttribute="centerY" secondItem="i05-ED-dv3" secondAttribute="centerY" constant="48" id="EZr-nh-R35"/>
+                            <constraint firstItem="Ld2-JX-Wlo" firstAttribute="centerX" secondItem="i05-ED-dv3" secondAttribute="centerX" id="Mmk-3T-qSK"/>
+                            <constraint firstItem="i05-ED-dv3" firstAttribute="width" secondItem="GqO-mr-yC8" secondAttribute="width" id="aaC-Dn-6dA"/>
+                            <constraint firstItem="i05-ED-dv3" firstAttribute="centerY" secondItem="GqO-mr-yC8" secondAttribute="centerY" id="dfL-f6-HIR"/>
+                            <constraint firstItem="i05-ED-dv3" firstAttribute="height" secondItem="GqO-mr-yC8" secondAttribute="height" id="nvc-nd-3lh"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="showsUserLocation" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="allowsZooming" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="allowsScrolling" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="allowsRotating" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="allowsTilting" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <navigationItem key="navigationItem" title="Set Location" prompt="Move red dot over your report location" id="AtJ-ie-FJx">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="73R-o2-DI1"/>
+                        <barButtonItem key="rightBarButtonItem" title="Set" id="Hdu-3v-2HT"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mapCenterPoint" destination="Ld2-JX-Wlo" id="2CI-3W-rcn"/>
+                        <outlet property="mapReportLocation" destination="i05-ED-dv3" id="6ew-XC-DWI"/>
+                        <outlet property="navigationBarButtonCancel" destination="73R-o2-DI1" id="Kq1-3E-Y2b"/>
+                        <outlet property="navigationBarButtonSet" destination="Hdu-3v-2HT" id="0bN-GF-Osu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C2M-ir-OFp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4115" y="658"/>
         </scene>
         <!--Profile-->
         <scene sceneID="gWT-87-PVN">
@@ -1667,7 +1696,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qZ1-Vu-Zhy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3325" y="498"/>
+            <point key="canvasLocation" x="4776" y="-342"/>
         </scene>
         <!--Register Table View Controller-->
         <scene sceneID="Glt-Mc-I7K">
