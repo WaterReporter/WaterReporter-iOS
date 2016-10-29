@@ -6,8 +6,10 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import Alamofire
 import CoreLocation
 import Mapbox
+import SwiftyJSON
 import UIKit
 
 class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate, NewReportLocationSelectorDelegate {
@@ -29,8 +31,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     @IBOutlet weak var tableViewCellReportImage: UITableViewCell!
     
-    @IBOutlet weak var textfieldReportDate: UITextField!
-    
     @IBOutlet weak var mapReportLocation: MGLMapView!
 
     @IBOutlet weak var mapReportLocationButton: UIButton!
@@ -46,28 +46,49 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.performSegueWithIdentifier("setLocationForNewReport", sender: sender)
     }
     
-    @IBAction func textfieldIsEditingReportDate(sender: UITextField) {
+    //
+    //
+    //
+    @IBOutlet weak var textfieldReportDate: UITextField!
+
+    @IBAction func textfieldDatePickerEditingDidBegin(sender: UITextField) {
+
         let datePickerView:UIDatePicker = UIDatePicker()
-        
         datePickerView.datePickerMode = UIDatePickerMode.Date
+
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.Default
+        toolBar.translucent = true
+        toolBar.sizeToFit()
         
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(NewReportTableViewController.doneButton(_:)))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        
+        toolBar.setItems([spaceButton, doneButton], animated: false)
+        toolBar.userInteractionEnabled = true
+        
+        datePickerView.addTarget(self, action: #selector(NewReportTableViewController.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
+
         sender.inputView = datePickerView
-        
-        datePickerView.addTarget(self, action: #selector(NewReportTableViewController.datePickerValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        sender.inputAccessoryView = toolBar
     }
+    
+    @IBAction func textfieldDatePickerEditingDidEnd(sender: UITextField) {}
     
     func datePickerValueChanged(sender:UIDatePicker) {
-        
         let dateFormatter = NSDateFormatter()
-        
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        
         textfieldReportDate.text = dateFormatter.stringFromDate(sender.date)
-        
     }
     
+    func doneButton(sender:UIBarButtonItem) {
+        self.textfieldReportDate.resignFirstResponder()
+    }
+    
+    //
+    //
+    //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
@@ -85,9 +106,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSLog("SubmitViewController::viewDidLoad")
-        
-        print("userSelectedCoorindates \(userSelectedCoorindates)")
 
         //
         // Make sure we are getting 'auto layout' specific sizes
@@ -101,6 +119,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
         
         textareaReportComment.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
+        textfieldReportDate.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
+
         buttonReportImage.addTarget(self, action: #selector(NewReportTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
         buttonReportImageRemove.addTarget(self, action: #selector(NewReportTableViewController.attemptRemoveImageFromPreview(_:)), forControlEvents: .TouchUpInside)
         
@@ -125,9 +145,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         textfieldReportDate.text = dateFormatter.stringFromDate(date)
 
-        //
-        //
-        //
         self.isReady()
     }
 
@@ -146,7 +163,14 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     }
     
     @IBAction func buttonSaveNewReportTableViewController(sender: UIBarButtonItem) {
-        print("SAVE THE FORM \(self.userSelectedCoorindates)")
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        self.attemptNewReportSave(headers)
+        
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -315,8 +339,22 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        let nextTage = textField.tag + 1;
-        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTage) as UIResponder!
+        let nextTag = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
+        
+        if (nextResponder != nil){
+            nextResponder?.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        
+        return false
+    }
+    
+    func textViewShouldReturn(textField: UITextView) -> Bool {
+        
+        let nextTag = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
         
         if (nextResponder != nil){
             nextResponder?.becomeFirstResponder()
@@ -386,6 +424,108 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             // Pop-up the callout view.
             mapView.selectAnnotation(thisAnnotation, animated: true)
         }
+    }
+    
+    func attemptNewReportSave(headers: [String: String]) {
+        
+        
+        //
+        // GEOMETRY
+        //
+        var geometryCollection: [String: AnyObject] = [
+            "type": "GeometryCollection"
+        ]
+
+        var geometry: [String: AnyObject] = [
+            "type": "Point"
+        ]
+        
+        let coordinates: Array = [
+            self.userSelectedCoorindates.longitude,
+            self.userSelectedCoorindates.latitude
+        ]
+        
+        geometry["coordinates"] = coordinates
+        
+        let geometries: [AnyObject] = [geometry]
+        geometryCollection["geometries"] = geometries
+        
+        
+        //
+        // PARAMETERS
+        //
+        var parameters: [String: AnyObject] = [
+            "report_description": self.textareaReportComment.text!,
+            "report_date": self.textfieldReportDate.text!,
+            "geometry": geometryCollection
+        ]
+        
+
+        //
+        // GROUPS
+        //
+//        if (self.textfieldTelephone.text != self.userProfile?["properties"]["telephone"][0]["properties"]["number"].string && self.textfieldTelephone.text != nil) {
+//            let telephoneNumber = [
+//                "number": self.textfieldTelephone.text!
+//            ]
+//            let telephone: [AnyObject] = [telephoneNumber]
+//            
+//            parameters["telephone"] = telephone
+//        }
+        
+        
+        if (self.imageReportImagePreview.image != nil) {
+            
+            Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
+                
+                // import image to request
+                if let imageData = UIImageJPEGRepresentation(self.imageReportImagePreview.image!, 1) {
+                    multipartFormData.appendBodyPart(data: imageData, name: "image", fileName: "ReportImageFromiPhone.jpg", mimeType: "image/jpeg")
+                }
+                
+                }, encodingCompletion: {
+                    encodingResult in
+                    switch encodingResult {
+                    case .Success(let upload, _, _):
+                        upload.responseJSON { response in
+                            print("Image uploaded \(response)")
+                            
+                            if let value = response.result.value {
+                                let imageResponse = JSON(value)
+                                
+                                let image = [
+                                    "id": String(imageResponse["id"].rawValue)
+                                ]
+                                let images: [AnyObject] = [image]
+                                
+                                parameters["images"] = images
+                                
+                                print("parameters \(parameters)")
+                                
+                                Alamofire.request(.POST, Endpoints.POST_REPORT, parameters: parameters, headers: headers, encoding: .JSON)
+                                    .responseJSON { response in
+                                        
+                                        print("Response \(response)")
+                                        
+                                        switch response.result {
+                                        case .Success(let value):
+                                            self.tabBarController?.selectedIndex = 1
+                                        case .Failure(let error):
+                                            print("attemptUserProfileSave::Failure")
+                                            print(error)
+                                            break
+                                        }
+                                        
+                                }
+                            }
+                        }
+                    case .Failure(let encodingError):
+                        print(encodingError)
+                    }
+            })
+            
+        }
+        
     }
     
 

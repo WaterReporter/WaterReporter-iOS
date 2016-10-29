@@ -905,10 +905,11 @@
                                                         <constraint firstAttribute="height" constant="48" id="F84-Vf-kUV"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                                     <connections>
-                                                        <action selector="textfieldDateEditing:" destination="t6D-GX-vZl" eventType="editingDidEnd" id="GNt-EU-Y7t"/>
-                                                        <action selector="textfieldIsEditingReportDate:" destination="t6D-GX-vZl" eventType="editingDidBegin" id="xFc-L3-479"/>
+                                                        <action selector="textfieldDatePickerEditingDidBegin:" destination="t6D-GX-vZl" eventType="editingDidBegin" id="rCb-iZ-xpP"/>
+                                                        <action selector="textfieldDatePickerEditingDidEnd:" destination="t6D-GX-vZl" eventType="editingDidEnd" id="hsN-d6-wzJ"/>
+                                                        <outlet property="delegate" destination="t6D-GX-vZl" id="cGc-7v-1Hg"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -933,7 +934,10 @@
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0c7-DX-8kg">
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="t6D-GX-vZl" id="Uqt-f9-QYr"/>
+                                                    </connections>
                                                 </textView>
                                             </subviews>
                                             <constraints>
