@@ -29,6 +29,8 @@
 		C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19538F91DAD6896003C6FC5 /* CGColor.swift */; };
 		C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */; };
 		C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */; };
+		C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */; };
+		C1B02D2F1DC51C85003566FC /* CommentsNewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */; };
 		C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */; };
 		C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267A1D4562FF00516871 /* AppDelegate.swift */; };
 		C1C8267F1D4562FF00516871 /* NewReportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */; };
@@ -102,6 +104,8 @@
 		C19538F91DAD6896003C6FC5 /* CGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGColor.swift; sourceTree = "<group>"; };
 		C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMapViewController.swift; sourceTree = "<group>"; };
+		C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewController.swift; sourceTree = "<group>"; };
+		C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsNewTableViewController.swift; sourceTree = "<group>"; };
 		C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileSettingsTableViewController.swift; sourceTree = "<group>"; };
 		C1C826771D4562FF00516871 /* Water-Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water-Reporter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -254,6 +258,8 @@
 				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
 				C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */,
 				C14105591DC3E3CB00E538FA /* NewReportLocationSelector.swift */,
+				C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */,
+				C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -493,9 +499,11 @@
 				C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */,
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
+				C1B02D2F1DC51C85003566FC /* CommentsNewTableViewController.swift in Sources */,
 				C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */,
 				C14448B41D6B4B75000564BF /* UserProfileTableViewController.swift in Sources */,
 				C141055A1DC3E3CB00E538FA /* NewReportLocationSelector.swift in Sources */,
+				C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */,
 				C12CAF9D1D46507F002881A6 /* Resources.swift in Sources */,
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
 				C18D76A91DAD87EB0012584C /* Environment.swift in Sources */,
