@@ -324,8 +324,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.userSelectedCoorindates = coordinates
         
         // Fill the display fields
-        self.labelReportLocationLatitude.text = self.userSelectedCoorindates.latitude
-        self.labelReportLocationLongitude.text = self.userSelectedCoorindates.longitude
+        self.labelReportLocationLatitude.text = "Lat: " + String(self.userSelectedCoorindates.latitude)
+        self.labelReportLocationLongitude.text = "Lng: " + String(self.userSelectedCoorindates.longitude)
         
         // Hide the "Add Button" and show the "Choose different" button
         self.hasLocationSet()
