@@ -42,6 +42,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var labelReportLocationLongitude: UILabel!
     @IBOutlet weak var labelReportLocationLatitude: UILabel!
     
+    @IBAction func launchNewReportLocationSelector(sender: AnyObject) {
+        self.performSegueWithIdentifier("setLocationForNewReport", sender: sender)
+    }
+    
     @IBAction func textfieldIsEditingReportDate(sender: UITextField) {
         let datePickerView:UIDatePicker = UIDatePicker()
         
@@ -99,6 +103,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         textareaReportComment.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
         buttonReportImage.addTarget(self, action: #selector(NewReportTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
         buttonReportImageRemove.addTarget(self, action: #selector(NewReportTableViewController.attemptRemoveImageFromPreview(_:)), forControlEvents: .TouchUpInside)
+        
+        //
+        // Make sure the Add and Change location buttons perform the same action as touching the map
+        //
+        addReportLocationButton.addTarget(self, action: #selector(NewReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
+        changeReportLocationButton.addTarget(self, action: #selector(NewReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
         
         //
         // Setup Navigation Bar
@@ -179,6 +189,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 let destinationNewReportLocationSelectorViewController = destinationNavigationViewController.topViewController as! NewReportLocationSelector
 
                 destinationNewReportLocationSelectorViewController.delegate = self
+                destinationNewReportLocationSelectorViewController.userSelectedCoordinates = self.userSelectedCoorindates
                 break
             default:
                 break

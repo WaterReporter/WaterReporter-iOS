@@ -32,22 +32,21 @@ class NewReportLocationSelector: UIViewController, MGLMapViewDelegate, UINavigat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.setupMap()
+        self.mapView = mapReportLocation
         
         self.navigationBarButtonCancel.target = self
         self.navigationBarButtonCancel.action = #selector(NewReportLocationSelector.dismissLocationSelector(_:))
+        self.navigationBarButtonCancel.enabled = false
 
         self.navigationBarButtonSet.target = self
         self.navigationBarButtonSet.action = #selector(NewReportLocationSelector.setLocationSelector(_:))
-}
+        self.navigationBarButtonSet.enabled = false
+
+    }
     
-    func setupMap() {
-
-        self.mapView = mapReportLocation
-
-        self.mapView.styleURL = NSURL(string: "mapbox://styles/rdawes1/circfufio0013h4nlhibdw240")
+    func mapViewDidFinishLoadingMap(mapView: MGLMapView) {
+        self.mapView.showsUserLocation = true
         self.mapView.setUserTrackingMode(MGLUserTrackingMode.Follow, animated: true)
-        
     }
     
     func dismissLocationSelector(sender: UIBarButtonItem) {
@@ -66,6 +65,11 @@ class NewReportLocationSelector: UIViewController, MGLMapViewDelegate, UINavigat
         print("CHILD:sendCoordinates see \(self.mapView.centerCoordinate)")
 
         self.userSelectedCoordinates = self.mapView.centerCoordinate
+        
+        if (self.userSelectedCoordinates.longitude != 0.0 && self.userSelectedCoordinates.latitude != 0.0) {
+            self.navigationBarButtonSet.enabled = true
+            self.navigationBarButtonCancel.enabled = true
+        }
         
         if let del = delegate {
             del.sendCoordinates(self.userSelectedCoordinates)
