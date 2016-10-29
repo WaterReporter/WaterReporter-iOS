@@ -960,9 +960,25 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="200" id="jOS-NW-wH2"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowsZooming" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowsScrolling" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowsRotating" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowsTilting" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="showsUserLocation" value="NO"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/rdawes1/circfufio0013h4nlhibdw240"/>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="latitude">
+                                                            <real key="value" value="39.5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="longitude">
+                                                            <real key="value" value="-98.349999999999994"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="zoomLevel">
+                                                            <real key="value" value="0.0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hBP-B7-WOD">
-                                                    <state key="normal" title="Button"/>
                                                     <connections>
                                                         <segue destination="sa1-vc-JFT" kind="show" identifier="setLocationForNewReport" id="lai-Tz-aeP"/>
                                                     </connections>
@@ -989,12 +1005,88 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="MHf-eb-Jkl">
+                                        <rect key="frame" x="0.0" y="900" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MHf-eb-Jkl" id="PiO-Sw-Y5c">
+                                            <frame key="frameInset" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latitude: Unknown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sa4-Vh-zS2">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Longitude: Unknown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPs-IF-Ntr">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Sa4-Vh-zS2" firstAttribute="leading" secondItem="PiO-Sw-Y5c" secondAttribute="leadingMargin" constant="8" id="00f-0n-aTT"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="OPs-IF-Ntr" secondAttribute="trailing" constant="8" id="8oC-45-ugn"/>
+                                                <constraint firstItem="OPs-IF-Ntr" firstAttribute="centerY" secondItem="PiO-Sw-Y5c" secondAttribute="centerY" id="PNl-ec-B24"/>
+                                                <constraint firstItem="OPs-IF-Ntr" firstAttribute="width" secondItem="Sa4-Vh-zS2" secondAttribute="width" id="dfx-Zg-jcQ"/>
+                                                <constraint firstItem="OPs-IF-Ntr" firstAttribute="leading" secondItem="Sa4-Vh-zS2" secondAttribute="trailing" constant="8" id="rME-O5-0Wx"/>
+                                                <constraint firstItem="Sa4-Vh-zS2" firstAttribute="centerY" secondItem="PiO-Sw-Y5c" secondAttribute="centerY" id="uar-iF-tQz"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="OdA-qj-SGb">
+                                        <rect key="frame" x="0.0" y="944" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OdA-qj-SGb" id="y4d-gV-38g">
+                                            <frame key="frameInset" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--AddButton" translatesAutoresizingMaskIntoConstraints="NO" id="HNG-On-bjc">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="JD6-Bd-Bhb"/>
+                                                        <constraint firstAttribute="width" constant="24" id="XsS-B2-bSe"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--Reloadbutton" translatesAutoresizingMaskIntoConstraints="NO" id="Gud-zw-cb0">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="JyK-s5-AAA"/>
+                                                        <constraint firstAttribute="height" constant="24" id="Vx6-SB-Qil"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Pk-sl-JBz">
+                                                    <inset key="contentEdgeInsets" minX="36" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <state key="normal" title="add location"/>
+                                                    <connections>
+                                                        <segue destination="sa1-vc-JFT" kind="show" id="6qo-AF-02j"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2az-9s-iBn">
+                                                    <inset key="contentEdgeInsets" minX="36" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <state key="normal" title="choose a different location"/>
+                                                    <connections>
+                                                        <segue destination="sa1-vc-JFT" kind="show" id="MFb-0N-D7a"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="2az-9s-iBn" secondAttribute="trailing" constant="8" id="5wT-t2-Rll"/>
+                                                <constraint firstItem="9Pk-sl-JBz" firstAttribute="centerY" secondItem="y4d-gV-38g" secondAttribute="centerY" id="8lk-VU-cuF"/>
+                                                <constraint firstItem="9Pk-sl-JBz" firstAttribute="leading" secondItem="y4d-gV-38g" secondAttribute="leadingMargin" constant="8" id="9z0-Ia-lUL"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="9Pk-sl-JBz" secondAttribute="trailing" constant="8" id="Flo-Ty-nZs"/>
+                                                <constraint firstItem="2az-9s-iBn" firstAttribute="centerY" secondItem="y4d-gV-38g" secondAttribute="centerY" id="RYZ-HK-Okm"/>
+                                                <constraint firstItem="2az-9s-iBn" firstAttribute="leading" secondItem="Gud-zw-cb0" secondAttribute="trailing" constant="-24" id="Wvn-JY-kkb"/>
+                                                <constraint firstItem="9Pk-sl-JBz" firstAttribute="leading" secondItem="HNG-On-bjc" secondAttribute="trailing" constant="-24" id="ZwU-QL-Lxu"/>
+                                                <constraint firstItem="2az-9s-iBn" firstAttribute="leading" secondItem="y4d-gV-38g" secondAttribute="leadingMargin" constant="8" id="o9Y-bJ-PPy"/>
+                                                <constraint firstItem="Gud-zw-cb0" firstAttribute="centerY" secondItem="y4d-gV-38g" secondAttribute="centerY" id="yHo-xe-ZRv"/>
+                                                <constraint firstItem="HNG-On-bjc" firstAttribute="centerY" secondItem="9Pk-sl-JBz" secondAttribute="centerY" id="zNQ-fj-dHS"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Groups" id="qXO-d9-kvA">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="LGT-56-K9W">
-                                        <rect key="frame" x="0.0" y="928" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="1016" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LGT-56-K9W" id="K4d-z6-29P">
                                             <frame key="frameInset" width="600" height="43.5"/>
@@ -1002,7 +1094,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1gZ-Ou-l3W">
-                                        <rect key="frame" x="0.0" y="972" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="1060" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1gZ-Ou-l3W" id="0cW-e2-Smy">
                                             <frame key="frameInset" width="600" height="43.5"/>
@@ -1010,7 +1102,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="2dB-YF-7rj">
-                                        <rect key="frame" x="0.0" y="1016" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="1104" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2dB-YF-7rj" id="Ejg-nc-Qpm">
                                             <frame key="frameInset" width="600" height="43.5"/>
@@ -1031,12 +1123,19 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="1200"/>
                     <connections>
+                        <outlet property="addReportLocationButton" destination="9Pk-sl-JBz" id="WAe-XF-zHo"/>
+                        <outlet property="addReportLocationButtonImage" destination="HNG-On-bjc" id="a7X-MJ-3go"/>
                         <outlet property="buttonReportImage" destination="k7d-ZU-hwc" id="a8d-s1-9KM"/>
                         <outlet property="buttonReportImageAddIcon" destination="GlN-DK-ooj" id="1b4-fT-Wxp"/>
                         <outlet property="buttonReportImageRemove" destination="TDC-AY-axa" id="4xp-i6-1Dl"/>
                         <outlet property="buttonReportImageRemoveIcon" destination="F4g-6d-Sfi" id="PK3-cS-GVE"/>
+                        <outlet property="changeReportLocationButton" destination="2az-9s-iBn" id="zNb-do-sMb"/>
+                        <outlet property="changeReportLocationButtonImage" destination="Gud-zw-cb0" id="Jmc-Bz-z9z"/>
                         <outlet property="imageReportImagePreview" destination="5ti-1F-3TM" id="Nfb-2f-BLF"/>
+                        <outlet property="labelReportLocationLatitude" destination="Sa4-Vh-zS2" id="eEs-O7-2L0"/>
+                        <outlet property="labelReportLocationLongitude" destination="OPs-IF-Ntr" id="voE-no-OnI"/>
                         <outlet property="mapReportLocation" destination="Ihr-X8-cLD" id="JmA-cl-a8T"/>
+                        <outlet property="mapReportLocationButton" destination="hBP-B7-WOD" id="8Z5-Rp-UKm"/>
                         <outlet property="navigationBarButtonSave" destination="oYS-Z8-twV" id="kuj-vX-nZe"/>
                         <outlet property="tableViewCellReportImage" destination="V23-xh-O2R" id="g7t-LT-IiM"/>
                         <outlet property="textareaReportComment" destination="0c7-DX-8kg" id="CYp-A7-nXj"/>
@@ -1045,7 +1144,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BSB-nm-2Io" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1986" y="675"/>
+            <point key="canvasLocation" x="1985.5999999999999" y="674.66266866566718"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="C1x-if-a0S">
@@ -2351,9 +2450,11 @@
         <image name="TabIcon--SubmitReport" width="30" height="30"/>
         <image name="TabIcon--UserProfile" width="30" height="30"/>
         <image name="icon--AddButton" width="36" height="36"/>
+        <image name="icon--Reloadbutton" width="36" height="36"/>
         <image name="icon--RemoveButton" width="36" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="MFb-0N-D7a"/>
         <segue reference="C6F-3P-0eX"/>
         <segue reference="kSk-SP-dlL"/>
         <segue reference="RbT-4O-Zcf"/>

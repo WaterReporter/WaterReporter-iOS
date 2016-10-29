@@ -34,6 +34,14 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var mapReportLocation: MGLMapView!
 
     @IBOutlet weak var mapReportLocationButton: UIButton!
+    @IBOutlet weak var addReportLocationButton: UIButton!
+    @IBOutlet weak var addReportLocationButtonImage: UIImageView!
+    @IBOutlet weak var changeReportLocationButtonImage: UIImageView!
+    @IBOutlet weak var changeReportLocationButton: UIButton!
+    
+    @IBOutlet weak var labelReportLocationLongitude: UILabel!
+    @IBOutlet weak var labelReportLocationLatitude: UILabel!
+    
     @IBAction func textfieldIsEditingReportDate(sender: UITextField) {
         let datePickerView:UIDatePicker = UIDatePicker()
         
@@ -59,7 +67,16 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
+        print("viewWillAppear:double check the button to see if we need to reest the alpha")
+        
         tableView.reloadData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        print("viewDidAppear:double check the button to see if we need to reest the alpha")
+
     }
     
     override func viewDidLoad() {
@@ -90,12 +107,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         navigationBarButtonSave.action = #selector(buttonSaveNewReportTableViewController(_:))
         
         //
-        //
-        //
-        self.setupMap()
-        
-        
-        //
         // Set Default Date
         //
         let dateFormatter = NSDateFormatter()
@@ -108,14 +119,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         //
         self.isReady()
-    }
-
-    
-    func setupMap() {
-        
-        mapReportLocation.styleURL = NSURL(string: "mapbox://styles/rdawes1/circfufio0013h4nlhibdw240")
-
-        mapReportLocation.setUserTrackingMode(MGLUserTrackingMode.Follow, animated: true)
     }
 
     
@@ -195,6 +198,24 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     func isReady() {
         buttonReportImageRemove.hidden = true;
         buttonReportImageRemoveIcon.hidden = true;
+        
+        self.hasNoLocationSet()
+    }
+    
+    func hasLocationSet() {
+        self.addReportLocationButton.hidden = true
+        self.addReportLocationButtonImage.hidden = true
+
+        self.changeReportLocationButton.hidden = false
+        self.changeReportLocationButtonImage.hidden = false
+    }
+    
+    func hasNoLocationSet() {
+        self.addReportLocationButton.hidden = false
+        self.addReportLocationButtonImage.hidden = false
+
+        self.changeReportLocationButton.hidden = true
+        self.changeReportLocationButtonImage.hidden = true
     }
     
     func isReadyAfterRemove() {
@@ -299,8 +320,63 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     func sendCoordinates(coordinates: CLLocationCoordinate2D) {
         print("PARENT:sendCoordinates see \(coordinates)")
         
+        // Pass off coorindates to the self.userSelectedCoordinates
         self.userSelectedCoorindates = coordinates
+        
+        // Fill the display fields
+        self.labelReportLocationLatitude.text = self.userSelectedCoorindates.latitude
+        self.labelReportLocationLongitude.text = self.userSelectedCoorindates.longitude
+        
+        // Hide the "Add Button" and show the "Choose different" button
+        self.hasLocationSet()
+        
     }
+    
+    func onSetCoordinatesComplete(isFinished: Bool) {
+        
+        print("onSetCoordinatesComplete")
+        
+        let thisMapView: MGLMapView = self.mapReportLocation
+        let thisMapCenterCoordinates: CLLocationCoordinate2D = self.userSelectedCoorindates
+        let thisMapCenter: Bool = true
+        
+        switch isFinished {
+            case true:
+            
+                // Disable UserTrackingMode.Follow action
+                mapReportLocation.showsUserLocation = false
+                
+                // Add an annotation to the map using the new coordinates
+                self.addLocationToMap(thisMapView, latitude: thisMapCenterCoordinates.latitude, longitude: thisMapCenterCoordinates.longitude, center: thisMapCenter)
+                
+                break
+            
+            default:
+                break
+            
+        }
+        
+        return
+    }
+
+    func addLocationToMap(mapView: AnyObject, latitude: Double, longitude: Double, center:Bool) {
+        
+        let thisAnnotation = MGLPointAnnotation()
+        
+        
+        thisAnnotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        mapView.addAnnotation(thisAnnotation)
+        
+        if center {
+            // Center the map on the annotation.
+            mapView.setCenterCoordinate(thisAnnotation.coordinate, zoomLevel: 15, animated: false)
+            
+            // Pop-up the callout view.
+            mapView.selectAnnotation(thisAnnotation, animated: true)
+        }
+    }
+    
 
 
 }

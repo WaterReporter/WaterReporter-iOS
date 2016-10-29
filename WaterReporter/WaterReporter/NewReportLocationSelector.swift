@@ -12,6 +12,7 @@ import UIKit
 
 protocol NewReportLocationSelectorDelegate {
     func sendCoordinates(coordinates : CLLocationCoordinate2D)
+    func onSetCoordinatesComplete(isFinished: Bool)
 }
 
 class NewReportLocationSelector: UIViewController, MGLMapViewDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
@@ -55,7 +56,9 @@ class NewReportLocationSelector: UIViewController, MGLMapViewDelegate, UINavigat
     
     func setLocationSelector(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: {
-            // pass variables???
+            if let del = self.delegate {
+                del.onSetCoordinatesComplete(true)
+            }
         })
     }
     
