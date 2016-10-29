@@ -164,12 +164,24 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         return rowHeight
     }
 
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "setLocationForNewReport" {
-//            let destViewController = segue.destinationViewController as! NewReportLocationSelector
-//            destViewController.delegate = self
-//        }
-//    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        guard let segueId = segue.identifier else { return }
+        
+        switch segueId {
+            
+            case "setLocationForNewReport":
+
+                let destinationNavigationViewController = segue.destinationViewController as! UINavigationController
+                let destinationNewReportLocationSelectorViewController = destinationNavigationViewController.topViewController as! NewReportLocationSelector
+
+                destinationNewReportLocationSelectorViewController.delegate = self
+                break
+            default:
+                break
+        }
+
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -286,6 +298,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // Child Delegate
     func sendCoordinates(coordinates: CLLocationCoordinate2D) {
         print("PARENT:sendCoordinates see \(coordinates)")
+        
+        self.userSelectedCoorindates = coordinates
     }
 
 
