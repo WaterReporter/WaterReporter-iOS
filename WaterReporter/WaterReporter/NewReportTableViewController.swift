@@ -91,17 +91,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        
-        print("viewWillAppear:double check the button to see if we need to reest the alpha")
-        
         tableView.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
-        print("viewDidAppear:double check the button to see if we need to reest the alpha")
-
     }
     
     override func viewDidLoad() {

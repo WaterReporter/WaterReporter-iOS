@@ -177,6 +177,8 @@ class ActivityTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
+        print("prepareForSegue \(sender?.tag)")
+        
         if segue.identifier == "reportToActivityMap" {
             let destViewController = segue.destinationViewController as! ActivityMapViewController
             destViewController.reportObject = self.reports[(sender?.tag)!]
@@ -185,6 +187,10 @@ class ActivityTableViewController: UITableViewController {
             let destViewController = segue.destinationViewController as! UserProfileTableViewController
             let reportOwner = self.reports[(sender?.tag)!].objectForKey("properties")?.objectForKey("owner")?.objectForKey("properties")
             destViewController.reportOwner = reportOwner
+        } else if segue.identifier == "reportToReportComments" {
+            let destViewController = segue.destinationViewController as! CommentsTableViewController
+            let report = self.reports[(sender?.tag)!]
+            destViewController.report = report
         }
     }
     
@@ -240,6 +246,7 @@ class ActivityTableViewController: UITableViewController {
         //
         let reportComments = report?.objectForKey("comments") as! NSArray
         
+        
         var reportCommentsCountText: String = "0 comments"
         
         if reportComments.count == 1 {
@@ -251,6 +258,8 @@ class ActivityTableViewController: UITableViewController {
             print("No objects")
         }
         
+        cell.reportCommentCount.tag = indexPath.row
+        cell.reportCommentButton.tag = indexPath.row
         cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
 
         
@@ -394,50 +403,5 @@ class ActivityTableViewController: UITableViewController {
         }
         
     }
-    
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
