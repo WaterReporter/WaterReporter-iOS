@@ -227,7 +227,7 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         
     }
 
-    func attemptNewReportCommentSave(reportStatus: String = "open") {
+    func attemptNewReportCommentSave(reportStatus: String = "") {
         
         //
         // Hide the form during saving
@@ -246,9 +246,12 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         var parameters: [String: AnyObject] = [
             "body": self.textfieldCommentBody.text!,
             "status": "public",
-            "report_id": reportId,
-            "report_state": "open"
+            "report_id": reportId
         ]
+        
+        if (reportStatus != "") {
+            parameters["report_state"] = reportStatus
+        }
         
         print("parameters \(parameters)")
         

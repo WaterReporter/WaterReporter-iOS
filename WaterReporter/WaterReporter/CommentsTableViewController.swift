@@ -19,10 +19,17 @@ class CommentsTableViewController: UITableViewController {
     var comments: JSON?
     var page: Int = 1
 
+    @IBOutlet weak var indicatorLoadingCommentsLabel: UILabel!
+    @IBOutlet var indicatorLoadingView: UIView!
+    @IBOutlet weak var indicatorLoadingComments: UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        //
+        // Display loading indicator
+        //
+        self.loading()
+
         //
         // Enable scroll to top of UITableView when title
         // bar is tapped
@@ -31,19 +38,35 @@ class CommentsTableViewController: UITableViewController {
         self.tableView.scrollsToTop = true
 
         //
+        // Setup pull to refresh functionality for our TableView
+        //
+        self.refreshControl?.addTarget(self, action: #selector(CommentsTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
+
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+
+        //
         //
         //
         if let reportIdNumber = report?.objectForKey("id") as? NSNumber {
             reportId = "\(reportIdNumber)"
         }
         
+        //
+        // Display loading indicator
+        //
+        self.loading()
+
+        //
+        //
+        //
         if reportId != "" {
+            self.page = 1
             self.attemptGetReportComments(reportId)
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -170,14 +193,44 @@ class CommentsTableViewController: UITableViewController {
         return cell
     }
     
-    
+    func refreshTableView(refreshControl: UIRefreshControl) {
+        
+        self.page = 1
+        self.comments = []
+        
+        if reportId != "" {
+            self.attemptGetReportComments(reportId, isRefreshingReportsList: true)
+        }
+
+    }
+
     //
     // MARK:
     //
-    func attemptGetReportComments(reportId: String) {
+    func loading() {
         
-        // Define where we want to get our comments from
-        let _endpoint: String = Endpoints.GET_MANY_REPORT_COMMENTS + "/" + reportId + "/comments"
+        //
+        // Create a view that covers the entire screen
+        //
+        self.indicatorLoadingView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+        self.indicatorLoadingView.backgroundColor = UIColor.whiteColor()
+        
+        self.view.addSubview(self.indicatorLoadingView)
+        self.view.bringSubviewToFront(self.indicatorLoadingView)
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
+    }
+
+    func loadingComplete() {
+        
+        //
+        // Remove loading screen
+        //
+        self.indicatorLoadingView.removeFromSuperview()
+    }
+
+    func attemptGetReportComments(reportId: String, isRefreshingReportsList: Bool = false) {
         
         // Create necessary Authorization header for our request
         let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
@@ -186,22 +239,40 @@ class CommentsTableViewController: UITableViewController {
         ]
         
         let parameters = [
-            "q": "{\"order_by\": [{\"field\":\"created\",\"direction\":\"asc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
-            "page": self.page
+            "q": "{\"filters\":[{\"name\":\"report_id\",\"op\":\"eq\",\"val\":" + reportId + "}],\"order_by\":[{\"field\":\"created\",\"direction\":\"desc\"}]}",
+            "page": String(self.page)
         ]
 
-        Alamofire.request(.GET, _endpoint, parameters: parameters as! [String : AnyObject], headers: headers)
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORT_COMMENTS, parameters: parameters, headers: headers)
             .responseJSON { response in
                 
                 switch response.result {
                     case .Success(let value):
                         print("Success: \(value)")
                         
+                        //
+                        // Choose whether or not the reports should refresh or
+                        // whether loaded reports should be appended to the existing
+                        // list of reports
+                        //
+                        if (isRefreshingReportsList) {
+                            self.comments = JSON(value)
+                            self.refreshControl?.endRefreshing()
+                        }
+                        else {
+                            self.comments = JSON(value)
+                        }
+
                         self.comments = JSON(value)
                         
                         self.tableView.reloadData()
                         
                         self.page += 1
+
+                        //
+                        // Dismiss the loading indicator
+                        //
+                        self.loadingComplete()
 
                         break;
                     case .Failure(let error):
