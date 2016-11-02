@@ -11,7 +11,7 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
-class CommentsNewTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CommentsNewTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
     
     var loadingView: UIView!
 
@@ -150,6 +150,17 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         //
         //
         self.navigationBarButtonSave.enabled = false
+        
+        
+        //
+        // Make doubly sure the keyboard is closed
+        //
+        self.textfieldCommentBody.resignFirstResponder()
+        
+        //
+        // Make sure our view is scrolled to the top
+        //
+        self.tableView.setContentOffset(CGPointZero, animated: false)
     }
 
     
@@ -330,6 +341,13 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             }
         }
         
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return true
     }
 
 }

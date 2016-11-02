@@ -252,8 +252,8 @@ class LoginTableViewController: UITableViewController {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
 
-        let nextTage = textField.tag + 1;
-        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTage) as UIResponder!
+        let nextTag = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
         
         if (nextResponder != nil){
             nextResponder?.becomeFirstResponder()
