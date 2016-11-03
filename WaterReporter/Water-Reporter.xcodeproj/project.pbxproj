@@ -39,7 +39,7 @@
 		C1C826871D4562FF00516871 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1C826851D4562FF00516871 /* LaunchScreen.storyboard */; };
 		C1C826921D4562FF00516871 /* WaterReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826911D4562FF00516871 /* WaterReporterTests.swift */; };
 		C1C8269D1D4562FF00516871 /* WaterReporterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */; };
-		C1C826AB1D4567CB00516871 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826AA1D4567CB00516871 /* ProfileViewController.swift */; };
+		C1C826AB1D4567CB00516871 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */; };
 		C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */; };
 		C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */; };
 		C1F224E71DAD74C400363A8F /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E61DAD74C400363A8F /* UITextField.swift */; };
@@ -121,7 +121,7 @@
 		C1C826981D4562FF00516871 /* Water-Reporter.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water-Reporter.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterReporterUITests.swift; sourceTree = "<group>"; };
 		C1C8269E1D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C1C826AA1D4567CB00516871 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordTableViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
 		C1F224E61DAD74C400363A8F /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = SOURCE_ROOT; };
@@ -257,7 +257,7 @@
 				C1C826831D4562FF00516871 /* Assets.xcassets */,
 				C1C826851D4562FF00516871 /* LaunchScreen.storyboard */,
 				C1C826881D4562FF00516871 /* Info.plist */,
-				C1C826AA1D4567CB00516871 /* ProfileViewController.swift */,
+				C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */,
 				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
 				C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */,
 				C14105591DC3E3CB00E538FA /* NewReportLocationSelector.swift */,
@@ -498,7 +498,7 @@
 				C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */,
 				C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */,
 				C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */,
-				C1C826AB1D4567CB00516871 /* ProfileViewController.swift in Sources */,
+				C1C826AB1D4567CB00516871 /* ProfileTableViewController.swift in Sources */,
 				C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */,
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
