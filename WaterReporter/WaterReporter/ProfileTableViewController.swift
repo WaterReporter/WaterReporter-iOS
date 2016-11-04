@@ -12,6 +12,11 @@ import UIKit
 
 class ProfileTableViewController: UITableViewController {
     
+    @IBOutlet var profileHeaderView: UIView!
+    
+    @IBOutlet weak var buttonUserProfileOrganization: UIButton!
+    @IBOutlet weak var buttonUserProfileSubmissions: UIButton!
+    @IBOutlet weak var buttonUserProfileActions: UIButton!
     @IBOutlet var indicatorLoadingView: UIView!
 
     @IBOutlet weak var profileUserDescription: UILabel!
@@ -30,6 +35,13 @@ class ProfileTableViewController: UITableViewController {
         NSLog("ProfileViewController::viewDidLoad")
 
         //
+        // Make sure we are getting 'auto layout' specific sizes
+        // otherwise any math we do will be messed up
+        //
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+
+        //
         // Show the loading indicator while the profile loads
         //
         self.loading()
@@ -40,26 +52,78 @@ class ProfileTableViewController: UITableViewController {
         //
         self.navigationItem.title = "Profile"
         
+        
+        //
+        // Restyle the form Log In Navigation button to appear with an underline
+        //
+        let border = CALayer()
+        let buttonWidth = self.buttonUserProfileSubmissions.frame.width
+        let buttonHeight = self.buttonUserProfileSubmissions.frame.size.height
+        
+        border.borderColor = CGColor.colorBrand()
+        border.borderWidth = 2.0
+        
+        border.frame = CGRectMake(0, self.buttonUserProfileSubmissions.frame.size.height - 2.0, buttonWidth, buttonHeight)
+        
+        self.buttonUserProfileSubmissions.layer.addSublayer(border)
+        self.buttonUserProfileSubmissions.layer.masksToBounds = true
+
+        
         //
         //
         //
         if let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")?.string {
-            print("attemptLoadUserProfile")
             self.attemptLoadUserProfile()
         } else {
-            print("attemptRetrieveUserID")
             self.attemptRetrieveUserID()
         }
         
-        let expandUserProfileDescription = UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.expandUserProfileDescription(_:)))
+        //
+        // Setup Tap Gesture Recognizers so that we can toggle the
+        // number of lines for user profile labels
+        //
+        self.profileUserTitleOrganization.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
+        self.profileUserDescription.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
+        self.profileUserOrganizationName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
 
-        self.profileUserDescription.addGestureRecognizer(expandUserProfileDescription)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.estimatedSectionHeaderHeight = 200.0
 
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //
+    // MARK:
+    //
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let headerView: UIView = self.profileHeaderView
+        
+        switch section {
+            default:
+                return headerView
+        }
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 200.0
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("UserProfileTableViewCell", forIndexPath: indexPath) as! UITableViewCell
+        
+        return cell
+
     }
     
     //
@@ -75,11 +139,16 @@ class ProfileTableViewController: UITableViewController {
         
         self.view.addSubview(self.loadingView)
         self.view.bringSubviewToFront(self.loadingView)
-
+        
+        //
+        //
+        //
+        self.profileHeaderView.hidden = true
     }
     
     func loadingComplete() {
         self.loadingView.removeFromSuperview()
+        self.profileHeaderView.hidden = false
     }
     
     func attemptLoadUserProfile() {
@@ -192,17 +261,28 @@ class ProfileTableViewController: UITableViewController {
         
     }
     
-    func expandUserProfileDescription(sender: UITapGestureRecognizer) {
+    @IBAction func toggleUILableNumberOfLines(sender: UITapGestureRecognizer) {
         
-        let description = self.profileUserDescription
+        let field: UILabel = sender.view as! UILabel
         
-        if (description.numberOfLines == 3) {
-            self.profileUserDescription.numberOfLines = 0
-        } else if (description.numberOfLines == 0) {
-            self.profileUserDescription.numberOfLines = 3
+        var numberOfLines: Int = field.numberOfLines
+        
+        switch field.numberOfLines {
+            case 0:
+                if sender.view?.restorationIdentifier == "profileUserDescription" {
+                    numberOfLines = 3
+                }
+                else {
+                    numberOfLines = 1
+                }
+                break
+            default:
+                numberOfLines = 0
+                break
         }
         
-        print("expandUserProfileDescription \(sender)")
+        field.numberOfLines = numberOfLines
+        
     }
     
 }
