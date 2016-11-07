@@ -233,17 +233,19 @@ class CommentsTableViewController: UITableViewController {
     func attemptGetReportComments(reportId: String, isRefreshingReportsList: Bool = false) {
         
         // Create necessary Authorization header for our request
-        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
-        let headers = [
-            "Authorization": "Bearer " + (accessToken! as! String)
-        ]
+//        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+//        let headers = [
+//            "Authorization": "Bearer " + (accessToken! as! String)
+//        ]
         
-        let parameters = [
+        print("reportId \(reportId)")
+        
+        let parameters: [String: AnyObject] = [
             "q": "{\"filters\":[{\"name\":\"report_id\",\"op\":\"eq\",\"val\":" + reportId + "}],\"order_by\":[{\"field\":\"created\",\"direction\":\"desc\"}]}",
-            "page": String(self.page)
+            "page": self.page
         ]
 
-        Alamofire.request(.GET, Endpoints.GET_MANY_REPORT_COMMENTS, parameters: parameters, headers: headers)
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORT_COMMENTS, parameters: parameters)
             .responseJSON { response in
                 
                 switch response.result {

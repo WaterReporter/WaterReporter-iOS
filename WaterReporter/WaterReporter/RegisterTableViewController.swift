@@ -20,6 +20,7 @@ class RegisterTableViewController: UITableViewController {
     @IBOutlet weak var textfieldPasswordAgain: UITextField!
 
     @IBOutlet weak var buttonSignUp: UIButton!
+    @IBOutlet weak var buttonTerms: UIButton!
     
     @IBOutlet weak var indicatorSignUp: UIActivityIndicatorView!
     
@@ -55,6 +56,10 @@ class RegisterTableViewController: UITableViewController {
         
         self.navigationButtonSignUp.layer.addSublayer(border)
         self.navigationButtonSignUp.layer.masksToBounds = true
+        
+        self.navigationButtonLogin.addTarget(self, action: #selector(RegisterTableViewController.showLoginViewController(_:)), forControlEvents: .TouchUpInside)
+        
+        self.buttonTerms.addTarget(self, action: #selector(RegisterTableViewController.openTermsURL(_:)), forControlEvents: .TouchUpInside)
         
         //
         // Set all table row separators to appear transparent
@@ -129,6 +134,19 @@ class RegisterTableViewController: UITableViewController {
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
+    
+    func showLoginViewController(sender: UITabBarItem) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
+        
+        self.presentViewController(nextViewController, animated: false, completion: {
+            print("showLoginViewController > RegisterTableViewController > presentViewController")
+            
+        })
+    }
+    
+
     
     
     //
@@ -306,26 +324,33 @@ class RegisterTableViewController: UITableViewController {
         switch responseCode {
             case 200:
                 print("responseAuthentication after registration >> 200")
-
-                var attemptToDismissLoginTableViewController: Bool = true;
                 
                 NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
                 NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
                 
                 //
+                // Clear all fields
                 //
-                //
+                self.textfieldEmailAddress.text = ""
                 self.textfieldPassword.text = ""
+                self.textfieldPasswordAgain.text = ""
+                
+                //
+                // Mark all elements as "Ready"
+                //
                 self.isReady()
                 
-                self.dismissViewControllerAnimated(true, completion: {
-                    attemptToDismissLoginTableViewController = false
-                    self.performSegueWithIdentifier("showActivityTableViewControllerFromRegistrationViewController", sender: self)
-                })
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 
-                if (attemptToDismissLoginTableViewController) {
-                    self.performSegueWithIdentifier("showActivityTableViewControllerFromRegistrationViewController", sender: self)
-                }
+                let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("UserProfileCreateTableViewController") as! UserProfileCreateTableViewController
+                
+                self.presentViewController(nextViewController, animated: false, completion: nil)
+                
+                //                nextViewController.isNewUser = true
+
+//                self.navigationController!.presentViewController(nextViewController, animated: false, completion: nil)
+                
+//                self.navigationController?.pushViewController(nextViewController, animated: false)
                 
                 break
             case 400:
@@ -338,7 +363,13 @@ class RegisterTableViewController: UITableViewController {
                 break
         }
     }
-
+    
+    func openTermsURL(sender: UIButton) {
+        
+        let termsUrl: NSURL! = NSURL(string: "https://www.waterreporter.org/terms")
+        
+        UIApplication.sharedApplication().openURL(termsUrl)
+    }
     
     func passwordsAreMatching(password: String, passwordAgain: String) -> Bool {
         

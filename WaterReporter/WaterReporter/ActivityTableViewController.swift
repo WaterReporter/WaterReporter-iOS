@@ -9,6 +9,7 @@
 import Alamofire
 import Foundation
 import Kingfisher
+import SwiftyJSON
 import UIKit
 
 class ActivityTableViewController: UITableViewController {
@@ -154,7 +155,7 @@ class ActivityTableViewController: UITableViewController {
 
                     self.tableView.reloadData()
 
-                    print(value["features"])
+                    //print(value["features"])
                     self.page += 1
                     
                     //
@@ -218,11 +219,13 @@ class ActivityTableViewController: UITableViewController {
         // REPORT OBJECT
         //
         let report = self.reports[indexPath.row].objectForKey("properties")
+        let reportJson = JSON(report!)
         cell.reportObject = report
 
         let reportDescription = report?.objectForKey("report_description")
         let reportDate = report?.objectForKey("report_date")
         let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
+//        let reportClosed = report?.objectForKey("closed_by")
 
         let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
         
@@ -253,14 +256,24 @@ class ActivityTableViewController: UITableViewController {
             reportCommentsCountText = "1 comment"
         }
         else if reportComments.count >= 1 {
-            //reportCommentsCountText = reportComments.count as! String + " comments"
-        } else {
-            print("No objects")
+            reportCommentsCountText = String(reportComments.count) + " comments"
+        }
+        else {
+            reportCommentsCountText = "0 comments"
         }
         
         cell.reportCommentCount.tag = indexPath.row
         cell.reportCommentButton.tag = indexPath.row
         cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
+        
+        if (reportJson["closed_by"] != nil) {
+            print("report is closed \(reportJson["id"])")
+            
+            let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+            
+            cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+            
+        }
 
         
         //

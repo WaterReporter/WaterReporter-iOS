@@ -60,6 +60,8 @@ class LoginTableViewController: UITableViewController {
         self.navigationButtonLogin.layer.addSublayer(border)
         self.navigationButtonLogin.layer.masksToBounds = true
         
+        self.navigationButtonSignUp.addTarget(self, action: #selector(LoginTableViewController.showRegisterViewController(_:)), forControlEvents: .TouchUpInside)
+        
         //
         //
         //
@@ -129,6 +131,17 @@ class LoginTableViewController: UITableViewController {
     func disableLoginButton() {
         buttonLogin.enabled = false
         self.buttonLogin.setTitleColor(UIColor.colorBrand(0.35), forState: .Normal)
+    }
+    
+    func showRegisterViewController(sender: UITabBarItem) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("RegisterTableViewController") as! RegisterTableViewController
+
+        self.presentViewController(nextViewController, animated: false, completion: {
+            print("showRegisterViewController > LoginTableViewController > presentViewController")
+            
+        })
     }
     
     func displayErrorMessage(title: String, message: String) {
@@ -216,7 +229,7 @@ class LoginTableViewController: UITableViewController {
                                 print("nil")
                                 print(value)
                                 
-                                var attemptToDismissLoginTableViewController: Bool = true;
+                                // var attemptToDismissLoginTableViewController: Bool = true;
                                 
                                 NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
                                 NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
@@ -227,15 +240,17 @@ class LoginTableViewController: UITableViewController {
                                 self.textfieldPassword.text = ""
                                 self.isReady()
 
-                                self.dismissViewControllerAnimated(true, completion: {
-                                    attemptToDismissLoginTableViewController = false
-                                    self.performSegueWithIdentifier("showActivityTableViewControllerFromInitialViewController", sender: self)
-                                    
-                                })
+                                //
+                                //
+                                //
+                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                 
-                                if (attemptToDismissLoginTableViewController) {
-                                    self.performSegueWithIdentifier("showActivityTableViewControllerFromInitialViewController", sender: self)
-                                }
+                                let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
+                                
+                                self.presentViewController(nextViewController, animated: false, completion: {
+                                    print("PrimaryTabBarController > presentViewController")
+
+                                })
                                 
                             }
                         }

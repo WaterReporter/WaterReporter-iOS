@@ -174,7 +174,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         switch indexPath.section {
             case 2:
                 if (indexPath.row == 0) {
-                    rowHeight = 148.0
+                    rowHeight = 232.0
                 }
             
             case 0:

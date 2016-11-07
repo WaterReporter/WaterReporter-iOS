@@ -69,14 +69,16 @@ class UserProfileSettingsTableViewController: UITableViewController {
         NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountAccessToken")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountUID")
         
-        dismissViewControllerAnimated(true, completion: {
-            attemptToDismissLoginTableViewController = false
-            self.performSegueWithIdentifier("showLoginTableViewControllerFromLogoutViewController", sender: self)
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
+        
+        self.presentViewController(nextViewController, animated: false, completion: {
+            print("showLoginViewController > presentViewController")
+            
         })
 
-        if (attemptToDismissLoginTableViewController) {
-            self.performSegueWithIdentifier("showLoginTableViewControllerFromLogoutViewController", sender: self)
-        }
+        
     }
 
 }

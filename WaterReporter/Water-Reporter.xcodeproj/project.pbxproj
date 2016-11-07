@@ -26,7 +26,7 @@
 		C185025D1DC779BC00C0F0DA /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C185025C1DC779BC00C0F0DA /* CommentTableViewCell.swift */; };
 		C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */; };
 		C18D76A91DAD87EB0012584C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18D76A81DAD87EB0012584C /* Environment.swift */; };
-		C1915C501DB002D3001815BB /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1915C4F1DB002D3001815BB /* LaunchViewController.swift */; };
+		C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */; };
 		C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19538F91DAD6896003C6FC5 /* CGColor.swift */; };
 		C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */; };
 		C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */; };
@@ -102,7 +102,7 @@
 		C185025C1DC779BC00C0F0DA /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterTableViewController.swift; sourceTree = "<group>"; };
 		C18D76A81DAD87EB0012584C /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		C1915C4F1DB002D3001815BB /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCreateTableViewController.swift; sourceTree = "<group>"; };
 		C19538F91DAD6896003C6FC5 /* CGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGColor.swift; sourceTree = "<group>"; };
 		C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMapViewController.swift; sourceTree = "<group>"; };
@@ -244,10 +244,10 @@
 				C12CAF9A1D464FA8002881A6 /* _constants */,
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
 				C1F230101DAE83CB00DA2854 /* Main.storyboard */,
-				C1915C4F1DB002D3001815BB /* LaunchViewController.swift */,
 				C14448B31D6B4B75000564BF /* UserProfileTableViewController.swift */,
 				C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */,
 				C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */,
+				C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */,
 				C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */,
 				C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */,
 				C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */,
@@ -503,6 +503,7 @@
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
 				C1B02D2F1DC51C85003566FC /* CommentsNewTableViewController.swift in Sources */,
+				C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */,
 				C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */,
 				C14448B41D6B4B75000564BF /* UserProfileTableViewController.swift in Sources */,
 				C141055A1DC3E3CB00E538FA /* NewReportLocationSelector.swift in Sources */,
@@ -515,7 +516,6 @@
 				C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */,
 				C12CAFA51D4680FD002881A6 /* Feature.swift in Sources */,
 				C12CAFA11D466659002881A6 /* TableViewCell.swift in Sources */,
-				C1915C501DB002D3001815BB /* LaunchViewController.swift in Sources */,
 				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

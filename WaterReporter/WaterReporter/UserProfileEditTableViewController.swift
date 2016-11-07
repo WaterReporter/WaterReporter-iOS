@@ -36,11 +36,20 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
     
     var userProfile: JSON?
     var loadingView: UIView!
+    var isNewUser: Bool = true
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        print("viewWillAppear")
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        print("viewDidLoad")
+
         //
         // Hide the user profile until all elements are loaded
         //
@@ -62,7 +71,11 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
         
         print(NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken"))
         
-        if let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") {
+        let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")
+        
+        print("_userId \(_userId)")
+        
+        if (_userId != nil) {
             self.attemptLoadUserProfile()
         } else {
             self.attemptRetrieveUserID()
@@ -337,19 +350,38 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
         let headers = [
             "Authorization": "Bearer " + (accessToken! as! String)
         ]
-
-        if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") {
+        let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")
+        
+        if (userId != nil) {
             let revisedEndpoint = Endpoints.GET_USER_PROFILE + String(userId)
             
             Alamofire.request(.GET, revisedEndpoint, headers: headers, encoding: .JSON).responseJSON { response in
-                if let value = response.result.value {
-                    self.userProfile = JSON(value)
-                    self.updateUserProfileFields()
-                    
-                    self.loadingComplete()
+                
+                print("response.result \(response.result)")
+                
+                switch response.result {
+                    case .Success(let value):
+                        let json = JSON(value)
+                        
+                        if (json != nil) {
+                            self.userProfile = json
+                            
+                            //
+                            // CONDITIONAL ONLY IF NEW REGISTRATION
+                            if !self.isNewUser {
+                                self.updateUserProfileFields()
+                            }
+                            
+                            self.loadingComplete()
+                        }
+                        
+                    case .Failure(let error):
+                        print(error)
                 }
             }
 
+        } else {
+            self.attemptRetrieveUserID()
         }
         
     }
