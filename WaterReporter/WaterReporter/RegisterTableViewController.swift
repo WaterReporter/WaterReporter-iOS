@@ -12,6 +12,10 @@ import UIKit
 
 class RegisterTableViewController: UITableViewController {
     
+    
+    //
+    // MARK: @IBOutlets
+    //
     @IBOutlet weak var navigationButtonLogin: UIButton!
     @IBOutlet weak var navigationButtonSignUp: UIButton!
     
@@ -24,6 +28,16 @@ class RegisterTableViewController: UITableViewController {
     
     @IBOutlet weak var indicatorSignUp: UIActivityIndicatorView!
     
+    
+    //
+    // MARK: Variables
+    //
+    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+    
+    
+    //
+    // MARK: Overrides
+    //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
@@ -57,7 +71,8 @@ class RegisterTableViewController: UITableViewController {
         self.navigationButtonSignUp.layer.addSublayer(border)
         self.navigationButtonSignUp.layer.masksToBounds = true
         
-        self.navigationButtonLogin.addTarget(self, action: #selector(RegisterTableViewController.showLoginViewController(_:)), forControlEvents: .TouchUpInside)
+        // Setup Navigation button
+        self.navigationButtonLogin.addTarget(self, action: #selector(RegisterTableViewController.presentLoginViewController(_:)), forControlEvents: .TouchUpInside)
         
         self.buttonTerms.addTarget(self, action: #selector(RegisterTableViewController.openTermsURL(_:)), forControlEvents: .TouchUpInside)
         
@@ -94,38 +109,48 @@ class RegisterTableViewController: UITableViewController {
         self.isReady()
     }
     
-    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     //
-    // Basic Login Button Feedback States
+    // MARK: Custom Methods
     //
+
+    // Set State: Ready
     func isReady() {
         buttonSignUp.hidden = false
         buttonSignUp.enabled = false
         indicatorSignUp.hidden = true
     }
     
+    // Set State: Loading
     func isLoading() {
         buttonSignUp.hidden = true
         indicatorSignUp.hidden = false
         indicatorSignUp.startAnimating()
     }
     
+    // Set State: Loading with Error
     func isFinishedLoadingWithError() {
         buttonSignUp.hidden = false
         indicatorSignUp.hidden = true
         indicatorSignUp.stopAnimating()
     }
     
+    // Enable Login button
     func enableLoginButton() {
         buttonSignUp.enabled = true
         buttonSignUp.setTitleColor(UIColor.colorBrand(), forState: .Normal)
     }
     
+    // Disable Login button
     func disableLoginButton() {
         buttonSignUp.enabled = false
         buttonSignUp.setTitleColor(UIColor.colorBrand(0.35), forState: .Normal)
     }
     
+    // Display error message as alert
     func displayErrorMessage(title: String, message: String) {
         
         let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
@@ -135,23 +160,44 @@ class RegisterTableViewController: UITableViewController {
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
-    func showLoginViewController(sender: UITabBarItem) {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+    // Present LoginTableViewController
+    func presentLoginViewController(sender: UITabBarItem) {
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
         
-        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("LoginTableViewController") as! LoginTableViewController
+        self.presentViewController(nextViewController, animated: false, completion: nil)
+    }
+
+    // Present UserProfileCreateTableViewController
+    func presentUserProfileCreateTableViewController() {
         
-        self.presentViewController(nextViewController, animated: false, completion: {
-            print("showLoginViewController > RegisterTableViewController > presentViewController")
-            
-        })
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserProfileCreateTableViewController") as! UserProfileCreateTableViewController
+        
+        let navigationViewController = UINavigationController(rootViewController: nextViewController)
+    
+        self.presentViewController(navigationViewController, animated:true, completion: nil)
     }
     
-
+    // Open the URL to the Terms and Conditions in a Safari window
+    func openTermsURL(sender: UIButton) {
+        
+        let termsUrl: NSURL! = NSURL(string: "https://www.waterreporter.org/terms")
+        
+        UIApplication.sharedApplication().openURL(termsUrl)
+    }
     
+    // Validate whether passwords match or not
+    func passwordsAreMatching(password: String, passwordAgain: String) -> Bool {
+        
+        let passwordsAreMatching = (password == passwordAgain)
+        
+        if (passwordsAreMatching) {
+            return true;
+        }
+        
+        return false;
+    }
     
-    //
-    //
-    //
+    // Detect Textfield Changes
     func textFieldDidChange(textField: UITextField) {
         
         //
@@ -164,19 +210,31 @@ class RegisterTableViewController: UITableViewController {
             let passwordCheck = self.passwordsAreMatching(self.textfieldPassword.text!, passwordAgain:self.textfieldPasswordAgain.text!)
             
             if (passwordCheck) {
-                print("passwords match")
                 self.enableLoginButton()
-            }
-            else {
-                print("passwords are not matching, show some feedback")
             }
         }
         
     }
     
+    // Handle Textfield navigation with the Next and Done buttons
+    // on the keyboard
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        let nextTage = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTage) as UIResponder!
+        
+        if (nextResponder != nil){
+            nextResponder?.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        
+        return false
+    }
+    
     
     //
-    //
+    // MARK: Form Functionality
     //
     func buttonClickSignUp(sender:UIButton) {
         
@@ -196,7 +254,7 @@ class RegisterTableViewController: UITableViewController {
         //
         self.attemptRegistration(self.textfieldEmailAddress.text!, password: self.textfieldPassword.text!)
     }
-
+    
     func attemptRegistration(email: String, password: String) {
         
         //
@@ -205,7 +263,7 @@ class RegisterTableViewController: UITableViewController {
         let parameters = [
             "email": email,
             "password": password,
-        ]
+            ]
         
         Alamofire.request(.POST, Endpoints.POST_USER_REGISTER, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
@@ -214,19 +272,17 @@ class RegisterTableViewController: UITableViewController {
                 case .Success(let value):
                     
                     if let responseCode = value.objectForKey("meta")!.objectForKey("code") {
-                        print("attemptRegistration::IF: responseCode")
-                        print(responseCode)
-                        
                         self.responseRegistration(responseCode as! NSNumber, meta: value)
                     }
                     else if let responseCode = value.objectForKey("code") {
-                        print("attemptRegistration::ELSE: responseCode")
                         self.responseRegistration(responseCode as! NSNumber, meta: value)
                     }
+                    
                     break
                 case .Failure(let error):
-                    print("Error")
-                    print(error)
+                    
+                    print("An Error Occurred: \(error)")
+                    
                     self.isFinishedLoadingWithError()
                     self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
                     break
@@ -238,41 +294,36 @@ class RegisterTableViewController: UITableViewController {
     func responseRegistration(responseCode: NSNumber, meta: AnyObject?) {
         
         switch responseCode {
-            case 200:
-                print("Code: 200")
-                self.attemptAuthentication(self.textfieldEmailAddress.text!, password: self.textfieldPassword.text!)
-                break
-            case 400:
-                print("400 meta feedback")
-                print(meta)
-                
-                // Set a default message just in case the system doesn't give us anything to work with
-                var _message = "Please check the email address and password you entered and try again."
-                
-                // Attempt to use the system supplied email or password message
-                if (meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("email") != nil) {
-                    let rawEmailMessageList: AnyObject = meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("email")!
-                    let emailMessageList = (rawEmailMessageList as! NSArray) as Array
-                    _message = String(emailMessageList[0])
-                }
-                else if (meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("password") != nil) {
-                    let rawPasswordMessageList: AnyObject = meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("password")!
-                    let passwordMessageList = (rawPasswordMessageList as! NSArray) as Array
-                    _message = String(passwordMessageList[0])
-                }
-                
-                // return the message to the user's device
-                self.isFinishedLoadingWithError()
-                self.displayErrorMessage("Something went wrong", message: _message)
-                break
-            default:
-                print("unknown status code")
-                print(responseCode)
-                break
+        case 200:
+            self.attemptAuthentication(self.textfieldEmailAddress.text!, password: self.textfieldPassword.text!)
+            break
+        case 400:
+            
+            // Set a default message just in case the system doesn't give us anything to work with
+            var _message = "Please check the email address and password you entered and try again."
+            
+            // Attempt to use the system supplied email or password message
+            if (meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("email") != nil) {
+                let rawEmailMessageList: AnyObject = meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("email")!
+                let emailMessageList = (rawEmailMessageList as! NSArray) as Array
+                _message = String(emailMessageList[0])
+            }
+            else if (meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("password") != nil) {
+                let rawPasswordMessageList: AnyObject = meta!.objectForKey("response")!.objectForKey("errors")!.objectForKey("password")!
+                let passwordMessageList = (rawPasswordMessageList as! NSArray) as Array
+                _message = String(passwordMessageList[0])
+            }
+            
+            // return the message to the user's device
+            self.isFinishedLoadingWithError()
+            self.displayErrorMessage("Something went wrong", message: _message)
+            break
+        default:
+            break
         }
-
+        
     }
-
+    
     func attemptAuthentication(email: String, password: String) {
         
         //
@@ -294,19 +345,13 @@ class RegisterTableViewController: UITableViewController {
                 switch response.result {
                 case .Success(let value):
                     
-                    print("value after successful POST_AUTH_REMOTE")
-                    print(value)
-                    
                     if let responseCode = value.objectForKey("meta")?.objectForKey("code") {
-                        print("attemptAuthentication::IF: responseCode")
                         self.responseAuthentication(responseCode as! NSNumber, value: value)
                     }
                     else if let responseCode = value.objectForKey("code") {
-                        print("attemptAuthentication::ELSE: responseCode")
                         self.responseAuthentication(responseCode as! NSNumber, value: value)
                     }
                     else if let accessToken = value.objectForKey("access_token") {
-                        print("no response codes ....")
                         let responseCode: NSNumber = 200
                         self.responseAuthentication(responseCode, value: value)
                     }
@@ -322,85 +367,21 @@ class RegisterTableViewController: UITableViewController {
     func responseAuthentication(responseCode: NSNumber, value: AnyObject) {
         
         switch responseCode {
-            case 200:
-                print("responseAuthentication after registration >> 200")
-                
-                NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
-                NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
-                
-                //
-                // Clear all fields
-                //
-                self.textfieldEmailAddress.text = ""
-                self.textfieldPassword.text = ""
-                self.textfieldPasswordAgain.text = ""
-                
-                //
-                // Mark all elements as "Ready"
-                //
-                self.isReady()
-                
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                
-                let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("UserProfileCreateTableViewController") as! UserProfileCreateTableViewController
-                
-                self.presentViewController(nextViewController, animated: false, completion: nil)
-                
-                //                nextViewController.isNewUser = true
-
-//                self.navigationController!.presentViewController(nextViewController, animated: false, completion: nil)
-                
-//                self.navigationController?.pushViewController(nextViewController, animated: false)
-                
-                break
-            case 400:
-                self.isFinishedLoadingWithError()
-                self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
-                break
-            default:
-                print("unknown status code")
-                print(responseCode)
-                break
+        case 200:
+            NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
+            NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
+            
+            self.presentUserProfileCreateTableViewController()
+            
+            break
+        case 400:
+            self.isFinishedLoadingWithError()
+            self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
+            break
+        default:
+            break
         }
     }
     
-    func openTermsURL(sender: UIButton) {
-        
-        let termsUrl: NSURL! = NSURL(string: "https://www.waterreporter.org/terms")
-        
-        UIApplication.sharedApplication().openURL(termsUrl)
-    }
-    
-    func passwordsAreMatching(password: String, passwordAgain: String) -> Bool {
-        
-        let passwordsAreMatching = (password == passwordAgain)
-        
-        if (passwordsAreMatching) {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
-        let nextTage = textField.tag + 1;
-        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTage) as UIResponder!
-        
-        if (nextResponder != nil){
-            nextResponder?.becomeFirstResponder()
-        } else {
-            textField.resignFirstResponder()
-        }
-        
-        return false
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-        
-        NSLog("LoginViewController::didReceiveMemoryWarning")
-    }
 
 }

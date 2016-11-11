@@ -8,7 +8,9 @@
 
 import Alamofire
 import Foundation
+import Kingfisher
 import Mapbox
+import SwiftyJSON
 import UIKit
 
 class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
@@ -220,29 +222,29 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         
         if annotationImage == nil {
             
-            var image: UIImage
+            let report = JSON(annotation.report)
             
-//            if annotation.report.objectForKey("id") as! NSNumber == reportObject.objectForKey("id") as! NSNumber {
-//                image = UIImage(named: "Icon--ReportPinHighlighted")!
-//            } else {
-                image = UIImage(named: "Icon--ReportPin")!
-//            }
-           
-//            let report = annotation.report
-//            let reportImages = report.objectForKey("images")![0]?.objectForKey("properties")
-//            let reportImageURL = reportImages?.objectForKey("thumbnail") as! String
-//            
-//            ImageLoader.sharedLoader.imageForUrl(reportImageURL, completionHandler:{(image: UIImage?, url: String) in
-//                let image = UIImage(CGImage: (image?.CGImage)!, scale: 1.0, orientation: .Up)
-//
-//                annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "pisa")
-//
-//            })
-
-            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "pisa")
-
-            return annotationImage;
-
+            print("report>properties \(report["properties"]["images"][0]["properties"]["icon"].string)")
+            
+            if let reportImageUrl = report["properties"]["images"][0]["properties"]["icon"].string {
+                
+                let image = NSURL(string: reportImageUrl)
+                    .flatMap { NSData(contentsOfURL: $0) }
+                    .flatMap { UIImage(data: $0) }
+                
+                annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: "pisa")
+                
+                
+//                KingfisherManager.sharedManager.retrieveImageWithURL(reportImageUrl, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
+//                    print(image)
+//                    annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: report["properties"]["images"][0]["properties"]["thumbnail"].string!)
+//                })
+            } else {
+                let image = UIImage(named: "Icon--ReportPin")
+                
+                annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: "pisa")
+            }
+            
         }
         
         return annotationImage

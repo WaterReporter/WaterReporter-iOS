@@ -11,7 +11,6 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
-
 class UserProfileEditTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
     @IBOutlet weak var navigationButtonBarItemCancel: UIBarButtonItem!
@@ -36,30 +35,15 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
     
     var userProfile: JSON?
     var loadingView: UIView!
-    var isNewUser: Bool = true
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-        
-        print("viewWillAppear")
-        
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print("viewDidLoad")
-
-        //
         // Hide the user profile until all elements are loaded
-        //
         self.loading()
         
-        
-        //
         // Make sure we are getting 'auto layout' specific sizes
         // otherwise any math we do will be messed up
-        //
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
         
@@ -69,11 +53,7 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
         navigationButtonBarItemCancel.target = self
         navigationButtonBarItemCancel.action = #selector(buttonDismissUserProfileEditTableViewController(_:))
         
-        print(NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken"))
-        
         let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")
-        
-        print("_userId \(_userId)")
         
         if (_userId != nil) {
             self.attemptLoadUserProfile()
@@ -179,22 +159,14 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
             
                 switch response.result {
                 case .Success(let value):
-                    
-                    var userId: String? = ""
-                    
-                    if let userIdNumber = value.valueForKey("id") as? NSNumber
-                    {
-                        userId = "\(userIdNumber)"
-                    }
+                    print("Request \(Endpoints.GET_USER_ME) Success \(value)")
 
-                    if (userId != "") {
-                        self.attemptUserProfileSave(userId!, headers: headers)
+                    if let userId = value.valueForKey("id") as? NSNumber {
+                        self.attemptUserProfileSave("\(userId)", headers: headers)
                     }
-                    
-                    print(value)
                     
                 case .Failure(let error):
-                    print(error)
+                    print("Request \(Endpoints.GET_USER_ME) Failure \(error)")
                     break
                 }
             
@@ -250,8 +222,6 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
                                     let images: [AnyObject] = [image]
                                     
                                     parameters["images"] = images
-                                    
-                                    print("parameters \(parameters)")
                                     
                                     Alamofire.request(.PATCH, _endpoint, parameters: parameters, headers: headers, encoding: .JSON)
                                         .responseJSON { response in
@@ -366,11 +336,7 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
                         if (json != nil) {
                             self.userProfile = json
                             
-                            //
-                            // CONDITIONAL ONLY IF NEW REGISTRATION
-                            if !self.isNewUser {
-                                self.updateUserProfileFields()
-                            }
+                            self.updateUserProfileFields()
                             
                             self.loadingComplete()
                         }

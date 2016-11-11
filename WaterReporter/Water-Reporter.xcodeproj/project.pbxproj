@@ -42,7 +42,6 @@
 		C1C826AB1D4567CB00516871 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */; };
 		C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */; };
 		C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */; };
-		C1F224E71DAD74C400363A8F /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E61DAD74C400363A8F /* UITextField.swift */; };
 		C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E81DAD813A00363A8F /* UIColor.swift */; };
 		C1F230121DAE83CB00DA2854 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1F230101DAE83CB00DA2854 /* Main.storyboard */; };
 		C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */; };
@@ -124,7 +123,6 @@
 		C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordTableViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
-		C1F224E61DAD74C400363A8F /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = SOURCE_ROOT; };
 		C1F224E81DAD813A00363A8F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		C1F230111DAE83CB00DA2854 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileEditTableViewController.swift; sourceTree = "<group>"; };
@@ -207,7 +205,6 @@
 			children = (
 				C19538F91DAD6896003C6FC5 /* CGColor.swift */,
 				C12CAFA91D4698E3002881A6 /* UIImageOrientationFix.swift */,
-				C1F224E61DAD74C400363A8F /* UITextField.swift */,
 				C1F224E81DAD813A00363A8F /* UIColor.swift */,
 			);
 			name = _extensions;
@@ -353,7 +350,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Viable Industries, L.L.C.";
 				TargetAttributes = {
 					C1C826761D4562FF00516871 = {
@@ -487,7 +484,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */,
-				C1F224E71DAD74C400363A8F /* UITextField.swift in Sources */,
 				C12CAFAA1D4698E3002881A6 /* UIImageOrientationFix.swift in Sources */,
 				C12CAFA31D46698B002881A6 /* Features.swift in Sources */,
 				C1C8267F1D4562FF00516871 /* NewReportTableViewController.swift in Sources */,
@@ -585,8 +581,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -631,8 +629,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -651,6 +651,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -660,6 +661,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3063EF5C637507961A3010FC /* Pods-Water-Reporter.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -680,6 +682,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0291F7D9C9F28A52231170A7 /* Pods-Water-Reporter.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
