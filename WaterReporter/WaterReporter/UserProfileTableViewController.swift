@@ -28,7 +28,7 @@ class UserProfileTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         //
         // Load Basic User Profile Information
         //

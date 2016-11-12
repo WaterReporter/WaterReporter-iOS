@@ -97,11 +97,13 @@ class UserProfileCreateTableViewController: UITableViewController, UIImagePicker
         }
     }
     
-    func presentActivityTableViewController() {
-    
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
+    func presentUserProfileCreateGroupsTableViewController() {
         
-        self.presentViewController(nextViewController, animated: false, completion: nil)
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserProfileCreateGroupsTableViewController") as! UserProfileCreateGroupsTableViewController
+        
+        let navigationViewController = UINavigationController(rootViewController: nextViewController)
+        
+        self.presentViewController(navigationViewController, animated:true, completion: nil)
     }
     
     
@@ -252,7 +254,7 @@ class UserProfileCreateTableViewController: UITableViewController, UIImagePicker
                                         switch response.result {
                                         case .Success(let value):
                                             print("Request \(_endpoint) Success \(value)")
-                                            self.presentActivityTableViewController()
+                                            self.presentUserProfileCreateGroupsTableViewController()
                                         case .Failure(let error):
                                             print("Request \(_endpoint) Failure \(error)")
                                             break
@@ -275,13 +277,10 @@ class UserProfileCreateTableViewController: UITableViewController, UIImagePicker
                     
                     switch response.result {
                     case .Success(let value):
-                        self.dismissViewControllerAnimated(true, completion: {
-                            self.dismissViewControllerAnimated(true, completion: nil)
-                        })
-                        
+                        print("Request \(_endpoint) Success \(value)")
+                        self.presentUserProfileCreateGroupsTableViewController()
                     case .Failure(let error):
-                        print("attemptUserProfileSave::Failure")
-                        print(error)
+                        print("Request \(_endpoint) Failure \(error)")
                         break
                     }
                     

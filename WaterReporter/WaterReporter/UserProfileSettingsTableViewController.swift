@@ -6,6 +6,7 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import Alamofire
 import Foundation
 import UIKit
 
@@ -20,7 +21,7 @@ class UserProfileSettingsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         buttonUserLogOut.addTarget(self, action: #selector(UserProfileSettingsTableViewController.attemptUserLogOut(_:)), forControlEvents: .TouchUpInside)
         
         //

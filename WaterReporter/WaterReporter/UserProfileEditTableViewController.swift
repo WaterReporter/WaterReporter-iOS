@@ -409,7 +409,7 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
             self.textfieldTelephone.text = userTelephone
         }
         
-        if let imageUrl = NSURL(string: (self.userProfile?["properties"]["images"][0]["properties"]["thumbnail"].string!)!),
+        if let imageUrl = NSURL(string: (self.userProfile?["properties"]["picture"].string!)!),
            let data = NSData(contentsOfURL: imageUrl) {
             self.userProfileImageView.layer.cornerRadius = self.userProfileImageView.frame.size.width / 2;
             self.userProfileImageView.image = UIImage(data: data)

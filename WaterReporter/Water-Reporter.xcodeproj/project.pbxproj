@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6A09F4173390FEAABFC93265 /* Pods_Water_Reporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */; };
+		C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */; };
 		C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAF981D464F42002881A6 /* Endpoints.swift */; };
 		C12CAF9D1D46507F002881A6 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAF9C1D46507F002881A6 /* Resources.swift */; };
 		C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */; };
@@ -28,6 +29,7 @@
 		C18D76A91DAD87EB0012584C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18D76A81DAD87EB0012584C /* Environment.swift */; };
 		C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */; };
 		C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19538F91DAD6896003C6FC5 /* CGColor.swift */; };
+		C19F677A1DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */; };
 		C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */; };
 		C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */; };
 		C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */; };
@@ -84,6 +86,7 @@
 		3063EF5C637507961A3010FC /* Pods-Water-Reporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Water-Reporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Water-Reporter/Pods-Water-Reporter.debug.xcconfig"; sourceTree = "<group>"; };
 		9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaterReporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Water_Reporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		C12CAF981D464F42002881A6 /* Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		C12CAF9C1D46507F002881A6 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTableViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 		C18D76A81DAD87EB0012584C /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCreateTableViewController.swift; sourceTree = "<group>"; };
 		C19538F91DAD6896003C6FC5 /* CGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGColor.swift; sourceTree = "<group>"; };
+		C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCreateGroupsTableViewController.swift; sourceTree = "<group>"; };
 		C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMapViewController.swift; sourceTree = "<group>"; };
 		C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewController.swift; sourceTree = "<group>"; };
@@ -192,6 +196,7 @@
 			children = (
 				C12CAF9C1D46507F002881A6 /* Resources.swift */,
 				C12CAFA01D466659002881A6 /* TableViewCell.swift */,
+				C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */,
 				C185025C1DC779BC00C0F0DA /* CommentTableViewCell.swift */,
 				C14448B71D6B7234000564BF /* UserProfileTableViewCell.swift */,
 				C12CAFA61D46902D002881A6 /* ImageLoader.swift */,
@@ -245,6 +250,7 @@
 				C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */,
 				C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */,
 				C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */,
+				C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */,
 				C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */,
 				C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */,
 				C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */,
@@ -486,10 +492,12 @@
 				C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */,
 				C12CAFAA1D4698E3002881A6 /* UIImageOrientationFix.swift in Sources */,
 				C12CAFA31D46698B002881A6 /* Features.swift in Sources */,
+				C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */,
 				C1C8267F1D4562FF00516871 /* NewReportTableViewController.swift in Sources */,
 				C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */,
 				C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */,
 				C139109C1D787C8B00806F01 /* OrganizationProfileTableViewController.swift in Sources */,
+				C19F677A1DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift in Sources */,
 				C12CAFA71D46902D002881A6 /* ImageLoader.swift in Sources */,
 				C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */,
 				C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */,
