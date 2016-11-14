@@ -19,6 +19,7 @@ class ActivityTableViewController: UITableViewController {
     var page: Int = 1
         
     @IBOutlet var indicatorLoadingView: UIView!
+    @IBOutlet var titleImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +53,7 @@ class ActivityTableViewController: UITableViewController {
             // Set the Navigation Bar title
             //
             self.navigationItem.title = "Activity"
+            self.navigationItem.titleView = titleImageView
             
             self.navigationItem.setHidesBackButton(true, animated:true);
             
@@ -223,7 +225,7 @@ class ActivityTableViewController: UITableViewController {
         cell.reportObject = report
 
         let reportDescription = report?.objectForKey("report_description")
-        let reportDate = report?.objectForKey("report_date")
+        let reportDate = report?.objectForKey("report_date")!.string
         let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
 //        let reportClosed = report?.objectForKey("closed_by")
 
@@ -348,25 +350,31 @@ class ActivityTableViewController: UITableViewController {
         
         cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
             (image, error, cacheType, imageUrl) in
-                cell.reportImage.image = image
-                // cell.reportImage.image?.fixOrientation()
-                cell.reportImage.clipsToBounds = true
+            
+            cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+            cell.reportImage.clipsToBounds = true
         })
 
         //
         // DATE
         //
-        let dateString = reportDate as! String
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        
-        let stringToFormat = dateFormatter.dateFromString(dateString)
-        dateFormatter.dateFormat = "MMM d, yyyy"
-        
-        let displayDate = dateFormatter.stringFromDate(stringToFormat!)
-        
-        if let thisDisplayDate: String? = displayDate {
-            cell.reportDate.text = thisDisplayDate
+        if (reportDate != nil) {
+            let dateString: String = reportDate!
+
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            
+            let stringToFormat = dateFormatter.dateFromString(dateString)
+            dateFormatter.dateFormat = "MMM d, yyyy"
+            
+            let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+            
+            if let thisDisplayDate: String? = displayDate {
+                cell.reportDate.text = thisDisplayDate
+            }
+        }
+        else {
+            cell.reportDate.text = ""
         }
         
         //
