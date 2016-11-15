@@ -247,181 +247,183 @@ class ActivityTableViewController: UITableViewController {
         // Make sure we aren't loading old images into the new cells as
         // additional reports are loaded
         //
-        
-        //
-        // REPORT OBJECT
-        //
-        let report = self.reports[indexPath.row].objectForKey("properties")
-        let reportJson = JSON(report!)
-        cell.reportObject = report
-
-        let reportDescription = report?.objectForKey("report_description")
-        let reportDate = report?.objectForKey("report_date")!.string
-        let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
-//        let reportClosed = report?.objectForKey("closed_by")
-
-        let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
-        
-        
-        
-        //
-        // Territory
-        //
-        let reportTerritory = report?.objectForKey("territory") as? NSDictionary
-        
-        var reportTerritoryName: String? = "Unknown Watershed"
-        if let thisReportTerritory = reportTerritory?.objectForKey("properties")?.objectForKey("huc_8_name") as? String {
-            reportTerritoryName = (thisReportTerritory) + " Watershed"
-        }
-        
-        cell.reportTerritoryName.text = reportTerritoryName
-
-        
-        //
-        // Comment Count
-        //
-        let reportComments = report?.objectForKey("comments") as! NSArray
-        
-        
-        var reportCommentsCountText: String = "0 comments"
-        
-        if reportComments.count == 1 {
-            reportCommentsCountText = "1 comment"
-        }
-        else if reportComments.count >= 1 {
-            reportCommentsCountText = String(reportComments.count) + " comments"
-        }
-        else {
-            reportCommentsCountText = "0 comments"
-        }
-        
-        cell.reportCommentCount.tag = indexPath.row
-        cell.reportCommentButton.tag = indexPath.row
-        cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
-        
-        if (reportJson["closed_by"] != nil) {
-            let badgeImage: UIImage = UIImage(named: "icon--Badge")!
-            cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+        if (self.reports.count >= 1) {
+            //
+            // REPORT OBJECT
+            //
+            let report = self.reports[indexPath.row].objectForKey("properties")
+            let reportJson = JSON(report!)
+            cell.reportObject = report
             
-        } else {
-            let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
-            cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
-        }
-
-        
-        //
-        // GROUPS
-        //
-        let reportGroups = report?.objectForKey("groups") as? NSArray
-        var reportGroupsNames: String? = ""
-        
-        let reportGroupsTotal = reportGroups!.count
-        var reportGroupsIncrementer = 1;
-        
-        for _group in reportGroups! as NSArray {
-            let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as! String
-
-            if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
-                reportGroupsNames = thisGroupName
-            }
-            else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
-                reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
+            let reportDescription = report?.objectForKey("report_description")
+            let reportDate = report?.objectForKey("report_date")!.string
+            let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
+            //        let reportClosed = report?.objectForKey("closed_by")
+            
+            let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
+            
+            
+            
+            //
+            // Territory
+            //
+            let reportTerritory = report?.objectForKey("territory") as? NSDictionary
+            
+            var reportTerritoryName: String? = "Unknown Watershed"
+            if let thisReportTerritory = reportTerritory?.objectForKey("properties")?.objectForKey("huc_8_name") as? String {
+                reportTerritoryName = (thisReportTerritory) + " Watershed"
             }
             
-            reportGroupsIncrementer += 1
-        }
-
-        cell.reportGroups.text = reportGroupsNames
-
-        
-        //
-        // USER NAME
-        //
-        if let firstName = reportOwner?.objectForKey("first_name"),
-           let lastName = reportOwner?.objectForKey("last_name") {
-            cell.reportUserName.text = (firstName as! String) + " " + (lastName as! String)
-        } else {
-            cell.reportUserName.text = "Unknown Reporter"
-        }
-        
-        cell.reportDescription.text = reportDescription as? String
-        
-        //
-        // REPORT > OWNER > PICTURE
-        //
-        cell.reportOwnerImageButton.tag = indexPath.row
-        
-        var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
+            cell.reportTerritoryName.text = reportTerritoryName
+            
+            
+            //
+            // Comment Count
+            //
+            let reportComments = report?.objectForKey("comments") as! NSArray
+            
+            
+            var reportCommentsCountText: String = "0 comments"
+            
+            if reportComments.count == 1 {
+                reportCommentsCountText = "1 comment"
+            }
+            else if reportComments.count >= 1 {
+                reportCommentsCountText = String(reportComments.count) + " comments"
+            }
+            else {
+                reportCommentsCountText = "0 comments"
+            }
+            
+            cell.reportCommentCount.tag = indexPath.row
+            cell.reportCommentButton.tag = indexPath.row
+            cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
+            
+            if (reportJson["closed_by"] != nil) {
+                let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
                 
-        if let thisReportOwnerImageURL = reportOwner?.objectForKey("picture") {
-            reportOwnerImageURL = NSURL(string: String(thisReportOwnerImageURL))
-        }
-        
-        cell.reportOwnerImage.kf_indicatorType = .Activity
-        cell.reportOwnerImage.kf_showIndicatorWhenLoading = true
-        
-        cell.reportOwnerImage.kf_setImageWithURL(reportOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-            (image, error, cacheType, imageUrl) in
+            } else {
+                let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
+                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+            }
+            
+            
+            //
+            // GROUPS
+            //
+            let reportGroups = report?.objectForKey("groups") as? NSArray
+            var reportGroupsNames: String? = ""
+            
+            let reportGroupsTotal = reportGroups!.count
+            var reportGroupsIncrementer = 1;
+            
+            for _group in reportGroups! as NSArray {
+                let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as! String
+                
+                if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
+                    reportGroupsNames = thisGroupName
+                }
+                else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
+                    reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
+                }
+                
+                reportGroupsIncrementer += 1
+            }
+            
+            cell.reportGroups.text = reportGroupsNames
+            
+            
+            //
+            // USER NAME
+            //
+            if let firstName = reportOwner?.objectForKey("first_name"),
+                let lastName = reportOwner?.objectForKey("last_name") {
+                cell.reportUserName.text = (firstName as! String) + " " + (lastName as! String)
+            } else {
+                cell.reportUserName.text = "Unknown Reporter"
+            }
+            
+            cell.reportDescription.text = reportDescription as? String
+            
+            //
+            // REPORT > OWNER > PICTURE
+            //
+            cell.reportOwnerImageButton.tag = indexPath.row
+            
+            var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
+            
+            if let thisReportOwnerImageURL = reportOwner?.objectForKey("picture") {
+                reportOwnerImageURL = NSURL(string: String(thisReportOwnerImageURL))
+            }
+            
+            cell.reportOwnerImage.kf_indicatorType = .Activity
+            cell.reportOwnerImage.kf_showIndicatorWhenLoading = true
+            
+            cell.reportOwnerImage.kf_setImageWithURL(reportOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
                 cell.reportOwnerImage.image = image
                 cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2
                 cell.reportOwnerImage.clipsToBounds = true
-        })
-        
-        //
-        // REPORT > IMAGE
-        //
-        var reportImageURL:NSURL!
-        
-        if let thisReportImageURL = reportImages?.objectForKey("square") {
-            reportImageURL = NSURL(string: String(thisReportImageURL))
-        }
-        
-        cell.reportImage.kf_indicatorType = .Activity
-        cell.reportImage.kf_showIndicatorWhenLoading = true
-        
-        cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-            (image, error, cacheType, imageUrl) in
+            })
             
-            cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-            cell.reportImage.clipsToBounds = true
-        })
-
-        //
-        // DATE
-        //
-        if (reportDate != nil) {
-            let dateString: String = reportDate!
-
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            //
+            // REPORT > IMAGE
+            //
+            var reportImageURL:NSURL!
             
-            let stringToFormat = dateFormatter.dateFromString(dateString)
-            dateFormatter.dateFormat = "MMM d, yyyy"
-            
-            let displayDate = dateFormatter.stringFromDate(stringToFormat!)
-            
-            if let thisDisplayDate: String? = displayDate {
-                cell.reportDate.text = thisDisplayDate
+            if let thisReportImageURL = reportImages?.objectForKey("square") {
+                reportImageURL = NSURL(string: String(thisReportImageURL))
             }
-        }
-        else {
-            cell.reportDate.text = ""
-        }
-        
-        //
-        // PASS ON DATA TO TABLE CELL
-        //
-        cell.reportGetDirectionsButton.tag = indexPath.row
-
-        cell.reportDirectionsButton.tag = indexPath.row
-        cell.reportDirectionsButton.addTarget(self, action: #selector(openDirectionsURL(_:)), forControlEvents: .TouchUpInside)
-        
-        
-        //
-        // CONTIUOUS SCROLL
-        //
-        if (indexPath.row == self.reports.count - 5 && !singleReport) {
-            self.loadReports()
+            
+            cell.reportImage.kf_indicatorType = .Activity
+            cell.reportImage.kf_showIndicatorWhenLoading = true
+            
+            cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                
+                cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                cell.reportImage.clipsToBounds = true
+            })
+            
+            //
+            // DATE
+            //
+            if (reportDate != nil) {
+                let dateString: String = reportDate!
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                
+                let stringToFormat = dateFormatter.dateFromString(dateString)
+                dateFormatter.dateFormat = "MMM d, yyyy"
+                
+                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                
+                if let thisDisplayDate: String? = displayDate {
+                    cell.reportDate.text = thisDisplayDate
+                }
+            }
+            else {
+                cell.reportDate.text = ""
+            }
+            
+            //
+            // PASS ON DATA TO TABLE CELL
+            //
+            cell.reportGetDirectionsButton.tag = indexPath.row
+            
+            cell.reportDirectionsButton.tag = indexPath.row
+            cell.reportDirectionsButton.addTarget(self, action: #selector(openDirectionsURL(_:)), forControlEvents: .TouchUpInside)
+            
+            
+            //
+            // CONTIUOUS SCROLL
+            //
+            if (indexPath.row == self.reports.count - 5 && !singleReport) {
+                self.loadReports()
+            }
+            
         }
         
         return cell

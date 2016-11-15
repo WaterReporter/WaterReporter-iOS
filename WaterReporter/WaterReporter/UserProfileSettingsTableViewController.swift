@@ -64,6 +64,10 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
     //
     // MARK: Custom Functionality
     //
+    @IBAction func dismissSettingsTableViewController(sender: UIBarButtonItem) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     @IBAction func attemptUserLogOut(sender:UIButton) {
         var attemptToDismissLoginTableViewController: Bool = true;
 

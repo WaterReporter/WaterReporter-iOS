@@ -1085,7 +1085,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="bZR-G1-Rxz">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="NnQ-0Y-ZZK"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="NnQ-0Y-ZZK">
+                            <connections>
+                                <action selector="dismissSettingsTableViewController:" destination="wTi-C1-wkw" id="sfr-S0-Tw1"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="buttonEditProfile" destination="JqD-Qx-AfH" id="BEJ-Np-wMg"/>
@@ -1887,7 +1891,7 @@
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="swm-LT-FzF">
                                         <rect key="frame" x="16" y="161.5" width="343" height="64"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" restorationIdentifier="buttonTabActionLabel" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acA-YC-rmT">
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" restorationIdentifier="buttonTabActionLabel" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acA-YC-rmT">
                                                 <rect key="frame" x="119.5" y="26" width="104" height="30"/>
                                                 <state key="normal" title="Actions"/>
                                                 <connections>
@@ -1901,7 +1905,7 @@
                                                     <action selector="changeUserProfileTab:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="t9x-dm-R3L"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" misplaced="YES" restorationIdentifier="buttonTabActionNumber" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m9p-O5-jnB">
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" misplaced="YES" restorationIdentifier="buttonTabActionNumber" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m9p-O5-jnB">
                                                 <rect key="frame" x="156.5" y="8" width="30" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="21"/>
                                                 <state key="normal" title="12"/>
@@ -1956,7 +1960,7 @@
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="groupsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="g9b-Gt-vIJ">
-                                        <rect key="frame" x="16" y="229.5" width="343" height="324.5"/>
+                                        <rect key="frame" x="16" y="230" width="343" height="324"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileGroupsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="userProfileGroupCell" id="yT9-eL-sGF" customClass="UserProfileGroupsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
@@ -1983,7 +1987,7 @@
                                         <sections/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="actionsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tbe-tM-NCR">
-                                        <rect key="frame" x="16" y="229.5" width="343" height="316.5"/>
+                                        <rect key="frame" x="16" y="230" width="343" height="316"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileActionsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="userProfileActionCell" id="deV-ia-QQb" customClass="UserProfileActionsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
@@ -2010,7 +2014,7 @@
                                         <sections/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="submissionsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VDb-Oe-C9z">
-                                        <rect key="frame" x="16" y="229.5" width="343" height="324.5"/>
+                                        <rect key="frame" x="16" y="230" width="343" height="324"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileSubmissionTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="userProfileSubmissionCell" id="8cs-dP-1NI" customClass="UserProfileSubmissionTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
