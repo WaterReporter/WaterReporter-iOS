@@ -10,7 +10,8 @@ import UIKit
 
 class UserProfileGroupsTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var labelUserProfileSubmissionRowName: UILabel!
+    @IBOutlet weak var imageViewUserProfileGroup: UIImageView!
+    @IBOutlet weak var labelUserProfileGroupName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

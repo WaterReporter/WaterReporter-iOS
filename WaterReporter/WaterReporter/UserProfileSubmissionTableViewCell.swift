@@ -10,7 +10,7 @@ import UIKit
 
 class UserProfileSubmissionTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var labelUserProfileSubmissionRowName: UILabel!
+    @IBOutlet weak var imageViewReportOwnerImage: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -24,8 +24,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var labelUserProfileDescription: UILabel!
     
     @IBOutlet weak var buttonUserProfileSubmissionCount: UIButton!
+    @IBOutlet weak var buttonUserProfileSubmissionLabel: UIButton!
     @IBOutlet weak var buttonUserProfileActionCount: UIButton!
+    @IBOutlet weak var buttonUserProfileActionLabel: UIButton!
     @IBOutlet weak var buttonUserProfileGroupCount: UIButton!
+    @IBOutlet weak var buttonUserProfileGroupLabel: UIButton!
 
     @IBOutlet weak var submissionTableView: UITableView!
     @IBOutlet weak var actionsTableView: UITableView!
@@ -44,6 +47,22 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.submissionTableView.hidden = true
             self.groupsTableView.hidden = true
             
+            //
+            // Restyle the form Log In Navigation button to appear with an underline
+            //
+            let buttonWidth = self.buttonUserProfileActionLabel.frame.width*0.6
+            let borderWidth = buttonWidth
+            
+            self.userActionsUnderline.borderColor = CGColor.colorBrand()
+            self.userActionsUnderline.borderWidth = 3.0
+            self.userActionsUnderline.frame = CGRectMake(self.buttonUserProfileActionLabel.frame.width*0.2, self.buttonUserProfileActionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileActionLabel.frame.size.height)
+            
+            self.buttonUserProfileActionLabel.layer.addSublayer(self.userActionsUnderline)
+            self.buttonUserProfileActionLabel.layer.masksToBounds = true
+            
+            self.userGroupsUnderline.removeFromSuperlayer()
+            self.userSubmissionsUnderline.removeFromSuperlayer()
+            
         } else if (sender.restorationIdentifier == "buttonTabGroupNumber" || sender.restorationIdentifier == "buttonTabGroupLabel") {
             
             print("Show the Groups tab")
@@ -51,12 +70,45 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.submissionTableView.hidden = true
             self.groupsTableView.hidden = false
             
+            //
+            // Restyle the form Log In Navigation button to appear with an underline
+            //
+            let buttonWidth = self.buttonUserProfileGroupLabel.frame.width*0.6
+            let borderWidth = buttonWidth
+            
+            self.userGroupsUnderline.borderColor = CGColor.colorBrand()
+            self.userGroupsUnderline.borderWidth = 3.0
+            self.userGroupsUnderline.frame = CGRectMake(self.buttonUserProfileGroupLabel.frame.width*0.2, self.buttonUserProfileGroupLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileGroupLabel.frame.size.height)
+            
+            self.buttonUserProfileGroupLabel.layer.addSublayer(self.userGroupsUnderline)
+            self.buttonUserProfileGroupLabel.layer.masksToBounds = true
+
+            self.userActionsUnderline.removeFromSuperlayer()
+            self.userSubmissionsUnderline.removeFromSuperlayer()
+
         } else if (sender.restorationIdentifier == "buttonTabSubmissionNumber" || sender.restorationIdentifier == "buttonTabSubmissionLabel") {
             
             print("Show the Subsmissions tab")
             self.actionsTableView.hidden = true
             self.submissionTableView.hidden = false
             self.groupsTableView.hidden = true
+            
+            //
+            // Restyle the form Log In Navigation button to appear with an underline
+            //
+            let buttonWidth = self.buttonUserProfileSubmissionLabel.frame.width*0.8
+            let borderWidth = buttonWidth
+            
+            self.userSubmissionsUnderline.borderColor = CGColor.colorBrand()
+            self.userSubmissionsUnderline.borderWidth = 3.0
+            self.userSubmissionsUnderline.frame = CGRectMake(self.buttonUserProfileSubmissionLabel.frame.width*0.1, self.buttonUserProfileSubmissionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileSubmissionLabel.frame.size.height)
+            
+            self.buttonUserProfileSubmissionLabel.layer.addSublayer(self.userSubmissionsUnderline)
+            self.buttonUserProfileSubmissionLabel.layer.masksToBounds = true
+
+            self.userGroupsUnderline.removeFromSuperlayer()
+            self.userActionsUnderline.removeFromSuperlayer()
+
             
         }
         
@@ -87,6 +139,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: Variables
     //
     var userProfile: JSON?
+    var userGroups: JSON?
+    var userSubmissions: JSON?
+    var userActions: JSON?
+    
+    var userGroupsUnderline = CALayer()
+    var userSubmissionsUnderline = CALayer()
+    var userActionsUnderline = CALayer()
     
     //
     // MARK: UIKit Overrides
@@ -150,10 +209,41 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         //
         self.attemptLoadUserProfile()
         
+        //
+        // Load and display user groups
+        //
+        self.attemptLoadUserGroups()
+
+        //
+        // Load and display user submissions
+        //
+        self.attemptLoadUserSubmissions()
+
+        //
+        // Load and display user submissions
+        //
+        self.attemptLoadUserActions()
+        
+        
+        //
+        // Make sure we are getting 'auto layout' specific sizes
+        // otherwise any math we do will be messed up
+        //
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        // Set dynamic row heights
+        self.submissionTableView.rowHeight = UITableViewAutomaticDimension;
+        self.submissionTableView.estimatedRowHeight = 600.0;
+
+        self.actionsTableView.rowHeight = UITableViewAutomaticDimension;
+        self.actionsTableView.estimatedRowHeight = 600.0;
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -197,14 +287,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
         // Display user's organization name
         let _group_count = self.userProfile!["properties"]["groups"].count
-        
+
         if (_group_count >= 1) {
             self.buttonUserProfileGroupCount.setTitle("\(_group_count)", forState: .Normal)
         }
-        
+
         // Display user's profile picture
         var userProfileImageURL: NSURL!
-        
+
         if let thisUserProfileImageURLString = self.userProfile!["properties"]["picture"].string {
             userProfileImageURL = NSURL(string: String(thisUserProfileImageURLString))
         }
@@ -225,18 +315,24 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // MARK: HTTP Request/Response functionality
     //
-    func attemptLoadUserProfile() {
+    func buildRequestHeaders() -> [String: String] {
         
         let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
-        let headers = [
+        
+        return [
             "Authorization": "Bearer " + (accessToken! as! String)
         ]
+    }
+
+    func attemptLoadUserProfile() {
         
         if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
             
+            let _headers = buildRequestHeaders()
+
             let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
             
-            Alamofire.request(.GET, revisedEndpoint, headers: headers, encoding: .JSON).responseJSON { response in
+            Alamofire.request(.GET, revisedEndpoint, headers: _headers, encoding: .JSON).responseJSON { response in
                 
                 print("response.result \(response.result)")
                 
@@ -268,12 +364,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     func attemptRetrieveUserID() {
         
-        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
-        let headers = [
-            "Authorization": "Bearer " + (accessToken! as! String)
-        ]
+        let _headers = buildRequestHeaders()
         
-        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: headers, encoding: .JSON)
+        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: _headers, encoding: .JSON)
             .responseJSON { response in
                 
                 switch response.result {
@@ -291,6 +384,155 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 }
         }
     }
+    
+    func attemptLoadUserGroups() {
+        
+        // Set headers
+        let _headers = self.buildRequestHeaders()
+        
+        if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+            
+            let GET_GROUPS_ENDPOINT = Endpoints.GET_USER_PROFILE + "\(userId)" + "/groups"
+            
+            Alamofire.request(.GET, GET_GROUPS_ENDPOINT, headers: _headers, encoding: .JSON).responseJSON { response in
+                
+                print("response.result \(response.result)")
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Request Success: \(value)")
+                    
+                    // Assign response to groups variable
+                    self.userGroups = JSON(value)
+                    
+                    // Tell the refresh control to stop spinning
+                    //self.refreshControl?.endRefreshing()
+                    
+                    // Set status to complete
+                    //self.status("complete")
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.groupsTableView.reloadData()
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+            }
+            
+        }
+        
+    }
+    
+    func attemptLoadUserSubmissions() {
+        
+        let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber
+        
+        let _parameters = [
+            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+        ]
+        
+        print("_parameters \(_parameters)")
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+                    
+                    // Assign response to groups variable
+                    self.userSubmissions = JSON(value)
+                    
+                    // Tell the refresh control to stop spinning
+                    //self.refreshControl?.endRefreshing()
+                    
+                    // Set status to complete
+                    //self.status("complete")
+                    
+                    // Set visible button count
+                    let _submission_count = self.userSubmissions!["properties"]["num_results"]
+                    
+                    if (_submission_count != "") {
+                        self.buttonUserProfileSubmissionCount.setTitle("\(_submission_count)", forState: .Normal)
+                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.submissionTableView.reloadData()
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+                
+        }
+        
+    }
+
+    
+    func attemptLoadUserActions() {
+        
+        let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber
+        
+        let _parameters = [
+            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"},{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+        ]
+        
+        print("_parameters \(_parameters)")
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+                    
+                    // Assign response to groups variable
+                    self.userActions = JSON(value)
+                    
+                    // Tell the refresh control to stop spinning
+                    //self.refreshControl?.endRefreshing()
+                    
+                    // Set status to complete
+                    //self.status("complete")
+                    
+                    // Set visible button count
+                    let _action_count = self.userActions!["properties"]["num_results"]
+                    
+                    if (_action_count >= 1) {
+                        self.buttonUserProfileActionCount.setTitle("\(_action_count)", forState: .Normal)
+//                    } else {
+//                        self.buttonUserProfileActionCount.hidden = true
+//                        self.buttonUserProfileActionLabel.hidden = true
+                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.actionsTableView.reloadData()
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+                
+        }
+        
+    }
+
 
     
     //
@@ -299,35 +541,113 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if (tableView.restorationIdentifier == "submissionsTableView") {
-            return 45
+            
+            guard (self.userSubmissions != nil) else { return 0 }
+            
+            return (self.userSubmissions!["features"].count)
+
         } else if (tableView.restorationIdentifier == "actionsTableView") {
-            return 12
+
+            guard (self.userActions != nil) else { return 0 }
+            
+            return (self.userActions!["features"].count)
+        
         } else if (tableView.restorationIdentifier == "groupsTableView") {
-            return 5
+            
+            guard (self.userGroups != nil) else { return 0 }
+            
+            return (self.userGroups!["features"].count)
+
         } else {
             return 0
         }
         
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if (tableView.restorationIdentifier == "submissionsTableView") {
+            return 44.0
+        } else if (tableView.restorationIdentifier == "actionsTableView") {
+            return 44.0
+        } else if (tableView.restorationIdentifier == "groupsTableView") {
+            return 72.0
+        } else {
+            return 44.0
+        }
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if (tableView.restorationIdentifier == "submissionsTableView") {
+            //
+            // Submissions
+            //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileSubmissionCell", forIndexPath: indexPath) as! UserProfileSubmissionTableViewCell
             
-            cell.labelUserProfileSubmissionRowName.text = "Submission" + String(indexPath.row)
+            guard (self.userSubmissions != nil) else { return cell }
+            
+            // Display Group Image
+            if let _report_owner_url = self.userSubmissions!["features"][indexPath.row]["properties"]["owner"]["properties"]["picture"].string {
+                
+                let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
+                
+                cell.imageViewReportOwnerImage.kf_indicatorType = .Activity
+                cell.imageViewReportOwnerImage.kf_showIndicatorWhenLoading = true
+                
+                cell.imageViewReportOwnerImage.kf_setImageWithURL(reportOwnerProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    cell.imageViewReportOwnerImage.image = image
+                })
+            }
+            else {
+                cell.imageViewReportOwnerImage.image = nil
+            }
             
             return cell
         } else if (tableView.restorationIdentifier == "actionsTableView") {
+            //
+            // Actions
+            //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileActionCell", forIndexPath: indexPath) as! UserProfileActionsTableViewCell
             
-            cell.labelUserProfileSubmissionRowName.text = "Action" + String(indexPath.row)
+            guard (self.userActions != nil) else { return cell }
+
+            if let _report_description = self.userActions!["features"][indexPath.row]["properties"]["report_description"].string {
+                cell.labelUserProfileSubmissionRowName.text = _report_description
+            }
             
             return cell
         } else if (tableView.restorationIdentifier == "groupsTableView") {
+            //
+            // Groups
+            //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileGroupCell", forIndexPath: indexPath) as! UserProfileGroupsTableViewCell
             
-            cell.labelUserProfileSubmissionRowName.text = "Group" + String(indexPath.row)
+            guard (self.userGroups != nil) else { return cell }
+            
+            print("self.userGroups \(self.userGroups)")
+            
+            // Display Group Name
+            if let _group_name = self.userGroups!["features"][indexPath.row]["properties"]["organization"]["properties"]["name"].string {
+                cell.labelUserProfileGroupName.text = _group_name
+            }
+
+            // Display Group Image
+            if let _group_image_url = self.userGroups!["features"][indexPath.row]["properties"]["organization"]["properties"]["picture"].string {
+                
+                let groupProfileImageURL: NSURL! = NSURL(string: _group_image_url)
+                
+                cell.imageViewUserProfileGroup.kf_indicatorType = .Activity
+                cell.imageViewUserProfileGroup.kf_showIndicatorWhenLoading = true
+                
+                cell.imageViewUserProfileGroup.kf_setImageWithURL(groupProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    cell.imageViewUserProfileGroup.image = image
+                })
+            }
+            else {
+                cell.imageViewUserProfileGroup.image = nil
+            }
             
             return cell
         } else {
