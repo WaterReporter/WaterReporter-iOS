@@ -300,12 +300,12 @@ class ActivityTableViewController: UITableViewController {
         cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
         
         if (reportJson["closed_by"] != nil) {
-            print("report is closed \(reportJson["id"])")
-            
             let badgeImage: UIImage = UIImage(named: "icon--Badge")!
-            
             cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
             
+        } else {
+            let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
+            cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
         }
 
         

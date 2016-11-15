@@ -1,0 +1,27 @@
+//
+//  UserProfileGroupsTableViewCell.swift
+//  Profle Test 001
+//
+//  Created by Viable Industries on 11/14/16.
+//  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
+//
+
+import UIKit
+
+class UserProfileGroupsTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var labelUserProfileSubmissionRowName: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    
+}

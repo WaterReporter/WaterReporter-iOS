@@ -110,8 +110,6 @@ class CommentsTableViewController: UITableViewController {
         
         let _comment = self.comments!["features"][indexPath.row]
         
-        print("comment \(_comment)")
-        
         //
         // Comment Owner's Name + Image
         //
@@ -167,7 +165,6 @@ class CommentsTableViewController: UITableViewController {
         // Comment Image Body
         //
         let commentImages = _comment["properties"]["images"][0]["properties"]
-        print("commentImages \(commentImages)")
 
         if let thisCommentImageURL = commentImages["square"].string {
             print("Comment needs to display an image \(thisCommentImageURL)")
@@ -184,7 +181,9 @@ class CommentsTableViewController: UITableViewController {
 
         } else {
             print("Comment has no image")
+            cell.commentDescriptionImage.hidden = true
             cell.commentDescriptionImage.image = nil
+            cell.commentDescriptionImage.frame.size.height = 0
             cell.commentDescriptionImage.frame = CGRectMake(0, 0, 0, self.view.frame.size.width)
         }
         

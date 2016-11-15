@@ -14,11 +14,10 @@ import UIKit
 
 class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate, NewReportLocationSelectorDelegate {
     
-    var userSelectedCoorindates: CLLocationCoordinate2D!
     
-    var imageReportImagePreviewIsSet:Bool = false
-    var thisLocationManager: CLLocationManager = CLLocationManager()
-    
+    //
+    // MARK: @IBOutlets
+    //
     @IBOutlet weak var textareaReportComment: UITextView!
 
     @IBOutlet weak var buttonReportImageRemove: UIButton!
@@ -38,19 +37,21 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var addReportLocationButtonImage: UIImageView!
     @IBOutlet weak var changeReportLocationButtonImage: UIImageView!
     @IBOutlet weak var changeReportLocationButton: UIButton!
+    @IBOutlet weak var textfieldReportDate: UITextField!
     
     @IBOutlet weak var labelReportLocationLongitude: UILabel!
     @IBOutlet weak var labelReportLocationLatitude: UILabel!
     
+    @IBOutlet var indicatorLoadingView: UIView!
+
+    
+    //
+    // MARK: @IBActions
+    //
     @IBAction func launchNewReportLocationSelector(sender: AnyObject) {
         self.performSegueWithIdentifier("setLocationForNewReport", sender: sender)
     }
     
-    //
-    //
-    //
-    @IBOutlet weak var textfieldReportDate: UITextField!
-
     @IBAction func textfieldDatePickerEditingDidBegin(sender: UITextField) {
 
         let datePickerView:UIDatePicker = UIDatePicker()
@@ -75,19 +76,37 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     @IBAction func textfieldDatePickerEditingDidEnd(sender: UITextField) {}
     
-    func datePickerValueChanged(sender:UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        textfieldReportDate.text = dateFormatter.stringFromDate(sender.date)
+    @IBAction func attemptOpenPhotoTypeSelector(sender: AnyObject) {
+        
+        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .Default, handler:self.cameraActionHandler)
+        thisActionSheet.addAction(cameraAction)
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default, handler:self.photoLibraryActionHandler)
+        thisActionSheet.addAction(photoLibraryAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        thisActionSheet.addAction(cancelAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+        
     }
-    
-    func doneButton(sender:UIBarButtonItem) {
-        self.textfieldReportDate.resignFirstResponder()
-    }
+
     
     //
+    // MARK: Variables
     //
+    var loadingView: UIView!
+    
+    var userSelectedCoorindates: CLLocationCoordinate2D!
+    var imageReportImagePreviewIsSet:Bool = false
+    var thisLocationManager: CLLocationManager = CLLocationManager()
+
+    
+    
+    //
+    // MARK: Overrides
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -138,7 +157,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
         textfieldReportDate.text = dateFormatter.stringFromDate(date)
-
+        
+        
         self.isReady()
     }
 
@@ -220,10 +240,55 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // Dispose of any resources that can be recreated.
     }
     
+
+    func datePickerValueChanged(sender:UIDatePicker) {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        textfieldReportDate.text = dateFormatter.stringFromDate(sender.date)
+    }
+
+    func doneButton(sender:UIBarButtonItem) {
+        self.textfieldReportDate.resignFirstResponder()
+    }
+    
+    func loadGroups() {
+        
+        
+    }
     
     //
     // MARK: Custom functionality
     //
+    func saving() {
+        
+        //
+        // Create a view that covers the entire screen
+        //
+        self.loadingView = self.indicatorLoadingView
+        self.loadingView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+        
+        self.view.addSubview(self.loadingView)
+        self.view.bringSubviewToFront(self.loadingView)
+        
+        //
+        // Make sure that the Done/Save button is disabled
+        //
+        self.navigationItem.rightBarButtonItem?.enabled = false
+
+        //
+        // Make doubly sure the keyboard is closed
+        //
+        self.textfieldReportDate.resignFirstResponder()
+        self.textareaReportComment.resignFirstResponder()
+        
+        //
+        // Make sure our view is scrolled to the top
+        //
+        self.tableView.setContentOffset(CGPointZero, animated: false)
+
+    }
+    
     func isReady() {
         buttonReportImageRemove.hidden = true;
         buttonReportImageRemoveIcon.hidden = true;
@@ -278,23 +343,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     func mapView(mapView: MGLMapView, didUpdateUserLocation userLocation: MGLUserLocation?) {
         print("location updated")
-    }
-    
-    @IBAction func attemptOpenPhotoTypeSelector(sender: AnyObject) {
-        
-        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        
-        let cameraAction = UIAlertAction(title: "Camera", style: .Default, handler:self.cameraActionHandler)
-        thisActionSheet.addAction(cameraAction)
-
-        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .Default, handler:self.photoLibraryActionHandler)
-        thisActionSheet.addAction(photoLibraryAction)
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        thisActionSheet.addAction(cancelAction)
-
-        presentViewController(thisActionSheet, animated: true, completion: nil)
-
     }
     
     func cameraActionHandler(action:UIAlertAction) -> Void {
@@ -420,7 +468,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
     }
     
+    
+    //
+    // MARK: Server Request/Response functionality
+    //
     func attemptNewReportSave(headers: [String: String]) {
+        
+        // Before starting the saving process, hide the form
+        // and show the user the saving indicator
+        self.saving()
         
         
         //
@@ -503,10 +559,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                                         
                                         switch response.result {
                                         case .Success(let value):
-                                            self.tabBarController?.selectedIndex = 1
+                                            
+                                            print("Response Sucess \(value)")
+                                            
+                                            self.tabBarController?.selectedIndex = 0
+                                            
                                         case .Failure(let error):
-                                            print("attemptUserProfileSave::Failure")
-                                            print(error)
+                                            
+                                            print("Response Failure \(error)")
+                                            
                                             break
                                         }
                                         
@@ -521,8 +582,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
         
     }
-    
-
 
 }
 

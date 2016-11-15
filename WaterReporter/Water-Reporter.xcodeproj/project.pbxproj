@@ -28,19 +28,25 @@
 		C18D76A91DAD87EB0012584C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18D76A81DAD87EB0012584C /* Environment.swift */; };
 		C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */; };
 		C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19538F91DAD6896003C6FC5 /* CGColor.swift */; };
+		C198C0D41DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198C0D31DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift */; };
+		C198C0D61DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198C0D51DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift */; };
 		C19F677A1DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */; };
 		C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */; };
 		C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */; };
 		C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */; };
 		C1B02D2F1DC51C85003566FC /* CommentsNewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */; };
 		C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */; };
+		C1C5FD2B1DDB38E400EF6302 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C5FD2A1DDB38E400EF6302 /* ProfileTableViewController.swift */; };
+		C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C5FD2C1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift */; };
+		C1C5FD301DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C5FD2D1DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift */; };
+		C1C5FD311DDB3ACD00EF6302 /* UserProfileSubmissionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C5FD2E1DDB3ACD00EF6302 /* UserProfileSubmissionTableViewCell.swift */; };
 		C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267A1D4562FF00516871 /* AppDelegate.swift */; };
 		C1C8267F1D4562FF00516871 /* NewReportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */; };
 		C1C826841D4562FF00516871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1C826831D4562FF00516871 /* Assets.xcassets */; };
 		C1C826871D4562FF00516871 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1C826851D4562FF00516871 /* LaunchScreen.storyboard */; };
 		C1C826921D4562FF00516871 /* WaterReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826911D4562FF00516871 /* WaterReporterTests.swift */; };
 		C1C8269D1D4562FF00516871 /* WaterReporterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */; };
-		C1C826AB1D4567CB00516871 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */; };
+		C1C826AB1D4567CB00516871 /* _OLDProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826AA1D4567CB00516871 /* _OLDProfileTableViewController.swift */; };
 		C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */; };
 		C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */; };
 		C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E81DAD813A00363A8F /* UIColor.swift */; };
@@ -104,12 +110,18 @@
 		C18D76A81DAD87EB0012584C /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCreateTableViewController.swift; sourceTree = "<group>"; };
 		C19538F91DAD6896003C6FC5 /* CGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGColor.swift; sourceTree = "<group>"; };
+		C198C0D31DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportGroupsTableViewController.swift; sourceTree = "<group>"; };
+		C198C0D51DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportGroupTableViewCell.swift; sourceTree = "<group>"; };
 		C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCreateGroupsTableViewController.swift; sourceTree = "<group>"; };
 		C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityMapViewController.swift; sourceTree = "<group>"; };
 		C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewController.swift; sourceTree = "<group>"; };
 		C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsNewTableViewController.swift; sourceTree = "<group>"; };
 		C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileSettingsTableViewController.swift; sourceTree = "<group>"; };
+		C1C5FD2A1DDB38E400EF6302 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		C1C5FD2C1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileActionsTableViewCell.swift; sourceTree = "<group>"; };
+		C1C5FD2D1DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileGroupsTableViewCell.swift; sourceTree = "<group>"; };
+		C1C5FD2E1DDB3ACD00EF6302 /* UserProfileSubmissionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileSubmissionTableViewCell.swift; sourceTree = "<group>"; };
 		C1C826771D4562FF00516871 /* Water-Reporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Water-Reporter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReportTableViewController.swift; sourceTree = "<group>"; };
@@ -122,7 +134,7 @@
 		C1C826981D4562FF00516871 /* Water-Reporter.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water-Reporter.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterReporterUITests.swift; sourceTree = "<group>"; };
 		C1C8269E1D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		C1C826AA1D4567CB00516871 /* _OLDProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _OLDProfileTableViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordTableViewController.swift; sourceTree = "<group>"; };
 		C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
 		C1F224E81DAD813A00363A8F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -199,6 +211,10 @@
 				C14448B71D6B7234000564BF /* UserProfileTableViewCell.swift */,
 				C12CAFA61D46902D002881A6 /* ImageLoader.swift */,
 				C15965851D5B9C59009099EF /* MGLPointAnnotationExtension.swift */,
+				C198C0D51DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift */,
+				C1C5FD2C1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift */,
+				C1C5FD2D1DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift */,
+				C1C5FD2E1DDB3ACD00EF6302 /* UserProfileSubmissionTableViewCell.swift */,
 			);
 			name = _services;
 			sourceTree = "<group>";
@@ -243,26 +259,28 @@
 				C12CAF9A1D464FA8002881A6 /* _constants */,
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
 				C1F230101DAE83CB00DA2854 /* Main.storyboard */,
+				C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */,
+				C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */,
+				C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */,
+				C1C826AA1D4567CB00516871 /* _OLDProfileTableViewController.swift */,
 				C14448B31D6B4B75000564BF /* UserProfileTableViewController.swift */,
 				C1C4DADF1DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift */,
 				C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */,
 				C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */,
 				C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */,
-				C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */,
-				C1A4AA921D94326900C6EF66 /* LoginTableViewController.swift */,
-				C18CA43D1D94448500E4659E /* RegisterTableViewController.swift */,
 				C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */,
 				C139109B1D787C8B00806F01 /* OrganizationProfileTableViewController.swift */,
-				C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */,
 				C1C826831D4562FF00516871 /* Assets.xcassets */,
 				C1C826851D4562FF00516871 /* LaunchScreen.storyboard */,
 				C1C826881D4562FF00516871 /* Info.plist */,
-				C1C826AA1D4567CB00516871 /* ProfileTableViewController.swift */,
 				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
-				C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */,
+				C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */,
+				C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */,
 				C14105591DC3E3CB00E538FA /* NewReportLocationSelector.swift */,
+				C198C0D31DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift */,
 				C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */,
 				C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */,
+				C1C5FD2A1DDB38E400EF6302 /* ProfileTableViewController.swift */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -488,6 +506,8 @@
 			files = (
 				C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */,
 				C12CAFA31D46698B002881A6 /* Features.swift in Sources */,
+				C198C0D61DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift in Sources */,
+				C1C5FD311DDB3ACD00EF6302 /* UserProfileSubmissionTableViewCell.swift in Sources */,
 				C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */,
 				C1C8267F1D4562FF00516871 /* NewReportTableViewController.swift in Sources */,
 				C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */,
@@ -498,16 +518,20 @@
 				C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */,
 				C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */,
 				C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */,
-				C1C826AB1D4567CB00516871 /* ProfileTableViewController.swift in Sources */,
+				C1C826AB1D4567CB00516871 /* _OLDProfileTableViewController.swift in Sources */,
 				C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */,
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
+				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
+				C198C0D41DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift in Sources */,
 				C1B02D2F1DC51C85003566FC /* CommentsNewTableViewController.swift in Sources */,
 				C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */,
 				C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */,
+				C1C5FD301DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift in Sources */,
 				C14448B41D6B4B75000564BF /* UserProfileTableViewController.swift in Sources */,
 				C141055A1DC3E3CB00E538FA /* NewReportLocationSelector.swift in Sources */,
 				C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */,
+				C1C5FD2B1DDB38E400EF6302 /* ProfileTableViewController.swift in Sources */,
 				C185025D1DC779BC00C0F0DA /* CommentTableViewCell.swift in Sources */,
 				C12CAF9D1D46507F002881A6 /* Resources.swift in Sources */,
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
