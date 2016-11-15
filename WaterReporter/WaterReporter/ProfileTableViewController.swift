@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ProfileTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ProfileTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
     
     
     //

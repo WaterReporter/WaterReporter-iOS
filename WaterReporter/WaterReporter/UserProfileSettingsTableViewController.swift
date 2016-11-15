@@ -10,7 +10,7 @@ import Alamofire
 import Foundation
 import UIKit
 
-class UserProfileSettingsTableViewController: UITableViewController {
+class UserProfileSettingsTableViewController: UITableViewController, UINavigationControllerDelegate {
     
     @IBOutlet weak var buttonEditProfile: UIButton!
     @IBOutlet weak var buttonUserLogOut: UIButton!
