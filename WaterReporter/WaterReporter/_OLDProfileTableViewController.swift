@@ -72,7 +72,9 @@ class OLDProfileTableViewController: UITableViewController {
         //
         //
         //
-        if let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")?.string {
+        let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")?.string
+        
+        if (_userId != "") {
             self.attemptLoadUserProfile()
         } else {
             self.attemptRetrieveUserID()
@@ -120,7 +122,7 @@ class OLDProfileTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("UserProfileTableViewCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("UserProfileTableViewCell", forIndexPath: indexPath) 
         
         return cell
 

@@ -301,13 +301,15 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                                         
                                         switch response.result {
                                         case .Success(let value):
+                                            
+                                            print("Response Success \(value)")
+                                            
                                             self.dismissViewControllerAnimated(true, completion: {
                                                 self.commentImagePreview.image = nil
                                                 self.textfieldCommentBody.text = nil
                                             })
                                         case .Failure(let error):
-                                            print("attemptUserProfileSave::Failure")
-                                            print(error)
+                                            print("Response Failure \(error)")
                                             break
                                         }
                                         
@@ -328,13 +330,17 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                     
                     switch response.result {
                     case .Success(let value):
+                        
+                        print("Response Success \(value)")
+
                         self.dismissViewControllerAnimated(true, completion: {
                             self.commentImagePreview.image = nil
                             self.textfieldCommentBody.text = nil
                         })
                     case .Failure(let error):
-                        print("attemptUserProfileSave::Failure")
-                        print(error)
+
+                        print("Response Failure \(error)")
+
                         break
                     }
                     

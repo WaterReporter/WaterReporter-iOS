@@ -25,7 +25,7 @@ class LoginTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
     
-        if let _account = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") {
+        if NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") != nil {
             self.dismissViewControllerAnimated(false, completion: nil);
         }
     
@@ -66,7 +66,7 @@ class LoginTableViewController: UITableViewController {
         //
         //
         if let _email_address = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountEmailAddress") {
-            self.textfieldEmailAddress.text = _email_address as! String
+            self.textfieldEmailAddress.text = _email_address as? String
         }
         
         //

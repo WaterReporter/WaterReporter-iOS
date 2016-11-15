@@ -69,7 +69,6 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
     }
     
     @IBAction func attemptUserLogOut(sender:UIButton) {
-        var attemptToDismissLoginTableViewController: Bool = true;
 
         NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountAccessToken")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountUID")

@@ -41,7 +41,7 @@ class RegisterTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
-        if let _account = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") {
+        if NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken") != nil {
             self.dismissViewControllerAnimated(false, completion: nil);
         }
         
@@ -345,17 +345,22 @@ class RegisterTableViewController: UITableViewController {
                 switch response.result {
                 case .Success(let value):
                     
+                    print("Response Failure \(value)")
+
                     if let responseCode = value.objectForKey("meta")?.objectForKey("code") {
                         self.responseAuthentication(responseCode as! NSNumber, value: value)
                     }
                     else if let responseCode = value.objectForKey("code") {
                         self.responseAuthentication(responseCode as! NSNumber, value: value)
                     }
-                    else if let accessToken = value.objectForKey("access_token") {
+                    else if value.objectForKey("access_token") != nil {
                         let responseCode: NSNumber = 200
                         self.responseAuthentication(responseCode, value: value)
                     }
-                case .Failure(let _):
+                case .Failure(let error):
+                    
+                    print("Response Failure \(error)")
+                    
                     self.isFinishedLoadingWithError()
                     self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
                     break

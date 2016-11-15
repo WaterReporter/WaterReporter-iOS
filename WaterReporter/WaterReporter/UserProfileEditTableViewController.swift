@@ -260,6 +260,9 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
                     
                     switch response.result {
                         case .Success(let value):
+                            
+                            print("Response Success \(value)")
+                            
                             self.dismissViewControllerAnimated(true, completion: {
                                 self.dismissViewControllerAnimated(true, completion: nil)
                             })
@@ -314,9 +317,8 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
     }
     
     //
-    // MARK: Server Request/Response functionality
+    // MARK: HTTP Request/Response functionality
     //
-    
     func attemptLoadUserProfile() {
         
         let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")

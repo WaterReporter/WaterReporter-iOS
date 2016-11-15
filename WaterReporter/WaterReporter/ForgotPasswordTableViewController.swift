@@ -72,7 +72,7 @@ class ForgotPasswordTableViewController: UITableViewController {
         //
         //
         if let _email_address = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountEmailAddress") {
-            self.textfieldEmailAddress.text = _email_address as! String
+            self.textfieldEmailAddress.text = _email_address as? String
             self.isReady()
             self.enableLoginButton()
         }
