@@ -56,6 +56,7 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
         let _userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")
         
         if (_userId != nil) {
+            print("viewDidLoad::_userId \(_userId)")
             self.attemptLoadUserProfile()
         } else {
             self.attemptRetrieveUserID()
@@ -230,13 +231,15 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
 
                                             switch response.result {
                                             case .Success(let value):
+                                                
+                                                print("Response Success \(value)")
+
                                                 self.dismissViewControllerAnimated(true, completion: {
                                                     self.dismissViewControllerAnimated(true, completion: nil)
                                                 })
                                                 
                                             case .Failure(let error):
-                                                print("attemptUserProfileSave::Failure")
-                                                print(error)
+                                                print("Response Failure \(error)")
                                                 break
                                             }
                                             
@@ -319,11 +322,11 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
         let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
         let headers = [
             "Authorization": "Bearer " + (accessToken! as! String)
-        ]
-        let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID")
+        ]       
         
-        if (userId != nil) {
-            let revisedEndpoint = Endpoints.GET_USER_PROFILE + String(userId)
+        if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+
+            let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
             
             Alamofire.request(.GET, revisedEndpoint, headers: headers, encoding: .JSON).responseJSON { response in
                 
@@ -380,6 +383,8 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
     
     func updateUserProfileFields() {
         
+        print("Update user profile with the following data \(self.userProfile)")
+        
         if let userFirstName = self.userProfile?["properties"]["first_name"].string {
             self.textfieldFirstName.text = userFirstName
         }
@@ -409,10 +414,12 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
             self.textfieldTelephone.text = userTelephone
         }
         
-        if let imageUrl = NSURL(string: (self.userProfile?["properties"]["picture"].string!)!),
-           let data = NSData(contentsOfURL: imageUrl) {
-            self.userProfileImageView.layer.cornerRadius = self.userProfileImageView.frame.size.width / 2;
-            self.userProfileImageView.image = UIImage(data: data)
+        if let userProfileImageURLString = self.userProfile?["properties"]["picture"].string {
+            if let imageUrl = NSURL(string: userProfileImageURLString),
+                let data = NSData(contentsOfURL: imageUrl) {
+                self.userProfileImageView.layer.cornerRadius = self.userProfileImageView.frame.size.width / 2;
+                self.userProfileImageView.image = UIImage(data: data)
+            }
         }
 
         

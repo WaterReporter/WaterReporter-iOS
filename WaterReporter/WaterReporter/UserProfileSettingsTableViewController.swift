@@ -28,7 +28,7 @@ class UserProfileSettingsTableViewController: UITableViewController {
         //
         //
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
-
+        
     }
     
     override func didReceiveMemoryWarning() {

@@ -41,6 +41,7 @@ class TableViewCell: UITableViewCell {
     
         self.reportOwnerImage.image = nil
         self.reportImage.image = nil
+        self.reportCommentButton.imageView?.image = nil
 
     }
 

@@ -14,13 +14,44 @@ import UIKit
 
 class ActivityTableViewController: UITableViewController {
     
-    var reports = [AnyObject]()
-    var singleReport: Bool = false
-    var page: Int = 1
-        
+    
+    //
+    // MARK: @IBOutlets
+    //
     @IBOutlet var indicatorLoadingView: UIView!
     @IBOutlet var titleImageView: UIImageView!
     
+    
+    //
+    // MARK: @IBActions
+    //
+    @IBAction func shareButtonClicked(sender: UIButton) {
+        
+        let reportId: String = ""
+        let textToShare = "Check out this report on WaterReporter.org"
+        
+        if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
+            let objectsToShare = [textToShare, myWebsite]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            activityVC.popoverPresentationController?.sourceView = sender
+            self.presentViewController(activityVC, animated: true, completion: nil)
+        }
+    }
+    
+    
+    //
+    // MARK: Variables
+    //
+    var reports = [AnyObject]()
+    var singleReport: Bool = false
+    var page: Int = 1
+
+    
+    
+    //
+    // MARK: Overrides
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         
