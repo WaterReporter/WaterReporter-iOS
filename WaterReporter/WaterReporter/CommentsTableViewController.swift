@@ -14,14 +14,29 @@ import UIKit
 
 class CommentsTableViewController: UITableViewController {
     
+    
+    //
+    // MARK: Variables
+    //
     var report:AnyObject!
     var reportId:String!
     var comments: JSON?
     var page: Int = 1
 
+    
+    //
+    // MARK: @IBOutlets
+    //
     @IBOutlet weak var indicatorLoadingCommentsLabel: UILabel!
     @IBOutlet var indicatorLoadingView: UIView!
     @IBOutlet weak var indicatorLoadingComments: UIActivityIndicatorView!
+    @IBOutlet weak var actionTakenBanner: UIView!
+
+    @IBOutlet weak var actionTakenBannerHeight: NSLayoutConstraint!
+    
+    //
+    // MARK: Overrides
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,10 +52,35 @@ class CommentsTableViewController: UITableViewController {
         self.tableView.scrollEnabled = true
         self.tableView.scrollsToTop = true
 
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.estimatedRowHeight = 400.0;
+
         //
         // Setup pull to refresh functionality for our TableView
         //
         self.refreshControl?.addTarget(self, action: #selector(CommentsTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
+        
+        //
+        //
+        //
+        //
+        // CHECK TO SEE IF WE NEED TO DISPLAY THE ACTION TAKEN BANNER
+        //
+        //
+        //
+        //
+        let _report = JSON(report)
+        print("State \(_report["properties"]["state"])")
+        
+        if (_report["properties"]["state"] == "closed") {
+            self.actionTakenBanner.hidden = false
+        }
+        else {
+            self.actionTakenBanner.frame.size.height = 0.0
+            self.actionTakenBannerHeight.constant = 0.0
+        }
+
 
     }
     
@@ -100,7 +140,6 @@ class CommentsTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("SingleReportComment", forIndexPath: indexPath) as! CommentTableViewCell
         
-        
         //
         // Set data as a variable for a single comment (1 table view cell (a row))
         //
@@ -114,35 +153,18 @@ class CommentsTableViewController: UITableViewController {
         // Comment Owner's Name + Image
         //
         let _commentOwner = _comment["properties"]["owner"]["properties"]
+        var _commentOwnerName: String = ""
         if let _ownerFirstName = _commentOwner["first_name"].string,
             let _ownerLastName = _commentOwner["last_name"].string {
-            cell.commentOwnerName.text = _ownerFirstName + " " + _ownerLastName
+            _commentOwnerName = _ownerFirstName + " " + _ownerLastName
+            cell.commentOwnerName.text = _commentOwnerName
         }
-        
-        cell.commentOwnerImage.tag = indexPath.row
-        cell.commentOwnerImageButton.tag = indexPath.row
-        
-        var commentOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
-        
-        if let thisCommentOwnerImageURL = _commentOwner["picture"].string {
-            commentOwnerImageURL = NSURL(string: String(thisCommentOwnerImageURL))
-        }
-        
-        cell.commentOwnerImage.kf_indicatorType = .Activity
-        cell.commentOwnerImage.kf_showIndicatorWhenLoading = true
-        
-        cell.commentOwnerImage.kf_setImageWithURL(commentOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-            (image, error, cacheType, imageUrl) in
-            cell.commentOwnerImage.image = image
-            cell.commentOwnerImage.layer.cornerRadius = cell.commentOwnerImage.frame.size.width / 2
-            cell.commentOwnerImage.clipsToBounds = true
-        })
-        
+
         //
         // Comment Date
         //
         let dateString: String! = _comment["properties"]["created"].string
-
+        
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
         
@@ -152,42 +174,88 @@ class CommentsTableViewController: UITableViewController {
         let _commentDisplayDate = dateFormatter.stringFromDate(revisedDate)
         
         cell.commentDatePosted.text = _commentDisplayDate
-        
-        
-        //
-        // Comment Body
-        //
-        if let _commentBody = _comment["properties"]["body"].string {
-            cell.commentDescription.text = _commentBody
-        }
-        
-        //
-        // Comment Image Body
-        //
-        let commentImages = _comment["properties"]["images"][0]["properties"]
 
-        if let thisCommentImageURL = commentImages["square"].string {
-            print("Comment needs to display an image \(thisCommentImageURL)")
-            let commentImageURL = NSURL(string: String(thisCommentImageURL))
-
-            cell.commentDescriptionImage.kf_indicatorType = .Activity
-            cell.commentDescriptionImage.kf_showIndicatorWhenLoading = true
+        //
+        //
+        // DETERMINE HOW TO DISPLAY COMMENT
+        //
+        //
+        if ((_comment["properties"]["body"].string == "" || _comment["properties"]["body"].string == nil) && _comment["properties"]["images"].count == 0 && _comment["properties"]["report_state"].string == "closed") {
             
-            cell.commentDescriptionImage.kf_setImageWithURL(commentImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                (image, error, cacheType, imageUrl) in
-                cell.commentDescriptionImage.image = image
-                cell.commentDescriptionImage.clipsToBounds = true
-            })
-
+            //
+            // ACTION TAKEN IMAGE
+            //
+            cell.commentOwnerImage.image = UIImage(named: "badge--CertifiedActionClosed")
+            
+            //
+            // HIDE THE EMPTY IMAGE VIEW
+            //
+            cell.commentDescriptionImageHeightConstraint.constant = 0.0
+            cell.commentDescriptionImageBottomMarginConstraint.constant = 0.0
+            
+            //
+            // ACTION TAKEN BODY
+            //
+            cell.commentDescription.text = "Action taken by \(_commentOwnerName)"
+            
         } else {
-            print("Comment has no image")
-            cell.commentDescriptionImage.hidden = true
-            cell.commentDescriptionImage.image = nil
-            cell.commentDescriptionImage.frame.size.height = 0
-            cell.commentDescriptionImage.frame = CGRectMake(0, 0, 0, self.view.frame.size.width)
-        }
-        
+            
+            //
+            //
+            //
+            cell.commentOwnerImage.tag = indexPath.row
+            cell.commentOwnerImageButton.tag = indexPath.row
+            
+            var commentOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
+            
+            if let thisCommentOwnerImageURL = _commentOwner["picture"].string {
+                commentOwnerImageURL = NSURL(string: String(thisCommentOwnerImageURL))
+            }
+            
+            cell.commentOwnerImage.kf_indicatorType = .Activity
+            cell.commentOwnerImage.kf_showIndicatorWhenLoading = true
+            
+            cell.commentOwnerImage.kf_setImageWithURL(commentOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                cell.commentOwnerImage.image = image
+                cell.commentOwnerImage.layer.cornerRadius = cell.commentOwnerImage.frame.size.width / 2
+                cell.commentOwnerImage.clipsToBounds = true
+            })
+            
+                
+            //
+            // Comment Body
+            //
+            if let _commentBody = _comment["properties"]["body"].string {
+                cell.commentDescription.text = _commentBody
+            }
 
+            //
+            // Comment Image Body
+            //
+            let commentImages = _comment["properties"]["images"][0]["properties"]
+
+            if let thisCommentImageURL = commentImages["square"].string {
+                print("Comment needs to display an image \(thisCommentImageURL)")
+                let commentImageURL = NSURL(string: String(thisCommentImageURL))
+
+                cell.commentDescriptionImage.kf_indicatorType = .Activity
+                cell.commentDescriptionImage.kf_showIndicatorWhenLoading = true
+                
+                cell.commentDescriptionImage.kf_setImageWithURL(commentImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    cell.commentDescriptionImage.image = image
+                    cell.commentDescriptionImage.clipsToBounds = true
+                    
+                    cell.commentDescriptionImageHeightConstraint.constant = 200.0
+                })
+
+            } else {
+                cell.commentDescriptionImageHeightConstraint.constant = 0.0
+                cell.commentDescriptionImageBottomMarginConstraint.constant = 0.0
+            }
+        
+        }
         
         return cell
     }
@@ -227,6 +295,11 @@ class CommentsTableViewController: UITableViewController {
         // Remove loading screen
         //
         self.indicatorLoadingView.removeFromSuperview()
+        
+        if (self.comments?["features"].count >= 2) {
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        }
+
     }
 
     func attemptGetReportComments(reportId: String, isRefreshingReportsList: Bool = false) {

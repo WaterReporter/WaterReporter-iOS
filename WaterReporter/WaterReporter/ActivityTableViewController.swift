@@ -382,8 +382,9 @@ class ActivityTableViewController: UITableViewController {
             cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                 (image, error, cacheType, imageUrl) in
                 
-                cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                cell.reportImage.clipsToBounds = true
+                if (image != nil) {
+                    cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
             })
             
             //

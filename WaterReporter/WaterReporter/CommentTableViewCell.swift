@@ -10,13 +10,24 @@ import UIKit
 
 class CommentTableViewCell: UITableViewCell {
     
+    
+    //
+    // MARK: @IBOutlets
+    //
     @IBOutlet weak var commentOwnerImageButton: UIButton!
     @IBOutlet weak var commentOwnerImage: UIImageView!
     @IBOutlet weak var commentOwnerName: UILabel!
     @IBOutlet weak var commentDatePosted: UILabel!
     @IBOutlet weak var commentDescriptionImage: UIImageView!
     @IBOutlet weak var commentDescription: UILabel!
+    @IBOutlet weak var commentDescriptionImageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var commentDescriptionImageTopMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var commentDescriptionImageBottomMarginConstraint: NSLayoutConstraint!
     
+    
+    //
+    // MARK: Overrides
+    //
     override func awakeFromNib() {
         super.awakeFromNib()
     }

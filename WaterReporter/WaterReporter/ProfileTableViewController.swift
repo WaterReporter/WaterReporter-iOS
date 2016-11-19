@@ -138,6 +138,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // MARK: Variables
     //
+    var userId: String?
     var userProfile: JSON?
     var userGroups: JSON?
     var userSubmissions: JSON?
@@ -152,6 +153,21 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Check to see if a user id was passed to this view from
+        // another view. If no user id was passed, then we know that
+        // we should be displaying the acting user's profile
+        if (self.userId == "") {
+            
+            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                self.userId = "\(userIdNumber)"
+            } else {
+                self.attemptRetrieveUserID()
+            }
+            
+        }
+        
+        
         
         self.labelUserProfileTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
         
@@ -208,21 +224,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Show User Profile Information in Header View
         //
         self.attemptLoadUserProfile()
-        
-        //
-        // Load and display user groups
-        //
-        self.attemptLoadUserGroups()
-
-        //
-        // Load and display user submissions
-        //
-        self.attemptLoadUserSubmissions()
-
-        //
-        // Load and display user submissions
-        //
-        self.attemptLoadUserActions()
         
         
         //
@@ -307,6 +308,16 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.imageViewUserProfileImage.image = image
             self.imageViewUserProfileImage.clipsToBounds = true
         })
+        
+        
+        //
+        // Load and display other user information
+        //
+        self.attemptLoadUserGroups()
+        
+        self.attemptLoadUserSubmissions()
+
+        self.attemptLoadUserActions()
 
 
     }
@@ -376,7 +387,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     if let data: AnyObject = json.rawValue {
                         NSUserDefaults.standardUserDefaults().setValue(data["id"], forKeyPath: "currentUserAccountUID")
                         
+                        self.userId = "\(data["id"])"
+
                         self.attemptLoadUserProfile()
+                        
                     }
                     
                 case .Failure(let error):
@@ -436,8 +450,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let _parameters = [
             "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
         ]
-        
-        print("_parameters \(_parameters)")
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
             .responseJSON { response in
@@ -624,8 +636,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileGroupCell", forIndexPath: indexPath) as! UserProfileGroupsTableViewCell
             
             guard (self.userGroups != nil) else { return cell }
-            
-            print("self.userGroups \(self.userGroups)")
             
             // Display Group Name
             if let _group_name = self.userGroups!["features"][indexPath.row]["properties"]["organization"]["properties"]["name"].string {
