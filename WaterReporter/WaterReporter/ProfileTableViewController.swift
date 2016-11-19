@@ -138,7 +138,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // MARK: Variables
     //
-    var userId: String?
+    var userId: String!
+    var userObject: JSON?
     var userProfile: JSON?
     var userGroups: JSON?
     var userSubmissions: JSON?
@@ -157,7 +158,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Check to see if a user id was passed to this view from
         // another view. If no user id was passed, then we know that
         // we should be displaying the acting user's profile
-        if (self.userId == "") {
+
+        if (self.userId == nil) {
             
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
@@ -337,38 +339,34 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     func attemptLoadUserProfile() {
         
-        if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-            
-            let _headers = buildRequestHeaders()
+        let _headers = buildRequestHeaders()
 
-            let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
+        let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
+        
+        print("revisedEndpoint \(revisedEndpoint)")
+        
+        Alamofire.request(.GET, revisedEndpoint, headers: _headers, encoding: .JSON).responseJSON { response in
             
-            Alamofire.request(.GET, revisedEndpoint, headers: _headers, encoding: .JSON).responseJSON { response in
+            print("response.result \(response.result)")
+            
+            switch response.result {
+            case .Success(let value):
+                let json = JSON(value)
                 
-                print("response.result \(response.result)")
+                print("Response Success \(value)")
                 
-                switch response.result {
-                case .Success(let value):
-                    let json = JSON(value)
+                if (json != nil) {
                     
-                    print("Response Success \(value)")
+                    // Retain the returned data
+                    self.userProfile = json
                     
-                    if (json != nil) {
-                        
-                        // Retain the returned data
-                        self.userProfile = json
-                        
-                        // Show the data on screen
-                        self.displayUserProfileInformation()
-                    }
-                    
-                case .Failure(let error):
-                    print("Response Failure \(error)")
+                    // Show the data on screen
+                    self.displayUserProfileInformation()
                 }
+                
+            case .Failure(let error):
+                print("Response Failure \(error)")
             }
-            
-        } else {
-            self.attemptRetrieveUserID()
         }
         
     }
@@ -404,48 +402,42 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Set headers
         let _headers = self.buildRequestHeaders()
         
-        if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-            
-            let GET_GROUPS_ENDPOINT = Endpoints.GET_USER_PROFILE + "\(userId)" + "/groups"
-            
-            Alamofire.request(.GET, GET_GROUPS_ENDPOINT, headers: _headers, encoding: .JSON).responseJSON { response in
-                
-                print("response.result \(response.result)")
-                
-                switch response.result {
-                case .Success(let value):
-                    print("Request Success: \(value)")
-                    
-                    // Assign response to groups variable
-                    self.userGroups = JSON(value)
-                    
-                    // Tell the refresh control to stop spinning
-                    //self.refreshControl?.endRefreshing()
-                    
-                    // Set status to complete
-                    //self.status("complete")
-                    
-                    // Refresh the data in the table so the newest items appear
-                    self.groupsTableView.reloadData()
-                    
-                    break
-                case .Failure(let error):
-                    print("Request Failure: \(error)")
-                    
-                    // Stop showing the loading indicator
-                    //self.status("doneLoadingWithError")
-                    
-                    break
-                }
-            }
-            
-        }
+        let GET_GROUPS_ENDPOINT = Endpoints.GET_USER_PROFILE + "\(userId)" + "/groups"
         
+        Alamofire.request(.GET, GET_GROUPS_ENDPOINT, headers: _headers, encoding: .JSON).responseJSON { response in
+            
+            print("response.result \(response.result)")
+            
+            switch response.result {
+            case .Success(let value):
+                print("Request Success: \(value)")
+                
+                // Assign response to groups variable
+                self.userGroups = JSON(value)
+                
+                // Tell the refresh control to stop spinning
+                //self.refreshControl?.endRefreshing()
+                
+                // Set status to complete
+                //self.status("complete")
+                
+                // Refresh the data in the table so the newest items appear
+                self.groupsTableView.reloadData()
+                
+                break
+            case .Failure(let error):
+                print("Request Failure: \(error)")
+                
+                // Stop showing the loading indicator
+                //self.status("doneLoadingWithError")
+                
+                break
+            }
+        }
+
     }
     
     func attemptLoadUserSubmissions() {
-        
-        let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber
         
         let _parameters = [
             "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
@@ -494,13 +486,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     func attemptLoadUserActions() {
         
-        let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber
-        
         let _parameters = [
             "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"},{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
         ]
-        
-        print("_parameters \(_parameters)")
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
             .responseJSON { response in
@@ -523,9 +511,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     
                     if (_action_count >= 1) {
                         self.buttonUserProfileActionCount.setTitle("\(_action_count)", forState: .Normal)
-//                    } else {
-//                        self.buttonUserProfileActionCount.hidden = true
-//                        self.buttonUserProfileActionLabel.hidden = true
                     }
                     
                     // Refresh the data in the table so the newest items appear

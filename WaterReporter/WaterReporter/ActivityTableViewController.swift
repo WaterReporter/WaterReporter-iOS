@@ -38,15 +38,35 @@ class ActivityTableViewController: UITableViewController {
             self.presentViewController(activityVC, animated: true, completion: nil)
         }
     }
-    
+
+    @IBAction func loadCommentOwnerProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
+        
+        let _thisReport = JSON(self.reports[(sender.tag)])
+        
+        let _userId = "\(_thisReport["properties"]["owner"]["id"])"
+        let _userObject = _thisReport["properties"]["owner"]
+        
+        print(_userId)
+        print(_userObject)
+        
+        
+        nextViewController.userId = _userId
+        nextViewController.userObject = _userObject
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+
     
     //
     // MARK: Variables
     //
+    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
     var reports = [AnyObject]()
     var singleReport: Bool = false
     var page: Int = 1
-
     
     
     //
@@ -216,11 +236,6 @@ class ActivityTableViewController: UITableViewController {
         if segue.identifier == "reportToActivityMap" {
             let destViewController = segue.destinationViewController as! ActivityMapViewController
             destViewController.reportObject = self.reports[(sender?.tag)!]
-        }
-        else if segue.identifier == "reportToUserProfile" {
-            let destViewController = segue.destinationViewController as! UserProfileTableViewController
-            let reportOwner = self.reports[(sender?.tag)!].objectForKey("properties")?.objectForKey("owner")?.objectForKey("properties")
-            destViewController.reportOwner = reportOwner
         } else if segue.identifier == "reportToReportComments" {
             let destViewController = segue.destinationViewController as! CommentsTableViewController
             let report = self.reports[(sender?.tag)!]
@@ -297,6 +312,7 @@ class ActivityTableViewController: UITableViewController {
             
             cell.reportCommentCount.tag = indexPath.row
             cell.reportCommentButton.tag = indexPath.row
+            
             cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
             
             if (reportJson["closed_by"] != nil) {
@@ -350,7 +366,8 @@ class ActivityTableViewController: UITableViewController {
             // REPORT > OWNER > PICTURE
             //
             cell.reportOwnerImageButton.tag = indexPath.row
-            
+            cell.reportOwnerImageButton.addTarget(self, action: #selector(ActivityTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+
             var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
             
             if let thisReportOwnerImageURL = reportOwner?.objectForKey("picture") {
@@ -458,5 +475,6 @@ class ActivityTableViewController: UITableViewController {
         }
         
     }
+    
 
 }

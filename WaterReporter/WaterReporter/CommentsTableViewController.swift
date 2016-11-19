@@ -16,23 +16,43 @@ class CommentsTableViewController: UITableViewController {
     
     
     //
-    // MARK: Variables
-    //
-    var report:AnyObject!
-    var reportId:String!
-    var comments: JSON?
-    var page: Int = 1
-
-    
-    //
     // MARK: @IBOutlets
     //
     @IBOutlet weak var indicatorLoadingCommentsLabel: UILabel!
     @IBOutlet var indicatorLoadingView: UIView!
     @IBOutlet weak var indicatorLoadingComments: UIActivityIndicatorView!
     @IBOutlet weak var actionTakenBanner: UIView!
-
     @IBOutlet weak var actionTakenBannerHeight: NSLayoutConstraint!
+    
+    
+    //
+    // MARK: @IBActions
+    //
+    @IBAction func loadCommentOwnerProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
+        
+        let _userId = self.comments!["features"][sender.tag]["properties"]["owner"]["id"]
+
+        print("nextViewController.userId")
+        print(_userId)
+        
+        nextViewController.userId = "\(_userId)"
+
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+
+    
+    //
+    // MARK: Variables
+    //
+    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+    
+    var report:AnyObject!
+    var reportId:String!
+    var comments: JSON?
+    var page: Int = 1
+    
     
     //
     // MARK: Overrides
@@ -206,6 +226,8 @@ class CommentsTableViewController: UITableViewController {
             cell.commentOwnerImage.tag = indexPath.row
             cell.commentOwnerImageButton.tag = indexPath.row
             
+            cell.commentOwnerImageButton.addTarget(self, action: #selector(CommentsTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+
             var commentOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
             
             if let thisCommentOwnerImageURL = _commentOwner["picture"].string {

@@ -133,9 +133,6 @@
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1F4-QA-bwJ">
                                             <rect key="frame" x="8" y="8" width="36" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <connections>
-                                                <segue destination="XfN-Ul-gvS" kind="show" identifier="reportToUserProfile" id="oVj-sh-5dc"/>
-                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -1349,7 +1346,7 @@
                     <connections>
                         <segue destination="ZrJ-5t-MI3" kind="relationship" relationship="viewControllers" id="FUF-5R-A60"/>
                         <segue destination="PK7-in-Tvf" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
-                        <segue destination="YJS-6u-S8D" kind="relationship" relationship="viewControllers" id="yjU-WS-wa3"/>
+                        <segue destination="YJS-6u-S8D" kind="relationship" relationship="viewControllers" id="dbc-ed-4Ge"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -1874,7 +1871,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PFW-ug-fX5">
-                                <rect key="frame" x="0.0" y="65" width="375" height="1087"/>
+                                <rect key="frame" x="0.0" y="65" width="375" height="1136"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nTm-TP-byQ">
                                         <rect key="frame" x="16" y="16" width="72" height="72"/>
@@ -1996,7 +1993,7 @@
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="groupsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="g9b-Gt-vIJ">
-                                        <rect key="frame" x="16" y="196" width="343" height="890.5"/>
+                                        <rect key="frame" x="16" y="196" width="343" height="939.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileGroupsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="userProfileGroupCell" rowHeight="72" id="yT9-eL-sGF" customClass="UserProfileGroupsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
@@ -2044,7 +2041,7 @@
                                         <sections/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="actionsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tbe-tM-NCR">
-                                        <rect key="frame" x="16" y="196.5" width="343" height="882.5"/>
+                                        <rect key="frame" x="16" y="196.5" width="343" height="931.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileActionsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="userProfileActionCell" id="deV-ia-QQb" customClass="UserProfileActionsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
@@ -2071,7 +2068,7 @@
                                         <sections/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="submissionsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VDb-Oe-C9z">
-                                        <rect key="frame" x="16" y="196.5" width="343" height="890.5"/>
+                                        <rect key="frame" x="16" y="196.5" width="343" height="939.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileSubmissionTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="userProfileSubmissionCell" rowHeight="600" id="8cs-dP-1NI" customClass="UserProfileSubmissionTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
@@ -2144,6 +2141,7 @@
                             <constraint firstItem="35Q-cg-181" firstAttribute="top" secondItem="PFW-ug-fX5" secondAttribute="bottom" constant="-1" id="uJC-HV-9I7"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="dQX-9Z-VQp"/>
                     <navigationItem key="navigationItem" title="My Profile" id="Fpn-R8-OEf">
                         <barButtonItem key="rightBarButtonItem" image="Icon--Settings" id="eKc-g4-JnF">
                             <color key="tintColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="1" colorSpace="calibratedRGB"/>
@@ -2206,7 +2204,7 @@
                         <color key="sectionIndexColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="zo3-AQ-wnX">
-                            <rect key="frame" x="0.0" y="64" width="600" height="195"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="195"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S8o-yb-48W">
@@ -3266,7 +3264,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-92" y="-2476"/>
+            <point key="canvasLocation" x="-1191" y="-2475"/>
         </scene>
         <!--Join Groups-->
         <scene sceneID="DgP-ek-mpt">
@@ -3398,7 +3396,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="637.60000000000002" y="-2475.1124437781114"/>
+            <point key="canvasLocation" x="-462" y="-2475"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ws4-M9-s9l">
