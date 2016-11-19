@@ -160,16 +160,29 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // we should be displaying the acting user's profile
 
         if (self.userId == nil) {
-            
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
             } else {
                 self.attemptRetrieveUserID()
             }
-            
         }
         
-        
+        // Show User Profile Information in Header View
+        if userObject != nil {
+            
+            // Retain the returned data
+            self.userProfile = self.userObject
+            
+            print("User Profile \(self.userProfile)")
+            
+            // Show the data on screen
+            self.displayUserProfileInformation()
+            
+        }
+        else {
+            self.attemptLoadUserProfile()
+        }
+
         
         self.labelUserProfileTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
         
@@ -221,17 +234,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         groupsTableView.addSubview(groupRefreshControl)
         
-        
-        //
-        // Show User Profile Information in Header View
-        //
-        self.attemptLoadUserProfile()
-        
-        
-        //
         // Make sure we are getting 'auto layout' specific sizes
         // otherwise any math we do will be messed up
-        //
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
 
@@ -286,13 +290,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Display user's description/bio
         if let _description = self.userProfile!["properties"]["description"].string {
             self.labelUserProfileDescription.text = _description
-        }
-
-        // Display user's organization name
-        let _group_count = self.userProfile!["properties"]["groups"].count
-
-        if (_group_count >= 1) {
-            self.buttonUserProfileGroupCount.setTitle("\(_group_count)", forState: .Normal)
         }
 
         // Display user's profile picture
@@ -420,7 +417,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 
                 // Set status to complete
                 //self.status("complete")
+
+                // Set the number on the profile page
+                let _group_count = self.userGroups!["properties"]["num_results"]
                 
+                if (_group_count != "") {
+                    self.buttonUserProfileGroupCount.setTitle("\(_group_count)", forState: .Normal)
+                }
+
                 // Refresh the data in the table so the newest items appear
                 self.groupsTableView.reloadData()
                 
@@ -440,7 +444,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     func attemptLoadUserSubmissions() {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(self.userId)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
         ]
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)

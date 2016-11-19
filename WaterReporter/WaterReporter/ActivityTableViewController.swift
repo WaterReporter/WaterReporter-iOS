@@ -45,15 +45,8 @@ class ActivityTableViewController: UITableViewController {
         
         let _thisReport = JSON(self.reports[(sender.tag)])
         
-        let _userId = "\(_thisReport["properties"]["owner"]["id"])"
-        let _userObject = _thisReport["properties"]["owner"]
-        
-        print(_userId)
-        print(_userObject)
-        
-        
-        nextViewController.userId = _userId
-        nextViewController.userObject = _userObject
+        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+        nextViewController.userObject = _thisReport["properties"]["owner"]
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
@@ -154,8 +147,6 @@ class ActivityTableViewController: UITableViewController {
         // sure the Report Single view displays from the map view
         // and other views
         //
-        print("Needs to reload for single report")
-
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 600.0;
         self.tableView.backgroundColor = UIColor.whiteColor()
