@@ -1,6 +1,5 @@
 //
-//  ProfileTableViewController.swift
-//  Profle Test 001
+//  OrganizationTableViewController.swift
 //
 //  Created by Viable Industries on 11/6/16.
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
@@ -11,13 +10,12 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
-class ProfileTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
+class OrganizationTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
     
     
     //
     // @IBOUTLETS
     //
-    @IBOutlet weak var buttonUserProfileSettings: UIBarButtonItem!
     @IBOutlet weak var imageViewUserProfileImage: UIImageView!
     @IBOutlet weak var labelUserProfileName: UILabel!
     @IBOutlet weak var labelUserProfileTitle: UILabel!
@@ -30,11 +28,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var buttonUserProfileActionLabel: UIButton!
     @IBOutlet weak var buttonUserProfileGroupCount: UIButton!
     @IBOutlet weak var buttonUserProfileGroupLabel: UIButton!
-
+    
     @IBOutlet weak var submissionTableView: UITableView!
     @IBOutlet weak var actionsTableView: UITableView!
     @IBOutlet weak var groupsTableView: UITableView!
-
+    
     
     //
     // MARK: @IBActions
@@ -83,10 +81,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             self.buttonUserProfileGroupLabel.layer.addSublayer(self.userGroupsUnderline)
             self.buttonUserProfileGroupLabel.layer.masksToBounds = true
-
+            
             self.userActionsUnderline.removeFromSuperlayer()
             self.userSubmissionsUnderline.removeFromSuperlayer()
-
+            
         } else if (sender.restorationIdentifier == "buttonTabSubmissionNumber" || sender.restorationIdentifier == "buttonTabSubmissionLabel") {
             
             print("Show the Subsmissions tab")
@@ -106,10 +104,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             self.buttonUserProfileSubmissionLabel.layer.addSublayer(self.userSubmissionsUnderline)
             self.buttonUserProfileSubmissionLabel.layer.masksToBounds = true
-
+            
             self.userGroupsUnderline.removeFromSuperlayer()
             self.userActionsUnderline.removeFromSuperlayer()
-
+            
             
         }
         
@@ -182,7 +180,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
     }
-
+    
     @IBAction func openUserActionCommentsView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("CommentsTableViewController") as! CommentsTableViewController
         
@@ -190,23 +188,23 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
-    }  
-
+    }
+    
     @IBAction func openUserGroupView(sender: UIButton) {
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ActivityMapViewController") as! ActivityMapViewController
         
-        //nextViewController.reportObject = self.userActionsObjects[sender.tag]
+        nextViewController.reportObject = self.userActionsObjects[sender.tag]
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
     }
-
+    
     
     //
     // MARK: Variables
     //
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-
+    
     var userId: String!
     var userObject: JSON?
     var userProfile: JSON?
@@ -228,7 +226,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Check to see if a user id was passed to this view from
         // another view. If no user id was passed, then we know that
         // we should be displaying the acting user's profile
-
+        
         if (self.userId == nil) {
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
@@ -245,14 +243,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             print("User Profile \(self.userProfile)")
             
-            if let _first_name = self.userProfile!["properties"]["first_name"].string,
-                let _last_name = self.userProfile!["properties"]["last_name"].string {
-                self.navigationItem.title = _first_name + " " + _last_name
-            }
-            
-            self.navigationItem.rightBarButtonItem?.enabled = false
-
-            
             // Show the data on screen
             self.displayUserProfileInformation()
             
@@ -260,7 +250,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         else {
             self.attemptLoadUserProfile()
         }
-
+        
         //
         //
         //
@@ -270,7 +260,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         self.actionsTableView.rowHeight = UITableViewAutomaticDimension;
         self.actionsTableView.estimatedRowHeight = 368.0;
-
+        
         
         //
         //
@@ -329,7 +319,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // otherwise any math we do will be messed up
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
-
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -360,20 +350,20 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         if let _title = self.userProfile!["properties"]["title"].string {
             self.labelUserProfileTitle.text = _title
         }
-
+        
         // Display user's organization name
         if let _organization_name = self.userProfile!["properties"]["organization_name"].string {
             self.labelUserProfileOrganizationName.text = _organization_name
         }
-
+        
         // Display user's description/bio
         if let _description = self.userProfile!["properties"]["description"].string {
             self.labelUserProfileDescription.text = _description
         }
-
+        
         // Display user's profile picture
         var userProfileImageURL: NSURL!
-
+        
         if let thisUserProfileImageURLString = self.userProfile!["properties"]["picture"].string {
             userProfileImageURL = NSURL(string: String(thisUserProfileImageURLString))
         }
@@ -394,10 +384,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         self.attemptLoadUserGroups()
         
         self.attemptLoadUserSubmissions()
-
+        
         self.attemptLoadUserActions()
-
-
+        
+        
     }
     
     
@@ -412,11 +402,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             "Authorization": "Bearer " + (accessToken! as! String)
         ]
     }
-
+    
     func attemptLoadUserProfile() {
         
         let _headers = buildRequestHeaders()
-
+        
         let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
         
         print("revisedEndpoint \(revisedEndpoint)")
@@ -462,7 +452,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                         NSUserDefaults.standardUserDefaults().setValue(data["id"], forKeyPath: "currentUserAccountUID")
                         
                         self.userId = "\(data["id"])"
-
+                        
                         self.attemptLoadUserProfile()
                         
                     }
@@ -496,14 +486,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 
                 // Set status to complete
                 //self.status("complete")
-
+                
                 // Set the number on the profile page
                 let _group_count = self.userGroups!["properties"]["num_results"]
                 
                 if (_group_count != "") {
                     self.buttonUserProfileGroupCount.setTitle("\(_group_count)", forState: .Normal)
                 }
-
+                
                 // Refresh the data in the table so the newest items appear
                 self.groupsTableView.reloadData()
                 
@@ -517,7 +507,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 break
             }
         }
-
+        
     }
     
     func attemptLoadUserSubmissions() {
@@ -566,7 +556,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
         
     }
-
+    
     
     func attemptLoadUserActions() {
         
@@ -614,8 +604,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
         
     }
-
-
+    
+    
     
     //
     // PROTOCOL REQUIREMENT: UITableViewDelegate
@@ -627,36 +617,36 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             guard (self.userSubmissions != nil) else { return 0 }
             
             return (self.userSubmissions!["features"].count)
-
+            
         } else if (tableView.restorationIdentifier == "actionsTableView") {
-
+            
             guard (self.userActions != nil) else { return 0 }
             
             return (self.userActions!["features"].count)
-        
+            
         } else if (tableView.restorationIdentifier == "groupsTableView") {
             
             guard (self.userGroups != nil) else { return 0 }
             
             return (self.userGroups!["features"].count)
-
+            
         } else {
             return 0
         }
         
     }
     
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        if (tableView.restorationIdentifier == "submissionsTableView") {
-//            return 44.0
-//        } else if (tableView.restorationIdentifier == "actionsTableView") {
-//            return 44.0
-//        } else if (tableView.restorationIdentifier == "groupsTableView") {
-//            return 72.0
-//        } else {
-//            return 44.0
-//        }
-//    }
+    //    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    //        if (tableView.restorationIdentifier == "submissionsTableView") {
+    //            return 44.0
+    //        } else if (tableView.restorationIdentifier == "actionsTableView") {
+    //            return 44.0
+    //        } else if (tableView.restorationIdentifier == "groupsTableView") {
+    //            return 72.0
+    //        } else {
+    //            return 44.0
+    //        }
+    //    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
@@ -692,7 +682,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             // Report > Owner > Name
             //
             if let _first_name = _thisSubmission["owner"]["properties"]["first_name"].string,
-               let _last_name = _thisSubmission["owner"]["properties"]["last_name"].string {
+                let _last_name = _thisSubmission["owner"]["properties"]["last_name"].string {
                 cell.reportOwnerName.text = "\(_first_name) \(_last_name)"
             } else {
                 cell.reportOwnerName.text = "Unknown Reporter"
@@ -701,8 +691,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             // Report > Territory > Name
             //
-            if let _territory_name = _thisSubmission["territory"]["properties"]["huc_8_name"].string {
-                cell.reportTerritoryName.text = "\(_territory_name) Watershed"
+            if let _territory_name = _thisSubmission["territory"]["properties"]["name"].string {
+                cell.reportTerritoryName.text = "\(_territory_name)"
             }
             else {
                 cell.reportTerritoryName.text = "Unknown Watershed"
@@ -730,7 +720,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             else {
                 cell.reportDate.text = ""
             }
-
+            
             // Report > Description
             //
             cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
@@ -746,7 +736,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
                 reportImageURL = NSURL(string: String(thisReportImageURL))
             }
-
+            
             cell.reportImageView.kf_indicatorType = .Activity
             cell.reportImageView.kf_showIndicatorWhenLoading = true
             
@@ -780,7 +770,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             }
             
             cell.labelReportGroups.text = reportGroupsNames
-
+            
             
             // Buttons > Share
             //
@@ -816,13 +806,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             if (_thisSubmission["closed_by"] != nil) {
                 let badgeImage: UIImage = UIImage(named: "icon--Badge")!
                 cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
-                cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit                
+                cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             } else {
                 let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
                 cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             }
-
+            
             
             return cell
         } else if (tableView.restorationIdentifier == "actionsTableView") {
@@ -866,8 +856,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             // Report > Territory > Name
             //
-            if let _territory_name = _thisSubmission["territory"]["properties"]["huc_8_name"].string {
-                cell.reportTerritoryName.text = "\(_territory_name) Watershed"
+            if let _territory_name = _thisSubmission["territory"]["properties"]["name"].string {
+                cell.reportTerritoryName.text = "\(_territory_name)"
             }
             else {
                 cell.reportTerritoryName.text = "Unknown Watershed"
@@ -951,7 +941,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             // Buttons > Map
             //
             cell.buttonReportMap.tag = indexPath.row
-
+            
             // Buttons > Directions
             //
             cell.buttonReportDirections.addTarget(self, action: #selector(ProfileTableViewController.openUserSubmissionDirectionsURL(_:)), forControlEvents: .TouchUpInside)
@@ -1000,7 +990,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             if let _group_name = self.userGroups!["features"][indexPath.row]["properties"]["organization"]["properties"]["name"].string {
                 cell.labelUserProfileGroupName.text = _group_name
             }
-
+            
             // Display Group Image
             if let _group_image_url = self.userGroups!["features"][indexPath.row]["properties"]["organization"]["properties"]["picture"].string {
                 
@@ -1029,5 +1019,5 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         print("row tapped \(indexPath)")
     }
     
-
+    
 }

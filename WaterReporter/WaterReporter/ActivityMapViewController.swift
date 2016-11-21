@@ -216,7 +216,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
             let reportImageView = UIImageView()
             var reportImageUpdate: Image?
             reportImageView.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
-            reportImageView.backgroundColor = UIColor.whiteColor()
+            
             
             reportImageView.kf_indicatorType = .Activity
             reportImageView.kf_showIndicatorWhenLoading = true

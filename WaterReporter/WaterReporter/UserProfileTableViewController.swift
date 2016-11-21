@@ -521,9 +521,9 @@ class UserProfileTableViewController: UITableViewController {
         //
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
-        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("OrganizationProfileTableViewController") as! OrganizationProfileTableViewController
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
         
-        nextViewController.group = group
+//        nextViewController.group = group
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
 
