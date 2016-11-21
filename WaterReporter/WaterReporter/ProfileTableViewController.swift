@@ -134,17 +134,51 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
+    @IBAction func openUserSubmissionDirectionsURL(sender: UIButton) {
+        
+        let reportCoordinates = self.userSubmissions!["features"][sender.tag]["geometry"]["geometries"][0]["coordinates"]
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//\(reportCoordinates[1]),\(reportCoordinates[0])")!)
+    }
+    
+    @IBAction func shareButtonClicked(sender: UIButton) {
+        
+        let reportId: String = ""
+        let textToShare = "Check out this report on WaterReporter.org"
+        
+        if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
+            let objectsToShare = [textToShare, myWebsite]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            
+            activityVC.popoverPresentationController?.sourceView = sender
+            self.presentViewController(activityVC, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func openUserSubmissionMapView(sender: UIButton) {
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ActivityMapViewController") as! ActivityMapViewController
+        d
+        let _thisReport = self.userSubmissions!["features"][sender.tag]
+        
+        nextViewController.reportObject = _thisReport
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+
+    }
+
+    
     
     //
     // MARK: Variables
     //
+    let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
     var userId: String!
     var userObject: JSON?
     var userProfile: JSON?
     var userGroups: JSON?
     var userSubmissions: JSON?
     var userActions: JSON?
-    
     var userGroupsUnderline = CALayer()
     var userSubmissionsUnderline = CALayer()
     var userActionsUnderline = CALayer()
@@ -183,7 +217,20 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.attemptLoadUserProfile()
         }
 
+        //
+        //
+        //
+        // Set dynamic row heights
+        self.submissionTableView.rowHeight = UITableViewAutomaticDimension;
+        self.submissionTableView.estimatedRowHeight = 368.0;
         
+        self.actionsTableView.rowHeight = UITableViewAutomaticDimension;
+        self.actionsTableView.estimatedRowHeight = 368.0;
+
+        
+        //
+        //
+        //
         self.labelUserProfileTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
         
         self.labelUserProfileOrganizationName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
@@ -238,18 +285,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // otherwise any math we do will be messed up
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
-
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-        
-        // Set dynamic row heights
-        self.submissionTableView.rowHeight = UITableViewAutomaticDimension;
-        self.submissionTableView.estimatedRowHeight = 600.0;
-
-        self.actionsTableView.rowHeight = UITableViewAutomaticDimension;
-        self.actionsTableView.estimatedRowHeight = 600.0;
 
     }
     
@@ -444,7 +479,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     func attemptLoadUserSubmissions() {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(self.userId)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(self.userId)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
         ]
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
@@ -565,17 +600,17 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if (tableView.restorationIdentifier == "submissionsTableView") {
-            return 44.0
-        } else if (tableView.restorationIdentifier == "actionsTableView") {
-            return 44.0
-        } else if (tableView.restorationIdentifier == "groupsTableView") {
-            return 72.0
-        } else {
-            return 44.0
-        }
-    }
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        if (tableView.restorationIdentifier == "submissionsTableView") {
+//            return 44.0
+//        } else if (tableView.restorationIdentifier == "actionsTableView") {
+//            return 44.0
+//        } else if (tableView.restorationIdentifier == "groupsTableView") {
+//            return 72.0
+//        } else {
+//            return 44.0
+//        }
+//    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
@@ -587,8 +622,12 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             guard (self.userSubmissions != nil) else { return cell }
             
-            // Display Group Image
-            if let _report_owner_url = self.userSubmissions!["features"][indexPath.row]["properties"]["owner"]["properties"]["picture"].string {
+            let _thisSubmission = self.userSubmissions!["features"][indexPath.row]["properties"]
+            print("Show _thisSubmission \(_thisSubmission)")
+            
+            // Report > Owner > Image
+            //
+            if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
                 
                 let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
                 
@@ -603,6 +642,92 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             else {
                 cell.imageViewReportOwnerImage.image = nil
             }
+            
+            // Report > Owner > Name
+            //
+            if let _first_name = _thisSubmission["owner"]["properties"]["first_name"].string,
+               let _last_name = _thisSubmission["owner"]["properties"]["last_name"].string {
+                cell.reportOwnerName.text = "\(_first_name) \(_last_name)"
+            } else {
+                cell.reportOwnerName.text = "Unknown Reporter"
+            }
+            
+            
+            // Report > Territory > Name
+            //
+            if let _territory_name = _thisSubmission["territory"]["properties"]["name"].string {
+                cell.reportTerritoryName.text = "\(_territory_name)"
+            }
+            else {
+                cell.reportTerritoryName.text = "Unknown Watershed"
+            }
+            
+            // Report > Date
+            //
+            let reportDate = _thisSubmission["report_date"].string
+            
+            if (reportDate != nil) {
+                let dateString: String = reportDate!
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                
+                let stringToFormat = dateFormatter.dateFromString(dateString)
+                dateFormatter.dateFormat = "MMM d, yyyy"
+                
+                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                
+                if let thisDisplayDate: String? = displayDate {
+                    cell.reportDate.text = thisDisplayDate
+                }
+            }
+            else {
+                cell.reportDate.text = ""
+            }
+
+            // Report > Description
+            //
+            cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
+            
+            // Report > Groups
+            //
+            cell.labelReportGroups.text = "Report Group Names"
+            
+            // Report > Image
+            //
+            //
+            // REPORT > IMAGE
+            //
+            var reportImageURL:NSURL!
+            
+            if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
+                reportImageURL = NSURL(string: String(thisReportImageURL))
+            }
+
+            cell.reportImageView.kf_indicatorType = .Activity
+            cell.reportImageView.kf_showIndicatorWhenLoading = true
+            
+            cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                
+                if (image != nil) {
+                    cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+            })
+            
+            // Buttons > Share
+            //
+            
+            // Buttons > Map
+            //
+            
+            // Buttons > Directions
+            //
+            cell.buttonReportDirections.addTarget(self, action: #selector(ProfileTableViewController.openUserSubmissionDirectionsURL(_:)), forControlEvents: .TouchUpInside)
+            
+            // Buttons > Comments
+            //
+            
             
             return cell
         } else if (tableView.restorationIdentifier == "actionsTableView") {

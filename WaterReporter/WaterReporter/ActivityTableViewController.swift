@@ -222,11 +222,9 @@ class ActivityTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        print("prepareForSegue \(sender?.tag)")
-        
         if segue.identifier == "reportToActivityMap" {
             let destViewController = segue.destinationViewController as! ActivityMapViewController
-            destViewController.reportObject = self.reports[(sender?.tag)!]
+            destViewController.reportObject = JSON(self.reports[sender!.tag])
         } else if segue.identifier == "reportToReportComments" {
             let destViewController = segue.destinationViewController as! CommentsTableViewController
             let report = self.reports[(sender?.tag)!]

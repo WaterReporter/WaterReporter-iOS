@@ -17,7 +17,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     
     var reports = [AnyObject]() // THIS NEEDS TO BE A SET NOT AN ARRAY
 
-    var reportObject:AnyObject!
+    var reportObject: JSON!
     var reportLongitude:Double!
     var reportLatitude:Double!
     
@@ -62,14 +62,14 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         view.addSubview(mapView)
     }
     
-    func addReportToMap(mapView: AnyObject, report: AnyObject, latitude: Double, longitude: Double, center:Bool) {
+    func addReportToMap(mapView: AnyObject, report: JSON, latitude: Double, longitude: Double, center:Bool) {
         
         let thisAnnotation = MGLPointAnnotation()
-        let _title = report.objectForKey("properties")?.objectForKey("report_description") as! String
+        let _title = report["properties"]["report_description"].string
         var _subtitle: String = "Reported on "
-        let _date = report.objectForKey("properties")?.objectForKey("report_date") as! String
+        let _date = "\(report["properties"]["report_date"])"
         
-        thisAnnotation.report = report
+        thisAnnotation.report = report as! AnyObject
         
         let dateString = _date
         let dateFormatter = NSDateFormatter()
@@ -135,7 +135,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         
         for _report in reports {
             
-            if _report.objectForKey("id") as! NSNumber != self.reportObject.objectForKey("id") as! NSNumber {
+            if _report.objectForKey("id")?.string != self.reportObject["id"].string {
                 let reportGeometry = _report.objectForKey("geometry")
                 let reportGeometries = reportGeometry!.objectForKey("geometries")
                 let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
@@ -143,7 +143,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
                 reportLongitude = reportCoordinates[0]
                 reportLatitude = reportCoordinates[1]
                 
-                self.addReportToMap(mapView, report: _report, latitude: reportCoordinates[1], longitude: reportCoordinates[0], center:false)
+                self.addReportToMap(mapView, report: JSON(_report), latitude: reportCoordinates[1], longitude: reportCoordinates[0], center:false)
                 print("report added")
             } else {
                 print("report skipped")
@@ -167,12 +167,10 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func setCoordinateDefaults() {
-        let reportGeometry = reportObject?.objectForKey("geometry")
-        let reportGeometries = reportGeometry!.objectForKey("geometries")
-        let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
+        let reportCoordinates = self.reportObject["geometry"]["geometries"][0]["coordinates"]
         
-        reportLongitude = reportCoordinates[0]
-        reportLatitude = reportCoordinates[1]
+        reportLongitude = reportCoordinates[0].double
+        reportLatitude = reportCoordinates[1].double
     }
     
     func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
