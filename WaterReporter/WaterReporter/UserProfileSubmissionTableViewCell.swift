@@ -1,8 +1,7 @@
 //
 //  UserProfileSubmissionTableViewCell.swift
-//  Profle Test 001
 //
-//  Created by Viable Industries on 11/6/16.
+//  Created by Viable Industries on 8/6/16.
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 

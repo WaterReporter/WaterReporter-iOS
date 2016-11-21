@@ -160,7 +160,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
         let _thisReport = self.userSubmissions!["features"][sender.tag]
         
-        nextViewController.reportObject = _thisReport
+        nextViewController.reportObject = _thisReport as! AnyObject
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
 
@@ -694,9 +694,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             // Report > Image
             //
-            //
-            // REPORT > IMAGE
-            //
             var reportImageURL:NSURL!
             
             if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
@@ -713,6 +710,30 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
                 }
             })
+            
+            // Report > Group > Name
+            //
+            let reportGroups = _thisSubmission["groups"]
+            var reportGroupsNames: String? = ""
+            
+            let reportGroupsTotal = reportGroups.count
+            var reportGroupsIncrementer = 1
+            
+            for _group in reportGroups {
+                let thisGroupName = _group.1["properties"]["name"]
+                
+                if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
+                    reportGroupsNames = "\(thisGroupName)"
+                }
+                else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
+                    reportGroupsNames = reportGroupsNames! + ", " + "\(thisGroupName)"
+                }
+                
+                reportGroupsIncrementer += 1
+            }
+            
+            cell.labelReportGroups.text = reportGroupsNames
+
             
             // Buttons > Share
             //
@@ -804,9 +825,28 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             //
             cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
             
-            // Report > Groups
+            // Report > Group > Name
             //
-            cell.labelReportGroups.text = "Report Group Names"
+            let reportGroups = _thisSubmission["groups"]
+            var reportGroupsNames: String? = ""
+            
+            let reportGroupsTotal = reportGroups.count
+            var reportGroupsIncrementer = 1
+            
+            for _group in reportGroups {
+                let thisGroupName = _group.1["properties"]["name"]
+                
+                if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
+                    reportGroupsNames = "\(thisGroupName)"
+                }
+                else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
+                    reportGroupsNames = reportGroupsNames! + ", " + "\(thisGroupName)"
+                }
+                
+                reportGroupsIncrementer += 1
+            }
+            
+            cell.labelReportGroups.text = reportGroupsNames
             
             // Report > Image
             //

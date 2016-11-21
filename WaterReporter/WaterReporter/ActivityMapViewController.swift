@@ -17,7 +17,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     
     var reports = [AnyObject]() // THIS NEEDS TO BE A SET NOT AN ARRAY
 
-    var reportObject: JSON!
+    var reportObject: AnyObject!
     var reportLongitude:Double!
     var reportLatitude:Double!
     
@@ -62,14 +62,15 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         view.addSubview(mapView)
     }
     
-    func addReportToMap(mapView: AnyObject, report: JSON, latitude: Double, longitude: Double, center:Bool) {
+    func addReportToMap(mapView: AnyObject, report: AnyObject, latitude: Double, longitude: Double, center:Bool) {
         
+        let _report = JSON(report)
         let thisAnnotation = MGLPointAnnotation()
-        let _title = report["properties"]["report_description"].string
+        let _title = _report["properties"]["report_description"].string
         var _subtitle: String = "Reported on "
-        let _date = "\(report["properties"]["report_date"])"
+        let _date = "\(_report["properties"]["report_date"])"
         
-        thisAnnotation.report = report as! AnyObject
+        thisAnnotation.report = report
         
         let dateString = _date
         let dateFormatter = NSDateFormatter()
@@ -109,8 +110,11 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         let region = getViewportBoundaryString(mapView.visibleCoordinateBounds)
         let polygon = "SRID=4326;POLYGON((" + region + "))"
         let parameters = [
-            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
         ]
+        
+        print("polygon \(polygon)")
+        print("parameters \(parameters)")
 
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters)
             .responseJSON { response in
@@ -118,7 +122,10 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
                 switch response.result {
                 case .Success(let value):
                     
+                    print("value \(value)")
+                    
                     let returnValue = value["features"] as! [AnyObject]
+
                     self.reports = returnValue // WE NEED TO FILTER DOWN SO THERE ARE NO DUPLICATE REPORTS LOADED ONTO THE MAP
                     self.addReportsToMap(mapView, reports:self.reports)
                     
@@ -133,20 +140,19 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     
     func addReportsToMap(mapView: AnyObject, reports: NSArray) {
         
+        let _reportObject = JSON(self.reportObject)
+
         for _report in reports {
             
-            if _report.objectForKey("id")?.string != self.reportObject["id"].string {
-                let reportGeometry = _report.objectForKey("geometry")
-                let reportGeometries = reportGeometry!.objectForKey("geometries")
-                let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
+            let _thisReport = JSON(_report)
+            
+            if "\(_thisReport["id"])" != "\(_reportObject["id"])" {
+                let _geometry = _thisReport["geometry"]["geometries"][0]["coordinates"]
                 
-                reportLongitude = reportCoordinates[0]
-                reportLatitude = reportCoordinates[1]
+                reportLongitude = _geometry[0].double
+                reportLatitude = _geometry[1].double
                 
-                self.addReportToMap(mapView, report: JSON(_report), latitude: reportCoordinates[1], longitude: reportCoordinates[0], center:false)
-                print("report added")
-            } else {
-                print("report skipped")
+                self.addReportToMap(mapView, report: _report, latitude: reportLatitude, longitude: reportLongitude, center:false)
             }
             
         }
@@ -167,19 +173,99 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func setCoordinateDefaults() {
-        let reportCoordinates = self.reportObject["geometry"]["geometries"][0]["coordinates"]
+        let _tempReport = JSON(self.reportObject)
+        let reportCoordinates = _tempReport["geometry"]["geometries"][0]["coordinates"]
         
         reportLongitude = reportCoordinates[0].double
         reportLatitude = reportCoordinates[1].double
     }
     
-    func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
-        return nil
+    
+    
+    //
+    // MARK: Mapbox Overrides
+    //
+    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+        self.loadAllReportsInRegion(mapView)
     }
     
-    // Allow callout view to appear when an annotation is tapped.
+    func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
+
+        guard annotation is MGLPointAnnotation else {
+            return nil
+        }
+        
+        let report = JSON(annotation.report)
+        let reuseIdentifier = "report_\(report["id"])"
+        
+        // For better performance, always try to reuse existing annotations.
+        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
+        
+        if annotationView == nil {
+
+            // Add outline to the Report marker view
+            //
+            annotationView = MGLAnnotationView(reuseIdentifier: reuseIdentifier)
+            annotationView!.frame = CGRectMake(0, 0, 64, 64)
+            annotationView?.backgroundColor = UIColor.clearColor()
+
+            // Add Report > Image to the marker view
+            //
+            let reportImageURL: NSURL = NSURL(string: "\(report["properties"]["images"][0]["properties"]["icon"])")!
+            
+            let reportImageView = UIImageView()
+            var reportImageUpdate: Image?
+            reportImageView.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
+            reportImageView.backgroundColor = UIColor.whiteColor()
+            
+            reportImageView.kf_indicatorType = .Activity
+            reportImageView.kf_showIndicatorWhenLoading = true
+            
+            reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                
+                reportImageUpdate = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                
+                reportImageView.image = reportImageUpdate
+                reportImageView.layer.cornerRadius = reportImageView.frame.size.width / 2
+                reportImageView.clipsToBounds = true
+                
+                reportImageView.layer.cornerRadius = reportImageView.frame.width / 2
+                reportImageView.layer.borderWidth = 4
+                reportImageView.layer.borderColor = UIColor.whiteColor().CGColor
+
+            })
+
+            //
+            //
+            annotationView?.addSubview(reportImageView)
+            annotationView?.bringSubviewToFront(reportImageView)
+
+            // If report is closed, at the action marker view
+            //
+            if "\(report["properties"]["state"])" == "closed" {
+                print("show report view closed badge")
+                let reportBadgeImageView = UIImageView()
+                let reportBadgeImage = UIImage(named: "icon--Badge")!
+                reportBadgeImageView.contentMode = .ScaleAspectFill
+                
+                reportBadgeImageView.image = reportBadgeImage
+                
+                reportBadgeImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+
+                annotationView?.addSubview(reportBadgeImageView)
+                annotationView?.bringSubviewToFront(reportBadgeImageView)
+            }
+            else {
+                print("hide report closed badge")
+            }
+            
+        }
+        
+        return annotationView
+    }
+
     func mapView(mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-        print("annotation tapped")
         return true
     }
     
@@ -206,46 +292,8 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         
         nextViewController.singleReport = true
         nextViewController.reports = [annotation.report]
-
+        
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
-    
-    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-        self.loadAllReportsInRegion(mapView)
-    }
-    
-    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        // Try to reuse the existing ‘pisa’ annotation image, if it exists.
-        var annotationImage = mapView.dequeueReusableAnnotationImageWithIdentifier("pisa")
-        
-        if annotationImage == nil {
-            
-            let report = JSON(annotation.report)
-            
-            print("report>properties \(report["properties"]["images"][0]["properties"]["icon"].string)")
-            
-            if let reportImageUrl = report["properties"]["images"][0]["properties"]["icon"].string {
-                
-                let image = NSURL(string: reportImageUrl)
-                    .flatMap { NSData(contentsOfURL: $0) }
-                    .flatMap { UIImage(data: $0) }
-                
-                annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: "pisa")
-                
-                
-//                KingfisherManager.sharedManager.retrieveImageWithURL(reportImageUrl, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) -> () in
-//                    print(image)
-//                    annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: report["properties"]["images"][0]["properties"]["thumbnail"].string!)
-//                })
-            } else {
-                let image = UIImage(named: "Icon--ReportPin")
-                
-                annotationImage = MGLAnnotationImage(image: image!, reuseIdentifier: "pisa")
-            }
-            
-        }
-        
-        return annotationImage
-    }
-    
+
 }
