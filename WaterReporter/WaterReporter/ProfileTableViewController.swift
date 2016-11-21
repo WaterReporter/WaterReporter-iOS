@@ -459,10 +459,19 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     let json = JSON(value)
                     
                     if let data: AnyObject = json.rawValue {
-                        NSUserDefaults.standardUserDefaults().setValue(data["id"], forKeyPath: "currentUserAccountUID")
                         
-                        self.userId = "\(data["id"])"
+                        // Set the user id as a number and save it to the application cache
+                        //
+                        let _user_id = data["id"] as! NSNumber
+                        NSUserDefaults.standardUserDefaults().setValue(_user_id, forKeyPath: "currentUserAccountUID")
+                        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
+                        
+                        // Set user id to view variable
+                        //
+                        self.userId = "\(_user_id)"
 
+                        // Continue loading the user profile
+                        //
                         self.attemptLoadUserProfile()
                         
                     }
