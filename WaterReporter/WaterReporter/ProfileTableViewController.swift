@@ -525,7 +525,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     func attemptLoadUserActions() {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"},{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}],\"   order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(userId!)\"},{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
         ]
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
@@ -736,10 +736,113 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileActionCell", forIndexPath: indexPath) as! UserProfileActionsTableViewCell
             
             guard (self.userActions != nil) else { return cell }
-
-            if let _report_description = self.userActions!["features"][indexPath.row]["properties"]["report_description"].string {
-                cell.labelUserProfileSubmissionRowName.text = _report_description
+            
+            let _thisSubmission = self.userActions!["features"][indexPath.row]["properties"]
+            print("Show _thisSubmission \(_thisSubmission)")
+            
+            // Report > Owner > Image
+            //
+            if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
+                
+                let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
+                
+                cell.imageViewReportOwnerImage.kf_indicatorType = .Activity
+                cell.imageViewReportOwnerImage.kf_showIndicatorWhenLoading = true
+                
+                cell.imageViewReportOwnerImage.kf_setImageWithURL(reportOwnerProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    cell.imageViewReportOwnerImage.image = image
+                })
             }
+            else {
+                cell.imageViewReportOwnerImage.image = nil
+            }
+            
+            // Report > Owner > Name
+            //
+            if let _first_name = _thisSubmission["owner"]["properties"]["first_name"].string,
+                let _last_name = _thisSubmission["owner"]["properties"]["last_name"].string {
+                cell.reportOwnerName.text = "\(_first_name) \(_last_name)"
+            } else {
+                cell.reportOwnerName.text = "Unknown Reporter"
+            }
+            
+            
+            // Report > Territory > Name
+            //
+            if let _territory_name = _thisSubmission["territory"]["properties"]["name"].string {
+                cell.reportTerritoryName.text = "\(_territory_name)"
+            }
+            else {
+                cell.reportTerritoryName.text = "Unknown Watershed"
+            }
+            
+            // Report > Date
+            //
+            let reportDate = _thisSubmission["report_date"].string
+            
+            if (reportDate != nil) {
+                let dateString: String = reportDate!
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                
+                let stringToFormat = dateFormatter.dateFromString(dateString)
+                dateFormatter.dateFormat = "MMM d, yyyy"
+                
+                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                
+                if let thisDisplayDate: String? = displayDate {
+                    cell.reportDate.text = thisDisplayDate
+                }
+            }
+            else {
+                cell.reportDate.text = ""
+            }
+            
+            // Report > Description
+            //
+            cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
+            
+            // Report > Groups
+            //
+            cell.labelReportGroups.text = "Report Group Names"
+            
+            // Report > Image
+            //
+            //
+            // REPORT > IMAGE
+            //
+            var reportImageURL:NSURL!
+            
+            if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
+                reportImageURL = NSURL(string: String(thisReportImageURL))
+            }
+            
+            cell.reportImageView.kf_indicatorType = .Activity
+            cell.reportImageView.kf_showIndicatorWhenLoading = true
+            
+            cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                
+                if (image != nil) {
+                    cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+            })
+            
+            // Buttons > Share
+            //
+            
+            // Buttons > Map
+            //
+            
+            // Buttons > Directions
+            //
+            cell.buttonReportDirections.addTarget(self, action: #selector(ProfileTableViewController.openUserSubmissionDirectionsURL(_:)), forControlEvents: .TouchUpInside)
+            
+            // Buttons > Comments
+            //
+            
             
             return cell
         } else if (tableView.restorationIdentifier == "groupsTableView") {

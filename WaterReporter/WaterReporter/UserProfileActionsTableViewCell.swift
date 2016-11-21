@@ -10,7 +10,23 @@ import UIKit
 
 class UserProfileActionsTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var labelUserProfileSubmissionRowName: UILabel!
+    
+    @IBOutlet weak var imageViewReportOwnerImage: UIImageView!
+    @IBOutlet weak var reportOwnerImageButton: UIButton!
+    
+    @IBOutlet weak var reportOwnerName: UILabel!
+    @IBOutlet weak var reportTerritoryName: UILabel!
+    @IBOutlet weak var reportDate: UILabel!
+    @IBOutlet weak var reportImageView: UIImageView!
+    
+    @IBOutlet weak var buttonReportShare: UIButton!
+    @IBOutlet weak var buttonReportMap: UIButton!
+    @IBOutlet weak var buttonReportDirections: UIButton!
+    @IBOutlet weak var buttonReportComments: UIButton!
+
+    @IBOutlet weak var labelReportDescription: UILabel!
+    @IBOutlet weak var labelReportGroups: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
