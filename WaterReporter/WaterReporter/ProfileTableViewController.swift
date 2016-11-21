@@ -157,7 +157,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBAction func openUserSubmissionMapView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ActivityMapViewController") as! ActivityMapViewController
-        d
+
         let _thisReport = self.userSubmissions!["features"][sender.tag]
         
         nextViewController.reportObject = _thisReport
@@ -166,7 +166,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     }
 
-    
     
     //
     // MARK: Variables
