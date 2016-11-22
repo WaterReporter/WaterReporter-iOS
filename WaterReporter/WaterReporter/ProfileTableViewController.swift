@@ -273,6 +273,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         self.actionsTableView.rowHeight = UITableViewAutomaticDimension;
         self.actionsTableView.estimatedRowHeight = 368.0;
 
+//        self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
+//        self.groupsTableView.estimatedRowHeight = 96.0;
+
         
         //
         //
@@ -1011,6 +1014,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             if let _group_name = self.userGroups!["features"][indexPath.row]["properties"]["organization"]["properties"]["name"].string {
                 cell.labelUserProfileGroupName.text = _group_name
             }
+            
+            cell.buttonGroupSelection.tag = indexPath.row
 
             // Display Group Image
             if let _group_image_url = self.userGroups!["features"][indexPath.row]["properties"]["organization"]["properties"]["picture"].string {

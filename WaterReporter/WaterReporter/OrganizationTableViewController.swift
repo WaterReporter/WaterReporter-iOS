@@ -116,7 +116,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
         switch field.numberOfLines {
         case 0:
-            if sender.view?.restorationIdentifier == "labelUserProfileDescription" {
+            if sender.view?.restorationIdentifier == "labelGroupProfileDescription" {
                 field.numberOfLines = 3
             }
             else {
@@ -370,7 +370,12 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         if let _organization_name = self.groupProfile!["properties"]["organization"]["properties"]["name"].string {
             self.labelGroupProfileName.text = _organization_name
         }
-        
+
+        // Display group's organization name
+        if let _organization_description = self.groupProfile!["properties"]["organization"]["properties"]["description"].string {
+            self.labelGroupProfileDescription.text = _organization_description
+        }
+
         // Display user's profile picture
         var groupProfileImageURL: NSURL!
         
