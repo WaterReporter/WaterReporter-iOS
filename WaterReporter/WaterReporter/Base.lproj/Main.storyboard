@@ -2021,6 +2021,12 @@
                                                             <color key="textColor" red="0.24705882352941178" green="0.24705882352941178" blue="0.24705882352941178" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bk5-wY-oZL">
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
+                                                            <connections>
+                                                                <action selector="openUserGroupView:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="3kK-fd-ZRI"/>
+                                                            </connections>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="trailingMargin" secondItem="RLy-0N-Lm8" secondAttribute="trailing" id="5P7-vv-aNh"/>
@@ -2029,10 +2035,15 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="bk5-wY-oZL" secondAttribute="bottom" id="Fra-1j-XTm"/>
                                                     <constraint firstItem="7YI-vQ-VQD" firstAttribute="centerY" secondItem="yT9-eL-sGF" secondAttribute="centerY" id="NNR-T4-4z4"/>
+                                                    <constraint firstItem="bk5-wY-oZL" firstAttribute="leading" secondItem="yT9-eL-sGF" secondAttribute="leading" id="T5e-T2-qc1"/>
+                                                    <constraint firstAttribute="trailing" secondItem="bk5-wY-oZL" secondAttribute="trailing" id="rK9-zD-zGe"/>
+                                                    <constraint firstItem="bk5-wY-oZL" firstAttribute="top" secondItem="yT9-eL-sGF" secondAttribute="top" id="rSo-4c-dnm"/>
                                                     <constraint firstItem="7YI-vQ-VQD" firstAttribute="leading" secondItem="yT9-eL-sGF" secondAttribute="leading" constant="16" id="tbK-Ho-l9Z"/>
                                                 </constraints>
                                                 <connections>
+                                                    <outlet property="buttonGroupSelection" destination="bk5-wY-oZL" id="3UX-6Y-GAW"/>
                                                     <outlet property="imageViewUserProfileGroup" destination="7YI-vQ-VQD" id="vft-nj-tCB"/>
                                                     <outlet property="labelUserProfileGroupName" destination="RLy-0N-Lm8" id="M8g-lV-Ya0"/>
                                                 </connections>
@@ -2486,7 +2497,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aTQ-gy-ukc">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aTQ-gy-ukc">
                                         <rect key="frame" x="88" y="24" width="279" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -2507,7 +2518,7 @@
                                                     <color key="titleColor" red="0.074509803920000006" green="0.66666666669999997" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="changeUserProfileTab:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="RNs-Vl-5l1"/>
+                                                    <action selector="changeGroupProfileTab:" destination="myK-YS-uzI" eventType="touchUpInside" id="01f-eF-I7D"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="buttonTabGroupLabel" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJ8-cD-J3q">
@@ -2516,7 +2527,7 @@
                                                     <color key="titleColor" red="0.074509803920000006" green="0.66666666669999997" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="changeUserProfileTab:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="uMz-PR-VPI"/>
+                                                    <action selector="changeGroupProfileTab:" destination="myK-YS-uzI" eventType="touchUpInside" id="dma-rn-ioO"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" restorationIdentifier="buttonTabActionNumber" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KkD-R8-du4">
@@ -2526,7 +2537,7 @@
                                                     <color key="titleColor" red="0.074509803920000006" green="0.66666666669999997" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="changeUserProfileTab:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="kRQ-WK-ksZ"/>
+                                                    <action selector="changeGroupProfileTab:" destination="myK-YS-uzI" eventType="touchUpInside" id="UD6-SR-hGa"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" restorationIdentifier="buttonTabGroupNumber" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gw-gc-aoD">
@@ -2536,7 +2547,7 @@
                                                     <color key="titleColor" red="0.074509803920000006" green="0.66666666669999997" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="changeUserProfileTab:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="nUe-1p-I61"/>
+                                                    <action selector="changeGroupProfileTab:" destination="myK-YS-uzI" eventType="touchUpInside" id="Mm6-d2-VfF"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="buttonTabSubmissionLabel" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgs-Pn-y9x">
@@ -2545,7 +2556,7 @@
                                                     <color key="titleColor" red="0.074509803920000006" green="0.66666666669999997" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="changeUserProfileTab:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="efr-Wo-Ngi"/>
+                                                    <action selector="changeGroupProfileTab:" destination="myK-YS-uzI" eventType="touchUpInside" id="Z75-2T-F9i"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" restorationIdentifier="buttonTabSubmissionNumber" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zz-SX-PEb">
@@ -2555,7 +2566,7 @@
                                                     <color key="titleColor" red="0.074509803920000006" green="0.66666666669999997" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="changeUserProfileTab:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="EEU-eY-4ha"/>
+                                                    <action selector="changeGroupProfileTab:" destination="myK-YS-uzI" eventType="touchUpInside" id="cJs-fW-RcO"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -2780,6 +2791,18 @@
                     <navigationItem key="navigationItem" id="q2B-gC-OWY"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="1000"/>
+                    <connections>
+                        <outlet property="buttonGroupProfileActionsCount" destination="KkD-R8-du4" id="bX4-Xc-zYy"/>
+                        <outlet property="buttonGroupProfileActionsLabel" destination="zgZ-QU-h5K" id="nqy-je-KU2"/>
+                        <outlet property="buttonGroupProfileSubmissionsCount" destination="2zz-SX-PEb" id="1EM-Fp-Pp0"/>
+                        <outlet property="buttonGroupProfileSubmissionsLabel" destination="hgs-Pn-y9x" id="MkW-ja-MUk"/>
+                        <outlet property="buttonGroupProfileUsersCount" destination="6gw-gc-aoD" id="8jP-Rf-3rB"/>
+                        <outlet property="buttonGroupProfileUsersLabel" destination="cJ8-cD-J3q" id="jwa-QF-4fI"/>
+                        <outlet property="imageViewGroupProfileImage" destination="Tjv-jY-Wvw" id="ucC-uG-TjM"/>
+                        <outlet property="labelGroupProfileDescription" destination="S80-Ll-J29" id="Ijr-Qe-jEI"/>
+                        <outlet property="labelGroupProfileName" destination="aTQ-gy-ukc" id="Xv1-dY-L1Y"/>
+                        <outlet property="submissionTableView" destination="tpm-Vt-odD" id="JVh-Tx-YJh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="si9-DA-UCZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

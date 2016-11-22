@@ -195,10 +195,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     @IBAction func openUserGroupView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
         
-        //nextViewController.reportObject = self.userActionsObjects[sender.tag]
+        let _group_id = self.userGroups!["features"][sender.tag]["id"]
+        nextViewController.groupId = "\(_group_id)"
+        nextViewController.groupObject = self.userGroups!["features"][sender.tag]
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
-        
     }
 
     
@@ -211,6 +212,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     var userObject: JSON?
     var userProfile: JSON?
     var userGroups: JSON?
+    var userGroupsObjects = [AnyObject]()
     var userSubmissions: JSON?
     var userSubmissionsObjects = [AnyObject]()
     var userActions: JSON?
@@ -464,7 +466,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                         //
                         let _user_id = data["id"] as! NSNumber
                         NSUserDefaults.standardUserDefaults().setValue(_user_id, forKeyPath: "currentUserAccountUID")
-                        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
                         
                         // Set user id to view variable
                         //
@@ -499,6 +500,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 
                 // Assign response to groups variable
                 self.userGroups = JSON(value)
+                self.userGroupsObjects = value["features"] as! [AnyObject]
                 
                 // Tell the refresh control to stop spinning
                 //self.refreshControl?.endRefreshing()

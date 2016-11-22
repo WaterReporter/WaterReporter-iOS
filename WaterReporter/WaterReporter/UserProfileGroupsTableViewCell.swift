@@ -12,6 +12,7 @@ class UserProfileGroupsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var imageViewUserProfileGroup: UIImageView!
     @IBOutlet weak var labelUserProfileGroupName: UILabel!
+    @IBOutlet weak var buttonGroupSelection: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
