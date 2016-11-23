@@ -254,7 +254,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     func loadGroups() {
         
-        
     }
     
     //
@@ -275,7 +274,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // Make sure that the Done/Save button is disabled
         //
         self.navigationItem.rightBarButtonItem?.enabled = false
-
+        
         //
         // Make doubly sure the keyboard is closed
         //
@@ -286,9 +285,59 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // Make sure our view is scrolled to the top
         //
         self.tableView.setContentOffset(CGPointZero, animated: false)
+        
+    }
+
+    func finishedSaving() {
+        
+        //
+        // Create a view that covers the entire screen
+        //
+        self.loadingView.removeFromSuperview()
+        
+        //
+        // Make sure that the Done/Save button is disabled
+        //
+        self.navigationItem.rightBarButtonItem?.enabled = true
+        
+        //
+        // Make doubly sure the keyboard is closed
+        //
+        self.textfieldReportDate.resignFirstResponder()
+        self.textareaReportComment.resignFirstResponder()
+        
+        //
+        // Make sure our view is scrolled to the top
+        //
+        self.tableView.setContentOffset(CGPointZero, animated: false)
+        
+        
+        // Reset all fields
+        self.imageReportImagePreview.image = UIImage(named: "Icon--EmptyImage")
+        self.imageReportImagePreviewIsSet = false
+        
+//        self.userSelectedCoorindates = CLLocationCoordinate2D()
+        
+        self.labelReportLocationLatitude.text = "Latitude: Unknown"
+        self.labelReportLocationLongitude.text = "Longitude Unknown"
+        self.textareaReportComment.text = ""
+
+        // Reset date field
+        let dateFormatter = NSDateFormatter()
+        let date = NSDate()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        textfieldReportDate.text = dateFormatter.stringFromDate(date)
+
+        //
+        buttonReportImageRemove.hidden = true;
+        buttonReportImageRemoveIcon.hidden = true;
+        
+        buttonReportImage.hidden = false
+        buttonReportImageAddIcon.hidden = false
 
     }
-    
+
     func isReady() {
         buttonReportImageRemove.hidden = true;
         buttonReportImageRemoveIcon.hidden = true;
@@ -506,6 +555,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         var parameters: [String: AnyObject] = [
             "report_description": self.textareaReportComment.text!,
+            "is_public": "true",
             "report_date": self.textfieldReportDate.text!,
             "geometry": geometryCollection
         ]
@@ -562,6 +612,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                                             
                                             print("Response Sucess \(value)")
                                             
+                                            // Hide the loading indicator
+                                            self.finishedSaving()
+                                            
+                                            // Send user to the Activty Feed
                                             self.tabBarController?.selectedIndex = 0
                                             
                                         case .Failure(let error):
