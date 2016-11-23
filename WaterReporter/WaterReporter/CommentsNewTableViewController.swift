@@ -11,10 +11,16 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
+protocol NewCommentReportUpdaterDelegate {
+    func sendReport(reportId: String, report: AnyObject)
+    func reportLoadingComplete(isFinished: Bool)
+}
+
 class CommentsNewTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
     
-    var loadingView: UIView!
-
+    //
+    // MARK: @IBOutlets
+    //
     @IBOutlet var indicatorSavingNewComment: UIView!
     @IBOutlet weak var indicatorSavingNewCommentLabel: UILabel!
     
@@ -31,12 +37,42 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
 
     @IBOutlet weak var textfieldCommentBody: UITextView!
     
-    var reportId: String!
-    var reportState: String!
+    
+    //
+    // MARK: Variables
+    //
 
+    var delegate: NewCommentReportUpdaterDelegate?
+
+    var reportId: String!
+    var report: JSON?
+    var reportState: String!
+    var userId: String!
+    var userObject: JSON?
+    var userProfile: JSON?
+    var loadingView: UIView!
+
+    
+    //
+    // MARK: Override
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // Check to see if a user id was passed to this view from
+        // another view. If no user id was passed, then we know that
+        // we should be displaying the acting user's profile
+        
+        if (self.userId == nil) {
+            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                self.userId = "\(userIdNumber)"
+                self.attemptLoadUserProfile()
+            } else {
+                self.attemptRetrieveUserID()
+            }
+        }
+
         
         //
         // Make sure we are getting 'auto layout' specific sizes
@@ -54,8 +90,7 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         self.navigationBarButtonCancel.action = #selector(CommentsNewTableViewController.dimissNewCommentViewController(_:))
         
         self.navigationBarButtonSave.target = self
-        self.navigationBarButtonSave.action = #selector(CommentsNewTableViewController.attemptOpenSaveCommentTypeSelector(_:))
-
+        
         //
         //
         //
@@ -225,17 +260,33 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         })
         thisActionSheet.addAction(saveCommentAction)
         
-        let saveCommentWithCloseAction = UIAlertAction(title: "Save Comment & Close Report", style: .Default, handler: {
-            UIAlertAction in
-            self.attemptNewReportCommentSave("closed")
-        })
-        thisActionSheet.addAction(saveCommentWithCloseAction)
-        
+        //
+        // Determine if the Close Report or Reopen Report button should be visible
+        //
+        if (self.report!["properties"]["state"] == "open") {
+            let saveCommentWithCloseAction = UIAlertAction(title: "Save Comment & Close Report", style: .Default, handler: {
+                UIAlertAction in
+                self.attemptNewReportCommentSave("closed")
+            })
+            thisActionSheet.addAction(saveCommentWithCloseAction)
+        }
+        else if (self.report!["properties"]["state"] == "closed") {
+            let saveCommentWithReopenAction = UIAlertAction(title: "Save Comment & Reopen Report", style: .Default, handler: {
+                UIAlertAction in
+                self.attemptNewReportCommentSave("open")
+            })
+            thisActionSheet.addAction(saveCommentWithReopenAction)
+        }
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         thisActionSheet.addAction(cancelAction)
         
         presentViewController(thisActionSheet, animated: true, completion: nil)
         
+    }
+    
+    func attemptNewReportCommentSaveNonAdmin(sender: UIBarButtonItem) {
+        self.attemptNewReportCommentSave()
     }
 
     func attemptNewReportCommentSave(reportStatus: String = "") {
@@ -304,10 +355,56 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                                             
                                             print("Response Success \(value)")
                                             
-                                            self.dismissViewControllerAnimated(true, completion: {
-                                                self.commentImagePreview.image = nil
-                                                self.textfieldCommentBody.text = nil
-                                            })
+                                            
+                                            if (reportStatus != "") {
+                                                print("Preparing to close report")
+                                                
+                                                let _report_parameters = [
+                                                    "state": reportStatus
+                                                ]
+
+                                                Alamofire.request(.PATCH, Endpoints.POST_REPORT + "/\(self.reportId)", parameters: _report_parameters, headers: headers, encoding: .JSON)
+                                                    .responseJSON { response in
+                                                        
+                                                        print("Response \(response)")
+                                                        
+                                                        switch response.result {
+                                                        case .Success(let value):
+                                                            
+                                                            print("Response Sucess \(value)")
+                                                            
+                                                            let json = JSON(value)
+
+                                                            if let _delegate = self.delegate {
+                                                                _delegate.sendReport("\(json["id"])", report: value)
+                                                            }
+
+                                                            self.dismissViewControllerAnimated(true, completion: {
+                                                                
+                                                                if let _delegate = self.delegate {
+                                                                    _delegate.reportLoadingComplete(true)
+                                                                }
+
+                                                                self.commentImagePreview.image = nil
+                                                                self.textfieldCommentBody.text = nil
+                                                            })
+
+                                                        case .Failure(let error):
+                                                            
+                                                            print("Response Failure \(error)")
+                                                            
+                                                            break
+                                                        }
+                                                        
+                                                }
+
+                                            } else {
+                                                self.dismissViewControllerAnimated(true, completion: {
+                                                    self.commentImagePreview.image = nil
+                                                    self.textfieldCommentBody.text = nil
+                                                })
+                                            }
+                                            
                                         case .Failure(let error):
                                             print("Response Failure \(error)")
                                             break
@@ -333,10 +430,55 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                         
                         print("Response Success \(value)")
 
-                        self.dismissViewControllerAnimated(true, completion: {
-                            self.commentImagePreview.image = nil
-                            self.textfieldCommentBody.text = nil
-                        })
+                        if (reportStatus != "") {
+                            print("Preparing to close report")
+                            
+                            let _report_parameters = [
+                                "state": reportStatus
+                            ]
+                            
+                            Alamofire.request(.PATCH, Endpoints.POST_REPORT + "/\(self.reportId)", parameters: _report_parameters, headers: headers, encoding: .JSON)
+                                .responseJSON { response in
+                                    
+                                    print("Response \(response)")
+                                    
+                                    switch response.result {
+                                    case .Success(let value):
+                                        
+                                        print("Response Sucess \(value)")
+                                        
+                                        let json = JSON(value)
+                                        
+                                        if let _delegate = self.delegate {
+                                            print("DELEGATE CLOSING \(json["id"]) value: \(value)")
+                                            _delegate.sendReport("\(json["id"])", report: value)
+                                        }
+                                        
+                                        self.dismissViewControllerAnimated(true, completion: {
+                                            
+                                            if let _delegate = self.delegate {
+                                                _delegate.reportLoadingComplete(true)
+                                            }
+
+                                            self.commentImagePreview.image = nil
+                                            self.textfieldCommentBody.text = nil
+                                        })
+                                        
+                                    case .Failure(let error):
+                                        
+                                        print("Response Failure \(error)")
+                                        
+                                        break
+                                    }
+                                    
+                            }
+                            
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: {
+                                self.commentImagePreview.image = nil
+                                self.textfieldCommentBody.text = nil
+                            })
+                        }
                     case .Failure(let error):
 
                         print("Response Failure \(error)")
@@ -354,6 +496,94 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             textView.resignFirstResponder()
         }
         return true
+    }
+
+    //
+    // MARK: HTTP Request/Response functionality
+    //
+    func buildRequestHeaders() -> [String: String] {
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        
+        return [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+    }
+    
+    func attemptLoadUserProfile() {
+        
+        let _headers = buildRequestHeaders()
+        
+        let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
+        
+        print("revisedEndpoint \(revisedEndpoint)")
+        
+        Alamofire.request(.GET, revisedEndpoint, headers: _headers, encoding: .JSON).responseJSON { response in
+            
+            print("response.result \(response.result)")
+            
+            switch response.result {
+            case .Success(let value):
+                let json = JSON(value)
+                
+                if (json != nil) {
+                    
+                    // Retain the returned data
+                    self.userProfile = json
+                    
+                    print("self.userProfile \(self.userProfile)")
+                    
+                    if (self.userProfile!["properties"]["roles"].count >= 1) {
+                        if (self.userProfile!["properties"]["roles"][0]["properties"]["name"] == "admin") {
+                            // USER IS ADMIN
+                            self.navigationBarButtonSave.action = #selector(CommentsNewTableViewController.attemptOpenSaveCommentTypeSelector(_:))
+                        }
+                        else {
+                            self.navigationBarButtonSave.action = #selector(CommentsNewTableViewController.attemptNewReportCommentSaveNonAdmin(_:))
+                        }
+                    }
+                    
+                }
+                
+            case .Failure(let error):
+                print("Response Failure \(error)")
+            }
+        }
+        
+    }
+    
+    func attemptRetrieveUserID() {
+        
+        let _headers = buildRequestHeaders()
+        
+        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    let json = JSON(value)
+                    
+                    if let data: AnyObject = json.rawValue {
+                        
+                        // Set the user id as a number and save it to the application cache
+                        //
+                        let _user_id = data["id"] as! NSNumber
+                        NSUserDefaults.standardUserDefaults().setValue(_user_id, forKeyPath: "currentUserAccountUID")
+                        
+                        // Set user id to view variable
+                        //
+                        self.userId = "\(_user_id)"
+                        
+                        // Continue loading the user profile
+                        //
+                        self.attemptLoadUserProfile()
+                        
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                }
+        }
     }
 
 }

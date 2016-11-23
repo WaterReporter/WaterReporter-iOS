@@ -72,6 +72,7 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
 
         NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountAccessToken")
         NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountUID")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("currentUserAccountUID")
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         

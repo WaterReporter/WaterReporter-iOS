@@ -12,7 +12,7 @@ import Kingfisher
 import SwiftyJSON
 import UIKit
 
-class CommentsTableViewController: UITableViewController {
+class CommentsTableViewController: UITableViewController, NewCommentReportUpdaterDelegate {
     
     
     //
@@ -79,28 +79,6 @@ class CommentsTableViewController: UITableViewController {
         // Setup pull to refresh functionality for our TableView
         //
         self.refreshControl?.addTarget(self, action: #selector(CommentsTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        
-        
-        //
-        //
-        //
-        //
-        // CHECK TO SEE IF WE NEED TO DISPLAY THE ACTION TAKEN BANNER
-        //
-        //
-        //
-        //
-        let _report = JSON(report)
-        print("State \(_report["properties"]["state"])")
-        
-        if (_report["properties"]["state"] == "closed") {
-            self.actionTakenBanner.hidden = false
-        }
-        else {
-            self.actionTakenBanner.frame.size.height = 0.0
-            self.actionTakenBannerHeight.constant = 0.0
-        }
-
 
     }
     
@@ -140,6 +118,8 @@ class CommentsTableViewController: UITableViewController {
             let addReportcommentViewController = nav.topViewController as! CommentsNewTableViewController
             
             addReportcommentViewController.reportId = reportId
+            addReportcommentViewController.report = JSON(report)
+            addReportcommentViewController.delegate = self
         }
     }
 
@@ -370,6 +350,30 @@ class CommentsTableViewController: UITableViewController {
                         self.page += 1
 
                         //
+                        //
+                        //
+                        //
+                        // CHECK TO SEE IF WE NEED TO DISPLAY THE ACTION TAKEN BANNER
+                        //
+                        //
+                        //
+                        //
+                        let _report = JSON(self.report)
+                        
+                        if ("\(_report["properties"]["state"])" == "closed") {
+                            
+                            self.actionTakenBanner.hidden = false
+                            self.actionTakenBanner.frame.size.height = 130.0
+                            self.actionTakenBannerHeight.constant = 130.0
+                        }
+                        else {
+                            
+                            
+                            self.actionTakenBanner.frame.size.height = 0.0
+                            self.actionTakenBannerHeight.constant = 0.0
+                        }
+
+                        //
                         // Dismiss the loading indicator
                         //
                         self.loadingComplete()
@@ -382,4 +386,18 @@ class CommentsTableViewController: UITableViewController {
             }
         
     }
+
+
+    //
+    // Delegate impmenetation
+    //
+    func sendReport(reportId: String, report: AnyObject) {
+        print("CommentsTableViewController::sendReport")
+        self.report = report
+        self.reportId = reportId
+    }
+    func reportLoadingComplete(isFinished: Bool) {
+        print("CommentsTableViewController::reportLoadingComplete")
+    }
+
 }

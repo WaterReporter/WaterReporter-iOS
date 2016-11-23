@@ -226,23 +226,12 @@ class LoginTableViewController: UITableViewController {
                                 self.displayErrorMessage("An Error Occurred", message:"Please check the email address and password you entered and try again.")
                             }
                             else {
-                                print("nil")
-                                print(value)
-                                
-                                // var attemptToDismissLoginTableViewController: Bool = true;
-                                
                                 NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
                                 NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
                                 
-                                //
-                                //
-                                //
                                 self.textfieldPassword.text = ""
                                 self.isReady()
 
-                                //
-                                //
-                                //
                                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                                 
                                 let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
