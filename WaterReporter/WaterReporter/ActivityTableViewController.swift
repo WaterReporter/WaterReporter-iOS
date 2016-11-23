@@ -27,7 +27,9 @@ class ActivityTableViewController: UITableViewController {
     //
     @IBAction func shareButtonClicked(sender: UIButton) {
         
-        let reportId: String = ""
+        let _thisReport = JSON(self.reports[(sender.tag)])
+
+        let reportId: String = "\(_thisReport["id"])"
         let textToShare = "Check out this report on WaterReporter.org"
         
         if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
@@ -260,7 +262,6 @@ class ActivityTableViewController: UITableViewController {
             cell.reportObject = report
             
             let reportDescription = report?.objectForKey("report_description")
-            let reportDate = report?.objectForKey("report_date")!.string
             let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
             //        let reportClosed = report?.objectForKey("closed_by")
             
@@ -368,7 +369,9 @@ class ActivityTableViewController: UITableViewController {
             
             cell.reportOwnerImage.kf_setImageWithURL(reportOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                 (image, error, cacheType, imageUrl) in
-                cell.reportOwnerImage.image = image
+                if (image != nil) {
+                    cell.reportOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
                 cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2
                 cell.reportOwnerImage.clipsToBounds = true
             })
@@ -396,6 +399,8 @@ class ActivityTableViewController: UITableViewController {
             //
             // DATE
             //
+            let reportDate = reportJson["report_date"].string
+            
             if (reportDate != nil) {
                 let dateString: String = reportDate!
                 
@@ -414,7 +419,6 @@ class ActivityTableViewController: UITableViewController {
             else {
                 cell.reportDate.text = ""
             }
-            
             //
             // PASS ON DATA TO TABLE CELL
             //

@@ -239,7 +239,9 @@ class CommentsTableViewController: UITableViewController {
             
             cell.commentOwnerImage.kf_setImageWithURL(commentOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                 (image, error, cacheType, imageUrl) in
-                cell.commentOwnerImage.image = image
+                if (image != nil) {
+                    cell.commentOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
                 cell.commentOwnerImage.layer.cornerRadius = cell.commentOwnerImage.frame.size.width / 2
                 cell.commentOwnerImage.clipsToBounds = true
             })
@@ -266,7 +268,9 @@ class CommentsTableViewController: UITableViewController {
                 
                 cell.commentDescriptionImage.kf_setImageWithURL(commentImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                     (image, error, cacheType, imageUrl) in
-                    cell.commentDescriptionImage.image = image
+                    if (image != nil) {
+                        cell.commentDescriptionImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                    }
                     cell.commentDescriptionImage.clipsToBounds = true
                     
                     cell.commentDescriptionImageHeightConstraint.constant = 200.0
