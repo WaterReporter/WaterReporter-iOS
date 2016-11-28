@@ -152,7 +152,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
         let _submissions = JSON(self.groupSubmissionsObjects)
         let reportId: String = "\(_submissions[sender.tag]["id"])"
-        let textToShare = "Check out this report on WaterReporter.org"
+        let textToShare = "Check out this report on WaterReporter"
         
         if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
             let objectsToShare = [textToShare, myWebsite]
@@ -167,7 +167,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
         let _actions = JSON(self.groupActionsObjects)
         let reportId: String = "\(_actions[sender.tag]["id"])"
-        let textToShare = "Check out this report on WaterReporter.org"
+        let textToShare = "Check out this report on WaterReporter"
         
         if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
             let objectsToShare = [textToShare, myWebsite]

@@ -33,10 +33,12 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
         
         let _userId = self.comments!["features"][sender.tag]["properties"]["owner"]["id"]
+        let _userObject = self.comments!["features"][sender.tag]["properties"]["owner"]
 
         print("nextViewController.userId")
         print(_userId)
         
+        nextViewController.userObject = _userObject
         nextViewController.userId = "\(_userId)"
 
         self.navigationController?.pushViewController(nextViewController, animated: true)
@@ -163,17 +165,26 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
         //
         // Comment Date
         //
-        let dateString: String! = _comment["properties"]["created"].string
+        let commentDate = _comment["properties"]["created"].string
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-        
-        let revisedDate: NSDate! = dateFormatter.dateFromString(dateString)
-        dateFormatter.dateFormat = "MMM d, yyyy"
-        
-        let _commentDisplayDate = dateFormatter.stringFromDate(revisedDate)
-        
-        cell.commentDatePosted.text = _commentDisplayDate
+        cell.commentDatePosted.text = ""
+
+        if (commentDate != nil) {
+            let dateString: String = commentDate!
+            
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            
+            if let stringToFormat = dateFormatter.dateFromString(dateString) {
+                dateFormatter.dateFormat = "MMM d, yyyy"
+                
+                let displayDate = dateFormatter.stringFromDate(stringToFormat)
+                
+                if let thisDisplayDate: String? = displayDate {
+                    cell.commentDatePosted.text = thisDisplayDate
+                }
+            }
+        }
 
         //
         //

@@ -224,6 +224,13 @@ class UserProfileEditTableViewController: UITableViewController, UIImagePickerCo
                                     
                                     parameters["images"] = images
                                     
+                                    // Make sure we're saving the profile image
+                                    if (images.count >= 1) {
+                                        if let thumbnail: String = imageResponse["thumbnail"].string {
+                                            parameters["picture"] = thumbnail
+                                        }
+                                    }
+
                                     Alamofire.request(.PATCH, _endpoint, parameters: parameters, headers: headers, encoding: .JSON)
                                         .responseJSON { response in
 

@@ -160,8 +160,11 @@ class UserProfileCreateTableViewController: UITableViewController, UIImagePicker
                 switch response.result {
                     case .Success(let value):
                         print("Request Success: \(value)")
-                        
+
                         if let userId = value.valueForKey("id") as? NSNumber {
+                            
+                            NSUserDefaults.standardUserDefaults().setValue(userId, forKeyPath: "currentUserAccountUID")
+                            
                             self.attemptUserProfileSave("\(userId)", headers: headers)
                         }
                     

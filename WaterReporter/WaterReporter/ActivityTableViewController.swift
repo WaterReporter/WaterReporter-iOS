@@ -30,7 +30,7 @@ class ActivityTableViewController: UITableViewController {
         let _thisReport = JSON(self.reports[(sender.tag)])
 
         let reportId: String = "\(_thisReport["id"])"
-        let textToShare = "Check out this report on WaterReporter.org"
+        let textToShare = "Check out this report on WaterReporter"
         
         if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
             let objectsToShare = [textToShare, myWebsite]

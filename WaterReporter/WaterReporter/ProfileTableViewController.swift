@@ -147,7 +147,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         let _submissions = JSON(self.userSubmissionsObjects)
         let reportId: String = "\(_submissions[sender.tag]["id"])"
-        let textToShare = "Check out this report on WaterReporter.org"
+        let textToShare = "Check out this report on WaterReporter"
         
         if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
             let objectsToShare = [textToShare, myWebsite]
@@ -162,7 +162,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         let _actions = JSON(self.userActionsObjects)
         let reportId: String = "\(_actions[sender.tag]["id"])"
-        let textToShare = "Check out this report on WaterReporter.org"
+        let textToShare = "Check out this report on WaterReporter"
         
         if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
             let objectsToShare = [textToShare, myWebsite]
@@ -253,23 +253,40 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // MARK: UIKit Overrides
     //
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+                
+        // Check for profile updates
+        //
+        if self.userObject == nil {
+
+            print("Check for updated user information")
+            
+            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                self.userId = "\(userIdNumber)"
+                self.attemptLoadUserProfile(self.userId, withoutReportReload: true)
+            } else {
+                self.attemptRetrieveUserID()
+            }
+
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Check to see if a user id was passed to this view from
         // another view. If no user id was passed, then we know that
         // we should be displaying the acting user's profile
-
         if (self.userId == nil) {
-            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-                self.userId = "\(userIdNumber)"
-            } else {
-                self.attemptRetrieveUserID()
-            }
+            
+            
         }
         
         // Show User Profile Information in Header View
-        if userObject != nil {
+        if self.userObject != nil && self.userId != nil {
+            
+            // We should never load from NSUserDefaults for this area
+            //
             
             // Retain the returned data
             self.userProfile = self.userObject
@@ -288,8 +305,15 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.displayUserProfileInformation()
             
         }
-        else {
-            self.attemptLoadUserProfile()
+        else if self.userId == nil {
+
+            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                self.userId = "\(userIdNumber)"
+                self.attemptLoadUserProfile(self.userId)
+            } else {
+                self.attemptRetrieveUserID()
+            }
+        
         }
 
         //
@@ -400,7 +424,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     }
     
-    func displayUserProfileInformation() {
+    func displayUserProfileInformation(withoutReportReload: Bool = false) {
         
         // Ensure we have loaded the user profile
         guard (self.userProfile != nil) else { return }
@@ -448,11 +472,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         //
         // Load and display other user information
         //
-        self.attemptLoadUserGroups()
-        
-        self.attemptLoadUserSubmissions()
-
-        self.attemptLoadUserActions()
+        if !withoutReportReload {
+            self.attemptLoadUserGroups()
+            
+            self.attemptLoadUserSubmissions()
+            
+            self.attemptLoadUserActions()
+        }
 
 
     }
@@ -470,11 +496,15 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         ]
     }
 
-    func attemptLoadUserProfile() {
+    func attemptLoadUserProfile(_user_id: String, withoutReportReload: Bool = false) {
+        
+        if userId == "" {
+            return
+        }
         
         let _headers = buildRequestHeaders()
 
-        let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
+        let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(_user_id)"
         
         print("revisedEndpoint \(revisedEndpoint)")
         
@@ -494,7 +524,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     self.userProfile = json
                     
                     // Show the data on screen
-                    self.displayUserProfileInformation()
+                    self.displayUserProfileInformation(withoutReportReload)
                 }
                 
             case .Failure(let error):
@@ -528,7 +558,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
                         // Continue loading the user profile
                         //
-                        self.attemptLoadUserProfile()
+                        self.attemptLoadUserProfile(self.userId)
                         
                     }
                     

@@ -28,9 +28,83 @@ class UserProfileCreateGroupsTableViewController: UITableViewController, UINavig
         // Show saving message
         self.status("saving")
         
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
+        let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["id"])"
+        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
         
-        self.presentViewController(nextViewController, animated: false, completion: nil)
+        var _temporary_groups: [AnyObject] = [AnyObject]()
+        var _temporary_organizations: [AnyObject] = [AnyObject]()
+
+        print("_organization_id_number \(_organization_id_number)")
+
+        //
+        // If organization_id is not submitted then we cannot act on the Join request
+        //
+        if _organization_id_number == "" {
+            return
+        }
+
+        // Set headers
+        let _headers = self.buildRequestHeaders()
+        let _endpoint = Endpoints.GET_USER_PROFILE + "\(_user_id_number)"
+        var _parameters: [String: AnyObject] = [
+            "groups": [AnyObject](),
+            "organization": [AnyObject]()
+        ]
+
+        //
+        // Create Joined date
+        //
+        let dateFormatter = NSDateFormatter()
+        let date = NSDate()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+
+        let _joined_on: String! = dateFormatter.stringFromDate(date)
+
+        //
+        // Add Group to the groups array
+        //
+        for _organization_id in tempGroups {
+            print("group id \(_organization_id)")
+            
+            let _group = [
+                "organization_id": "\(_organization_id)",
+                "joined_on": _joined_on
+            ]
+            
+            let _organization = [
+                "id": "\(_organization_id)"
+            ]
+
+            _temporary_groups.append(_group)
+            _temporary_organizations.append(_organization)
+            
+        }
+        
+        _parameters["groups"] = _temporary_groups
+        _parameters["organization"] = _temporary_organizations
+
+        //
+        print("PARAMETER CHECK \(_parameters)")
+
+        Alamofire.request(.PATCH, _endpoint, parameters: _parameters, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Request Success \(value)")
+                    
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
+                    
+                    self.presentViewController(nextViewController, animated: false, completion: nil)
+
+                    break
+                case .Failure(let error):
+                    print("Request Failure \(error)")
+                    break
+                }
+                
+        }
         
     }
     
@@ -51,7 +125,26 @@ class UserProfileCreateGroupsTableViewController: UITableViewController, UINavig
     
     @IBAction func joinGroup(sender: UIButton) {
         
+        let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["id"])"
         
+        self.tempGroups.append(_organization_id_number)
+        
+        print("joinGroup::finished::tempGroups \(self.tempGroups)")
+        
+        self.tableView.reloadData()
+        
+    }
+    
+    @IBAction func leaveGroup(sender: UIButton) {
+        
+        let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["id"])"
+        
+        self.tempGroups = self.tempGroups.filter() {$0 != _organization_id_number}
+        
+        print("leaveGroup::finished::tempGroups \(self.tempGroups)")
+    
+        self.tableView.reloadData()
+
     }
 
     
@@ -61,6 +154,8 @@ class UserProfileCreateGroupsTableViewController: UITableViewController, UINavig
     var loadingView: UIView!
     var groups: JSON?
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+    
+    var tempGroups: [String] = [String]()
 
     
     //
@@ -181,55 +276,62 @@ class UserProfileCreateGroupsTableViewController: UITableViewController, UINavig
     
     
     //
-    // MARK: Groups Functionality
-    //
-    
-    
-    //
     // MARK: Table Overrides
     //
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("groupTableViewCell", forIndexPath: indexPath) as! GroupTableViewCell
         
-        //
-        // Assign the organization logo to the UIImageView
-        //
-        cell.imageViewGroupLogo.tag = indexPath.row
+        if let _this_group = self.groups?["features"][indexPath.row]["properties"] {
         
-        var organizationImageUrl:NSURL!
-        
-        if let thisOrganizationImageUrl: String = self.groups?["features"][indexPath.row]["properties"]["picture"].string {
-            organizationImageUrl = NSURL(string: thisOrganizationImageUrl)
-        }
-        
-        cell.imageViewGroupLogo.kf_indicatorType = .Activity
-        cell.imageViewGroupLogo.kf_showIndicatorWhenLoading = true
-        
-        cell.imageViewGroupLogo.kf_setImageWithURL(organizationImageUrl, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-            (image, error, cacheType, imageUrl) in
-            cell.imageViewGroupLogo.image = image
-            cell.imageViewGroupLogo.layer.cornerRadius = cell.imageViewGroupLogo.frame.size.width / 2
-            cell.imageViewGroupLogo.clipsToBounds = true
-        })
-        
-        //
-        // Assign the organization name to the UILabel
-        //
-        if let thisOrganizationName: String = self.groups?["features"][indexPath.row]["properties"]["name"].string {
-            cell.labelGroupName.text = thisOrganizationName
-        }
+            //
+            // Assign the organization logo to the UIImageView
+            //
+            cell.imageViewGroupLogo.tag = indexPath.row
+            
+            var organizationImageUrl:NSURL!
+            
+            if let thisOrganizationImageUrl: String = _this_group["picture"].string {
+                organizationImageUrl = NSURL(string: thisOrganizationImageUrl)
+            }
+            
+            cell.imageViewGroupLogo.kf_indicatorType = .Activity
+            cell.imageViewGroupLogo.kf_showIndicatorWhenLoading = true
+            
+            cell.imageViewGroupLogo.kf_setImageWithURL(organizationImageUrl, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                cell.imageViewGroupLogo.image = image
+                cell.imageViewGroupLogo.layer.cornerRadius = cell.imageViewGroupLogo.frame.size.width / 2
+                cell.imageViewGroupLogo.clipsToBounds = true
+            })
+            
+            //
+            // Assign the organization name to the UILabel
+            //
+            if let thisOrganizationName: String = _this_group["name"].string {
+                cell.labelGroupName.text = thisOrganizationName
+            }
 
-        // Hide "Leave Group" UIButton by default. Since this is
-        // a newly registered user, there is no need to initially
-        // set Join/Leave UIButtons dynamically.
-        cell.buttonLeaveGroup.hidden = true
-        
-        //
-        //
-        //
-        //cell.buttonJoinGroup.tag = indexPath.row
-        //cell.buttonJoinGroup.addTarget(self, action: #selector(joinGroup(_:)), forControlEvents: .TouchUpInside)
+            cell.buttonJoinGroup.tag = indexPath.row
+            cell.buttonJoinGroup.addTarget(self, action: #selector(joinGroup(_:)), forControlEvents: .TouchUpInside)
+
+            cell.buttonLeaveGroup.tag = indexPath.row
+            cell.buttonLeaveGroup.addTarget(self, action: #selector(leaveGroup(_:)), forControlEvents: .TouchUpInside)
+
+            // Hide "Leave Group" UIButton by default. Since this is
+            // a newly registered user, there is no need to initially
+            // set Join/Leave UIButtons dynamically.
+            let _organization_id_number: String! = "\(_this_group["id"])"
+
+            if self.tempGroups.contains(_organization_id_number) {
+                cell.buttonLeaveGroup.hidden = false
+                cell.buttonJoinGroup.hidden = true
+            }
+            else {
+                cell.buttonLeaveGroup.hidden = true
+                cell.buttonJoinGroup.hidden = false
+            }
+        }
         
         return cell
     }
