@@ -542,7 +542,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         let grr = CLLocationCoordinate2DMake(98.35, 39.5)
 
         mapView.setCenterCoordinate(grr, zoomLevel: 15, animated: false)
-        mapView.removeAnnotations(mapView.annotations!)
+        
+        if (mapView.annotations?.count >= 1) {
+            mapView.removeAnnotations(mapView.annotations!)
+        }
     }
     
     

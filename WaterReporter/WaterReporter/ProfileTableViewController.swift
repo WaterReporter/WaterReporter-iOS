@@ -676,10 +676,20 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     func attemptLoadUserActions(isRefreshingReportsList: Bool = false) {
         
-        let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+        var _parameters = [
+            "q": "{\"filters\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}, {\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
             "page": "\(self.userActionsPage)"
         ]
+        
+        if (self.userProfile!["properties"]["roles"].count >= 1) {
+            if (self.userProfile!["properties"]["roles"][0]["properties"]["name"] == "admin") {
+                _parameters = [
+                    "q": "{\"filters\":[{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+                    "page": "\(self.userActionsPage)"
+                ]
+                
+            }
+        }
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
             .responseJSON { response in
