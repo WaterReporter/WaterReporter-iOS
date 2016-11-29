@@ -539,9 +539,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     func resetLocationOnMap(mapView: MGLMapView) {
         
         let _coordinates = CLLocationCoordinate2DMake(39.5, -98.35)
-        let grr = CLLocationCoordinate2DMake(98.35, 39.5)
 
-        mapView.setCenterCoordinate(grr, zoomLevel: 15, animated: false)
+        mapView.setCenterCoordinate(_coordinates, zoomLevel: 15, animated: false)
         
         if (mapView.annotations?.count >= 1) {
             mapView.removeAnnotations(mapView.annotations!)
