@@ -13,6 +13,9 @@ import UIKit
 
 class UserProfileSettingsTableViewController: UITableViewController, UINavigationControllerDelegate {
     
+    var notificationCount: Int = 2
+    var tempGroups: [String] = [String]()
+    
     @IBOutlet weak var buttonEditProfile: UIButton!
     @IBOutlet weak var buttonUserLogOut: UIButton!
     @IBOutlet weak var buttonGroups: UIButton!
@@ -29,6 +32,8 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
         super.viewDidLoad()
                 
         buttonUserLogOut.addTarget(self, action: #selector(UserProfileSettingsTableViewController.attemptUserLogOut(_:)), forControlEvents: .TouchUpInside)
+        
+        buttonGroups.enabled = false
         
         self.can_notify_owner_comment_on_owned_report.enabled = false
         self.can_notify_admin_user_joins_group.enabled = false
@@ -62,6 +67,16 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
         super.didReceiveMemoryWarning()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "showMyGroupsTableViewController" {
+            let destViewController = segue.destinationViewController as! UINavigationController
+            let _groupTableViewController = destViewController.topViewController as! GroupsTableViewController
+            
+            _groupTableViewController.tempGroups = self.tempGroups
+        }
+    }
+
     
     //
     // MARK: Table View Controller Customization
@@ -87,6 +102,20 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
         return 1.0
     }
     
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+        var numberOfRowsInSection: Int = 3
+        
+        switch(section) {
+            case 0:
+                numberOfRowsInSection = notificationCount
+                break
+            default:
+                break
+        }
+        
+        return numberOfRowsInSection
+    }
     
     //
     // MARK: Custom Functionality
@@ -216,40 +245,59 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
                     if (json != nil) {
                         let _user_profile = json
                         
+                        if (_user_profile["properties"]["groups"].count >= 1) {
+                            print("groups found")
+                            // Add groups to tempGroups
+                            self.tempGroups = self.createTempGroupsArray(_user_profile["properties"]["groups"])
+                            
+                        }
+                        else {
+                            print("no groups")
+                        }
+                        self.buttonGroups.enabled = true
+                        
+                        if (_user_profile["properties"]["roles"].count >= 1) {
+                            if (_user_profile["properties"]["roles"][0]["properties"]["name"] == "admin") {
+
+                                if _user_profile["properties"]["can_notify_admin_user_joins_group"] {
+                                    self.can_notify_admin_user_joins_group.on = _user_profile["properties"]["can_notify_admin_user_joins_group"].bool! || false
+                                }
+                                self.can_notify_admin_user_joins_group.enabled = true
+
+                                if _user_profile["properties"]["can_notify_admin_user_submits_report_in_territory"] {
+                                    self.can_notify_admin_user_submits_report_in_territory.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_territory"].bool! || false
+                                }
+                                self.can_notify_admin_user_submits_report_in_territory.enabled = true
+                                
+                                if _user_profile["properties"]["can_notify_admin_user_submits_report_in_group"] {
+                                    self.can_notify_admin_user_submits_report_in_group.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_group"].bool! || false
+                                }
+                                self.can_notify_admin_user_submits_report_in_group.enabled = true
+                                
+                                if _user_profile["properties"]["can_notify_admin_comment_on_report_in_territory"] {
+                                    self.can_notify_admin_comment_on_report_in_territory.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_territory"].bool! || false
+                                }
+                                self.can_notify_admin_comment_on_report_in_territory.enabled = true
+                                
+                                if _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"] {
+                                    self.can_notify_admin_comment_on_report_in_group.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"].bool! || false
+                                }
+                                self.can_notify_admin_comment_on_report_in_group.enabled = true
+                                
+                                // Update the total number of rows to display for administrators
+                                self.notificationCount = 7
+                            }
+                        }
+                        
                         if _user_profile["properties"]["can_notify_owner_comment_on_owned_report"] {
                             self.can_notify_owner_comment_on_owned_report.on = _user_profile["properties"]["can_notify_owner_comment_on_owned_report"].bool!
                         }
                         self.can_notify_owner_comment_on_owned_report.enabled = true
                         
-                        if _user_profile["properties"]["can_notify_admin_user_joins_group"] {
-                            self.can_notify_admin_user_joins_group.on = _user_profile["properties"]["can_notify_admin_user_joins_group"].bool! || false
-                        }
-                        self.can_notify_admin_user_joins_group.enabled = true
-
                         if _user_profile["properties"]["can_notify_owner_admin_closes_owned_report"] {
                             self.can_notify_owner_admin_closes_owned_report.on = _user_profile["properties"]["can_notify_owner_admin_closes_owned_report"].bool! || false
                         }
                         self.can_notify_owner_admin_closes_owned_report.enabled = true
-
-                        if _user_profile["properties"]["can_notify_admin_user_submits_report_in_territory"] {
-                            self.can_notify_admin_user_submits_report_in_territory.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_territory"].bool! || false
-                        }
-                        self.can_notify_admin_user_submits_report_in_territory.enabled = true
-
-                        if _user_profile["properties"]["can_notify_admin_user_submits_report_in_group"] {
-                            self.can_notify_admin_user_submits_report_in_group.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_group"].bool! || false
-                        }
-                        self.can_notify_admin_user_submits_report_in_group.enabled = true
-
-                        if _user_profile["properties"]["can_notify_admin_comment_on_report_in_territory"] {
-                            self.can_notify_admin_comment_on_report_in_territory.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_territory"].bool! || false
-                        }
-                        self.can_notify_admin_comment_on_report_in_territory.enabled = true
-
-                        if _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"] {
-                            self.can_notify_admin_comment_on_report_in_group.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"].bool! || false
-                        }
-                        self.can_notify_admin_comment_on_report_in_group.enabled = true
 
                         self.tableView.reloadData()
 
@@ -264,6 +312,17 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
             self.attemptRetrieveUserID()
         }
         
+    }
+    
+    func createTempGroupsArray(_groups: JSON) -> [String] {
+        
+        var _temp_groups: [String] = [String]()
+        
+        for _group in _groups {
+            _temp_groups.append("\(_group.1["properties"]["organization_id"])")
+        }
+        
+        return _temp_groups
     }
     
     func attemptRetrieveUserID() {

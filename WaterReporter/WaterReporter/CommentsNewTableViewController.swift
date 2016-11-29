@@ -91,6 +91,8 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         
         self.navigationBarButtonSave.target = self
         
+        self.navigationBarButtonSave.enabled = false
+        
         //
         //
         //
@@ -263,19 +265,19 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         //
         // Determine if the Close Report or Reopen Report button should be visible
         //
-        if (self.report!["properties"]["state"] == "open") {
-            let saveCommentWithCloseAction = UIAlertAction(title: "Save Comment & Close Report", style: .Default, handler: {
-                UIAlertAction in
-                self.attemptNewReportCommentSave("closed")
-            })
-            thisActionSheet.addAction(saveCommentWithCloseAction)
-        }
-        else if (self.report!["properties"]["state"] == "closed") {
+        if (self.report!["properties"]["state"] == "closed") {
             let saveCommentWithReopenAction = UIAlertAction(title: "Save Comment & Reopen Report", style: .Default, handler: {
                 UIAlertAction in
                 self.attemptNewReportCommentSave("open")
             })
             thisActionSheet.addAction(saveCommentWithReopenAction)
+        }
+        else {
+            let saveCommentWithCloseAction = UIAlertAction(title: "Save Comment & Close Report", style: .Default, handler: {
+                UIAlertAction in
+                self.attemptNewReportCommentSave("closed")
+            })
+            thisActionSheet.addAction(saveCommentWithCloseAction)
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -526,6 +528,8 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             case .Success(let value):
                 let json = JSON(value)
                 
+                self.navigationBarButtonSave.enabled = true
+
                 if (json != nil) {
                     
                     // Retain the returned data

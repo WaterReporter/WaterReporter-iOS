@@ -353,8 +353,9 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
                         else {
                             self.comments = JSON(value)
                         }
-
-                        self.comments = JSON(value)
+                        
+                        print("self.comments \(self.comments)")
+                        
                         
                         self.tableView.reloadData()
                         
