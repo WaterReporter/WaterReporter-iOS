@@ -25,6 +25,7 @@
 		C18D76A91DAD87EB0012584C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18D76A81DAD87EB0012584C /* Environment.swift */; };
 		C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */; };
 		C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19538F91DAD6896003C6FC5 /* CGColor.swift */; };
+		C197A1DA1DED00CF001958A7 /* UserProfileCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C197A1D91DED00CF001958A7 /* UserProfileCompleteViewController.swift */; };
 		C198C0D41DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198C0D31DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift */; };
 		C198C0D61DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C198C0D51DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift */; };
 		C19F677A1DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */; };
@@ -103,6 +104,7 @@
 		C18D76A81DAD87EB0012584C /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCreateTableViewController.swift; sourceTree = "<group>"; };
 		C19538F91DAD6896003C6FC5 /* CGColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGColor.swift; sourceTree = "<group>"; };
+		C197A1D91DED00CF001958A7 /* UserProfileCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCompleteViewController.swift; sourceTree = "<group>"; };
 		C198C0D31DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportGroupsTableViewController.swift; sourceTree = "<group>"; };
 		C198C0D51DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportGroupTableViewCell.swift; sourceTree = "<group>"; };
 		C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCreateGroupsTableViewController.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */,
 				C194FA301DD0F5D100D4082A /* UserProfileCreateTableViewController.swift */,
 				C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */,
+				C197A1D91DED00CF001958A7 /* UserProfileCompleteViewController.swift */,
 				C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */,
 			);
 			name = "User Profile";
@@ -564,6 +567,7 @@
 				C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */,
 				C1C5FD301DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift in Sources */,
 				C141055A1DC3E3CB00E538FA /* NewReportLocationSelector.swift in Sources */,
+				C197A1DA1DED00CF001958A7 /* UserProfileCompleteViewController.swift in Sources */,
 				C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */,
 				C1C5FD2B1DDB38E400EF6302 /* ProfileTableViewController.swift in Sources */,
 				C185025D1DC779BC00C0F0DA /* CommentTableViewCell.swift in Sources */,

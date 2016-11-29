@@ -720,7 +720,11 @@
                                 <action selector="dismissGroupSelector:" destination="D5I-n1-JCF" id="C8r-Ur-4GT"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Z8K-rT-8t2"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Z8K-rT-8t2">
+                            <connections>
+                                <action selector="saveGroupSelections:" destination="D5I-n1-JCF" id="UJJ-RN-UHd"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="viewActivityIndicator" destination="kO2-SA-jIo" id="K7E-Pr-WzN"/>
@@ -1696,7 +1700,7 @@
                                                     <rect key="frame" x="16" y="6" width="535" height="30"/>
                                                     <state key="normal" title="Add Groups to Report"/>
                                                     <connections>
-                                                        <segue destination="sAs-eV-1ET" kind="showDetail" id="ZYV-r4-UXs"/>
+                                                        <segue destination="sAs-eV-1ET" kind="showDetail" identifier="setGroupsForNewReport" id="ZYV-r4-UXs"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -3061,6 +3065,63 @@
             </objects>
             <point key="canvasLocation" x="3237.5999999999999" y="1343.9280359820091"/>
         </scene>
+        <!--Congratulations-->
+        <scene sceneID="jiZ-sU-Y9q">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZTX-cr-wlT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="UserProfileCompleteViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pRb-YC-SWS" customClass="UserProfileCompleteViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0SY-Hg-LZT"/>
+                        <viewControllerLayoutGuide type="bottom" id="XJV-hO-fjV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="12Y-QS-yKq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="badge--Congratulations" translatesAutoresizingMaskIntoConstraints="NO" id="KtC-3k-kDT">
+                                <rect key="frame" x="59" y="116" width="256" height="256"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="256" id="10i-Sq-ILW"/>
+                                    <constraint firstAttribute="width" constant="256" id="fnk-la-51G"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONGRATULATIONS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOC-dc-cRI">
+                                <rect key="frame" x="32" y="404" width="311" height="26"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
+                                <color key="textColor" red="0.074509803920000006" green="0.66666666669999997" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have successfully completed your WaterReporter user profile!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V8j-WQ-f3n">
+                                <rect key="frame" x="32" y="437.5" width="311" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="KtC-3k-kDT" firstAttribute="top" secondItem="0SY-Hg-LZT" secondAttribute="bottom" constant="96" id="7SP-8z-6jd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VOC-dc-cRI" secondAttribute="trailing" constant="16" id="HoL-SR-3XC"/>
+                            <constraint firstItem="KtC-3k-kDT" firstAttribute="centerX" secondItem="12Y-QS-yKq" secondAttribute="centerX" id="J7a-fr-pr6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="V8j-WQ-f3n" secondAttribute="trailing" constant="16" id="PDA-Mp-gof"/>
+                            <constraint firstItem="VOC-dc-cRI" firstAttribute="top" secondItem="KtC-3k-kDT" secondAttribute="bottom" constant="32" id="WSK-4h-O1Z"/>
+                            <constraint firstItem="VOC-dc-cRI" firstAttribute="leading" secondItem="12Y-QS-yKq" secondAttribute="leadingMargin" constant="16" id="fJ8-Wh-mM7"/>
+                            <constraint firstItem="V8j-WQ-f3n" firstAttribute="leading" secondItem="12Y-QS-yKq" secondAttribute="leadingMargin" constant="16" id="m2U-0j-gds"/>
+                            <constraint firstItem="V8j-WQ-f3n" firstAttribute="top" secondItem="VOC-dc-cRI" secondAttribute="bottom" constant="8" id="qLU-NW-hbe"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Congratulations" id="iVW-am-diD">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="rPz-0m-suf">
+                            <connections>
+                                <action selector="dismissCongratulationsMessage:" destination="pRb-YC-SWS" id="tRz-iu-QBx"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="221.59999999999999" y="-2476.0119940029986"/>
+        </scene>
         <!--Activity-->
         <scene sceneID="NkD-w4-lbQ">
             <objects>
@@ -4181,6 +4242,7 @@
         <image name="TabIcon--ActivityFeed" width="30" height="30"/>
         <image name="TabIcon--SubmitReport" width="30" height="30"/>
         <image name="TabIcon--UserProfile" width="30" height="30"/>
+        <image name="badge--Congratulations" width="256" height="256"/>
         <image name="banner--CertifiedActionTaken--320" width="384" height="132"/>
         <image name="icon--AddButton" width="36" height="36"/>
         <image name="icon--Reloadbutton" width="36" height="36"/>

@@ -12,7 +12,7 @@ import Mapbox
 import SwiftyJSON
 import UIKit
 
-class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate, NewReportLocationSelectorDelegate {
+class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate, NewReportLocationSelectorDelegate, NewReportGroupSelectorDelegate {
     
     
     //
@@ -102,6 +102,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     var userSelectedCoorindates: CLLocationCoordinate2D!
     var imageReportImagePreviewIsSet:Bool = false
     var thisLocationManager: CLLocationManager = CLLocationManager()
+    var tempGroups: [String] = [String]()
 
     
     
@@ -229,6 +230,13 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 destinationNewReportLocationSelectorViewController.delegate = self
                 destinationNewReportLocationSelectorViewController.userSelectedCoordinates = self.userSelectedCoorindates
                 break
+            case "setGroupsForNewReport":
+                
+                let destinationNavigationViewController = segue.destinationViewController as! UINavigationController
+                let destinationNewReportGroupSelectorViewController = destinationNavigationViewController.topViewController as! NewReportGroupsTableViewController
+                
+                destinationNewReportGroupSelectorViewController.delegate = self
+                break
             default:
                 break
         }
@@ -314,9 +322,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         // Reset all fields
         self.imageReportImagePreview.image = UIImage(named: "Icon--EmptyImage")
+        self.imageReportImagePreview.alpha = 0.15
         self.imageReportImagePreviewIsSet = false
-        
-//        self.userSelectedCoorindates = CLLocationCoordinate2D()
+
+        self.userSelectedCoorindates = CLLocationCoordinate2D()
+        self.resetLocationOnMap(self.mapReportLocation)
         
         self.labelReportLocationLatitude.text = "Latitude: Unknown"
         self.labelReportLocationLongitude.text = "Longitude Unknown"
@@ -336,6 +346,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         buttonReportImage.hidden = false
         buttonReportImageAddIcon.hidden = false
 
+    }
+    
+    func finishedSavingWithError() {
+        self.navigationItem.rightBarButtonItem?.enabled = true
     }
 
     func isReady() {
@@ -390,10 +404,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.tableView.reloadData()
     }
     
-    func mapView(mapView: MGLMapView, didUpdateUserLocation userLocation: MGLUserLocation?) {
-        print("location updated")
-    }
-    
     func cameraActionHandler(action:UIAlertAction) -> Void {
         if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
             let imagePicker = UIImagePickerController()
@@ -416,6 +426,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         imageReportImagePreview.image = image
+        imageReportImagePreviewIsSet = true
+        imageReportImagePreview.alpha = 1.0
         self.dismissViewControllerAnimated(true, completion: {
             self.isReadyWithImage()
             self.tableView.reloadData()
@@ -424,6 +436,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     func attemptRemoveImageFromPreview(sender: AnyObject) {
         imageReportImagePreview.image = nil
+        imageReportImagePreviewIsSet = false
+        imageReportImagePreview.alpha = 0.15
         self.isReadyAfterRemove()
         tableView.reloadData()
     }
@@ -498,6 +512,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         return
     }
+    
+    // Child Delegate
+    func sendGroups(groups: [String]) {
+        self.tempGroups = groups
+    }
 
     func addLocationToMap(mapView: AnyObject, latitude: Double, longitude: Double, center:Bool) {
         
@@ -517,39 +536,67 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
     }
     
+    func resetLocationOnMap(mapView: MGLMapView) {
+        
+        let _coordinates = CLLocationCoordinate2DMake(39.5, -98.35)
+        let grr = CLLocationCoordinate2DMake(98.35, 39.5)
+
+        mapView.setCenterCoordinate(grr, zoomLevel: 15, animated: false)
+        mapView.removeAnnotations(mapView.annotations!)
+    }
+    
     
     //
     // MARK: Server Request/Response functionality
     //
     func attemptNewReportSave(headers: [String: String]) {
         
-        // Before starting the saving process, hide the form
-        // and show the user the saving indicator
-        self.saving()
-        
-        
         //
-        // GEOMETRY
+        // Error Check for Geometry
         //
         var geometryCollection: [String: AnyObject] = [
             "type": "GeometryCollection"
         ]
 
-        var geometry: [String: AnyObject] = [
-            "type": "Point"
-        ]
+        if (self.userSelectedCoorindates != nil) {
+            
+            var geometry: [String: AnyObject] = [
+                "type": "Point"
+            ]
+
+            let coordinates: Array = [
+                self.userSelectedCoorindates.longitude,
+                self.userSelectedCoorindates.latitude
+            ]
+
+            geometry["coordinates"] = coordinates
+            
+            let geometries: [AnyObject] = [geometry]
+            geometryCollection["geometries"] = geometries
+        }
+        else {
+            self.displayErrorMessage("Location Field Empty", message: "Please add a location to your report before saving")
+            
+            self.finishedSavingWithError()
+
+            return
+        }
         
-        let coordinates: Array = [
-            self.userSelectedCoorindates.longitude,
-            self.userSelectedCoorindates.latitude
-        ]
-        
-        geometry["coordinates"] = coordinates
-        
-        let geometries: [AnyObject] = [geometry]
-        geometryCollection["geometries"] = geometries
-        
-        
+        //
+        // Check image value
+        //
+        if (!imageReportImagePreviewIsSet) {
+            self.displayErrorMessage("Image Field Empty", message: "Please add an image to your report before saving")
+
+            self.finishedSavingWithError()
+            
+            return
+        }
+
+        // Before starting the saving process, hide the form
+        // and show the user the saving indicator
+        self.saving()
+
         //
         // PARAMETERS
         //
@@ -564,16 +611,24 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         // GROUPS
         //
-//        if (self.textfieldTelephone.text != self.userProfile?["properties"]["telephone"][0]["properties"]["number"].string && self.textfieldTelephone.text != nil) {
-//            let telephoneNumber = [
-//                "number": self.textfieldTelephone.text!
-//            ]
-//            let telephone: [AnyObject] = [telephoneNumber]
-//            
-//            parameters["telephone"] = telephone
-//        }
+        var _temporary_groups: [AnyObject] = [AnyObject]()
+
+        for _organization_id in tempGroups {
+            print("group id \(_organization_id)")
+            
+            let _group = [
+                "id": "\(_organization_id)",
+            ]
+            
+            _temporary_groups.append(_group)
+            
+        }
         
-        
+        parameters["groups"] = _temporary_groups
+
+        //
+        // Make request
+        //
         if (self.imageReportImagePreview.image != nil) {
             
             Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
@@ -636,6 +691,23 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
         
     }
+    
+    func displayErrorMessage(title: String, message: String) {
+        
+        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return true
+    }
+
 
 }
 

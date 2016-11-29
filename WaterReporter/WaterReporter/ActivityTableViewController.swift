@@ -325,16 +325,18 @@ class ActivityTableViewController: UITableViewController {
             var reportGroupsIncrementer = 1;
             
             for _group in reportGroups! as NSArray {
-                let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as! String
-                
-                if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
-                    reportGroupsNames = thisGroupName
+                if let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
+                    if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
+                        reportGroupsNames = thisGroupName
+                    }
+                    else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
+                        reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
+                    }
+                    
+                    reportGroupsIncrementer += 1
                 }
-                else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
-                    reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
-                }
                 
-                reportGroupsIncrementer += 1
+                
             }
             
             cell.reportGroups.text = reportGroupsNames

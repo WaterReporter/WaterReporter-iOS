@@ -36,7 +36,7 @@ class NewReportLocationSelector: UIViewController, MGLMapViewDelegate, UINavigat
         
         self.navigationBarButtonCancel.target = self
         self.navigationBarButtonCancel.action = #selector(NewReportLocationSelector.dismissLocationSelector(_:))
-        self.navigationBarButtonCancel.enabled = false
+        self.navigationBarButtonCancel.enabled = true
 
         self.navigationBarButtonSet.target = self
         self.navigationBarButtonSet.action = #selector(NewReportLocationSelector.setLocationSelector(_:))
@@ -45,8 +45,10 @@ class NewReportLocationSelector: UIViewController, MGLMapViewDelegate, UINavigat
     }
     
     func mapViewDidFinishLoadingMap(mapView: MGLMapView) {
+        
         self.mapView.showsUserLocation = true
         self.mapView.setUserTrackingMode(MGLUserTrackingMode.Follow, animated: true)
+        
     }
     
     func dismissLocationSelector(sender: UIBarButtonItem) {
@@ -68,12 +70,11 @@ class NewReportLocationSelector: UIViewController, MGLMapViewDelegate, UINavigat
         
         if (self.userSelectedCoordinates.longitude != 0.0 && self.userSelectedCoordinates.latitude != 0.0) {
             self.navigationBarButtonSet.enabled = true
-            self.navigationBarButtonCancel.enabled = true
         }
         
         if let del = delegate {
             del.sendCoordinates(self.userSelectedCoordinates)
         }
     }
-    
+   
 }

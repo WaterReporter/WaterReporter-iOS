@@ -216,25 +216,39 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
                     if (json != nil) {
                         let _user_profile = json
                         
-                        self.can_notify_owner_comment_on_owned_report.on = _user_profile["properties"]["can_notify_owner_comment_on_owned_report"].bool!
+                        if _user_profile["properties"]["can_notify_owner_comment_on_owned_report"] {
+                            self.can_notify_owner_comment_on_owned_report.on = _user_profile["properties"]["can_notify_owner_comment_on_owned_report"].bool!
+                        }
                         self.can_notify_owner_comment_on_owned_report.enabled = true
                         
-                        self.can_notify_admin_user_joins_group.on = _user_profile["properties"]["can_notify_admin_user_joins_group"].bool!
+                        if _user_profile["properties"]["can_notify_admin_user_joins_group"] {
+                            self.can_notify_admin_user_joins_group.on = _user_profile["properties"]["can_notify_admin_user_joins_group"].bool! || false
+                        }
                         self.can_notify_admin_user_joins_group.enabled = true
 
-                        self.can_notify_owner_admin_closes_owned_report.on = _user_profile["properties"]["can_notify_owner_admin_closes_owned_report"].bool!
+                        if _user_profile["properties"]["can_notify_owner_admin_closes_owned_report"] {
+                            self.can_notify_owner_admin_closes_owned_report.on = _user_profile["properties"]["can_notify_owner_admin_closes_owned_report"].bool! || false
+                        }
                         self.can_notify_owner_admin_closes_owned_report.enabled = true
 
-                        self.can_notify_admin_user_submits_report_in_territory.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_territory"].bool!
+                        if _user_profile["properties"]["can_notify_admin_user_submits_report_in_territory"] {
+                            self.can_notify_admin_user_submits_report_in_territory.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_territory"].bool! || false
+                        }
                         self.can_notify_admin_user_submits_report_in_territory.enabled = true
 
-                        self.can_notify_admin_user_submits_report_in_group.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_group"].bool!
+                        if _user_profile["properties"]["can_notify_admin_user_submits_report_in_group"] {
+                            self.can_notify_admin_user_submits_report_in_group.on = _user_profile["properties"]["can_notify_admin_user_submits_report_in_group"].bool! || false
+                        }
                         self.can_notify_admin_user_submits_report_in_group.enabled = true
 
-                        self.can_notify_admin_comment_on_report_in_territory.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_territory"].bool!
+                        if _user_profile["properties"]["can_notify_admin_comment_on_report_in_territory"] {
+                            self.can_notify_admin_comment_on_report_in_territory.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_territory"].bool! || false
+                        }
                         self.can_notify_admin_comment_on_report_in_territory.enabled = true
 
-                        self.can_notify_admin_comment_on_report_in_group.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"].bool!
+                        if _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"] {
+                            self.can_notify_admin_comment_on_report_in_group.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"].bool! || false
+                        }
                         self.can_notify_admin_comment_on_report_in_group.enabled = true
 
                         self.tableView.reloadData()

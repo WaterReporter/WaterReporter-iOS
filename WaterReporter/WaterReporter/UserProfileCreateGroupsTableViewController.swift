@@ -28,20 +28,10 @@ class UserProfileCreateGroupsTableViewController: UITableViewController, UINavig
         // Show saving message
         self.status("saving")
         
-        let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["id"])"
         let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
         
         var _temporary_groups: [AnyObject] = [AnyObject]()
         var _temporary_organizations: [AnyObject] = [AnyObject]()
-
-        print("_organization_id_number \(_organization_id_number)")
-
-        //
-        // If organization_id is not submitted then we cannot act on the Join request
-        //
-        if _organization_id_number == "" {
-            return
-        }
 
         // Set headers
         let _headers = self.buildRequestHeaders()
@@ -64,28 +54,29 @@ class UserProfileCreateGroupsTableViewController: UITableViewController, UINavig
         //
         // Add Group to the groups array
         //
-        for _organization_id in tempGroups {
-            print("group id \(_organization_id)")
+        if tempGroups.count >= 1 {
             
-            let _group = [
-                "organization_id": "\(_organization_id)",
-                "joined_on": _joined_on
-            ]
+            for _organization_id in tempGroups {
+                print("group id \(_organization_id)")
+                
+                let _group = [
+                    "organization_id": "\(_organization_id)",
+                    "joined_on": _joined_on
+                ]
+                
+                let _organization = [
+                    "id": "\(_organization_id)"
+                ]
+                
+                _temporary_groups.append(_group)
+                _temporary_organizations.append(_organization)
+                
+            }
             
-            let _organization = [
-                "id": "\(_organization_id)"
-            ]
-
-            _temporary_groups.append(_group)
-            _temporary_organizations.append(_organization)
+            _parameters["groups"] = _temporary_groups
+            _parameters["organization"] = _temporary_organizations
             
         }
-        
-        _parameters["groups"] = _temporary_groups
-        _parameters["organization"] = _temporary_organizations
-
-        //
-        print("PARAMETER CHECK \(_parameters)")
 
         Alamofire.request(.PATCH, _endpoint, parameters: _parameters, headers: _headers, encoding: .JSON)
             .responseJSON { response in
@@ -94,9 +85,11 @@ class UserProfileCreateGroupsTableViewController: UITableViewController, UINavig
                 case .Success(let value):
                     print("Request Success \(value)")
                     
-                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserProfileCompleteViewController") as! UserProfileCompleteViewController
                     
-                    self.presentViewController(nextViewController, animated: false, completion: nil)
+                    let navigationViewController = UINavigationController(rootViewController: nextViewController)
+                    
+                    self.presentViewController(navigationViewController, animated:true, completion: nil)
 
                     break
                 case .Failure(let error):

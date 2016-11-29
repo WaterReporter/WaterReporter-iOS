@@ -12,6 +12,10 @@ import Kingfisher
 import SwiftyJSON
 import UIKit
 
+protocol NewReportGroupSelectorDelegate {
+    func sendGroups(groups: [String])
+}
+
 
 class NewReportGroupsTableViewController: UITableViewController, UINavigationControllerDelegate {
     
@@ -39,9 +43,13 @@ class NewReportGroupsTableViewController: UITableViewController, UINavigationCon
     @IBAction func selectGroup(sender: UISwitch) {
 
         if sender.on {
-            print("sender on \(sender)")
+            let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["properties"]["organization_id"])"
+            self.tempGroups.append(_organization_id_number)
+            print("addGroup::finished::tempGroups \(self.tempGroups)")
         } else {
-            print("sender off \(sender)")
+            let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["properties"]["organization_id"])"
+            self.tempGroups = self.tempGroups.filter() {$0 != _organization_id_number}
+            print("removeGroup::finished::tempGroups \(self.tempGroups)")
         }
 
     }
@@ -49,7 +57,13 @@ class NewReportGroupsTableViewController: UITableViewController, UINavigationCon
     @IBAction func dismissGroupSelector(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-
+    
+    @IBAction func saveGroupSelections(sender: UIBarButtonItem) {
+        if let del = delegate {
+            del.sendGroups(self.tempGroups)
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
 
     
     //
@@ -58,6 +72,8 @@ class NewReportGroupsTableViewController: UITableViewController, UINavigationCon
     var loadingView: UIView!
     var groups: JSON?
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+    var delegate: NewReportGroupSelectorDelegate?
+    var tempGroups: [String] = [String]()
 
     
     //
@@ -160,6 +176,7 @@ class NewReportGroupsTableViewController: UITableViewController, UINavigationCon
         }
         
         //
+        cell.switchSelectGroup.tag = indexPath.row
         //cell.buttonJoinGroup.tag = indexPath.row
         //cell.buttonJoinGroup.addTarget(self, action: #selector(joinGroup(_:)), forControlEvents: .TouchUpInside)
         
