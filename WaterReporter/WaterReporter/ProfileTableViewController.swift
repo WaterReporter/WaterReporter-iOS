@@ -413,7 +413,29 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // otherwise any math we do will be messed up
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
-
+        
+        
+        // SET DEFAULT SELECTED TAB
+        //
+        self.actionsTableView.hidden = true
+        self.submissionTableView.hidden = false
+        self.groupsTableView.hidden = true
+        
+        //
+        // Restyle the form Log In Navigation button to appear with an underline
+        //
+        let buttonWidth = self.buttonUserProfileSubmissionLabel.frame.width*0.8
+        let borderWidth = buttonWidth
+        
+        self.userSubmissionsUnderline.borderColor = CGColor.colorBrand()
+        self.userSubmissionsUnderline.borderWidth = 3.0
+        self.userSubmissionsUnderline.frame = CGRectMake(self.buttonUserProfileSubmissionLabel.frame.width*0.1, self.buttonUserProfileSubmissionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileSubmissionLabel.frame.size.height)
+        
+        self.buttonUserProfileSubmissionLabel.layer.addSublayer(self.userSubmissionsUnderline)
+        self.buttonUserProfileSubmissionLabel.layer.masksToBounds = true
+        
+        self.userGroupsUnderline.removeFromSuperlayer()
+        self.userActionsUnderline.removeFromSuperlayer()
     }
     
     override func didReceiveMemoryWarning() {

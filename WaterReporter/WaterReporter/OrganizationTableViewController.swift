@@ -326,6 +326,29 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
         
+        
+        // SET THE DEFAULT TAB
+        //
+        self.actionTableView.hidden = true
+        self.submissionTableView.hidden = false
+        self.memberTableView.hidden = true
+        
+        //
+        // Restyle the form Log In Navigation button to appear with an underline
+        //
+        let buttonWidth = self.buttonGroupProfileSubmissionsLabel.frame.width*0.8
+        let borderWidth = buttonWidth
+        
+        self.groupSubmissionsUnderline.borderColor = CGColor.colorBrand()
+        self.groupSubmissionsUnderline.borderWidth = 3.0
+        self.groupSubmissionsUnderline.frame = CGRectMake(self.buttonGroupProfileSubmissionsLabel.frame.width*0.1, self.buttonGroupProfileSubmissionsLabel.frame.size.height - 3.0, borderWidth, self.buttonGroupProfileSubmissionsLabel.frame.size.height)
+        
+        self.buttonGroupProfileSubmissionsLabel.layer.addSublayer(self.groupSubmissionsUnderline)
+        self.buttonGroupProfileSubmissionsLabel.layer.masksToBounds = true
+        
+        self.groupUsersUnderline.removeFromSuperlayer()
+        self.groupActionsUnderline.removeFromSuperlayer()
+        
     }
     
     override func didReceiveMemoryWarning() {
