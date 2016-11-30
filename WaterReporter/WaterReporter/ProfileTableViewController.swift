@@ -676,61 +676,90 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     func attemptLoadUserActions(isRefreshingReportsList: Bool = false) {
         
-        var _parameters = [
-            "q": "{\"filters\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}, {\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
-            "page": "\(self.userActionsPage)"
-        ]
+        // Load the user profile groups
+        //
+        let _headers = buildRequestHeaders()
+        let GET_GROUPS_ENDPOINT = Endpoints.GET_USER_PROFILE + "\(userId)"
         
-        if (self.userProfile!["properties"]["roles"].count >= 1) {
-            if (self.userProfile!["properties"]["roles"][0]["properties"]["name"] == "admin") {
-                _parameters = [
-                    "q": "{\"filters\":[{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(userId!)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+        Alamofire.request(.GET, GET_GROUPS_ENDPOINT, headers: _headers, encoding: .JSON).responseJSON { response in
+            
+            print("response.result \(response.result)")
+            
+            switch response.result {
+            case .Success(let value):
+                print("Request Success: \(value)")
+
+                let json = JSON(value)
+                
+                // Retain the returned data
+                self.userProfile = json
+
+                var _parameters = [
+                    "q": "{\"filters\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}, {\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
                     "page": "\(self.userActionsPage)"
                 ]
                 
-            }
-        }
-        
-        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
-            .responseJSON { response in
-                
-                switch response.result {
-                case .Success(let value):
-                    print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
-                    
-                    if (isRefreshingReportsList) {
-                        // Assign response to groups variable
-                        self.userActions = JSON(value)
-                        self.userActionsObjects = value["features"] as! [AnyObject]
-                        self.actionRefreshControl.endRefreshing()
-                    } else {
-                        // Assign response to groups variable
-                        self.userActions = JSON(value)
-                        self.userActionsObjects += value["features"] as! [AnyObject]
+                if (self.userProfile!["properties"]["roles"].count >= 1) {
+                    if (self.userProfile!["properties"]["roles"][0]["properties"]["name"] == "admin") {
+                        _parameters = [
+                            "q": "{\"filters\":[{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+                            "page": "\(self.userActionsPage)"
+                        ]
+                        
                     }
-
-                    // Set visible button count
-                    let _action_count = self.userActions!["properties"]["num_results"]
-                    
-                    if (_action_count >= 1) {
-                        self.buttonUserProfileActionCount.setTitle("\(_action_count)", forState: .Normal)
-                    }
-                    
-                    // Refresh the data in the table so the newest items appear
-                    self.actionsTableView.reloadData()
-                    
-                    self.userActionsPage += 1
-                    
-                    break
-                case .Failure(let error):
-                    print("Request Failure: \(error)")
-                    
-                    // Stop showing the loading indicator
-                    //self.status("doneLoadingWithError")
-                    
-                    break
                 }
                 
+                Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
+                    .responseJSON { response in
+                        
+                        switch response.result {
+                        case .Success(let value):
+                            print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+                            
+                            if (isRefreshingReportsList) {
+                                // Assign response to groups variable
+                                self.userActions = JSON(value)
+                                self.userActionsObjects = value["features"] as! [AnyObject]
+                                self.actionRefreshControl.endRefreshing()
+                            } else {
+                                // Assign response to groups variable
+                                self.userActions = JSON(value)
+                                self.userActionsObjects += value["features"] as! [AnyObject]
+                            }
+                            
+                            // Set visible button count
+                            let _action_count = self.userActions!["properties"]["num_results"]
+                            
+                            if (_action_count >= 1) {
+                                self.buttonUserProfileActionCount.setTitle("\(_action_count)", forState: .Normal)
+                            }
+                            
+                            // Refresh the data in the table so the newest items appear
+                            self.actionsTableView.reloadData()
+                            
+                            self.userActionsPage += 1
+                            
+                            break
+                        case .Failure(let error):
+                            print("Request Failure: \(error)")
+                            
+                            // Stop showing the loading indicator
+                            //self.status("doneLoadingWithError")
+                            
+                            break
+                        }
+                        
+                }
+                
+                break
+            case .Failure(let error):
+                print("Request Failure: \(error)")
+                
+                // Stop showing the loading indicator
+                //self.status("doneLoadingWithError")
+                
+                break
+            }
         }
         
     }

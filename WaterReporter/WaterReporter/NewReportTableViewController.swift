@@ -606,7 +606,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             "report_description": self.textareaReportComment.text!,
             "is_public": "true",
             "report_date": self.textfieldReportDate.text!,
-            "geometry": geometryCollection
+            "geometry": geometryCollection,
+            "state": "open"
         ]
         
 
