@@ -220,6 +220,36 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
+    
+    @IBAction func openModificationSelector(sender: UIButton) {
+        
+        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let editReportAction = UIAlertAction(title: "Edit Report", style: .Default, handler: {
+            UIAlertAction in
+            let _submissions = JSON(self.userSubmissionsObjects)
+            let _report = _submissions[sender.tag]
+            let _report_id: String! = "\(_submissions[sender.tag]["id"])"
+
+            self.attemptEditReport(_report, reportId: _report_id)
+        })
+        thisActionSheet.addAction(editReportAction)
+
+        let deleteReportAction = UIAlertAction(title: "Delete Report", style: .Default, handler: {
+            UIAlertAction in
+            let _submissions = JSON(self.userSubmissionsObjects)
+            let _report_id: String! = "\(_submissions[sender.tag]["id"])"
+            
+            self.attemptConfirmDeleteReport(_report_id)
+        })
+        thisActionSheet.addAction(deleteReportAction)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        thisActionSheet.addAction(cancelAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+
+    }
 
     
     //
@@ -973,6 +1003,20 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             }
+            
+            //
+            //
+            //
+            cell.buttonModifyReport.enabled = false
+            cell.buttonModifyReport.hidden = true
+
+            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                if ("\(_thisSubmission["owner"]["id"])" == "\(_user_id_number)") {
+                    cell.buttonModifyReport.tag = indexPath.row
+                    cell.buttonModifyReport.enabled = true
+                    cell.buttonModifyReport.hidden = false
+                }
+            }
 
             //
             // CONTIUOUS SCROLL
@@ -1203,5 +1247,77 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         print("row tapped \(indexPath)")
     }
     
+    
+    //
+    // MARK: Modify Reports
+    //
+    func attemptEditReport(report: JSON, reportId: String) {
+        print("Push Edit Report View Controller")
+        
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("EditReportTableViewController") as! EditReportTableViewController
+        
+        nextViewController.report = report
+        nextViewController.reportId = reportId
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+
+        
+    }
+
+    func attemptConfirmDeleteReport(reportId: String) {
+        let thisActionSheet = UIAlertController(title: nil, message: "Are you sure you want to delete this report?", preferredStyle: .ActionSheet)
+        
+        let confirmDeleteReportAction = UIAlertAction(title: "Yes, delete this report", style: .Default, handler: {
+            UIAlertAction in
+            self.attemptDeleteReport(reportId)
+        })
+        thisActionSheet.addAction(confirmDeleteReportAction)
+        
+        let cancelDeleteReportAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        thisActionSheet.addAction(cancelDeleteReportAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+    }
+    
+    func attemptDeleteReport(reportId: String) {
+        
+        let _headers = buildRequestHeaders()
+        let _endpoint = Endpoints.POST_REPORT + "/\(reportId)"
+        
+        Alamofire.request(.DELETE, _endpoint, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                print("Response \(response)")
+                
+                switch response.result {
+                case .Success(let value):
+                    
+                    print("Response Sucess \(value)")
+                    
+                    self.submissionRefreshControl.beginRefreshing()
+                    
+                    self.userSubmissionsPage = 1
+                    self.userSubmissions = nil
+                    self.userSubmissionsObjects = []
+                    
+                    self.attemptLoadUserSubmissions(true)
+
+                case .Failure(let error):
+                    
+                    print("Response Failure \(error)")
+                    
+                    break
+                }
+                
+        }
+    }
+
+
+
 
 }

@@ -28,6 +28,7 @@ class UserProfileSubmissionTableViewCell: UITableViewCell {
     @IBOutlet weak var buttonReportComments: UIButton!
     @IBOutlet weak var labelReportDescription: UILabel!
     @IBOutlet weak var labelReportGroups: UILabel!
+    @IBOutlet weak var buttonModifyReport: UIButton!
     
     //
     // MARK: Overrides

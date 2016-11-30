@@ -73,7 +73,7 @@ class NewReportGroupsTableViewController: UITableViewController, UINavigationCon
     var groups: JSON?
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
     var delegate: NewReportGroupSelectorDelegate?
-    var tempGroups: [String] = [String]()
+    var tempGroups: [String]!
 
     
     //
@@ -87,6 +87,8 @@ class NewReportGroupsTableViewController: UITableViewController, UINavigationCon
         
         // Load all of the groups on WaterReporter.org
         self.attemptLoadUserGroups()
+        
+        print("self.tempGroups \(self.tempGroups)")
     }
     
     override func didReceiveMemoryWarning() {
@@ -175,11 +177,21 @@ class NewReportGroupsTableViewController: UITableViewController, UINavigationCon
             cell.labelGroupName.text = thisOrganizationName
         }
         
-        //
+        // Assign existing groups to the group field
         cell.switchSelectGroup.tag = indexPath.row
-        //cell.buttonJoinGroup.tag = indexPath.row
-        //cell.buttonJoinGroup.addTarget(self, action: #selector(joinGroup(_:)), forControlEvents: .TouchUpInside)
         
+        if let _organization_id_number = self.groups?["features"][indexPath.row]["properties"]["organization_id"] {
+            
+            if self.tempGroups.contains("\(_organization_id_number)") {
+                cell.switchSelectGroup.on = true
+            }
+            else {
+                cell.switchSelectGroup.on = false
+            }
+            
+        }
+        
+
         return cell
     }
     
