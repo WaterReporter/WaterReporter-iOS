@@ -131,7 +131,26 @@ class EditReportTableViewController: UITableViewController, UINavigationControll
             
             // Set existing date to date field
             //
-            self.textfieldReportDate.text = "\(self.report["properties"]["report_date"])".stringByReplacingOccurrencesOfString("T00:00:00", withString: "")
+            let reportDate = self.report["properties"]["report_date"]
+            
+            if (reportDate != nil) {
+                let dateString: String = "\(reportDate)"
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                
+                let stringToFormat = dateFormatter.dateFromString(dateString)
+                dateFormatter.dateFormat = "MMM d, yyyy"
+                
+                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                
+                if let thisDisplayDate: String? = displayDate {
+                    self.textfieldReportDate.text = thisDisplayDate
+                }
+            }
+            else {
+                self.textfieldReportDate.text = ""
+            }
             
             // Set existing comment to comment field
             //
