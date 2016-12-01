@@ -754,7 +754,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 if (self.userProfile!["properties"]["roles"].count >= 1) {
                     if (self.userProfile!["properties"]["roles"][0]["properties"]["name"] == "admin") {
                         _parameters = [
-                            "q": "{\"filters\":[{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+                            "q": "{\"filters\":[{\"or\":[{\"and\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}]},{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}]}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
                             "page": "\(self.userActionsPage)"
                         ]
                         
