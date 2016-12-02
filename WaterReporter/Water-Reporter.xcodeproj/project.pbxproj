@@ -42,7 +42,6 @@
 		C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267A1D4562FF00516871 /* AppDelegate.swift */; };
 		C1C8267F1D4562FF00516871 /* NewReportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */; };
 		C1C826841D4562FF00516871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1C826831D4562FF00516871 /* Assets.xcassets */; };
-		C1C826871D4562FF00516871 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1C826851D4562FF00516871 /* LaunchScreen.storyboard */; };
 		C1C826921D4562FF00516871 /* WaterReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C826911D4562FF00516871 /* WaterReporterTests.swift */; };
 		C1C8269D1D4562FF00516871 /* WaterReporterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8269C1D4562FF00516871 /* WaterReporterUITests.swift */; };
 		C1D7DDFB1DA6860D00771F04 /* ForgotPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D7DDFA1DA6860D00771F04 /* ForgotPasswordTableViewController.swift */; };
@@ -123,7 +122,6 @@
 		C1C8267A1D4562FF00516871 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C1C8267E1D4562FF00516871 /* NewReportTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReportTableViewController.swift; sourceTree = "<group>"; };
 		C1C826831D4562FF00516871 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C1C826861D4562FF00516871 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C1C826881D4562FF00516871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C1C8268D1D4562FF00516871 /* Water-Reporter.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Water-Reporter.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1C826911D4562FF00516871 /* WaterReporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterReporterTests.swift; sourceTree = "<group>"; };
@@ -314,7 +312,6 @@
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
 				C1C826881D4562FF00516871 /* Info.plist */,
 				C1F230101DAE83CB00DA2854 /* Main.storyboard */,
-				C1C826851D4562FF00516871 /* LaunchScreen.storyboard */,
 				C1C826831D4562FF00516871 /* Assets.xcassets */,
 				C12CAFA81D4698D1002881A6 /* _extensions */,
 				C12CAF9A1D464FA8002881A6 /* _constants */,
@@ -459,7 +456,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1F230121DAE83CB00DA2854 /* Main.storyboard in Resources */,
-				C1C826871D4562FF00516871 /* LaunchScreen.storyboard in Resources */,
 				C1C826841D4562FF00516871 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -616,14 +612,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C1C826851D4562FF00516871 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C1C826861D4562FF00516871 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		C1F230101DAE83CB00DA2854 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -731,6 +719,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -752,6 +741,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
