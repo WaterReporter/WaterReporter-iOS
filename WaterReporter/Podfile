@@ -6,4 +6,5 @@ target 'Water-Reporter' do
   pod 'Alamofire', '3.5'
   pod 'SwiftyJSON', '2.4'
   pod 'Kingfisher', '2.6.1'
+  pod 'ActiveLabel', '0.6.2'
 end

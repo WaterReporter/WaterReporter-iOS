@@ -30,7 +30,10 @@ struct Endpoints {
     
     static let GET_MANY_REPORT_COMMENTS = "https://api.waterreporter.org/v2/data/comment"
     static let POST_COMMENT = "https://api.waterreporter.org/v2/data/comment"
-    
+
+    static let TRENDING_PEOPLE = "https://api.waterreporter.org/v2/data/trending/people"
+    static let TRENDING_PEOPLE_LOCAL = "http://127.0.0.1:5000/v2/data/trending/people"
+
     
     //
     //

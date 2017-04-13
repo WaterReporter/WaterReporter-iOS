@@ -49,6 +49,9 @@
 		C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E81DAD813A00363A8F /* UIColor.swift */; };
 		C1F230121DAE83CB00DA2854 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1F230101DAE83CB00DA2854 /* Main.storyboard */; };
 		C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */; };
+		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
+		CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */; };
+		CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +137,9 @@
 		C1F224E81DAD813A00363A8F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		C1F230111DAE83CB00DA2854 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileEditTableViewController.swift; sourceTree = "<group>"; };
+		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableViewController.swift; sourceTree = "<group>"; };
 		D8993E8D85322C529237865F /* Pods-WaterReporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -318,8 +324,10 @@
 				C125B7531DDB8ECD005E7E5B /* Authentication */,
 				C125B7551DDB8EED005E7E5B /* Activity */,
 				C125B7561DDB8EFD005E7E5B /* Submit */,
+				CE9B91641E9D21E6001EBA66 /* Search */,
 				C125B7521DDB8EC3005E7E5B /* User Profile */,
 				C125B7541DDB8EE3005E7E5B /* Organization Profile */,
+				CEC951F01E9EFE2200DEB124 /* Hashtag */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -340,6 +348,23 @@
 				C1C8269E1D4562FF00516871 /* Info.plist */,
 			);
 			path = WaterReporterUITests;
+			sourceTree = "<group>";
+		};
+		CE9B91641E9D21E6001EBA66 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */,
+				CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
+		CEC951F01E9EFE2200DEB124 /* Hashtag */ = {
+			isa = PBXGroup;
+			children = (
+				CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */,
+			);
+			name = Hashtag;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -558,9 +583,11 @@
 				C1C8267B1D4562FF00516871 /* AppDelegate.swift in Sources */,
 				C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */,
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
+				CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */,
 				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
 				C1434E551DEF5A67009F6884 /* EditReportTableViewController.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
+				CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */,
 				C198C0D41DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift in Sources */,
 				C1B02D2F1DC51C85003566FC /* CommentsNewTableViewController.swift in Sources */,
 				C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */,
@@ -576,6 +603,7 @@
 				C14448B81D6B7234000564BF /* UserProfileTableViewCell.swift in Sources */,
 				C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */,
 				C12CAFA11D466659002881A6 /* TableViewCell.swift in Sources */,
+				CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */,
 				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

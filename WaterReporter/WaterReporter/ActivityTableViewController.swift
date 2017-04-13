@@ -6,6 +6,7 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import ActiveLabel
 import Alamofire
 import Foundation
 import Kingfisher
@@ -353,7 +354,20 @@ class ActivityTableViewController: UITableViewController {
             }
             
             cell.reportDescription.text = reportDescription as? String
-            
+            cell.reportDescription.enabledTypes = [.Hashtag]
+            cell.reportDescription.hashtagColor = UIColor.colorBrand()
+
+            cell.reportDescription.handleHashtagTap { hashtag in
+                print("Success. You just tapped the \(hashtag) hashtag")
+                
+                let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                
+                nextViewController.hashtag = hashtag
+                
+                self.navigationController?.pushViewController(nextViewController, animated: true)
+
+            }
+
             //
             // REPORT > OWNER > PICTURE
             //

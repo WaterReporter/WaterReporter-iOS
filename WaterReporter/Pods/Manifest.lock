@@ -1,18 +1,21 @@
 PODS:
+  - ActiveLabel (0.6.2)
   - Alamofire (3.5.0)
   - Kingfisher (2.6.1)
   - SwiftyJSON (2.4.0)
 
 DEPENDENCIES:
+  - ActiveLabel (= 0.6.2)
   - Alamofire (= 3.5)
   - Kingfisher (= 2.6.1)
   - SwiftyJSON (= 2.4)
 
 SPEC CHECKSUMS:
+  ActiveLabel: 2394eb48a2e31644ea90d6543c17bffe1d06f549
   Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
   Kingfisher: 7e5515bf6c4f2acad91f6400955d2257549cab7b
   SwiftyJSON: 96918c1bf505efa50c4f72957018dd3452090c9c
 
-PODFILE CHECKSUM: 0b7065c6c15e3761d7be422c0bd937154662a239
+PODFILE CHECKSUM: ccc40781fbfe9c7efd8437b3d3ab64c673019db1
 
 COCOAPODS: 1.2.0
