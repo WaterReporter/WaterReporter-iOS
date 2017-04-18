@@ -28,18 +28,51 @@ class ActivityTableViewController: UITableViewController {
     //
     @IBAction func shareButtonClicked(sender: UIButton) {
         
-        let _thisReport = JSON(self.reports[(sender.tag)])
-
-        let reportId: String = "\(_thisReport["id"])"
-        let textToShare = "Check out this report on WaterReporter"
+        print("sender.tag \(sender.tag)")
         
-        if let myWebsite = NSURL(string: "https://www.waterreporter.org/reports/" + reportId) {
-            let objectsToShare = [textToShare, myWebsite]
-            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-            
-            activityVC.popoverPresentationController?.sourceView = sender
-            self.presentViewController(activityVC, animated: true, completion: nil)
+        let _thisReport = JSON(self.reports[(sender.tag)])
+        let reportId: String = "\(_thisReport["id"])"
+        var objectsToShare: [AnyObject] = [AnyObject]()
+        let reportText = "Check out this report on WaterReporter"
+        let reportURL = NSURL(string: "https://www.waterreporter.org/reports/" + reportId)
+        var reportImageURL:NSURL!
+        let tmpImageView: UIImageView = UIImageView()
+        
+        // SHARE > REPORT > TITLE
+        //
+        objectsToShare.append(reportText)
+
+        // SHARE > REPORT > URL
+        //
+        objectsToShare.append(reportURL!)
+
+        // SHARE > REPORT > IMAGE
+        //
+        let thisReportImageURL = _thisReport["properties"]["images"][0]["properties"]["square"]
+
+        if thisReportImageURL != nil {
+            reportImageURL = NSURL(string: String(thisReportImageURL))
         }
+        
+        tmpImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+            (image, error, cacheType, imageUrl) in
+            
+            if (image != nil) {
+                objectsToShare.append(Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up))
+
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                activityVC.popoverPresentationController?.sourceView = sender
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
+            else {
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                activityVC.popoverPresentationController?.sourceView = sender
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
+        })
+        
     }
 
     @IBAction func loadCommentOwnerProfile(sender: UIButton) {
@@ -353,9 +386,10 @@ class ActivityTableViewController: UITableViewController {
                 cell.reportUserName.text = "Unknown Reporter"
             }
             
-            cell.reportDescription.text = reportDescription as? String
+            cell.reportDescription.text = "\(reportDescription!)"
             cell.reportDescription.enabledTypes = [.Hashtag]
             cell.reportDescription.hashtagColor = UIColor.colorBrand()
+            cell.reportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
 
             cell.reportDescription.handleHashtagTap { hashtag in
                 print("Success. You just tapped the \(hashtag) hashtag")
@@ -443,6 +477,8 @@ class ActivityTableViewController: UITableViewController {
             cell.reportDirectionsButton.tag = indexPath.row
             cell.reportDirectionsButton.addTarget(self, action: #selector(openDirectionsURL(_:)), forControlEvents: .TouchUpInside)
             
+            cell.reportShareButton.tag = indexPath.row
+
             
             //
             // CONTIUOUS SCROLL

@@ -49,6 +49,8 @@
 		C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F224E81DAD813A00363A8F /* UIColor.swift */; };
 		C1F230121DAE83CB00DA2854 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1F230101DAE83CB00DA2854 /* Main.storyboard */; };
 		C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */; };
+		CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */; };
+		CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */; };
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
 		CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */; };
 		CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */; };
@@ -137,6 +139,8 @@
 		C1F224E81DAD813A00363A8F /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		C1F230111DAE83CB00DA2854 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileEditTableViewController.swift; sourceTree = "<group>"; };
+		CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagAutocompleteTableViewCell.swift; sourceTree = "<group>"; };
+		CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableView.swift; sourceTree = "<group>"; };
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableViewController.swift; sourceTree = "<group>"; };
@@ -243,6 +247,8 @@
 				C14105591DC3E3CB00E538FA /* NewReportLocationSelector.swift */,
 				C198C0D31DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift */,
 				C1434E541DEF5A67009F6884 /* EditReportTableViewController.swift */,
+				CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */,
+				CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */,
 			);
 			name = Submit;
 			sourceTree = "<group>";
@@ -440,7 +446,7 @@
 				TargetAttributes = {
 					C1C826761D4562FF00516871 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = T8H47R7JRG;
+						DevelopmentTeam = 3BQL99V2GH;
 						LastSwiftMigration = 0800;
 					};
 					C1C8268C1D4562FF00516871 = {
@@ -571,6 +577,7 @@
 				C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */,
 				C198C0D61DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift in Sources */,
 				C1C5FD311DDB3ACD00EF6302 /* UserProfileSubmissionTableViewCell.swift in Sources */,
+				CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */,
 				C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */,
 				C1C8267F1D4562FF00516871 /* NewReportTableViewController.swift in Sources */,
 				C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */,
@@ -584,6 +591,7 @@
 				C19538FA1DAD6896003C6FC5 /* CGColor.swift in Sources */,
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
 				CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */,
+				CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */,
 				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
 				C1434E551DEF5A67009F6884 /* EditReportTableViewController.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
@@ -749,6 +757,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3BQL99V2GH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -771,6 +780,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 3BQL99V2GH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

@@ -19,7 +19,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // MARK: @IBOutlets
     //
     @IBOutlet weak var textareaReportComment: UITextView!
-
     @IBOutlet weak var buttonReportImageRemove: UIButton!
     @IBOutlet weak var buttonReportImageRemoveIcon: UIImageView!
     @IBOutlet weak var buttonReportImage: UIButton!
@@ -44,6 +43,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     @IBOutlet var indicatorLoadingView: UIView!
 
+    @IBOutlet weak var hashtagTypeAhead: UITableView!
     
     //
     // MARK: @IBActions
@@ -103,8 +103,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     var imageReportImagePreviewIsSet:Bool = false
     var thisLocationManager: CLLocationManager = CLLocationManager()
     var tempGroups: [String] = [String]()
+    var hashtagAutocomplete: [String] = [String]()
 
+    var hashtagAutocompleteTest: [String] = ["#ansuz", "#berkana", "#kaunaz", "#dagaz", "#ehwaz", "#fehu", "#gebo", "#hagalaz", "#isa", "#jera"]
+    var hashtagSearchEnabled: Bool = false
     
+    var dataSource: HashtagTableView = HashtagTableView()
     
     //
     // MARK: Overrides
@@ -129,6 +133,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.view.layoutIfNeeded()
         
         self.navigationItem.title = "New Report"
+        
+        self.hashtagTypeAhead.delegate = dataSource
+        self.hashtagTypeAhead.dataSource = dataSource
+        dataSource.parent = self
 
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
         
@@ -169,12 +177,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     //
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
-        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-
-        header.textLabel!.font = UIFont.systemFontOfSize(12)
-        header.textLabel!.textColor = UIColor.colorDarkGray(0.5)
-
-        header.contentView.backgroundColor = UIColor.colorBackground(1.00)
+        if (tableView.restorationIdentifier == "formTableView") {
+            let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+            
+            header.textLabel!.font = UIFont.systemFontOfSize(12)
+            header.textLabel!.textColor = UIColor.colorDarkGray(0.5)
+            
+            header.contentView.backgroundColor = UIColor.colorBackground(1.00)            
+        }
+        
     }
     
     @IBAction func buttonSaveNewReportTableViewController(sender: UIBarButtonItem) {
@@ -191,13 +202,14 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         var rowHeight:CGFloat = 44.0
-        
-        switch indexPath.section {
+
+        if (tableView.restorationIdentifier == "formTableView") {
+            switch indexPath.section {
             case 2:
                 if (indexPath.row == 0) {
                     rowHeight = 232.0
                 }
-            
+                
             case 0:
                 if indexPath.row == 0 {
                     rowHeight = 232.0
@@ -211,9 +223,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 }
             default:
                 rowHeight = 44.0
+            }
         }
         
+        
         return rowHeight
+    }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("row tapped \(indexPath)")
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -456,7 +474,69 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         return false
     }
+
+    func textViewDidChange(textView: UITextView) {
+        
+        let _text: String = "\(textView.text)"
+        
+        if _text != "" && _text.characters.last! == "#" {
+            self.hashtagSearchEnabled = true
+            self.hashtagTypeAhead.hidden = false
+
+            print("Hashtag Search: Found start of hashtag")
+        }
+        else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
+            self.hashtagSearchEnabled = false
+
+            print("Hashtag Search: Disabling search because space was entered")
+        }
+        else if _text != "" && self.hashtagSearchEnabled == true {
+            
+            // Identify hashtag search
+            //
+            let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
+            let _hashtag_search = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
+
+            // Add what the user is typing to the top of the list
+            //
+            print("Hashtag Search: Performing search for \(_hashtag_search)")
+            
+            dataSource.results = ["\(_hashtag_search)"]
+            dataSource.search = "\(_hashtag_search)"
+            
+            dataSource.numberOfRowsInSection(dataSource.results.count)
+            
+            self.hashtagTypeAhead.reloadData()
+            
+            // Execute the serverside search
+            //
+            print("Hashtag Search: Sent these to results \(dataSource.results)")
+            
+            self.searchHashtags(_hashtag_search)
+        }
+    }
     
+    func selectedValue(value: String) {
+        
+        // Add the hashtag to the text
+        //
+        self.textareaReportComment.text = "\(self.textareaReportComment.text)\(value)"
+        self.tableView.reloadData()
+
+//        let _length: String = self.textareaReportComment.text
+//        let _position: Int = _length.characters.count
+//        self.textareaReportComment.selectedRange = NSMakeRange(_position, 0)
+        
+        self.textareaReportComment.becomeFirstResponder()
+
+
+        // Reset the search
+        //
+        self.hashtagTypeAhead.hidden = true
+        self.hashtagSearchEnabled = false
+        dataSource.results = [String]()
+    }
+
     func textViewShouldReturn(textField: UITextView) -> Bool {
         
         let nextTag = textField.tag + 1;
@@ -712,6 +792,66 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         return true
     }
 
+    func searchHashtags(queryText: String) {
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let parameters = [
+            "q": "{\"filters\": [{\"name\":\"tag\",\"op\":\"ilike\",\"val\":\"\(queryText)%\"}]}"
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_HASHTAGS, parameters: parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+
+                    let _results = JSON(value)
+                    print("_results \(_results)")
+                    
+                    for _result in _results["features"] {
+                        print("_result \(_result.1["properties"]["tag"])")
+                        let _tag = "\(_result.1["properties"]["tag"])"
+                        self.dataSource.results.append(_tag)
+                    }
+                    
+                    
+                    self.dataSource.numberOfRowsInSection(_results["features"].count)
+                    
+                    self.hashtagTypeAhead.reloadData()
+
+                    
+                    //
+                    // Choose whether or not the reports should refresh or
+                    // whether loaded reports should be appended to the existing
+                    // list of reports
+                    //
+//                    if (isRefreshingReportsList) {
+//                        self.reports = value["features"] as! [AnyObject]
+//                        self.refreshControl?.endRefreshing()
+//                    }
+//                    else {
+//                        self.reports += value["features"] as! [AnyObject]
+//                    }
+//                    
+//                    self.tableView.reloadData()
+//                    
+//                    //print(value["features"])
+//                    self.page += 1
+//                    
+//                    //
+//                    // Dismiss the loading indicator
+//                    //
+//                    self.loadingComplete()
+                    
+                case .Failure(let error):
+                    print(error)
+                    break
+                }
+                
+        }
+    }
 
 }
 

@@ -218,6 +218,7 @@
                                     <outlet property="reportImage" destination="Fxw-iA-4dw" id="ykS-n1-s4a"/>
                                     <outlet property="reportOwnerImage" destination="4hV-IB-V95" id="WWH-zQ-gTx"/>
                                     <outlet property="reportOwnerImageButton" destination="1F4-QA-bwJ" id="bVv-wo-9H6"/>
+                                    <outlet property="reportShareButton" destination="Hqo-EG-TlL" id="bDL-Aj-RFP"/>
                                     <outlet property="reportTerritoryName" destination="g3K-N8-Lar" id="zIk-uD-yBX"/>
                                     <outlet property="reportUserName" destination="aKB-H4-8aI" id="FFu-2Y-hJ8"/>
                                 </connections>
@@ -994,15 +995,15 @@
             <objects>
                 <tableViewController storyboardIdentifier="NewReportGroupsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="D5I-n1-JCF" customClass="NewReportGroupsTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="132" sectionHeaderHeight="28" sectionFooterHeight="28" id="Wcv-UR-u1L">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="1300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ReportGroupTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="reportGroupTableViewCell" rowHeight="72" id="9m8-Oq-c5z" customClass="ReportGroupTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="72"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="72"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9m8-Oq-c5z" id="3Eg-tm-n7f">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="71.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XeF-Kw-OSL">
@@ -1829,7 +1830,7 @@
         <scene sceneID="GUd-TO-6iy">
             <objects>
                 <tableViewController storyboardIdentifier="NewReportTableViewController" title="New Report" useStoryboardIdentifierAsRestorationIdentifier="YES" id="t6D-GX-vZl" userLabel="New Report Table View Controller" customClass="NewReportTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Dcj-ei-YxU">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="formTableView" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Dcj-ei-YxU">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="1300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1976,13 +1977,52 @@
                                                         <outlet property="delegate" destination="t6D-GX-vZl" id="Uqt-f9-QYr"/>
                                                     </connections>
                                                 </textView>
+                                                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="hashtagTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zH2-d8-5b2" customClass="HashtagTableView" customModule="Water_Reporter" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="100" width="600" height="128"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="128" id="RrN-d7-9De"/>
+                                                    </constraints>
+                                                    <prototypes>
+                                                        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="hashtagAutocompleteTableViewCell" id="Eb2-yP-s4W" customClass="HashtagAutocompleteTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eb2-yP-s4W" id="2cx-nv-uQC">
+                                                                <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#example" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Whc-Ja-I8Z">
+                                                                        <rect key="frame" x="16" y="11.5" width="568" height="21"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                        <nil key="textColor"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="trailingMargin" secondItem="Whc-Ja-I8Z" secondAttribute="trailing" constant="8" id="8Rx-Dz-FvH"/>
+                                                                    <constraint firstItem="Whc-Ja-I8Z" firstAttribute="centerY" secondItem="2cx-nv-uQC" secondAttribute="centerY" id="Bn6-CI-VSl"/>
+                                                                    <constraint firstItem="Whc-Ja-I8Z" firstAttribute="leading" secondItem="2cx-nv-uQC" secondAttribute="leadingMargin" constant="8" id="iyC-lS-qdS"/>
+                                                                </constraints>
+                                                            </tableViewCellContentView>
+                                                            <connections>
+                                                                <outlet property="labelHashtagValue" destination="Whc-Ja-I8Z" id="nxw-df-Eha"/>
+                                                            </connections>
+                                                        </tableViewCell>
+                                                    </prototypes>
+                                                    <sections/>
+                                                </tableView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="0c7-DX-8kg" secondAttribute="trailing" constant="8" id="3uO-Ey-vFi"/>
                                                 <constraint firstItem="0c7-DX-8kg" firstAttribute="centerY" secondItem="5kj-TF-NE4" secondAttribute="centerY" id="Pnn-AC-EaH"/>
+                                                <constraint firstItem="0c7-DX-8kg" firstAttribute="top" secondItem="zH2-d8-5b2" secondAttribute="bottom" constant="-200" id="QdH-lc-jLk"/>
                                                 <constraint firstItem="0c7-DX-8kg" firstAttribute="leading" secondItem="5kj-TF-NE4" secondAttribute="leadingMargin" constant="8" id="UKF-ny-7bc"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstItem="zH2-d8-5b2" firstAttribute="leading" secondItem="awF-Cb-mJr" secondAttribute="leading" id="YgC-Hc-KRm"/>
+                                            <constraint firstAttribute="trailing" secondItem="zH2-d8-5b2" secondAttribute="trailing" id="jBB-12-HTd"/>
+                                        </constraints>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -2171,6 +2211,7 @@
                         <outlet property="buttonReportImageRemoveIcon" destination="F4g-6d-Sfi" id="PK3-cS-GVE"/>
                         <outlet property="changeReportLocationButton" destination="2az-9s-iBn" id="zNb-do-sMb"/>
                         <outlet property="changeReportLocationButtonImage" destination="Gud-zw-cb0" id="Jmc-Bz-z9z"/>
+                        <outlet property="hashtagTypeAhead" destination="zH2-d8-5b2" id="K1B-rC-EC5"/>
                         <outlet property="imageReportImagePreview" destination="5ti-1F-3TM" id="Nfb-2f-BLF"/>
                         <outlet property="indicatorLoadingView" destination="Wxe-XR-0w1" id="bAy-zn-Fcy"/>
                         <outlet property="labelReportLocationLatitude" destination="Sa4-Vh-zS2" id="eEs-O7-2L0"/>
@@ -2208,7 +2249,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1986" y="-637"/>
+            <point key="canvasLocation" x="1985.5999999999999" y="-637.78110944527737"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="C1x-if-a0S">
@@ -4726,7 +4767,7 @@
                         <sections>
                             <tableViewSection headerTitle="Report Date" id="eXP-GL-DMo">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="64" id="Le3-Pf-YoI">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="formTableViewCell" rowHeight="64" id="Le3-Pf-YoI">
                                         <rect key="frame" x="0.0" y="28" width="600" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Le3-Pf-YoI" id="LYd-Rk-s2Y">
@@ -4758,7 +4799,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Comment" id="KT0-04-AMS">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="256" id="Ge0-bw-TcC">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="formTableViewCell" rowHeight="256" id="Ge0-bw-TcC">
                                         <rect key="frame" x="0.0" y="120" width="600" height="256"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ge0-bw-TcC" id="qyd-wS-MYg">
@@ -4789,7 +4830,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Report Location" id="etP-jB-H0i">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="232" id="uFL-Gc-mnN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="formTableViewCell" rowHeight="232" id="uFL-Gc-mnN">
                                         <rect key="frame" x="0.0" y="404" width="600" height="232"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uFL-Gc-mnN" id="ppp-GZ-C8T">
@@ -4848,7 +4889,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="wxi-N2-NXS">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="formTableViewCell" rowHeight="44" id="wxi-N2-NXS">
                                         <rect key="frame" x="0.0" y="636" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wxi-N2-NXS" id="MRy-rQ-2US">
@@ -4878,7 +4919,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="5uO-jd-Vdy">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="formTableViewCell" rowHeight="44" id="5uO-jd-Vdy">
                                         <rect key="frame" x="0.0" y="680" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5uO-jd-Vdy" id="1kh-D5-S5o">
@@ -4928,7 +4969,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Groups" id="Il2-bD-hia">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="pDA-vf-BKL">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="formTableViewCell" id="pDA-vf-BKL">
                                         <rect key="frame" x="0.0" y="752" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pDA-vf-BKL" id="8Yi-U4-V42">
@@ -5027,8 +5068,8 @@
         <image name="logo--WaterReporter--Horizontal" width="91" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="lai-Tz-aeP"/>
+        <segue reference="ZYV-r4-UXs"/>
         <segue reference="iuF-sG-GMf"/>
-        <segue reference="tsw-A3-tyI"/>
-        <segue reference="tld-6W-hRi"/>
     </inferredMetricsTieBreakers>
 </document>

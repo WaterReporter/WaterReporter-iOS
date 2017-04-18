@@ -33,7 +33,7 @@ class HashtagTableViewController: UITableViewController {
         super.viewDidLoad()
         
         if hashtag != "" {
-            self.labelHashtagName.text = self.hashtag
+            self.labelHashtagName.text = "#\(self.hashtag)"
         }
     }
 }

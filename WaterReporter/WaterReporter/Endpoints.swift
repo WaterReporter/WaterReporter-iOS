@@ -33,7 +33,7 @@ struct Endpoints {
 
     static let TRENDING_PEOPLE = "https://api.waterreporter.org/v2/data/trending/people"
     static let TRENDING_PEOPLE_LOCAL = "http://127.0.0.1:5000/v2/data/trending/people"
-
+    static let GET_MANY_HASHTAGS = "http://127.0.0.1:5000/v2/data/hashtag"
     
     //
     //
