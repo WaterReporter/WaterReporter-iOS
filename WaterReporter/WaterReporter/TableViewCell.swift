@@ -15,6 +15,7 @@ class TableViewCell: UITableViewCell {
 
     @IBOutlet weak var reportUserName: UILabel!
     @IBOutlet weak var reportTerritoryName: UILabel!
+    @IBOutlet weak var reportTerritoryButton: UIButton!
     @IBOutlet weak var reportDescription: ActiveLabel!
     @IBOutlet weak var reportOwnerImage: UIImageView!
     @IBOutlet weak var reportOwnerImageButton: UIButton!
@@ -26,6 +27,7 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportCommentButton: UIButton!
     @IBOutlet weak var reportDirectionsButton: UIButton!
     @IBOutlet weak var reportShareButton: UIButton!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

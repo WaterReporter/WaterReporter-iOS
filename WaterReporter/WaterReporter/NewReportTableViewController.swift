@@ -207,7 +207,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             switch indexPath.section {
             case 2:
                 if (indexPath.row == 0) {
-                    rowHeight = 232.0
+                    rowHeight = 356.0
                 }
                 
             case 0:
@@ -486,7 +486,9 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             print("Hashtag Search: Found start of hashtag")
         }
         else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
+            self.hashtagTypeAhead.hidden = true
             self.hashtagSearchEnabled = false
+            dataSource.results = [String]()
 
             print("Hashtag Search: Disabling search because space was entered")
         }
@@ -522,10 +524,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         self.textareaReportComment.text = "\(self.textareaReportComment.text)\(value)"
         self.tableView.reloadData()
-
-//        let _length: String = self.textareaReportComment.text
-//        let _position: Int = _length.characters.count
-//        self.textareaReportComment.selectedRange = NSMakeRange(_position, 0)
         
         self.textareaReportComment.becomeFirstResponder()
 
@@ -536,6 +534,13 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.hashtagSearchEnabled = false
         dataSource.results = [String]()
     }
+    
+//    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+//        let _indexPath: NSIndexPath = self.results
+//        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+//        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+//        return true
+//    }
 
     func textViewShouldReturn(textField: UITextView) -> Bool {
         

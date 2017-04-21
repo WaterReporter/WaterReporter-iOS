@@ -1,5 +1,5 @@
 //
-//  HashtagTableViewController.swift
+//  TerritoryTableViewController.swift
 //  Water-Reporter
 //
 //  Created by Joshua Powell on 4/12/17.
@@ -8,17 +8,18 @@
 
 import UIKit
 
-class HashtagTableViewController: UITableViewController {
+class TerritoryTableViewController: UITableViewController {
     
     //
     // MARK: View-Global Variable
     //
-    var hashtag: String = ""
+    var territory: String = ""
+    var territory_id: String = ""
     
     //
     // MARK: @IBOutlet
     //
-    @IBOutlet weak var labelHashtagName: UILabel!
+    @IBOutlet weak var labelTerritoryName: UILabel!
     
     
     //
@@ -32,14 +33,14 @@ class HashtagTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if hashtag != "" {
-            self.labelHashtagName.text = "#\(self.hashtag)"
+        if self.territory != "" {
+            self.labelTerritoryName.text = "\(self.territory)"
         }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-
+        
         self.navigationController?.navigationBarHidden = false
     }
     

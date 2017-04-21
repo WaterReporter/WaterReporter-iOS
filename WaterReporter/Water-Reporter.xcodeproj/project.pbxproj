@@ -51,6 +51,7 @@
 		C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */; };
 		CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */; };
 		CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */; };
+		CE0D91141EA92E3E0088F789 /* TerritoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D91131EA92E3E0088F789 /* TerritoryTableViewController.swift */; };
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
 		CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */; };
 		CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */; };
@@ -141,6 +142,7 @@
 		C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileEditTableViewController.swift; sourceTree = "<group>"; };
 		CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagAutocompleteTableViewCell.swift; sourceTree = "<group>"; };
 		CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableView.swift; sourceTree = "<group>"; };
+		CE0D91131EA92E3E0088F789 /* TerritoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryTableViewController.swift; sourceTree = "<group>"; };
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableViewController.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				C125B7521DDB8EC3005E7E5B /* User Profile */,
 				C125B7541DDB8EE3005E7E5B /* Organization Profile */,
 				CEC951F01E9EFE2200DEB124 /* Hashtag */,
+				CE0D91121EA92E150088F789 /* Territory */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -354,6 +357,14 @@
 				C1C8269E1D4562FF00516871 /* Info.plist */,
 			);
 			path = WaterReporterUITests;
+			sourceTree = "<group>";
+		};
+		CE0D91121EA92E150088F789 /* Territory */ = {
+			isa = PBXGroup;
+			children = (
+				CE0D91131EA92E3E0088F789 /* TerritoryTableViewController.swift */,
+			);
+			name = Territory;
 			sourceTree = "<group>";
 		};
 		CE9B91641E9D21E6001EBA66 /* Search */ = {
@@ -576,6 +587,7 @@
 				C116EC881DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift in Sources */,
 				C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */,
 				C198C0D61DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift in Sources */,
+				CE0D91141EA92E3E0088F789 /* TerritoryTableViewController.swift in Sources */,
 				C1C5FD311DDB3ACD00EF6302 /* UserProfileSubmissionTableViewCell.swift in Sources */,
 				CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */,
 				C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */,

@@ -260,10 +260,20 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if groupObject != nil {
+        if groupObject != nil && self.groupProfile == nil {
             self.groupProfile = self.groupObject
             
             print("Group Profile \(self.groupProfile)")
+            
+            // Show the Group Name as the title
+            self.navigationItem.title = "Group Profile"
+            
+            // Show the group profile data on screen
+            self.displayGroupProfileInformation()
+        }
+        else if groupObject != nil && self.groupProfile != nil {
+            
+            print("Group Profile \(self.groupProfile!)")
             
             // Show the Group Name as the title
             self.navigationItem.title = "Group Profile"
@@ -351,6 +361,26 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.navigationController?.navigationBarHidden = false
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        if self.isMovingFromParentViewController()
+        {
+            self.navigationController?.navigationBarHidden = true
+        }
+        else
+        {
+            self.navigationController?.navigationBarHidden = false
+        }
+        
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -395,9 +425,15 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         if let _organization_name = self.groupProfile!["properties"]["organization"]["properties"]["name"].string {
             self.labelGroupProfileName.text = _organization_name
         }
+        else if let _organization_name = self.groupProfile!["properties"]["name"].string {
+            self.labelGroupProfileName.text = _organization_name
+        }
 
         // Display group's organization name
         if let _organization_description = self.groupProfile!["properties"]["organization"]["properties"]["description"].string {
+            self.labelGroupProfileDescription.text = _organization_description
+        }
+        else if let _organization_description = self.groupProfile!["properties"]["description"].string {
             self.labelGroupProfileDescription.text = _organization_description
         }
 
@@ -405,6 +441,9 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         var groupProfileImageURL: NSURL!
         
         if let thisGroupProfileImageURLString = self.groupProfile!["properties"]["organization"]["properties"]["picture"].string {
+            groupProfileImageURL = NSURL(string: String(thisGroupProfileImageURLString))
+        }
+        else if let thisGroupProfileImageURLString = self.groupProfile!["properties"]["picture"].string {
             groupProfileImageURL = NSURL(string: String(thisGroupProfileImageURLString))
         }
         

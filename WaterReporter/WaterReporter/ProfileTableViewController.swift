@@ -300,7 +300,23 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             }
 
         }
+        
+        self.navigationController?.navigationBarHidden = false
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        if self.isMovingFromParentViewController()
+        {
+            self.navigationController?.navigationBarHidden = true
+        }
+        else
+        {
+            self.navigationController?.navigationBarHidden = false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

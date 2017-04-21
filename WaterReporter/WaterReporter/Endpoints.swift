@@ -31,9 +31,12 @@ struct Endpoints {
     static let GET_MANY_REPORT_COMMENTS = "https://api.waterreporter.org/v2/data/comment"
     static let POST_COMMENT = "https://api.waterreporter.org/v2/data/comment"
 
+    static let GET_MANY_HASHTAGS = "https://api.waterreporter.org/v2/data/hashtag"
+
+    static let TRENDING_GROUP = "https://api.waterreporter.org/v2/data/trending/group"
+    static let TRENDING_HASHTAG = "https://api.waterreporter.org/v2/data/trending/hashtag"
     static let TRENDING_PEOPLE = "https://api.waterreporter.org/v2/data/trending/people"
-    static let TRENDING_PEOPLE_LOCAL = "http://127.0.0.1:5000/v2/data/trending/people"
-    static let GET_MANY_HASHTAGS = "http://127.0.0.1:5000/v2/data/hashtag"
+    static let TRENDING_TERRITORY = "https://api.waterreporter.org/v2/data/trending/territory"
     
     //
     //

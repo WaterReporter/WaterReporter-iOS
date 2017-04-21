@@ -35,9 +35,6 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
         let _userId = self.comments!["features"][sender.tag]["properties"]["owner"]["id"]
         let _userObject = self.comments!["features"][sender.tag]["properties"]["owner"]
 
-        print("nextViewController.userId")
-        print(_userId)
-        
         nextViewController.userObject = _userObject
         nextViewController.userId = "\(_userId)"
 

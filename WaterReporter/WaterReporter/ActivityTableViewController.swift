@@ -87,6 +87,20 @@ class ActivityTableViewController: UITableViewController {
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 
+    @IBAction func loadTerritoryProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        
+        let _thisReport = JSON(self.reports[(sender.tag)])
+        
+        print("\(_thisReport["properties"]["territory"])")
+        
+        nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+        nextViewController.territory_id = "\(_thisReport["properties"]["territory_id"])"
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+
     
     //
     // MARK: Variables
@@ -314,6 +328,10 @@ class ActivityTableViewController: UITableViewController {
             }
             
             cell.reportTerritoryName.text = reportTerritoryName
+            
+            cell.reportTerritoryButton.tag = indexPath.row
+            cell.reportTerritoryButton.addTarget(self, action: #selector(ActivityTableViewController.loadTerritoryProfile(_:)), forControlEvents: .TouchUpInside)
+
             
             
             //
