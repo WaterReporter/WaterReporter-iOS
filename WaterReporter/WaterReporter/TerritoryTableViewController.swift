@@ -47,6 +47,8 @@ class TerritoryTableViewController: UITableViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         
+        print("self.parentViewController \(self.parentViewController?.nibName)")
+        
         if self.isMovingFromParentViewController()
         {
             self.navigationController?.navigationBarHidden = true
@@ -55,6 +57,7 @@ class TerritoryTableViewController: UITableViewController {
         {
             self.navigationController?.navigationBarHidden = false
         }
+        
     }
 
 }

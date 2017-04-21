@@ -191,6 +191,8 @@ class ActivityTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
+        self.navigationController?.navigationBarHidden = false
+
         
         //
         // We need to execute the necessary code here to make
@@ -404,20 +406,26 @@ class ActivityTableViewController: UITableViewController {
                 cell.reportUserName.text = "Unknown Reporter"
             }
             
-            cell.reportDescription.text = "\(reportDescription!)"
-            cell.reportDescription.enabledTypes = [.Hashtag]
-            cell.reportDescription.hashtagColor = UIColor.colorBrand()
-            cell.reportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
-
-            cell.reportDescription.handleHashtagTap { hashtag in
-                print("Success. You just tapped the \(hashtag) hashtag")
+            if "\(reportDescription!)" != "null" || "\(reportDescription!)" != "" {
+                cell.reportDescription.text = "\(reportDescription!)"
+                cell.reportDescription.enabledTypes = [.Hashtag]
+                cell.reportDescription.hashtagColor = UIColor.colorBrand()
+                cell.reportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
                 
-                let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                cell.reportDescription.handleHashtagTap { hashtag in
+                    print("Success. You just tapped the \(hashtag) hashtag")
+                    
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                    
+                    nextViewController.hashtag = hashtag
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
                 
-                nextViewController.hashtag = hashtag
-                
-                self.navigationController?.pushViewController(nextViewController, animated: true)
-
+            }
+            else {
+                    cell.reportDescription.text = ""
             }
 
             //
