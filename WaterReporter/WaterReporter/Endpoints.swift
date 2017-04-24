@@ -33,6 +33,8 @@ struct Endpoints {
 
     static let GET_MANY_HASHTAGS = "https://api.waterreporter.org/v2/data/hashtag"
 
+    static let GET_MANY_TERRITORY = "https://api.waterreporter.org/v2/data/territory"
+
     static let TRENDING_GROUP = "https://api.waterreporter.org/v2/data/trending/group"
     static let TRENDING_HASHTAG = "https://api.waterreporter.org/v2/data/trending/hashtag"
     static let TRENDING_PEOPLE = "https://api.waterreporter.org/v2/data/trending/people"

@@ -207,7 +207,27 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
 
         // Load in trending users as the default
         //
-        self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, isRefreshingUserList: false)
+
+        if (self.selectedType == "People") {
+            // Load in trending users as the default
+            //
+            self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, isRefreshingUserList: false)
+        }
+        else if (self.selectedType == "Watersheds") {
+            // Load in trending users as the default
+            //
+            self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY, isRefreshingUserList: false)
+        }
+        else if (self.selectedType == "Groups") {
+            // Load in trending users as the default
+            //
+            self.loadTrendingRecords(Endpoints.TRENDING_GROUP, isRefreshingUserList: false)
+        }
+        else if (self.selectedType == "Tags") {
+            // Load in trending users as the default
+            //
+            self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG, isRefreshingUserList: false)
+        }
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
@@ -217,8 +237,28 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         // timerh
         //
         self.searchText = searchText;
-        
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForPeople(_:)), userInfo: nil, repeats: false)
+
+        if (self.selectedType == "People") {
+            // Load in trending users as the default
+            //
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForPeople(_:)), userInfo: nil, repeats: false)
+        }
+        else if (self.selectedType == "Watersheds") {
+            // Load in trending users as the default
+            //
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForWatersheds(_:)), userInfo: nil, repeats: false)
+        }
+        else if (self.selectedType == "Groups") {
+            // Load in trending users as the default
+            //
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForGroups(_:)), userInfo: nil, repeats: false)
+        }
+        else if (self.selectedType == "Tags") {
+            // Load in trending users as the default
+            //
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForTags(_:)), userInfo: nil, repeats: false)
+        }
+
         
     }
     
@@ -521,37 +561,9 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 
         }
     }
-
-    func searchForPeople(isRefreshingUserList: Bool = false) {
-        
-        print("searchText", self.searchText)
-        
-        // Since we are executing an entirely new search we need to make sure
-        // that we reset all of our result variables
-        //
-        self.allResultsLoaded = false
-        self.page = 1
-        self.trending = [AnyObject]()
-
-        
-        if self.allResultsLoaded {
-            return
-        }
-        
-        //
-        // Send a request to the defined endpoint with the given parameters
-        //
-        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
-        let headers = [
-            "Authorization": "Bearer " + (accessToken! as! String)
-        ]
-
-        let parameters = [
-            "q": "{\"filters\": [{\"or\": [{\"name\":\"first_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}, {\"name\":\"last_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}]}",
-            "page": "\(self.page)"
-        ]
-        
-        Alamofire.request(.GET, Endpoints.GET_MANY_USER, headers: headers, parameters: parameters)
+    
+    func performSearch(endpoint: String, headers: [String: String], parameters: [String: String], isRefreshingUserList: Bool = false) {
+        Alamofire.request(.GET, endpoint, headers: headers, parameters: parameters)
             .responseJSON { response in
                 
                 switch response.result {
@@ -588,6 +600,147 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 }
                 
         }
+
     }
-    
+
+    func searchForPeople(isRefreshingUserList: Bool = false) {
+        
+        print("searchText", self.searchText)
+        
+        // Since we are executing an entirely new search we need to make sure
+        // that we reset all of our result variables
+        //
+        self.allResultsLoaded = false
+        self.page = 1
+        self.trending = [AnyObject]()
+        
+        
+        if self.allResultsLoaded {
+            return
+        }
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        let parameters = [
+            "q": "{\"filters\": [{\"or\": [{\"name\":\"first_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}, {\"name\":\"last_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}]}",
+            "page": "\(self.page)"
+        ]
+        
+        let endpoint = Endpoints.GET_MANY_USER
+        
+        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        
+    }
+
+    func searchForWatersheds(isRefreshingUserList: Bool = false) {
+        
+        print("searchText", self.searchText)
+        
+        // Since we are executing an entirely new search we need to make sure
+        // that we reset all of our result variables
+        //
+        self.allResultsLoaded = false
+        self.page = 1
+        self.trending = [AnyObject]()
+        
+        
+        if self.allResultsLoaded {
+            return
+        }
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        let parameters = [
+            "q": "{\"filters\": [{\"name\":\"huc_8_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}",
+            "page": "\(self.page)"
+        ]
+        
+        let endpoint = Endpoints.GET_MANY_TERRITORY
+        
+        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        
+    }
+
+    func searchForGroups(isRefreshingUserList: Bool = false) {
+        
+        print("searchText", self.searchText)
+        
+        // Since we are executing an entirely new search we need to make sure
+        // that we reset all of our result variables
+        //
+        self.allResultsLoaded = false
+        self.page = 1
+        self.trending = [AnyObject]()
+        
+        
+        if self.allResultsLoaded {
+            return
+        }
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        let parameters = [
+            "q": "{\"filters\": [{\"name\":\"name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}",
+            "page": "\(self.page)"
+        ]
+        
+        let endpoint = Endpoints.GET_MANY_ORGANIZATIONS
+        
+        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        
+    }
+
+    func searchForTags(isRefreshingUserList: Bool = false) {
+        
+        print("searchText", self.searchText)
+        
+        // Since we are executing an entirely new search we need to make sure
+        // that we reset all of our result variables
+        //
+        self.allResultsLoaded = false
+        self.page = 1
+        self.trending = [AnyObject]()
+        
+        
+        if self.allResultsLoaded {
+            return
+        }
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        let parameters = [
+            "q": "{\"filters\": [{\"name\":\"tag\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}",
+            "page": "\(self.page)"
+        ]
+        
+        let endpoint = Endpoints.GET_MANY_HASHTAGS
+        
+        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        
+    }
+
 }
