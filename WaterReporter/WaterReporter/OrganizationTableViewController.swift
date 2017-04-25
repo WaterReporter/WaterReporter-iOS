@@ -112,25 +112,25 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
     }
     
-    @IBAction func toggleUILableNumberOfLines(sender: UITapGestureRecognizer) {
-        
-        let field: UILabel = sender.view as! UILabel
-        
-        switch field.numberOfLines {
-        case 0:
-            if sender.view?.restorationIdentifier == "labelGroupProfileDescription" {
-                field.numberOfLines = 3
-            }
-            else {
-                field.numberOfLines = 1
-            }
-            break
-        default:
-            field.numberOfLines = 0
-            break
-        }
-        
-    }
+//    @IBAction func toggleUILableNumberOfLines(sender: UITapGestureRecognizer) {
+//        
+//        let field: UILabel = sender.view as! UILabel
+//        
+//        switch field.numberOfLines {
+//        case 0:
+//            if sender.view?.restorationIdentifier == "labelGroupProfileDescription" {
+//                field.numberOfLines = 3
+//            }
+//            else {
+//                field.numberOfLines = 1
+//            }
+//            break
+//        default:
+//            field.numberOfLines = 0
+//            break
+//        }
+//        
+//    }
     
     @IBAction func openUserSubmissionDirectionsURL(sender: UIButton) {
         
@@ -224,7 +224,40 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
     }
+
+    @IBAction func loadTerritoryProfileFromSubmissions(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        
+        var _thisReport: JSON!
+        
+        _thisReport = JSON(self.groupSubmissionsObjects[(sender.tag)])
+        
+        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+    }
     
+    @IBAction func loadTerritoryProfileFromActions(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        
+        var _thisReport: JSON!
+        
+        _thisReport = JSON(self.groupActionsObjects[(sender.tag)])
+        
+        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+    }
     
     //
     // MARK: Variables
@@ -293,7 +326,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         //
         //
         //
-        self.labelGroupProfileDescription.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OrganizationTableViewController.toggleUILableNumberOfLines(_:))))
+//        self.labelGroupProfileDescription.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OrganizationTableViewController.toggleUILableNumberOfLines(_:))))
         
         
         //
@@ -844,6 +877,8 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             }
             
+            cell.buttonReportTerritory.tag = indexPath.row
+            
             if (indexPath.row == self.groupSubmissionsObjects.count - 2 && self.groupSubmissionsObjects.count < self.groupSubmissions!["properties"]["num_results"].int) {
                 self.attemptLoadGroupSubmissions()
             }
@@ -973,6 +1008,12 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                 }
             })
             
+            // Buttons > Territory
+            //
+            if cell.buttonReportTerritory != nil {
+                cell.buttonReportTerritory.tag = indexPath.row
+            }
+
             // Buttons > Share
             //
             cell.buttonReportShare.tag = indexPath.row
@@ -1041,7 +1082,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             }
             
             // Display Member Image
-            var groupProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
+            var groupProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
             
             if let _group_image_url = _thisSubmission["picture"].string {
                 groupProfileImageURL = NSURL(string: _group_image_url)

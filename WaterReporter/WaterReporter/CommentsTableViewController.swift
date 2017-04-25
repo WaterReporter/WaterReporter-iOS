@@ -6,6 +6,7 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import ActiveLabel
 import Alamofire
 import Foundation
 import Kingfisher
@@ -216,7 +217,7 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
             
             cell.commentOwnerImageButton.addTarget(self, action: #selector(CommentsTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
 
-            var commentOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
+            var commentOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
             
             if let thisCommentOwnerImageURL = _commentOwner["picture"].string {
                 commentOwnerImageURL = NSURL(string: String(thisCommentOwnerImageURL))
@@ -239,7 +240,25 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
             // Comment Body
             //
             if let _commentBody = _comment["properties"]["body"].string {
-                cell.commentDescription.text = _commentBody
+                
+                if "\(_commentBody)" != "null" || "\(_commentBody)" != "" {
+                    cell.commentDescription.text = "\(_commentBody)"
+                    cell.commentDescription.enabledTypes = [.Hashtag]
+                    cell.commentDescription.hashtagColor = UIColor.colorBrand()
+                    cell.commentDescription.hashtagSelectedColor = UIColor.colorDarkGray()
+                    
+                    cell.commentDescription.handleHashtagTap { hashtag in
+                        print("Success. You just tapped the \(hashtag) hashtag")
+                        
+                        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                        
+                        nextViewController.hashtag = hashtag
+                        
+                        self.navigationController?.pushViewController(nextViewController, animated: true)
+                        
+                    }
+                    
+                }
             }
 
             //

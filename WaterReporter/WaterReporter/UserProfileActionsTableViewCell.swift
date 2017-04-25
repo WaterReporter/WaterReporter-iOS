@@ -16,6 +16,7 @@ class UserProfileActionsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var reportOwnerName: UILabel!
     @IBOutlet weak var reportTerritoryName: UILabel!
+    
     @IBOutlet weak var reportDate: UILabel!
     @IBOutlet weak var reportImageView: UIImageView!
     
@@ -26,6 +27,7 @@ class UserProfileActionsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var labelReportDescription: UILabel!
     @IBOutlet weak var labelReportGroups: UILabel!
+    @IBOutlet weak var buttonReportTerritory: UIButton!
     
     
     override func awakeFromNib() {

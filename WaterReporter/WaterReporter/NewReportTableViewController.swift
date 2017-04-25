@@ -803,7 +803,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // Send a request to the defined endpoint with the given parameters
         //
         let parameters = [
-            "q": "{\"filters\": [{\"name\":\"tag\",\"op\":\"ilike\",\"val\":\"\(queryText)%\"}]}"
+            "q": "{\"filters\": [{\"name\":\"tag\",\"op\":\"like\",\"val\":\"\(queryText)%\"}]}"
         ]
         
         Alamofire.request(.GET, Endpoints.GET_MANY_HASHTAGS, parameters: parameters)

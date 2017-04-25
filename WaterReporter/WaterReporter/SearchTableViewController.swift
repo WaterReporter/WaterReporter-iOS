@@ -43,7 +43,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
             
             nextViewController.territory = "\(_object["properties"]["huc_8_name"])"
-            nextViewController.territory_id = "\(_object["id"])"
+            nextViewController.territoryId = "\(_object["id"])"
             self.navigationController!.pushViewController(nextViewController, animated: true)
         }
         else if (self.selectedType == "Groups") {
@@ -339,7 +339,10 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 
                 cell.searchResultImage.kf_indicatorType = .Activity
                 cell.searchResultImage.kf_showIndicatorWhenLoading = true
-    
+
+                cell.searchResultImageConstraintWidth.constant = 64.0
+                cell.searchResultImageConstraintPaddingLeft.constant = 16.0
+
                 cell.searchResultImage.kf_setImageWithURL(resultImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                     (image, error, cacheType, imageUrl) in
                     if (image != nil) {
@@ -377,23 +380,8 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 //
                 // WATERSHED > IMAGE
                 //
-                let resultImageURL:NSURL! = NSURL(string: "https://huc.waterreporter.org/boundary.png")
-                
-                cell.searchResultImage.backgroundColor = UIColor.colorBackground()
-                
-                cell.searchResultImage.kf_indicatorType = .Activity
-                cell.searchResultImage.kf_showIndicatorWhenLoading = true
-                
-                cell.searchResultImage.kf_setImageWithURL(resultImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                    (image, error, cacheType, imageUrl) in
-                    if (image != nil) {
-                        cell.searchResultImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                    }
-                    
-                    cell.searchResultImage.layer.cornerRadius = cell.searchResultImage.frame.size.width / 2
-                    cell.searchResultImage.clipsToBounds = true
-                    
-                })
+                cell.searchResultImageConstraintWidth.constant = 0.0
+                cell.searchResultImageConstraintPaddingLeft.constant = 0.0
                 
                 // WATERSHED > BUTTON
                 //
@@ -430,7 +418,10 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
 
                 cell.searchResultImage.kf_indicatorType = .Activity
                 cell.searchResultImage.kf_showIndicatorWhenLoading = true
-                
+
+                cell.searchResultImageConstraintWidth.constant = 64.0
+                cell.searchResultImageConstraintPaddingLeft.constant = 16.0
+
                 cell.searchResultImage.kf_setImageWithURL(resultImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                     (image, error, cacheType, imageUrl) in
                     if (image != nil) {
@@ -458,16 +449,18 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 cell.searchResultTitle.backgroundColor = UIColor.clearColor()
                 
                 if (_name != "") {
-                    cell.searchResultTitle.text = "\(_name)"
+                    cell.searchResultTitle.text = "#\(_name)"
                 }
                 else {
-                    cell.searchResultTitle.text = "Unknown Group Name"
+                    cell.searchResultTitle.text = ""
                 }
                 
                 //
                 // TAG > IMAGE
                 //
-                cell.searchResultImage.image = UIImage(named: "icon--hashtag")
+                // cell.searchResultImage.image = UIImage(named: "icon--hashtag")
+                cell.searchResultImageConstraintWidth.constant = 0.0
+                cell.searchResultImageConstraintPaddingLeft.constant = 0.0
 
                 
                 // TAG > BUTTON

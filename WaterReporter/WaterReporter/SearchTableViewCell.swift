@@ -12,11 +12,15 @@ class SearchTableViewCell: UITableViewCell {
     
     var reportObject : AnyObject?
     
-    @IBOutlet weak var searchResultImage: UIImageView!
     @IBOutlet weak var searchResultTitle: UILabel!
     @IBOutlet weak var searchResultSubTitle: UILabel!
     @IBOutlet weak var searchResultLink: UIButton!
 
+    @IBOutlet weak var searchResultImage: UIImageView!
+
+    @IBOutlet weak var searchResultImageConstraintWidth: NSLayoutConstraint!
+    
+    @IBOutlet weak var searchResultImageConstraintPaddingLeft: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()

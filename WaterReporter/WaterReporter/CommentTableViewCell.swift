@@ -6,6 +6,7 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import ActiveLabel
 import UIKit
 
 class CommentTableViewCell: UITableViewCell {
@@ -19,7 +20,7 @@ class CommentTableViewCell: UITableViewCell {
     @IBOutlet weak var commentOwnerName: UILabel!
     @IBOutlet weak var commentDatePosted: UILabel!
     @IBOutlet weak var commentDescriptionImage: UIImageView!
-    @IBOutlet weak var commentDescription: UILabel!
+    @IBOutlet weak var commentDescription: ActiveLabel!
     @IBOutlet weak var commentDescriptionImageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var commentDescriptionImageTopMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var commentDescriptionImageBottomMarginConstraint: NSLayoutConstraint!

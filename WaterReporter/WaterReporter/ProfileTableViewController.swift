@@ -251,7 +251,40 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     }
 
-    
+    @IBAction func loadTerritoryProfileFromSubmissions(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        
+        var _thisReport: JSON!
+        
+        _thisReport = JSON(self.userSubmissionsObjects[(sender.tag)])
+        
+        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+    }
+
+    @IBAction func loadTerritoryProfileFromActions(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        
+        var _thisReport: JSON!
+        
+        _thisReport = JSON(self.userActionsObjects[(sender.tag)])
+        
+        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+    }
+
     //
     // MARK: Variables
     //
@@ -1055,6 +1088,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     cell.buttonModifyReport.hidden = false
                 }
             }
+            
+            cell.buttonReportTerritory.tag = indexPath.row
 
             //
             // CONTIUOUS SCROLL
@@ -1229,6 +1264,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             }
+            
+            cell.buttonReportTerritory.tag = indexPath.row
             
             if (indexPath.row == self.userActionsObjects.count - 2 && self.userActionsObjects.count < self.userActions!["properties"]["num_results"].int) {
                 self.attemptLoadUserActions()

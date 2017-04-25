@@ -93,12 +93,14 @@ class ActivityTableViewController: UITableViewController {
         
         let _thisReport = JSON(self.reports[(sender.tag)])
         
-        print("\(_thisReport["properties"]["territory"])")
-        
-        nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
-        nextViewController.territory_id = "\(_thisReport["properties"]["territory_id"])"
-        
-        self.navigationController?.pushViewController(nextViewController, animated: true)
+        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+
+            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
     }
 
     
@@ -434,7 +436,7 @@ class ActivityTableViewController: UITableViewController {
             cell.reportOwnerImageButton.tag = indexPath.row
             cell.reportOwnerImageButton.addTarget(self, action: #selector(ActivityTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
 
-            var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/images/badget--MissingUser.png")
+            var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
             
             if let thisReportOwnerImageURL = reportOwner?.objectForKey("picture") {
                 reportOwnerImageURL = NSURL(string: String(thisReportOwnerImageURL))
