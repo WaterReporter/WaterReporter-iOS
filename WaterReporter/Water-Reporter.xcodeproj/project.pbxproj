@@ -55,6 +55,7 @@
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
 		CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */; };
 		CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */; };
+		CEEA52751EB27F5200934D18 /* CommentHashtagTypeAhead.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEA52741EB27F5200934D18 /* CommentHashtagTypeAhead.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +147,7 @@
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableViewController.swift; sourceTree = "<group>"; };
+		CEEA52741EB27F5200934D18 /* CommentHashtagTypeAhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentHashtagTypeAhead.swift; sourceTree = "<group>"; };
 		D8993E8D85322C529237865F /* Pods-WaterReporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -261,6 +263,7 @@
 				C185025C1DC779BC00C0F0DA /* CommentTableViewCell.swift */,
 				C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */,
 				C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */,
+				CEEA52741EB27F5200934D18 /* CommentHashtagTypeAhead.swift */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 				CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */,
 				C198C0D41DDB2A6200AA5E59 /* NewReportGroupsTableViewController.swift in Sources */,
 				C1B02D2F1DC51C85003566FC /* CommentsNewTableViewController.swift in Sources */,
+				CEEA52751EB27F5200934D18 /* CommentHashtagTypeAhead.swift in Sources */,
 				C194FA311DD0F5D100D4082A /* UserProfileCreateTableViewController.swift in Sources */,
 				C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */,
 				C1C5FD301DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift in Sources */,

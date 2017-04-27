@@ -37,7 +37,9 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
 
     @IBOutlet weak var textfieldCommentBody: UITextView!
     
-    
+    @IBOutlet weak var hashtagTypeAhead: UITableView!
+    @IBOutlet weak var typeAheadHeight: NSLayoutConstraint!
+
     //
     // MARK: Variables
     //
@@ -51,6 +53,10 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
     var userObject: JSON?
     var userProfile: JSON?
     var loadingView: UIView!
+
+    var hashtagAutocomplete: [String] = [String]()
+    var hashtagSearchEnabled: Bool = false
+    var dataSource: CommentHashtagTableView = CommentHashtagTableView()
 
     
     //
@@ -83,6 +89,13 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                 
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
 
+        // HASHTAG TYPE AHEAD
+        //
+        self.hashtagTypeAhead.delegate = dataSource
+        self.hashtagTypeAhead.dataSource = dataSource
+        dataSource.parent = self
+
+        
         //
         //
         //
@@ -135,6 +148,83 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             self.textfieldCommentBody.text = nil
         })
     }
+    
+    func textViewDidChange(textView: UITextView) {
+        
+        let _text: String = "\(textView.text)"
+        
+        if _text != "" && _text.characters.last! == "#" {
+            self.hashtagSearchEnabled = true
+            self.textfieldCommentBody.becomeFirstResponder()
+            
+            print("Hashtag Search: Found start of hashtag")
+        }
+        else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
+            self.hashtagTypeAhead.hidden = true
+            self.hashtagSearchEnabled = false
+            self.dataSource.results = [String]()
+            
+            self.typeAheadHeight.constant = 0.0
+            self.tableView.reloadData()
+            self.textfieldCommentBody.becomeFirstResponder()
+            
+            print("Hashtag Search: Disabling search because space was entered")
+        }
+        else if _text != "" && self.hashtagSearchEnabled == true {
+            
+            self.hashtagTypeAhead.hidden = false
+            self.dataSource.results = [String]()
+            
+            self.typeAheadHeight.constant = 128.0
+            self.tableView.reloadData()
+            self.textfieldCommentBody.becomeFirstResponder()
+            
+            // Identify hashtag search
+            //
+            let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
+            let _hashtag_search = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
+            
+            // Add what the user is typing to the top of the list
+            //
+            print("Hashtag Search: Performing search for \(_hashtag_search)")
+            
+            dataSource.results = ["\(_hashtag_search)"]
+            dataSource.search = "\(_hashtag_search)"
+            
+            dataSource.numberOfRowsInSection(dataSource.results.count)
+            
+            self.hashtagTypeAhead.reloadData()
+            
+            // Execute the serverside search
+            //
+            print("Hashtag Search: Sent these to results \(dataSource.results)")
+            
+            self.searchHashtags(_hashtag_search)
+        }
+    }
+    
+    func selectedValue(value: String) {
+        
+        // Add the hashtag to the text
+        //
+        self.textfieldCommentBody.text = "\(self.textfieldCommentBody.text)\(value)"
+        self.tableView.reloadData()
+        
+        self.textfieldCommentBody.becomeFirstResponder()
+        
+        
+        // Reset the search
+        //
+        self.hashtagTypeAhead.hidden = true
+        self.hashtagSearchEnabled = false
+        self.dataSource.results = [String]()
+        
+        self.typeAheadHeight.constant = 0.0
+        self.tableView.reloadData()
+        self.textfieldCommentBody.becomeFirstResponder()
+        
+    }
+
 
     //
     // MARK: Custom functionality
@@ -587,6 +677,80 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                 case .Failure(let error):
                     print(error)
                 }
+        }
+    }
+
+    
+    //
+    // MARK: TABLE VIEW OVERRIDES
+    //
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        var rowHeight:CGFloat = 44.0
+        
+        switch indexPath.section {
+            case 0:
+                if indexPath.row == 0 {
+                    rowHeight = 218.0
+                }
+                else {
+                    rowHeight = 44.0
+            }
+            case 1:
+                
+                if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == false) {
+                    rowHeight = 356.0
+                }
+                else if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == true) {
+                    rowHeight = 192.0
+                }
+                break
+            default:
+                rowHeight = 44.0
+                break
+        }
+        
+        
+        return rowHeight
+    }
+
+    
+    //
+    //
+    //
+    func searchHashtags(queryText: String) {
+        
+        //
+        // Send a request to the defined endpoint with the given parameters
+        //
+        let parameters = [
+            "q": "{\"filters\": [{\"name\":\"tag\",\"op\":\"like\",\"val\":\"\(queryText)%\"}]}"
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_HASHTAGS, parameters: parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    
+                    let _results = JSON(value)
+                    print("_results \(_results)")
+                    
+                    for _result in _results["features"] {
+                        print("_result \(_result.1["properties"]["tag"])")
+                        let _tag = "\(_result.1["properties"]["tag"])"
+                        self.dataSource.results.append(_tag)
+                    }
+                    
+                    self.dataSource.numberOfRowsInSection(_results["features"].count)
+                    
+                    self.hashtagTypeAhead.reloadData()
+                    
+                case .Failure(let error):
+                    print(error)
+                    break
+                }
+                
         }
     }
 

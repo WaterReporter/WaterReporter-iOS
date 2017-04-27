@@ -555,32 +555,71 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Comment Body" id="Cxr-09-vkc">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="232" id="s9J-P4-6gm">
-                                        <rect key="frame" x="0.0" y="362" width="375" height="232"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="336" id="s9J-P4-6gm">
+                                        <rect key="frame" x="0.0" y="362" width="375" height="336"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s9J-P4-6gm" id="yPL-3j-ktn">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="232"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="335"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="l93-DH-X6j">
-                                                    <rect key="frame" x="16" y="16" width="343" height="200"/>
+                                                    <rect key="frame" x="16" y="8" width="343" height="164"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="200" id="ugM-Ud-V7V"/>
+                                                        <constraint firstAttribute="height" constant="164" id="ugM-Ud-V7V"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="Jj5-KO-D6X" id="5cU-Y0-OaW"/>
                                                     </connections>
                                                 </textView>
+                                                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="hashtagCommentTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="skB-f1-1KR" customClass="CommentHashtagTableView" customModule="Water_Reporter" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="172" width="375" height="128"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="128" id="sbL-VF-6VX"/>
+                                                    </constraints>
+                                                    <prototypes>
+                                                        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="hashtagAutocompleteTableViewCell" id="m5a-VS-fqB" customClass="HashtagAutocompleteTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="m5a-VS-fqB" id="nLw-Rm-dpg">
+                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#example" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VMA-FC-2zJ">
+                                                                        <rect key="frame" x="16" y="11.5" width="343" height="21"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                        <nil key="textColor"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="trailingMargin" secondItem="VMA-FC-2zJ" secondAttribute="trailing" constant="8" id="TQQ-bd-La6"/>
+                                                                    <constraint firstItem="VMA-FC-2zJ" firstAttribute="centerY" secondItem="nLw-Rm-dpg" secondAttribute="centerY" id="b9x-Y0-Dh5"/>
+                                                                    <constraint firstItem="VMA-FC-2zJ" firstAttribute="leading" secondItem="nLw-Rm-dpg" secondAttribute="leadingMargin" constant="8" id="g1q-6M-Bre"/>
+                                                                </constraints>
+                                                            </tableViewCellContentView>
+                                                            <connections>
+                                                                <outlet property="labelHashtagValue" destination="VMA-FC-2zJ" id="ai2-Vj-IZZ"/>
+                                                            </connections>
+                                                        </tableViewCell>
+                                                    </prototypes>
+                                                    <sections/>
+                                                </tableView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="skB-f1-1KR" firstAttribute="top" secondItem="l93-DH-X6j" secondAttribute="bottom" id="65J-Ge-aqp"/>
                                                 <constraint firstItem="l93-DH-X6j" firstAttribute="leading" secondItem="yPL-3j-ktn" secondAttribute="leadingMargin" constant="8" id="EVh-g9-L2c"/>
-                                                <constraint firstItem="l93-DH-X6j" firstAttribute="centerY" secondItem="yPL-3j-ktn" secondAttribute="centerY" id="R6d-VM-aGc"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="l93-DH-X6j" secondAttribute="trailing" constant="8" id="eZo-7Y-GDU"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="skB-f1-1KR" secondAttribute="trailing" id="O8X-eL-RVB"/>
+                                            <constraint firstItem="l93-DH-X6j" firstAttribute="top" secondItem="s9J-P4-6gm" secondAttribute="top" constant="8" id="Zo4-oh-um1"/>
+                                            <constraint firstItem="skB-f1-1KR" firstAttribute="leading" secondItem="s9J-P4-6gm" secondAttribute="leading" id="v6S-OW-aN8"/>
+                                        </constraints>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -600,11 +639,13 @@
                         <outlet property="buttonCommentImageRemove" destination="Xjs-dh-xYV" id="Fb1-YN-CXD"/>
                         <outlet property="buttonCommentImageRemoveIcon" destination="eq1-Mm-ZOT" id="PpR-MY-9cm"/>
                         <outlet property="commentImagePreview" destination="xRm-Hd-b7f" id="gQD-0p-FY1"/>
+                        <outlet property="hashtagTypeAhead" destination="skB-f1-1KR" id="rxc-DK-hmH"/>
                         <outlet property="indicatorSavingNewComment" destination="NGy-r8-Bug" id="b3v-wZ-Sfu"/>
                         <outlet property="indicatorSavingNewCommentLabel" destination="c4E-N2-awq" id="R3h-CC-KiK"/>
                         <outlet property="navigationBarButtonCancel" destination="3FR-lV-zqx" id="ux4-ba-qUb"/>
                         <outlet property="navigationBarButtonSave" destination="Ope-ya-RBQ" id="gbZ-5o-t7V"/>
                         <outlet property="textfieldCommentBody" destination="l93-DH-X6j" id="edR-R5-wyD"/>
+                        <outlet property="typeAheadHeight" destination="sbL-VF-6VX" id="4JX-bz-vcg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wfd-C0-EMe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3178,7 +3219,7 @@
                                                         <constraint firstAttribute="height" constant="164" id="FvT-Ms-6ca"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter" returnKeyType="done"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="t6D-GX-vZl" id="Uqt-f9-QYr"/>
                                                     </connections>
