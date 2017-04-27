@@ -77,14 +77,14 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     
     @IBAction func changeSearchType(sender: UIButton) {
         
+        print("self::changeSearchType")
+        
         if self.selectedType != sender.currentTitle! {
             
             let _newType: String = sender.currentTitle!
             
             // Cancel and clear search between tab switching
             //
-            self.searchText = ""
-
             self.selectedType = _newType
             
             self.tableView.reloadData()
@@ -145,7 +145,14 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     var selectedType = "People"
     var allResultsLoaded: Bool = false
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
     var searchText: String = ""
+    var isSearching: Bool = false
+    var isEmpty: Bool = false
+    var isEmptyPeople: Bool = false
+    var isEmptyGroups: Bool = false
+    var isEmptyWatersheds: Bool = false
+    var isEmptyTags: Bool = false
 
     
     //
@@ -230,6 +237,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY, type: "Watersheds", isRefreshingUserList: true)
         self.loadTrendingRecords(Endpoints.TRENDING_GROUP, type: "Groups", isRefreshingUserList: true)
         self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG, type: "Tags", isRefreshingUserList: true)
+        
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
@@ -238,7 +246,13 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         // Everytime the text changes, updated the `searchText` and restart the
         // timerh
         //
-        self.searchText = searchText;
+        if searchText == "" {
+            self.searchBarCancelButtonClicked(searchBar)
+        }
+        
+        self.searchText = searchText
+        self.isSearching = true
+        self.tableView.reloadData()
         
         self.timerPeople.invalidate()
         self.timerWatersheds.invalidate()
@@ -285,19 +299,51 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        print("tableView::numberOfRowsInSection")
+        
         var _count: Int = 0
         
-        if self.selectedType == "People" {
+        if self.searchText != "" && self.isSearching == true {
+            _count = 1
+        }
+        else if self.selectedType == "People" {
             _count = self.trendingPeople.count
+            self.isEmptyPeople = false
+            
+            if _count == 0 && self.searchText != "" {
+                self.isEmptyPeople = true
+                _count = 1
+            }
+
         }
         else if self.selectedType == "Watersheds" {
             _count = self.trendingWatersheds.count
+            self.isEmptyWatersheds = false
+            
+            if _count == 0 && self.searchText != "" {
+                self.isEmptyWatersheds = true
+                _count = 1
+            }
+
         }
         else if self.selectedType == "Groups" {
             _count = self.trendingGroups.count
+            self.isEmptyGroups = false
+
+            if _count == 0 && self.searchText != "" {
+                self.isEmptyGroups = true
+                _count = 1
+            }
+            
         }
         else if self.selectedType == "Tags" {
             _count = self.trendingTags.count
+            self.isEmptyTags = false
+
+            if _count == 0 && self.searchText != "" {
+                self.isEmptyTags = true
+                _count = 1
+            }
         }
         
         return _count
@@ -305,10 +351,30 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        //
-        // PEOPLE
-        //
-        if (self.selectedType == "People") {
+        print("tableView::cellForRowAtIndexPath")
+        
+        if (self.searchText != "" && self.isSearching) {
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchLoadingTableViewCell", forIndexPath: indexPath)
+            return cell
+        }
+        else if self.selectedType == "People" && self.searchText != "" && self.isEmptyPeople == true {
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchEmptyTableViewCell", forIndexPath: indexPath)
+            print("EMPTY ROW FOR PEOPLE~!!!")
+            return cell
+        }
+        else if self.selectedType == "Watersheds" && self.searchText != "" && self.isEmptyWatersheds == true {
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchEmptyTableViewCell", forIndexPath: indexPath)
+            return cell
+        }
+        else if self.selectedType == "Groups" && self.searchText != "" && self.isEmptyGroups == true {
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchEmptyTableViewCell", forIndexPath: indexPath)
+            return cell
+        }
+        else if self.selectedType == "Tags" && self.searchText != "" && self.isEmptyTags == true {
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchEmptyTableViewCell", forIndexPath: indexPath)
+            return cell
+        }
+        else if (self.selectedType == "People" && self.isEmptyPeople == false) {
 
             if indexPath.row > self.trendingPeople.count {
                 return UITableViewCell()
@@ -377,7 +443,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 _total_number_results = self.trendingPeopleJSON["properties"]["num_results"].int!
             }
 
-            if (indexPath.row == self.trendingPeople.count - 7 && self.trendingPeople.count < _total_number_results) {
+            if (indexPath.row == self.trendingPeople.count - 2 && self.trendingPeople.count < _total_number_results) {
                 
                 if (self.searchText != "") {
                     self.searchForPeople(false)
@@ -391,7 +457,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             return cell
 
         }
-        else if (self.selectedType == "Watersheds") {
+        else if (self.selectedType == "Watersheds" && self.isEmptyWatersheds == false) {
             
             if indexPath.row > self.trendingWatersheds.count {
                 return UITableViewCell()
@@ -437,7 +503,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 _total_number_results = self.trendingWatershedsJSON["properties"]["num_results"].int!
             }
             
-            if (indexPath.row == self.trendingWatersheds.count - 7 && self.trendingWatersheds.count < _total_number_results) {
+            if (indexPath.row == self.trendingWatersheds.count - 2 && self.trendingWatersheds.count < _total_number_results) {
                 
                 if (self.searchText != "") {
                     self.searchForWatersheds(false)
@@ -450,7 +516,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
 
             return cell
         }
-        else if (self.selectedType == "Groups") {
+        else if (self.selectedType == "Groups" && self.isEmptyGroups == false) {
             
             if indexPath.row > self.trendingGroups.count {
                 return UITableViewCell()
@@ -518,7 +584,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 _total_number_results = self.trendingGroupsJSON["properties"]["num_results"].int!
             }
             
-            if (indexPath.row == self.trendingGroups.count - 7 && self.trendingGroups.count < _total_number_results) {
+            if (indexPath.row == self.trendingGroups.count - 2 && self.trendingGroups.count < _total_number_results) {
                 
                 if (self.searchText != "") {
                     self.searchForGroups(false)
@@ -531,7 +597,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             
             return cell
         }
-        else if (self.selectedType == "Tags") {
+        else if (self.selectedType == "Tags" && self.isEmptyTags == false) {
             
             if indexPath.row > self.trendingTags.count {
                 return UITableViewCell()
@@ -579,7 +645,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 _total_number_results = self.trendingTagsJSON["properties"]["num_results"].int!
             }
             
-            if (indexPath.row == self.trendingTags.count - 7 && self.trendingTags.count < _total_number_results) {
+            if (indexPath.row == self.trendingTags.count - 2 && self.trendingTags.count < _total_number_results) {
                 
                 if (self.searchText != "") {
                     self.searchForTags(false)
@@ -645,7 +711,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 case .Success(let value):
                     
                     if (isRefreshingUserList) {
-                        print("loadTrendingRecords::complete::isRefreshingUserList \(value)")
+//                        print("loadTrendingRecords::complete::isRefreshingUserList \(value)")
                         
                         if type == "People" {
                             self.trendingPeople = value["objects"] as! [AnyObject]
@@ -675,7 +741,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                         self.refreshControl?.endRefreshing()
                     }
                     else {
-                        print("loadTrendingRecords::complete::!isRefreshingUserList \(value)")
+//                        print("loadTrendingRecords::complete::!isRefreshingUserList \(value)")
                         
                         if type == "People" {
                             self.trendingPeople += value["objects"] as! [AnyObject]
@@ -719,73 +785,195 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         Alamofire.request(.GET, endpoint, headers: headers, parameters: parameters)
             .responseJSON { response in
                 
-                switch response.result {
-                case .Success(let value):
-                    
-                    if (parameters["page"]! == "\(1)") {
-                        print("loadTrendingRecords::complete::isRefreshingUserList \(value)")
+                print("response \(response)")
+                
+                let statusCode = (response.response?.statusCode)!
+                
+                print("Status Code: \(statusCode == 400)  \("\(statusCode)" == "400")")
+                
+                if statusCode == 200 {
+                    switch response.result {
+                    case .Success(let value):
                         
-                        if type == "People" {
-                            self.trendingPeople = value["features"] as! [AnyObject]
-                            self.trendingPeopleJSON = JSON(value)
+                        self.isSearching = false
+                        
+                        if (parameters["page"]! == "\(1)") {
+                            //                        print("performSearch::complete::isRefreshingUserList \(value)")
                             
-                            self.pagePeople += 1
+                            if type == "People" {
+                                self.trendingPeople = value["features"] as! [AnyObject]
+                                self.trendingPeopleJSON = JSON(value)
+                                
+                                if self.trendingPeople.count == 0 {
+                                    self.isEmpty = true
+                                }
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingPeopleJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pagePeople < _total_number_results {
+                                    self.pagePeople += 1
+                                }
+                            }
+                            else if type == "Watersheds" {
+                                self.trendingWatersheds = value["features"] as! [AnyObject]
+                                self.trendingWatershedsJSON = JSON(value)
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingWatershedsJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pageWatersheds < _total_number_results {
+                                    self.pageWatersheds += 1
+                                }
+                            }
+                            else if type == "Groups" {
+                                self.trendingGroups = value["features"] as! [AnyObject]
+                                self.trendingGroupsJSON = JSON(value)
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingGroupsJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pageGroups < _total_number_results {
+                                    self.pageGroups += 1
+                                }
+                            }
+                            else if type == "Tags" {
+                                self.trendingTags = value["features"] as! [AnyObject]
+                                self.trendingTagsJSON = JSON(value)
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingTagsJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pageTags < _total_number_results {
+                                    self.pageTags += 1
+                                }
+                            }
+                            
+                            self.refreshControl?.endRefreshing()
                         }
-                        else if type == "Watersheds" {
-                            self.trendingWatersheds = value["features"] as! [AnyObject]
-                            self.trendingWatershedsJSON = JSON(value)
-
-                            self.pageWatersheds += 1
-                        }
-                        else if type == "Groups" {
-                            self.trendingGroups = value["features"] as! [AnyObject]
-                            self.trendingGroupsJSON = JSON(value)
-
-                            self.pageGroups += 1
-                        }
-                        else if type == "Tags" {
-                            self.trendingTags = value["features"] as! [AnyObject]
-                            self.trendingTagsJSON = JSON(value)
-
-                            self.pageTags += 1
+                        else {
+                            //                        print("performSearch::complete::!isRefreshingUserList \(value)")
+                            
+                            if type == "People" {
+                                self.trendingPeople += value["features"] as! [AnyObject]
+                                self.trendingPeopleJSON = JSON(value)
+                                
+                                if self.trendingPeople.count == 0 {
+                                    self.isEmpty = true
+                                }
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingPeopleJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pagePeople < _total_number_results {
+                                    self.pagePeople += 1
+                                }
+                            }
+                            else if type == "Watersheds" {
+                                self.trendingWatersheds += value["features"] as! [AnyObject]
+                                self.trendingWatershedsJSON = JSON(value)
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingWatershedsJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pageWatersheds < _total_number_results {
+                                    self.pageWatersheds += 1
+                                }
+                            }
+                            else if type == "Groups" {
+                                self.trendingGroups += value["features"] as! [AnyObject]
+                                self.trendingGroupsJSON = JSON(value)
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingGroupsJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pageGroups < _total_number_results {
+                                    self.pageGroups += 1
+                                }
+                            }
+                            else if type == "Tags" {
+                                self.trendingTags += value["features"] as! [AnyObject]
+                                self.trendingTagsJSON = JSON(value)
+                                
+                                // Check if we should paginate
+                                //
+                                var _total_number_results = 0
+                                
+                                if self.trendingTagsJSON["num_results"] != nil {
+                                    _total_number_results = JSON(value)["num_results"].int!
+                                }
+                                else if JSON(value)["properties"]["num_results"] != nil {
+                                    _total_number_results = JSON(value)["properties"]["num_results"].int!
+                                }
+                                
+                                if self.pageTags < _total_number_results {
+                                    self.pageTags += 1
+                                }
+                            }
                         }
                         
-                        self.refreshControl?.endRefreshing()
-                    }
-                    else {
-                        print("loadTrendingRecords::complete::!isRefreshingUserList \(value)")
+                        self.tableView.reloadData()
                         
-                        if type == "People" {
-                            self.trendingPeople += value["features"] as! [AnyObject]
-                            self.trendingPeopleJSON = JSON(value)
-
-                            self.pagePeople += 1
-                        }
-                        else if type == "Watersheds" {
-                            self.trendingWatersheds += value["features"] as! [AnyObject]
-                            self.trendingWatershedsJSON = JSON(value)
-
-                            self.pageWatersheds += 1
-                        }
-                        else if type == "Groups" {
-                            self.trendingGroups += value["features"] as! [AnyObject]
-                            self.trendingGroupsJSON = JSON(value)
-
-                            self.pageGroups += 1
-                        }
-                        else if type == "Tags" {
-                            self.trendingTags += value["features"] as! [AnyObject]
-                            self.trendingTagsJSON = JSON(value)
-
-                            self.pageTags += 1
-                        }
+                    case .Failure(let error):
+                        print(error)
+                        break
                     }
-                    
-                    self.tableView.reloadData()
-                    
-                case .Failure(let error):
-                    print(error)
-                    break
                 }
                 
         }

@@ -54,6 +54,15 @@ class ActivityTableViewController: UITableViewController {
             reportImageURL = NSURL(string: String(thisReportImageURL))
         }
         
+        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "fb://")!) {
+            print("FACEBOOK APP INSTALLED")
+            
+        }
+        else {
+            print("FACEBOOK APP NOT INSTALLED")
+            
+        }
+        
         tmpImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
             (image, error, cacheType, imageUrl) in
             
