@@ -776,7 +776,7 @@
 				);
 				INFOPLIST_FILE = WaterReporter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.viable.Water-Reporter";
 				PRODUCT_NAME = "Water-Reporter";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -799,7 +799,7 @@
 				);
 				INFOPLIST_FILE = WaterReporter/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks $(CONFIGURATION_BUILD_DIR)";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.viable.Water-Reporter";
 				PRODUCT_NAME = "Water-Reporter";
 				SWIFT_OBJC_BRIDGING_HEADER = "";

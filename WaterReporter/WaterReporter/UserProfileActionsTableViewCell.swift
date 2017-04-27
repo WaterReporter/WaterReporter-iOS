@@ -6,6 +6,7 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import ActiveLabel
 import UIKit
 
 class UserProfileActionsTableViewCell: UITableViewCell {
@@ -25,7 +26,7 @@ class UserProfileActionsTableViewCell: UITableViewCell {
     @IBOutlet weak var buttonReportDirections: UIButton!
     @IBOutlet weak var buttonReportComments: UIButton!
 
-    @IBOutlet weak var labelReportDescription: UILabel!
+    @IBOutlet weak var labelReportDescription: ActiveLabel!
     @IBOutlet weak var labelReportGroups: UILabel!
     @IBOutlet weak var buttonReportTerritory: UIButton!
     

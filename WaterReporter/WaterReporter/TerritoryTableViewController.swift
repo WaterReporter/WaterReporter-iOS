@@ -145,11 +145,11 @@ class TerritoryTableViewController: UITableViewController {
         
     }
     
-    @IBAction func openUserGroupView(sender: UIButton) {
+    @IBAction func openTerritoryGroupView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
         
         let _groups = JSON(self.territoryGroupsObjects)
-        let _group_id = _groups[sender.tag]["properties"]["organization"]["id"]
+        let _group_id = _groups[sender.tag]["id"]
         
         nextViewController.groupId = "\(_group_id)"
         nextViewController.groupObject = _groups[sender.tag]
@@ -271,7 +271,7 @@ class TerritoryTableViewController: UITableViewController {
             
             self.territoryActionsUnderline.removeFromSuperlayer()
             self.territoryGroupsUnderline.removeFromSuperlayer()
-            
+
             self.tableView.reloadData()
         }
         
@@ -292,14 +292,15 @@ class TerritoryTableViewController: UITableViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        
         // LOAD DATA INTO THE SUBMISSIONS, ACTIONS, & GROUPS TABS
         //
-        self.attemptLoadTerritorySubmissions()
-        self.attemptLoadTerritoryActions()
+        self.attemptLoadTerritorySubmissions(true)
+        self.attemptLoadTerritoryActions(true)
+        self.attemptLoadTerritoryGroups(true)
         
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
-        self.tableView.estimatedRowHeight = 368.0
-        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 600.0
         
         //
         // Restyle the form Log In Navigation button to appear with an underline
@@ -461,7 +462,57 @@ class TerritoryTableViewController: UITableViewController {
         }
         
     }
-    
+
+    func attemptLoadTerritoryGroups(isRefreshingReportsList: Bool = false) {
+        
+        let _parameters = [
+            "q": "{\"filters\":[{\"name\":\"reports\",\"op\":\"any\",\"val\":{\"name\":\"territory\",\"op\":\"has\",\"val\":{\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}}}]}",
+            "page": "\(self.territoryGroupsPage)"
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_ORGANIZATIONS, parameters: _parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("attemptLoadTerritoryGroups::Request Success \(Endpoints.GET_MANY_ORGANIZATIONS) \(value)")
+                    
+                    // Assign response to groups variable
+                    if (isRefreshingReportsList) {
+                        self.territoryGroups = JSON(value)
+                        self.territoryGroupsObjects = value["features"] as! [AnyObject]
+                        self.territoryGroupsRefreshControl.endRefreshing()
+                    }
+                    else {
+                        self.territoryGroups = JSON(value)
+                        self.territoryGroupsObjects += value["features"] as! [AnyObject]
+                    }
+                    
+                    // Set visible button count
+                    let _action_count = self.territoryGroups!["properties"]["num_results"]
+                    
+                    if (_action_count >= 1) {
+                        self.territoryGroupsCount.setTitle("\(_action_count)", forState: .Normal)
+                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.tableView.reloadData()
+                    
+                    self.territoryGroupsPage += 1
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+                
+        }
+        
+    }
     
     //
     // PROTOCOL REQUIREMENT: UITableViewDelegate
@@ -504,24 +555,25 @@ class TerritoryTableViewController: UITableViewController {
             
             // Report > Owner > Image
             //
-            if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
-                
-                let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
-                
-                cell.imageViewReportOwnerImage.kf_indicatorType = .Activity
-                cell.imageViewReportOwnerImage.kf_showIndicatorWhenLoading = true
-                
-                cell.imageViewReportOwnerImage.kf_setImageWithURL(reportOwnerProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                    (image, error, cacheType, imageUrl) in
-                    if (image != nil) {
-                        cell.imageViewReportOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                    }
-                })
-            }
-            else {
-                cell.imageViewReportOwnerImage.image = nil
+            var reportOwnerProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+            
+            if let thisReportOwnerImageURL = _thisSubmission["owner"]["properties"]["picture"].string {
+                reportOwnerProfileImageURL = NSURL(string: String(thisReportOwnerImageURL))
             }
             
+            cell.imageViewReportOwnerImage.kf_indicatorType = .Activity
+            cell.imageViewReportOwnerImage.kf_showIndicatorWhenLoading = true
+            
+            cell.imageViewReportOwnerImage.kf_setImageWithURL(reportOwnerProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                if (image != nil) {
+                    cell.imageViewReportOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+            })
+            
+            cell.imageViewReportOwnerImage.tag = indexPath.row
+            cell.reportOwnerImageButton.tag = indexPath.row
+
             // Report > Owner > Name
             //
             if let _first_name = _thisSubmission["owner"]["properties"]["first_name"].string,
@@ -566,7 +618,29 @@ class TerritoryTableViewController: UITableViewController {
             
             // Report > Description
             //
-            cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
+            let reportDescription = "\(_thisSubmission["report_description"])"
+            
+            if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
+                cell.labelReportDescription.text = "\(reportDescription)"
+                cell.labelReportDescription.enabledTypes = [.Hashtag]
+                cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
+                cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
+                
+                cell.labelReportDescription.handleHashtagTap { hashtag in
+                    print("Success. You just tapped the \(hashtag) hashtag")
+                    
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                    
+                    nextViewController.hashtag = hashtag
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+            }
+            else {
+                cell.labelReportDescription.text = ""
+            }
             
             // Report > Groups
             //
@@ -678,25 +752,25 @@ class TerritoryTableViewController: UITableViewController {
             
             // Report > Owner > Image
             //
-            if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
-                
-                let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
-                
-                cell.imageViewReportOwnerImage.kf_indicatorType = .Activity
-                cell.imageViewReportOwnerImage.kf_showIndicatorWhenLoading = true
-                
-                cell.imageViewReportOwnerImage.kf_setImageWithURL(reportOwnerProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                    (image, error, cacheType, imageUrl) in
-                    
-                    if (image != nil) {
-                        cell.imageViewReportOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                    }
-                })
-            }
-            else {
-                cell.imageViewReportOwnerImage.image = nil
+            var reportOwnerProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+            
+            if let thisReportOwnerImageURL = _thisSubmission["owner"]["properties"]["picture"].string {
+                reportOwnerProfileImageURL = NSURL(string: String(thisReportOwnerImageURL))
             }
             
+            cell.imageViewReportOwnerImage.kf_indicatorType = .Activity
+            cell.imageViewReportOwnerImage.kf_showIndicatorWhenLoading = true
+            
+            cell.imageViewReportOwnerImage.kf_setImageWithURL(reportOwnerProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                if (image != nil) {
+                    cell.imageViewReportOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+            })
+
+            cell.imageViewReportOwnerImage.tag = indexPath.row
+            cell.reportOwnerImageButton.tag = indexPath.row
+
             // Report > Owner > Name
             //
             if let _first_name = _thisSubmission["owner"]["properties"]["first_name"].string,
@@ -741,7 +815,29 @@ class TerritoryTableViewController: UITableViewController {
             
             // Report > Description
             //
-            cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
+            let reportDescription = "\(_thisSubmission["report_description"])"
+            
+            if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
+                cell.labelReportDescription.text = "\(reportDescription)"
+                cell.labelReportDescription.enabledTypes = [.Hashtag]
+                cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
+                cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
+                
+                cell.labelReportDescription.handleHashtagTap { hashtag in
+                    print("Success. You just tapped the \(hashtag) hashtag")
+                    
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                    
+                    nextViewController.hashtag = hashtag
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+            }
+            else {
+                cell.labelReportDescription.text = ""
+            }
             
             // Report > Group > Name
             //
@@ -840,13 +936,43 @@ class TerritoryTableViewController: UITableViewController {
         else if self.territorySelectedTab == "Groups" {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("watershedGroupCell", forIndexPath: indexPath) as! UserProfileGroupsTableViewCell
-            
+
             guard (JSON(self.territoryGroupsObjects) != nil) else { return cell }
+            
+            let _groups = JSON(self.territoryGroupsObjects)
+            
+            cell.labelUserProfileGroupName.text = "\(_groups[indexPath.row]["properties"]["name"])"
+
+            
+            cell.buttonGroupSelection.tag = indexPath.row
+
+            // Display Group Image
+            var groupProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+            
+            if let groupProfileImageString = _groups[indexPath.row]["properties"]["picture"].string {
+                groupProfileImageURL = NSURL(string: String(groupProfileImageString))
+            }
+
+            cell.imageViewUserProfileGroup.kf_indicatorType = .Activity
+            cell.imageViewUserProfileGroup.kf_showIndicatorWhenLoading = true
+            
+            cell.imageViewUserProfileGroup.kf_setImageWithURL(groupProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                if (image != nil) {
+                    cell.imageViewUserProfileGroup.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+            })
+            
+            if (indexPath.row == self.territoryGroupsObjects.count - 2 && self.territoryGroupsObjects.count < self.territoryGroups!["properties"]["num_results"].int) {
+                self.attemptLoadTerritoryGroups()
+            }
             
             return cell
         }
+        else {
+            return UITableViewCell()
+        }
         
-        return UITableViewCell()
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

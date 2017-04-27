@@ -18,7 +18,9 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     // MARK: @IBOutlets
     //
     @IBOutlet var searchTabNavigation: UIView!
+    
     @IBOutlet weak var tableHeaderView: UIView!
+
     @IBOutlet weak var buttonPeople: UIButton!
     @IBOutlet weak var buttonGroups: UIButton!
     @IBOutlet weak var buttonWatersheds: UIButton!
@@ -30,9 +32,10 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     //
     @IBAction func openSearchDetailView(sender: UIButton) {
 
-        let _object = JSON(self.trending[sender.tag])
         
         if (self.selectedType == "People") {
+            let _object = JSON(self.trendingPeople[sender.tag])
+
             let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
             
             nextViewController.userId = "\(_object["id"])"
@@ -40,13 +43,18 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             self.navigationController!.pushViewController(nextViewController, animated: true)
         }
         else if (self.selectedType == "Watersheds") {
+            let _object = JSON(self.trendingWatersheds[sender.tag])
+
             let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
             
             nextViewController.territory = "\(_object["properties"]["huc_8_name"])"
             nextViewController.territoryId = "\(_object["id"])"
+            nextViewController.territoryHUC8Code = "\(_object["properties"]["huc_8_code"])"
             self.navigationController!.pushViewController(nextViewController, animated: true)
         }
         else if (self.selectedType == "Groups") {
+            let _object = JSON(self.trendingGroups[sender.tag])
+
             let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
                         
             nextViewController.groupId = "\(_object["id"])"
@@ -56,6 +64,8 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             self.navigationController!.pushViewController(nextViewController, animated: true)
         }
         else if (self.selectedType == "Tags") {
+            let _object = JSON(self.trendingTags[sender.tag])
+
             let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
             
             nextViewController.hashtag = "\(_object["properties"]["tag"])"
@@ -66,64 +76,44 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     }
     
     @IBAction func changeSearchType(sender: UIButton) {
-        print("Change Tab to \(sender.currentTitle!)")
-        
-        // Cancel and clear search between tab switching
-        //
-        self.searchText = ""
         
         if self.selectedType != sender.currentTitle! {
             
             let _newType: String = sender.currentTitle!
             
+            // Cancel and clear search between tab switching
+            //
+            self.searchText = ""
+
             self.selectedType = _newType
             
-            // Now that we have a new type selected, we need to
-            // change the data in the table and change the color
-            // of the selected item
-            self.buttonPeople.setTitleColor(UIColor.grayColor(), forState: .Normal)
-            self.buttonWatersheds.setTitleColor(UIColor.grayColor(), forState: .Normal)
-            self.buttonGroups.setTitleColor(UIColor.grayColor(), forState: .Normal)
-            self.buttonTags.setTitleColor(UIColor.grayColor(), forState: .Normal)
-            
-            self.allResultsLoaded = false
-            self.page = 1
-            self.trending = [AnyObject]()
-            self.searchText = ""
-            self.timer = NSTimer()
             self.tableView.reloadData()
 
             if (_newType == "People") {
                 self.buttonPeople.setTitleColor(UIColor.colorBrand(), forState: .Normal)
-
-                // Load in trending users as the default
-                //
-                self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, isRefreshingUserList: false)
+                self.buttonWatersheds.setTitleColor(UIColor.grayColor(), forState: .Normal)
+                self.buttonGroups.setTitleColor(UIColor.grayColor(), forState: .Normal)
+                self.buttonTags.setTitleColor(UIColor.grayColor(), forState: .Normal)
             }
             else if (_newType == "Watersheds") {
+                self.buttonPeople.setTitleColor(UIColor.grayColor(), forState: .Normal)
                 self.buttonWatersheds.setTitleColor(UIColor.colorBrand(), forState: .Normal)
-
-                // Load in trending users as the default
-                //
-                self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY, isRefreshingUserList: false)
+                self.buttonGroups.setTitleColor(UIColor.grayColor(), forState: .Normal)
+                self.buttonTags.setTitleColor(UIColor.grayColor(), forState: .Normal)
             }
             else if (_newType == "Groups") {
+                self.buttonPeople.setTitleColor(UIColor.grayColor(), forState: .Normal)
+                self.buttonWatersheds.setTitleColor(UIColor.grayColor(), forState: .Normal)
                 self.buttonGroups.setTitleColor(UIColor.colorBrand(), forState: .Normal)
-
-                // Load in trending users as the default
-                //
-                self.loadTrendingRecords(Endpoints.TRENDING_GROUP, isRefreshingUserList: false)
+                self.buttonTags.setTitleColor(UIColor.grayColor(), forState: .Normal)
             }
             else if (_newType == "Tags") {
+                self.buttonPeople.setTitleColor(UIColor.grayColor(), forState: .Normal)
+                self.buttonWatersheds.setTitleColor(UIColor.grayColor(), forState: .Normal)
+                self.buttonGroups.setTitleColor(UIColor.grayColor(), forState: .Normal)
                 self.buttonTags.setTitleColor(UIColor.colorBrand(), forState: .Normal)
-
-                // Load in trending users as the default
-                //
-                self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG, isRefreshingUserList: false)
             }
-            
         }
-        
     }
     
 
@@ -132,12 +122,29 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     // MARK: Global Variables
     //
     let searchController = UISearchController(searchResultsController: nil)
-    var trending = [AnyObject]()
-    var page: Int = 1
+
+    var trendingPeople: [AnyObject] = [AnyObject]()
+    var trendingPeopleJSON: JSON!
+    var trendingWatersheds = [AnyObject]()
+    var trendingWatershedsJSON: JSON!
+    var trendingGroups = [AnyObject]()
+    var trendingGroupsJSON: JSON!
+    var trendingTags = [AnyObject]()
+    var trendingTagsJSON: JSON!
+
+    var timerPeople = NSTimer()
+    var timerWatersheds = NSTimer()
+    var timerGroups = NSTimer()
+    var timerTags = NSTimer()
+
+    var pagePeople: Int = 1
+    var pageWatersheds: Int = 1
+    var pageGroups: Int = 1
+    var pageTags: Int = 1
+
     var selectedType = "People"
     var allResultsLoaded: Bool = false
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-    var timer = NSTimer()
     var searchText: String = ""
 
     
@@ -178,7 +185,10 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         
         // Load in trending users as the default
         //
-        self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, isRefreshingUserList: false)
+        self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, type: "People", isRefreshingUserList: false)
+        self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY, type: "Watersheds", isRefreshingUserList: false)
+        self.loadTrendingRecords(Endpoints.TRENDING_GROUP, type: "Groups", isRefreshingUserList: false)
+        self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG, type: "Tags", isRefreshingUserList: false)
 
     }
     
@@ -199,35 +209,27 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         // Since we are executing an entirely new search we need to make sure
         // that we reset all of our result variables
         //
-        self.allResultsLoaded = false
-        self.page = 1
-        self.trending = [AnyObject]()
+        self.pagePeople = 1
+        self.pageWatersheds = 1
+        self.pageGroups = 1
+        self.pageTags = 1
+        
         self.searchText = ""
-        self.timer = NSTimer()
 
-        // Load in trending users as the default
-        //
+        self.trendingPeople = [AnyObject]()
+        self.trendingWatersheds = [AnyObject]()
+        self.trendingGroups = [AnyObject]()
+        self.trendingTags = [AnyObject]()
 
-        if (self.selectedType == "People") {
-            // Load in trending users as the default
-            //
-            self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, isRefreshingUserList: false)
-        }
-        else if (self.selectedType == "Watersheds") {
-            // Load in trending users as the default
-            //
-            self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY, isRefreshingUserList: false)
-        }
-        else if (self.selectedType == "Groups") {
-            // Load in trending users as the default
-            //
-            self.loadTrendingRecords(Endpoints.TRENDING_GROUP, isRefreshingUserList: false)
-        }
-        else if (self.selectedType == "Tags") {
-            // Load in trending users as the default
-            //
-            self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG, isRefreshingUserList: false)
-        }
+        self.timerPeople = NSTimer()
+        self.timerWatersheds = NSTimer()
+        self.timerGroups = NSTimer()
+        self.timerTags = NSTimer()
+
+        self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, type: "People", isRefreshingUserList: true)
+        self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY, type: "Watersheds", isRefreshingUserList: true)
+        self.loadTrendingRecords(Endpoints.TRENDING_GROUP, type: "Groups", isRefreshingUserList: true)
+        self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG, type: "Tags", isRefreshingUserList: true)
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
@@ -237,28 +239,21 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         // timerh
         //
         self.searchText = searchText;
+        
+        self.timerPeople.invalidate()
+        self.timerWatersheds.invalidate()
+        self.timerGroups.invalidate()
+        self.timerTags.invalidate()
+        
+        self.pagePeople = 1
+        self.pageWatersheds = 1
+        self.pageGroups = 1
+        self.pageTags = 1
 
-        if (self.selectedType == "People") {
-            // Load in trending users as the default
-            //
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForPeople(_:)), userInfo: nil, repeats: false)
-        }
-        else if (self.selectedType == "Watersheds") {
-            // Load in trending users as the default
-            //
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForWatersheds(_:)), userInfo: nil, repeats: false)
-        }
-        else if (self.selectedType == "Groups") {
-            // Load in trending users as the default
-            //
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForGroups(_:)), userInfo: nil, repeats: false)
-        }
-        else if (self.selectedType == "Tags") {
-            // Load in trending users as the default
-            //
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForTags(_:)), userInfo: nil, repeats: false)
-        }
-
+        self.timerPeople = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForPeople(_:)), userInfo: true, repeats: false)
+        self.timerWatersheds = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForWatersheds(_:)), userInfo: nil, repeats: false)
+        self.timerGroups = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForGroups(_:)), userInfo: nil, repeats: false)
+        self.timerTags = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SearchTableViewController.searchForTags(_:)), userInfo: nil, repeats: false)
         
     }
     
@@ -289,215 +284,299 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.trending.count
+        
+        var _count: Int = 0
+        
+        if self.selectedType == "People" {
+            _count = self.trendingPeople.count
+        }
+        else if self.selectedType == "Watersheds" {
+            _count = self.trendingWatersheds.count
+        }
+        else if self.selectedType == "Groups" {
+            _count = self.trendingGroups.count
+        }
+        else if self.selectedType == "Tags" {
+            _count = self.trendingTags.count
+        }
+        
+        return _count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("searchTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
-        
         //
-        // Make sure we aren't loading old images into the new cells as
-        // additional reports are loaded
+        // PEOPLE
         //
-        if (self.trending.count >= 1) {
+        if (self.selectedType == "People") {
+
+            if indexPath.row > self.trendingPeople.count {
+                return UITableViewCell()
+            }
             
-            let result = self.trending[indexPath.row].objectForKey("properties")
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchPeopleTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+
+            let result = self.trendingPeople[indexPath.row].objectForKey("properties")
             let resultJSON = JSON(result!)
 
+            //
+            // PEOPLE > TITLE
+            //
+            let _first_name = "\(resultJSON["first_name"])"
+            let _last_name = "\(resultJSON["last_name"])"
             
-            //
-            // PEOPLE
-            //
-            if (self.selectedType == "People") {
-                
-                //
-                // PEOPLE > TITLE
-                //
-                let _first_name = "\(resultJSON["first_name"])"
-                let _last_name = "\(resultJSON["last_name"])"
-                
-                cell.searchResultTitle.backgroundColor = UIColor.clearColor()
+            cell.searchResultTitle.backgroundColor = UIColor.clearColor()
 
-                if (_first_name != "" && _last_name != "") {
-                    cell.searchResultTitle.text = "\(_first_name) \(_last_name)"
-                }
-                else {
-                    cell.searchResultTitle.text = "Anonymous User"
-                }
-                
-                //
-                // PEOPLE > IMAGE
-                //
-                var resultImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
-                
-                cell.searchResultImage.backgroundColor = UIColor.colorBackground()
-                
-                if let thisResultImageURL = result?.objectForKey("picture") {
-                    resultImageURL = NSURL(string: String(thisResultImageURL))
-                }
-                
-                cell.searchResultImage.kf_indicatorType = .Activity
-                cell.searchResultImage.kf_showIndicatorWhenLoading = true
-
-                cell.searchResultImageConstraintWidth.constant = 64.0
-                cell.searchResultImageConstraintPaddingLeft.constant = 16.0
-
-                cell.searchResultImage.kf_setImageWithURL(resultImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                    (image, error, cacheType, imageUrl) in
-                    if (image != nil) {
-                        cell.searchResultImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                    }
-
-                    cell.searchResultImage.layer.cornerRadius = cell.searchResultImage.frame.size.width / 2
-                    cell.searchResultImage.clipsToBounds = true
-
-                })
-                
-                // PEOPLE > BUTTON
-                //
-                cell.searchResultLink.tag = indexPath.row
-
+            if (_first_name != "" && _last_name != "") {
+                cell.searchResultTitle.text = "\(_first_name) \(_last_name)"
             }
-            else if (self.selectedType == "Watersheds") {
-                
-                print("resultJSON>>WATERSHEDS \(resultJSON)")
-                
-                //
-                // WATERSHED > TITLE
-                //
-                let _watershed_name = "\(resultJSON["huc_8_name"])"
-                
-                cell.searchResultTitle.backgroundColor = UIColor.clearColor()
-                
-                if (_watershed_name != "") {
-                    cell.searchResultTitle.text = "\(_watershed_name)"
-                }
-                else {
-                    cell.searchResultTitle.text = "Unknown HUC 8 Watershed"
-                }
-                
-                //
-                // WATERSHED > IMAGE
-                //
-                cell.searchResultImageConstraintWidth.constant = 0.0
-                cell.searchResultImageConstraintPaddingLeft.constant = 0.0
-                
-                // WATERSHED > BUTTON
-                //
-                cell.searchResultLink.tag = indexPath.row
-            }
-            else if (self.selectedType == "Groups") {
-                
-                print("resultJSON>>GROUPS \(resultJSON)")
-                
-                //
-                // GROUP > TITLE
-                //
-                let _name = "\(resultJSON["name"])"
-                
-                cell.searchResultTitle.backgroundColor = UIColor.clearColor()
-                
-                if (_name != "") {
-                    cell.searchResultTitle.text = "\(_name)"
-                }
-                else {
-                    cell.searchResultTitle.text = "Unknown Group Name"
-                }
-                
-                //
-                // GROUP > IMAGE
-                //
-                var resultImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
-                
-                cell.searchResultImage.backgroundColor = UIColor.colorBackground()
-
-                if let thisResultImageURL = result?.objectForKey("picture") {
-                    resultImageURL = NSURL(string: String(thisResultImageURL))
-                }
-
-                cell.searchResultImage.kf_indicatorType = .Activity
-                cell.searchResultImage.kf_showIndicatorWhenLoading = true
-
-                cell.searchResultImageConstraintWidth.constant = 64.0
-                cell.searchResultImageConstraintPaddingLeft.constant = 16.0
-
-                cell.searchResultImage.kf_setImageWithURL(resultImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                    (image, error, cacheType, imageUrl) in
-                    if (image != nil) {
-                        cell.searchResultImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                    }
-                    
-                    cell.searchResultImage.layer.cornerRadius = cell.searchResultImage.frame.size.width / 2
-                    cell.searchResultImage.clipsToBounds = true
-                    
-                })
-                
-                // GROUP > BUTTON
-                //
-                cell.searchResultLink.tag = indexPath.row
-            }
-            else if (self.selectedType == "Tags") {
-                
-                print("resultJSON>>TAGS \(resultJSON)")
-                
-                //
-                // TAG > TITLE
-                //
-                let _name = "\(resultJSON["tag"])"
-                
-                cell.searchResultTitle.backgroundColor = UIColor.clearColor()
-                
-                if (_name != "") {
-                    cell.searchResultTitle.text = "#\(_name)"
-                }
-                else {
-                    cell.searchResultTitle.text = ""
-                }
-                
-                //
-                // TAG > IMAGE
-                //
-                // cell.searchResultImage.image = UIImage(named: "icon--hashtag")
-                cell.searchResultImageConstraintWidth.constant = 0.0
-                cell.searchResultImageConstraintPaddingLeft.constant = 0.0
-
-                
-                // TAG > BUTTON
-                //
-                cell.searchResultLink.tag = indexPath.row
+            else {
+                cell.searchResultTitle.text = "Anonymous User"
             }
             
             //
-            // CONTIUOUS SCROLL
+            // PEOPLE > IMAGE
             //
-            if (indexPath.row == self.trending.count - 5) {
-                
-                if (self.searchText == "") {
-                    // Only do this if there is no search happening
-                    //
-                    if self.selectedType == "People" {
-                        self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE)
-                    }
-                    else if self.selectedType == "Watersheds" {
-                        self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY)
-                    }
-                    else if self.selectedType == "Groups" {
-                        self.loadTrendingRecords(Endpoints.TRENDING_GROUP)
-                    }
-                    else if self.selectedType == "Tags" {
-                        self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG)
-                    }
-                }
-                else {
-                    // @todo PAGINATION FOR SEARCH!!!!!! 
-                    //
-                }
+            var resultImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+            
+            cell.searchResultImage.backgroundColor = UIColor.colorBackground()
+            
+            if let thisResultImageURL = result?.objectForKey("picture") {
+                resultImageURL = NSURL(string: String(thisResultImageURL))
             }
             
+            cell.searchResultImage.kf_indicatorType = .Activity
+            cell.searchResultImage.kf_showIndicatorWhenLoading = true
+
+            cell.searchResultImage.layer.cornerRadius = cell.searchResultImage.frame.size.width / 2
+            cell.searchResultImage.clipsToBounds = true
+
+            cell.searchResultImageConstraintWidth.constant = 64.0
+            cell.searchResultImageConstraintPaddingLeft.constant = 16.0
+
+            cell.searchResultImage.kf_setImageWithURL(resultImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                if (image != nil) {
+                    cell.searchResultImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+            })
+            
+            // PEOPLE > BUTTON
+            //
+            cell.searchResultLink.tag = indexPath.row
+            
+            
+            // CONTINUOUS SCROLL
+            //
+            var _total_number_results = 0
+            
+            if self.trendingPeopleJSON["num_results"] != nil {
+                _total_number_results = self.trendingPeopleJSON["num_results"].int!
+            }
+            else {
+                _total_number_results = self.trendingPeopleJSON["properties"]["num_results"].int!
+            }
+
+            print("\(indexPath.row) \(self.trendingPeople.count) \(_total_number_results)")
+
+//            if (indexPath.row == self.trendingPeople.count-5 && self.trendingPeople.count < _total_number_results) {
+//                
+//                if (self.searchText != "") {
+//                    self.searchForPeople(false)
+//                }
+//                else {
+//                    self.loadTrendingRecords(Endpoints.TRENDING_PEOPLE, type: "People", isRefreshingUserList: false)
+//                }
+//                
+//            }
+
+            return cell
+
         }
+        else if (self.selectedType == "Watersheds") {
+            
+            if indexPath.row > self.trendingWatersheds.count {
+                return UITableViewCell()
+            }
+            
+            let result = self.trendingWatersheds[indexPath.row].objectForKey("properties")
+            let resultJSON = JSON(result!)
         
-        return cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchWatershedsTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+
+            //
+            // WATERSHED > TITLE
+            //
+            let _watershed_name = "\(resultJSON["huc_8_name"])"
+            
+            cell.searchResultTitle.backgroundColor = UIColor.clearColor()
+            
+            if (_watershed_name != "") {
+                cell.searchResultTitle.text = "\(_watershed_name)"
+            }
+            else {
+                cell.searchResultTitle.text = "Unknown HUC 8 Watershed"
+            }
+            
+            //
+            // WATERSHED > IMAGE
+            //
+            cell.searchResultImageConstraintWidth.constant = 0.0
+            cell.searchResultImageConstraintPaddingLeft.constant = 0.0
+            
+            // WATERSHED > BUTTON
+            //
+            cell.searchResultLink.tag = indexPath.row
+            
+            // CONTINUOUS SCROLL
+            //
+            let _total_number_results = self.trendingWatershedsJSON["num_results"].int
+
+//            if (indexPath.row == self.trendingWatersheds.count-5 && self.trendingWatersheds.count < _total_number_results!) {
+//                
+//                if (self.searchText != "") {
+//                    self.searchForWatersheds(false)
+//                }
+//                else {
+//                    self.loadTrendingRecords(Endpoints.TRENDING_TERRITORY, type: "Watersheds", isRefreshingUserList: false)
+//                }
+//                
+//            }
+
+            return cell
+        }
+        else if (self.selectedType == "Groups") {
+            
+            if indexPath.row > self.trendingGroups.count {
+                return UITableViewCell()
+            }
+            
+            let result = self.trendingGroups[indexPath.row].objectForKey("properties")
+            let resultJSON = JSON(result!)
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchGroupsTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+
+            //
+            // GROUP > TITLE
+            //
+            let _name = "\(resultJSON["name"])"
+            
+            cell.searchResultTitle.backgroundColor = UIColor.clearColor()
+            
+            if (_name != "") {
+                cell.searchResultTitle.text = "\(_name)"
+            }
+            else {
+                cell.searchResultTitle.text = "Unknown Group Name"
+            }
+            
+            //
+            // GROUP > IMAGE
+            //
+            var resultImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+            
+            cell.searchResultImage.backgroundColor = UIColor.colorBackground()
+
+            if let thisResultImageURL = result?.objectForKey("picture") {
+                resultImageURL = NSURL(string: String(thisResultImageURL))
+            }
+
+            cell.searchResultImage.kf_indicatorType = .Activity
+            cell.searchResultImage.kf_showIndicatorWhenLoading = true
+
+            cell.searchResultImage.layer.cornerRadius = cell.searchResultImage.frame.size.width / 2
+            cell.searchResultImage.clipsToBounds = true
+
+            cell.searchResultImageConstraintWidth.constant = 64.0
+            cell.searchResultImageConstraintPaddingLeft.constant = 16.0
+
+            cell.searchResultImage.kf_setImageWithURL(resultImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                if (image != nil) {
+                    cell.searchResultImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+
+            })
+            
+            // GROUP > BUTTON
+            //
+            cell.searchResultLink.tag = indexPath.row
+            
+            // CONTINUOUS SCROLL
+            //
+            let _total_number_results = self.trendingGroupsJSON["num_results"].int
+
+//            if (indexPath.row == self.trendingGroups.count-5 && self.trendingGroups.count < _total_number_results!) {
+//                
+//                if (self.searchText != "") {
+//                    self.searchForGroups(false)
+//                }
+//                else {
+//                    self.loadTrendingRecords(Endpoints.TRENDING_GROUP, type: "Groups", isRefreshingUserList: false)
+//                }
+//                
+//            }
+
+            return cell
+        }
+        else if (self.selectedType == "Tags") {
+            
+            if indexPath.row > self.trendingTags.count {
+                return UITableViewCell()
+            }
+            
+            let result = self.trendingTags[indexPath.row].objectForKey("properties")
+            let resultJSON = JSON(result!)
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchTagsTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+
+            //
+            // TAG > TITLE
+            //
+            let _name = "\(resultJSON["tag"])"
+            
+            cell.searchResultTitle.backgroundColor = UIColor.clearColor()
+            
+            if (_name != "") {
+                cell.searchResultTitle.text = "#\(_name)"
+            }
+            else {
+                cell.searchResultTitle.text = ""
+            }
+            
+            //
+            // TAG > IMAGE
+            //
+            // cell.searchResultImage.image = UIImage(named: "icon--hashtag")
+            cell.searchResultImageConstraintWidth.constant = 0.0
+            cell.searchResultImageConstraintPaddingLeft.constant = 0.0
+
+            
+            // TAG > BUTTON
+            //
+            cell.searchResultLink.tag = indexPath.row
+            
+            // CONTINUOUS SCROLL
+            //
+            let _total_number_results = self.trendingTagsJSON["num_results"].int
+
+//            if (indexPath.row == self.trendingTags.count-5 && self.trendingTags.count < _total_number_results!) {
+//                
+//                if (self.searchText != "") {
+//                    self.searchForTags(false)
+//                }
+//                else {
+//                    self.loadTrendingRecords(Endpoints.TRENDING_HASHTAG, type: "Tags", isRefreshingUserList: false)
+//                }
+//                
+//            }
+
+            return cell
+        }
+        else {
+            return UITableViewCell()
+        }
+
     }
 
     
@@ -505,18 +584,40 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
     //
     // MARK: Custom Methods
     //
-    func loadTrendingRecords(endpoint: String, isRefreshingUserList: Bool = false) {
-        
-        if self.allResultsLoaded {
-            return
-        }
+    func loadTrendingRecords(endpoint: String, type: String, isRefreshingUserList: Bool = false) {
         
         //
         // Send a request to the defined endpoint with the given parameters
         //
-        let parameters = [
-            "page": self.page
-        ]
+        if type == "People" {
+            let parameters = [
+                "page":"\(self.pagePeople)"
+            ]
+            self.loadTrendingRecordsWithDynamicPage(parameters, endpoint: endpoint, type: type, isRefreshingUserList: isRefreshingUserList)
+        }
+        else if type == "Watersheds" {
+            let parameters = [
+                "page":"\(self.pageWatersheds)"
+            ]
+
+            self.loadTrendingRecordsWithDynamicPage(parameters, endpoint: endpoint, type: type, isRefreshingUserList: isRefreshingUserList)
+        }
+        else if type == "Groups" {
+            let parameters = [
+                "page":"\(self.pageGroups)"
+            ]
+            self.loadTrendingRecordsWithDynamicPage(parameters, endpoint: endpoint, type: type, isRefreshingUserList: isRefreshingUserList)
+        }
+        else if type == "Tags" {
+            let parameters = [
+                "page":"\(self.pageTags)"
+            ]
+            self.loadTrendingRecordsWithDynamicPage(parameters, endpoint: endpoint, type: type, isRefreshingUserList: isRefreshingUserList)
+        }
+        
+    }
+    
+    func loadTrendingRecordsWithDynamicPage(parameters: [String: String], endpoint: String, type: String, isRefreshingUserList: Bool = false) {
         
         Alamofire.request(.GET, endpoint, parameters: parameters)
             .responseJSON { response in
@@ -529,20 +630,76 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                     if (isRefreshingUserList) {
                         print("loadTrendingRecords::complete::isRefreshingUserList \(value)")
                         
-                        self.trending = value["objects"] as! [AnyObject]
+                        if type == "People" {
+                            self.trendingPeople = value["objects"] as! [AnyObject]
+                            self.trendingPeopleJSON = JSON(value)
+                            
+                            if self.pagePeople < _total_pages {
+                                self.pagePeople += 1
+                            }
+                        }
+                        else if type == "Watersheds" {
+                            self.trendingWatersheds = value["objects"] as! [AnyObject]
+                            self.trendingWatershedsJSON = JSON(value)
+                            
+                            if self.pageWatersheds < _total_pages {
+                                self.pageWatersheds += 1
+                            }
+                        }
+                        else if type == "Groups" {
+                            self.trendingGroups = value["objects"] as! [AnyObject]
+                            self.trendingGroupsJSON = JSON(value)
+
+                            if self.pageGroups < _total_pages {
+                                self.pageGroups += 1
+                            }
+                        }
+                        else if type == "Tags" {
+                            self.trendingTags = value["objects"] as! [AnyObject]
+                            self.trendingTagsJSON = JSON(value)
+
+                            if self.pageTags < _total_pages {
+                                self.pageTags += 1
+                            }
+                        }
+                        
                         self.refreshControl?.endRefreshing()
                     }
                     else {
                         print("loadTrendingRecords::complete::!isRefreshingUserList \(value)")
                         
-                        self.trending += value["objects"] as! [AnyObject]
-                    }
-                    
-                    if self.page < _total_pages {
-                        self.page += 1
-                    }
-                    else {
-                        self.allResultsLoaded = true
+                        if type == "People" {
+                            self.trendingPeople += value["objects"] as! [AnyObject]
+                            self.trendingPeopleJSON = JSON(value)
+                            
+                            if self.pagePeople < _total_pages {
+                                self.pagePeople += 1
+                            }
+                        }
+                        else if type == "Watersheds" {
+                            self.trendingWatersheds += value["objects"] as! [AnyObject]
+                            self.trendingWatershedsJSON = JSON(value)
+
+                            if self.pageWatersheds < _total_pages {
+                                self.pageWatersheds += 1
+                            }
+                        }
+                        else if type == "Groups" {
+                            self.trendingGroups += value["objects"] as! [AnyObject]
+                            self.trendingGroupsJSON = JSON(value)
+
+                            if self.pageGroups < _total_pages {
+                                self.pageGroups += 1
+                            }
+                        }
+                        else if type == "Tags" {
+                            self.trendingTags += value["objects"] as! [AnyObject]
+                            self.trendingTagsJSON = JSON(value)
+                            
+                            if self.pageTags < _total_pages {
+                                self.pageTags += 1
+                            }
+                        }
                     }
                     
                     self.tableView.reloadData()
@@ -555,7 +712,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         }
     }
     
-    func performSearch(endpoint: String, headers: [String: String], parameters: [String: String], isRefreshingUserList: Bool = false) {
+    func performSearch(endpoint: String, type: String, headers: [String: String], parameters: [String: String], isRefreshingUserList: Bool = true) {
         Alamofire.request(.GET, endpoint, headers: headers, parameters: parameters)
             .responseJSON { response in
                 
@@ -570,19 +727,76 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                     if (isRefreshingUserList) {
                         print("loadTrendingRecords::complete::isRefreshingUserList \(value)")
                         
-                        self.trending = value["features"] as! [AnyObject]
+                        if type == "People" {
+                            self.trendingPeople = value["features"] as! [AnyObject]
+                            self.trendingPeopleJSON = JSON(value)
+                            
+                            if self.pagePeople < _total_pages {
+                                self.pagePeople += 1
+                            }
+                        }
+                        else if type == "Watersheds" {
+                            self.trendingWatersheds = value["features"] as! [AnyObject]
+                            self.trendingWatershedsJSON = JSON(value)
+
+                            if self.pageWatersheds < _total_pages {
+                                self.pageWatersheds += 1
+                            }
+                        }
+                        else if type == "Groups" {
+                            self.trendingGroups = value["features"] as! [AnyObject]
+                            self.trendingGroupsJSON = JSON(value)
+
+                            if self.pageGroups < _total_pages {
+                                self.pageGroups += 1
+                            }
+                        }
+                        else if type == "Tags" {
+                            self.trendingTags = value["features"] as! [AnyObject]
+                            self.trendingTagsJSON = JSON(value)
+
+                            if self.pageTags < _total_pages {
+                                self.pageTags += 1
+                            }
+                        }
+                        
                         self.refreshControl?.endRefreshing()
                     }
                     else {
                         print("loadTrendingRecords::complete::!isRefreshingUserList \(value)")
-                        self.trending += value["features"] as! [AnyObject]
-                    }
-                    
-                    if self.page < _total_pages {
-                        self.page += 1
-                    }
-                    else {
-                        self.allResultsLoaded = true
+                        
+                        if type == "People" {
+                            self.trendingPeople += value["features"] as! [AnyObject]
+                            self.trendingPeopleJSON = JSON(value)
+
+                            if self.pagePeople < _total_pages {
+                                self.pagePeople += 1
+                            }
+                        }
+                        else if type == "Watersheds" {
+                            self.trendingWatersheds += value["features"] as! [AnyObject]
+                            self.trendingWatershedsJSON = JSON(value)
+
+                            if self.pageWatersheds < _total_pages {
+                                self.pageWatersheds += 1
+                            }
+                        }
+                        else if type == "Groups" {
+                            self.trendingGroups += value["features"] as! [AnyObject]
+                            self.trendingGroupsJSON = JSON(value)
+
+                            if self.pageGroups < _total_pages {
+                                self.pageGroups += 1
+                            }
+                        }
+                        else if type == "Tags" {
+                            self.trendingTags += value["features"] as! [AnyObject]
+                            self.trendingTagsJSON = JSON(value)
+
+                            if self.pageTags < _total_pages {
+                                self.pageTags += 1
+                            }
+                        }
                     }
                     
                     self.tableView.reloadData()
@@ -596,19 +810,14 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
 
     }
 
-    func searchForPeople(isRefreshingUserList: Bool = false) {
+    func searchForPeople(isRefreshingUserList: Bool = true) {
         
         print("searchText", self.searchText)
         
         // Since we are executing an entirely new search we need to make sure
         // that we reset all of our result variables
         //
-        self.allResultsLoaded = false
-        self.page = 1
-        self.trending = [AnyObject]()
-        
-        
-        if self.allResultsLoaded {
+        if self.searchText == "" {
             return
         }
         
@@ -622,28 +831,23 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         
         let parameters = [
             "q": "{\"filters\": [{\"or\": [{\"name\":\"first_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}, {\"name\":\"last_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}]}",
-            "page": "\(self.page)"
+            "page": "\(self.pagePeople)"
         ]
         
         let endpoint = Endpoints.GET_MANY_USER
         
-        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        self.performSearch(endpoint, type: "People", headers: headers, parameters: parameters, isRefreshingUserList: true)
         
     }
 
-    func searchForWatersheds(isRefreshingUserList: Bool = false) {
+    func searchForWatersheds(isRefreshingUserList: Bool = true) {
         
         print("searchText", self.searchText)
         
         // Since we are executing an entirely new search we need to make sure
         // that we reset all of our result variables
         //
-        self.allResultsLoaded = false
-        self.page = 1
-        self.trending = [AnyObject]()
-        
-        
-        if self.allResultsLoaded {
+        if self.searchText == "" {
             return
         }
         
@@ -657,28 +861,23 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         
         let parameters = [
             "q": "{\"filters\": [{\"name\":\"huc_8_name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}",
-            "page": "\(self.page)"
+            "page": "\(self.pageWatersheds)"
         ]
         
         let endpoint = Endpoints.GET_MANY_TERRITORY
         
-        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        self.performSearch(endpoint, type: "Watersheds", headers: headers, parameters: parameters, isRefreshingUserList: true)
         
     }
 
-    func searchForGroups(isRefreshingUserList: Bool = false) {
+    func searchForGroups(isRefreshingUserList: Bool = true) {
         
         print("searchText", self.searchText)
         
         // Since we are executing an entirely new search we need to make sure
         // that we reset all of our result variables
         //
-        self.allResultsLoaded = false
-        self.page = 1
-        self.trending = [AnyObject]()
-        
-        
-        if self.allResultsLoaded {
+        if self.searchText == "" {
             return
         }
         
@@ -692,28 +891,23 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         
         let parameters = [
             "q": "{\"filters\": [{\"name\":\"name\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}",
-            "page": "\(self.page)"
+            "page": "\(self.pageGroups)"
         ]
         
         let endpoint = Endpoints.GET_MANY_ORGANIZATIONS
         
-        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        self.performSearch(endpoint, type: "Groups", headers: headers, parameters: parameters, isRefreshingUserList: true)
         
     }
 
-    func searchForTags(isRefreshingUserList: Bool = false) {
+    func searchForTags(isRefreshingUserList: Bool = true) {
         
         print("searchText", self.searchText)
         
         // Since we are executing an entirely new search we need to make sure
         // that we reset all of our result variables
         //
-        self.allResultsLoaded = false
-        self.page = 1
-        self.trending = [AnyObject]()
-        
-        
-        if self.allResultsLoaded {
+        if self.searchText == "" {
             return
         }
         
@@ -727,12 +921,12 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         
         let parameters = [
             "q": "{\"filters\": [{\"name\":\"tag\",\"op\":\"ilike\",\"val\":\"%" + self.searchText + "%\"}]}",
-            "page": "\(self.page)"
+            "page": "\(self.pageTags)"
         ]
         
         let endpoint = Endpoints.GET_MANY_HASHTAGS
         
-        self.performSearch(endpoint, headers: headers, parameters: parameters, isRefreshingUserList: isRefreshingUserList)
+        self.performSearch(endpoint, type: "Tags", headers: headers, parameters: parameters, isRefreshingUserList: true)
         
     }
 

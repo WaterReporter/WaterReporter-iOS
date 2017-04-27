@@ -6,6 +6,7 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import ActiveLabel
 import Alamofire
 import Foundation
 import SwiftyJSON
@@ -552,7 +553,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
 
         // Display user's profile picture
-        var userProfileImageURL: NSURL!
+        var userProfileImageURL: NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
 
         if let thisUserProfileImageURLString = self.userProfile!["properties"]["picture"].string {
             userProfileImageURL = NSURL(string: String(thisUserProfileImageURLString))
@@ -985,8 +986,30 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
             // Report > Description
             //
-            cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
+            let reportDescription = "\(_thisSubmission["report_description"])"
             
+            if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
+                cell.labelReportDescription.text = "\(reportDescription)"
+                cell.labelReportDescription.enabledTypes = [.Hashtag]
+                cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
+                cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
+                
+                cell.labelReportDescription.handleHashtagTap { hashtag in
+                    print("Success. You just tapped the \(hashtag) hashtag")
+                    
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                    
+                    nextViewController.hashtag = hashtag
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+            }
+            else {
+                cell.labelReportDescription.text = ""
+            }
+
             // Report > Groups
             //
             cell.labelReportGroups.text = "Report Group Names"
@@ -1176,7 +1199,29 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             // Report > Description
             //
-            cell.labelReportDescription.text = "\(_thisSubmission["report_description"])"
+            let reportDescription = "\(_thisSubmission["report_description"])"
+            
+            if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
+                cell.labelReportDescription.text = "\(reportDescription)"
+                cell.labelReportDescription.enabledTypes = [.Hashtag]
+                cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
+                cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
+                
+                cell.labelReportDescription.handleHashtagTap { hashtag in
+                    print("Success. You just tapped the \(hashtag) hashtag")
+                    
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                    
+                    nextViewController.hashtag = hashtag
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+            }
+            else {
+                cell.labelReportDescription.text = ""
+            }
             
             // Report > Group > Name
             //

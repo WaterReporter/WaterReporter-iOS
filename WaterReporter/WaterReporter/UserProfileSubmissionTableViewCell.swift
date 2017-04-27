@@ -5,6 +5,7 @@
 //  Copyright © 2016 Viable Industries, L.L.C. All rights reserved.
 //
 
+import ActiveLabel
 import UIKit
 
 class UserProfileSubmissionTableViewCell: UITableViewCell {
@@ -26,7 +27,7 @@ class UserProfileSubmissionTableViewCell: UITableViewCell {
     @IBOutlet weak var buttonReportMap: UIButton!
     @IBOutlet weak var buttonReportDirections: UIButton!
     @IBOutlet weak var buttonReportComments: UIButton!
-    @IBOutlet weak var labelReportDescription: UILabel!
+    @IBOutlet weak var labelReportDescription: ActiveLabel!
     @IBOutlet weak var labelReportGroups: UILabel!
     @IBOutlet weak var buttonModifyReport: UIButton!
     @IBOutlet weak var buttonReportTerritory: UIButton!
