@@ -106,7 +106,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     var tempGroups: [String] = [String]()
     var hashtagAutocomplete: [String] = [String]()
 
-    var hashtagAutocompleteTest: [String] = ["#ansuz", "#berkana", "#kaunaz", "#dagaz", "#ehwaz", "#fehu", "#gebo", "#hagalaz", "#isa", "#jera"]
     var hashtagSearchEnabled: Bool = false
     
     var dataSource: HashtagTableView = HashtagTableView()
@@ -122,10 +121,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //
         // Make sure we are getting 'auto layout' specific sizes
         // otherwise any math we do will be messed up
