@@ -14,6 +14,7 @@ import UIKit
 
 class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate, NewReportLocationSelectorDelegate, NewReportGroupSelectorDelegate {
     
+    @IBOutlet weak var typeAheadHeight: NSLayoutConstraint!
     
     //
     // MARK: @IBOutlets
@@ -206,8 +207,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         if (tableView.restorationIdentifier == "formTableView") {
             switch indexPath.section {
             case 2:
-                if (indexPath.row == 0) {
+
+                if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == false) {
                     rowHeight = 356.0
+                }
+                else if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == true) {
+                    rowHeight = 192.0
                 }
                 
             case 0:
@@ -481,19 +486,30 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         if _text != "" && _text.characters.last! == "#" {
             self.hashtagSearchEnabled = true
-            self.hashtagTypeAhead.hidden = false
+            self.textareaReportComment.becomeFirstResponder()
 
             print("Hashtag Search: Found start of hashtag")
         }
         else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
             self.hashtagTypeAhead.hidden = true
             self.hashtagSearchEnabled = false
-            dataSource.results = [String]()
+            self.dataSource.results = [String]()
+
+            self.typeAheadHeight.constant = 0.0
+            self.tableView.reloadData()
+            self.textareaReportComment.becomeFirstResponder()
 
             print("Hashtag Search: Disabling search because space was entered")
         }
         else if _text != "" && self.hashtagSearchEnabled == true {
             
+            self.hashtagTypeAhead.hidden = false
+            self.dataSource.results = [String]()
+
+            self.typeAheadHeight.constant = 128.0
+            self.tableView.reloadData()
+            self.textareaReportComment.becomeFirstResponder()
+
             // Identify hashtag search
             //
             let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
@@ -532,16 +548,14 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         self.hashtagTypeAhead.hidden = true
         self.hashtagSearchEnabled = false
-        dataSource.results = [String]()
+        self.dataSource.results = [String]()
+        
+        self.typeAheadHeight.constant = 0.0
+        self.tableView.reloadData()
+        self.textareaReportComment.becomeFirstResponder()
+
     }
     
-//    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-//        let _indexPath: NSIndexPath = self.results
-//        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
-//        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
-//        return true
-//    }
-
     func textViewShouldReturn(textField: UITextView) -> Bool {
         
         let nextTag = textField.tag + 1;
@@ -821,35 +835,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                         self.dataSource.results.append(_tag)
                     }
                     
-                    
                     self.dataSource.numberOfRowsInSection(_results["features"].count)
                     
                     self.hashtagTypeAhead.reloadData()
 
-                    
-                    //
-                    // Choose whether or not the reports should refresh or
-                    // whether loaded reports should be appended to the existing
-                    // list of reports
-                    //
-//                    if (isRefreshingReportsList) {
-//                        self.reports = value["features"] as! [AnyObject]
-//                        self.refreshControl?.endRefreshing()
-//                    }
-//                    else {
-//                        self.reports += value["features"] as! [AnyObject]
-//                    }
-//                    
-//                    self.tableView.reloadData()
-//                    
-//                    //print(value["features"])
-//                    self.page += 1
-//                    
-//                    //
-//                    // Dismiss the loading indicator
-//                    //
-//                    self.loadingComplete()
-                    
                 case .Failure(let error):
                     print(error)
                     break

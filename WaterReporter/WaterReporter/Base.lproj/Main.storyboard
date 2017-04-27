@@ -729,7 +729,7 @@
                                 <rect key="frame" x="0.0" y="116" width="375" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="etV-KI-d8d" id="nqN-UV-cs3">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No matching results for your search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jar-jd-phn">
@@ -750,7 +750,7 @@
                                 <rect key="frame" x="0.0" y="180" width="375" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RSN-vk-sfZ" id="hok-LB-o6C">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="T2I-a2-PKz">
@@ -3220,7 +3220,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="0c7-DX-8kg" secondAttribute="trailing" constant="8" id="3uO-Ey-vFi"/>
-                                                <constraint firstItem="zH2-d8-5b2" firstAttribute="top" secondItem="0c7-DX-8kg" secondAttribute="bottom" id="8eP-9R-LNI"/>
+                                                <constraint firstItem="zH2-d8-5b2" firstAttribute="top" secondItem="0c7-DX-8kg" secondAttribute="bottom" id="R0P-4i-ycJ"/>
                                                 <constraint firstItem="0c7-DX-8kg" firstAttribute="leading" secondItem="5kj-TF-NE4" secondAttribute="leadingMargin" constant="8" id="UKF-ny-7bc"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3428,6 +3428,7 @@
                         <outlet property="tableViewCellReportImage" destination="V23-xh-O2R" id="g7t-LT-IiM"/>
                         <outlet property="textareaReportComment" destination="0c7-DX-8kg" id="CYp-A7-nXj"/>
                         <outlet property="textfieldReportDate" destination="3SW-ks-z7l" id="zTP-Qw-z5t"/>
+                        <outlet property="typeAheadHeight" destination="RrN-d7-9De" id="2X5-e1-JYg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BSB-nm-2Io" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5752,7 +5753,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="U1Q-Ae-GRs">
-                                                    <rect key="frame" x="191.5" y="8" width="167.5" height="32"/>
+                                                    <rect key="frame" x="192" y="8" width="167" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="hXC-1W-vab"/>
                                                     </constraints>
@@ -5763,7 +5764,7 @@
                                                     </connections>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="efG-UQ-X8s">
-                                                    <rect key="frame" x="16" y="8" width="167.5" height="32"/>
+                                                    <rect key="frame" x="16" y="8" width="168" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="kQh-fb-U2w"/>
                                                     </constraints>
