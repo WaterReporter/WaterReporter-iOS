@@ -8,6 +8,7 @@
 
 import ActiveLabel
 import Alamofire
+import FacebookShare
 import Foundation
 import Kingfisher
 import SwiftyJSON

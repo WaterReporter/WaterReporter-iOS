@@ -7,7 +7,7 @@ target 'Water-Reporter' do
   pod 'SwiftyJSON', '2.4'
   pod 'Kingfisher', '2.6.1'
   pod 'ActiveLabel', '0.6.2'
-  pod 'FacebookCore'
-  pod 'FacebookLogin'
-  pod 'FacebookShare'
+  pod 'FacebookCore', '0.1.1'
+  pod 'FacebookShare', '0.1.1'
+  pod 'FacebookLogin', '0.1.1'
 end

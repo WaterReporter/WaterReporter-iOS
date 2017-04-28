@@ -1,21 +1,56 @@
 PODS:
   - ActiveLabel (0.6.2)
   - Alamofire (3.5.0)
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.8.4)
+  - FacebookCore (0.1.1):
+    - Bolts (~> 1.8)
+    - FBSDKCoreKit (~> 4.14)
+  - FacebookLogin (0.1.1):
+    - Bolts (~> 1.8)
+    - FacebookCore
+    - FBSDKCoreKit (~> 4.14)
+    - FBSDKLoginKit (~> 4.14)
+  - FacebookShare (0.1.1):
+    - Bolts (~> 1.8)
+    - FacebookCore
+    - FBSDKCoreKit (~> 4.14)
+    - FBSDKShareKit (~> 4.14)
+  - FBSDKCoreKit (4.22.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.22.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.22.0):
+    - FBSDKCoreKit
   - Kingfisher (2.6.1)
   - SwiftyJSON (2.4.0)
 
 DEPENDENCIES:
   - ActiveLabel (= 0.6.2)
   - Alamofire (= 3.5)
+  - FacebookCore (= 0.1.1)
+  - FacebookLogin (= 0.1.1)
+  - FacebookShare (= 0.1.1)
   - Kingfisher (= 2.6.1)
   - SwiftyJSON (= 2.4)
 
 SPEC CHECKSUMS:
   ActiveLabel: 2394eb48a2e31644ea90d6543c17bffe1d06f549
   Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  FacebookCore: 14f27add6888c27470d42a100374e6361f4e0f79
+  FacebookLogin: 748f4e621e874da3e0bf63bccf6fd1542c786a1b
+  FacebookShare: ea0370ca0b914eccc42a753abcd937265c17b030
+  FBSDKCoreKit: c693bad19feb225469eeff14452ba364522ee48b
+  FBSDKLoginKit: 1fa529fc622d7b32ebeaffbecd377180833c6d30
+  FBSDKShareKit: 21ab3c8d173f4fa20c47c1061f3a9fac5950b5fa
   Kingfisher: 7e5515bf6c4f2acad91f6400955d2257549cab7b
   SwiftyJSON: 96918c1bf505efa50c4f72957018dd3452090c9c
 
-PODFILE CHECKSUM: ccc40781fbfe9c7efd8437b3d3ab64c673019db1
+PODFILE CHECKSUM: 0d5d1054b2048897f2f3dcff69a264a7d72807d6
 
 COCOAPODS: 1.2.0
