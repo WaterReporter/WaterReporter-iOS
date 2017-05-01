@@ -110,6 +110,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     
     var dataSource: HashtagTableView = HashtagTableView()
     
+    var hashtagSearchTimer: NSTimer = NSTimer()
+    
     //
     // MARK: Overrides
     //
@@ -525,6 +527,9 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             self.textareaReportComment.becomeFirstResponder()
 
             print("Hashtag Search: Disabling search because space was entered")
+            print("Hashtag Search: Timer reset to zero due to search termination (space entered)")
+            self.hashtagSearchTimer.invalidate()
+
         }
         else if _text != "" && self.hashtagSearchEnabled == true {
             
@@ -538,24 +543,32 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             // Identify hashtag search
             //
             let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
-            let _hashtag_search = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
+            if ((_hashtag_identifier) != nil) {
+                let _hashtag_search: String! = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
 
-            // Add what the user is typing to the top of the list
-            //
-            print("Hashtag Search: Performing search for \(_hashtag_search)")
-            
-            dataSource.results = ["\(_hashtag_search)"]
-            dataSource.search = "\(_hashtag_search)"
-            
-            dataSource.numberOfRowsInSection(dataSource.results.count)
-            
-            self.hashtagTypeAhead.reloadData()
-            
-            // Execute the serverside search
-            //
-            print("Hashtag Search: Sent these to results \(dataSource.results)")
-            
-            self.searchHashtags(_hashtag_search)
+                // Add what the user is typing to the top of the list
+                //
+                print("Hashtag Search: Performing search for \(_hashtag_search)")
+                
+                dataSource.results = ["\(_hashtag_search)"]
+                dataSource.search = "\(_hashtag_search)"
+                
+                dataSource.numberOfRowsInSection(dataSource.results.count)
+                
+                self.hashtagTypeAhead.reloadData()
+                
+                // Execute the serverside search BUT wait a few milliseconds between
+                // each character so we aren't returning inconsistent results to
+                // the user
+                //
+                print("Hashtag Search: Timer reset to zero")
+                self.hashtagSearchTimer.invalidate()
+                
+                print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
+                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(NewReportTableViewController.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
+                
+            }
+
         }
     }
     
@@ -578,6 +591,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.typeAheadHeight.constant = 0.0
         self.tableView.reloadData()
         self.textareaReportComment.becomeFirstResponder()
+        
+        print("Hashtag Search: Timer reset to zero due to user selection")
+        self.hashtagSearchTimer.invalidate()
+
 
     }
     
@@ -836,7 +853,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         return true
     }
 
-    func searchHashtags(queryText: String) {
+    func searchHashtags(timer: NSTimer) {
+        
+        let queryText: String! = "\(timer.userInfo!)"
+        
+        print("searchHashtags fired with \(queryText)")
         
         //
         // Send a request to the defined endpoint with the given parameters

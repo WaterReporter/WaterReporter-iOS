@@ -57,6 +57,8 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
     var hashtagAutocomplete: [String] = [String]()
     var hashtagSearchEnabled: Bool = false
     var dataSource: CommentHashtagTableView = CommentHashtagTableView()
+    
+    var hashtagSearchTimer: NSTimer = NSTimer()
 
     
     //
@@ -205,18 +207,18 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             self.hashtagSearchEnabled = false
             self.dataSource.results = [String]()
             
-//            self.typeAheadHeight.constant = 0.0
             self.tableView.reloadData()
             self.textfieldCommentBody.becomeFirstResponder()
             
             print("Hashtag Search: Disabling search because space was entered")
+            print("Hashtag Search: Timer reset to zero due to search termination (space entered)")
+            self.hashtagSearchTimer.invalidate()
         }
         else if _text != "" && self.hashtagSearchEnabled == true {
             
             self.hashtagTypeAhead.hidden = false
             self.dataSource.results = [String]()
             
-//            self.typeAheadHeight.constant = 128.0
             self.tableView.reloadData()
             self.textfieldCommentBody.becomeFirstResponder()
             
@@ -236,11 +238,15 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             
             self.hashtagTypeAhead.reloadData()
             
-            // Execute the serverside search
+            // Execute the serverside search BUT wait a few milliseconds between
+            // each character so we aren't returning inconsistent results to
+            // the user
             //
-            print("Hashtag Search: Sent these to results \(dataSource.results)")
+            print("Hashtag Search: Timer reset to zero")
+            self.hashtagSearchTimer.invalidate()
             
-            self.searchHashtags(_hashtag_search)
+            print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
+            self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(NewReportTableViewController.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
         }
     }
     
@@ -264,6 +270,9 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         self.tableView.reloadData()
         self.textfieldCommentBody.becomeFirstResponder()
         
+        print("Hashtag Search: Timer reset to zero due to user selection")
+        self.hashtagSearchTimer.invalidate()
+
     }
 
 
@@ -751,8 +760,12 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
     //
     //
     //
-    func searchHashtags(queryText: String) {
+    func searchHashtags(timer: NSTimer) {
         
+        let queryText: String! = "\(timer.userInfo!)"
+        
+        print("searchHashtags fired with \(queryText)")
+
         //
         // Send a request to the defined endpoint with the given parameters
         //

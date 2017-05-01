@@ -56,11 +56,11 @@ class HashtagTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
             return
         }
         
-//        print("Remove search text [\(self.search)] from selection [\(_selection)]")
+        print("Remove search text [\(self.search)] from selection [\(_selection)]")
         
         let _finalSelection = _selection.stringByReplacingOccurrencesOfString(self.search, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil);
         
-//        print("_finalSelection [\(_finalSelection)]")
+        print("_finalSelection [\(_finalSelection)]")
         
         parent.selectedValue(_finalSelection)
 

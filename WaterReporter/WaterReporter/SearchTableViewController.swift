@@ -796,6 +796,8 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                         
                         self.isSearching = false
                         
+                        let _tmpData = JSON(value)
+                        
                         if (parameters["page"]! == "\(1)") {
                             //                        print("performSearch::complete::isRefreshingUserList \(value)")
                             
@@ -882,7 +884,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                             
                             self.refreshControl?.endRefreshing()
                         }
-                        else {
+                        else if (_tmpData["features"] != nil && _tmpData["features"].count != 0) {
                             //                        print("performSearch::complete::!isRefreshingUserList \(value)")
                             
                             if type == "People" {
