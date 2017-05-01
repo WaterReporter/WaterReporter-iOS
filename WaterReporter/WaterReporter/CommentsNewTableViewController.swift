@@ -65,6 +65,7 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.addDoneButtonOnKeyboard()
         
         // Check to see if a user id was passed to this view from
         // another view. If no user id was passed, then we know that
@@ -111,10 +112,26 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         //
         buttonCommentImageAdd.addTarget(self, action: #selector(CommentsNewTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
         buttonCommentImageRemove.addTarget(self, action: #selector(CommentsNewTableViewController.attemptRemoveImageFromPreview(_:)), forControlEvents: .TouchUpInside)
+        textfieldCommentBody.targetForAction(#selector(CommentsNewTableViewController.textFieldShouldReturn(_:)), withSender: self)
 
         self.isReady()
 
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        let nextTag = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
+        
+        if (nextResponder != nil){
+            nextResponder?.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        
+        return false
+    }
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -142,6 +159,30 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
     //
     // MARK
     //
+    func addDoneButtonOnKeyboard() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
+        doneToolbar.barStyle = UIBarStyle.Default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(self.doneButtonAction))
+        
+        var items: [UIBarButtonItem]? = [UIBarButtonItem]()
+        
+        items?.append(flexSpace)
+        items?.append(done)
+        
+        doneToolbar.items = items
+        
+        doneToolbar.sizeToFit()
+        
+        self.textfieldCommentBody.inputAccessoryView = doneToolbar
+    }
+    
+    func doneButtonAction() {
+        self.textfieldCommentBody.resignFirstResponder()
+        self.textfieldCommentBody.resignFirstResponder()
+    }
+    
     func dimissNewCommentViewController(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: {
             self.commentImagePreview.image = nil
@@ -164,7 +205,7 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             self.hashtagSearchEnabled = false
             self.dataSource.results = [String]()
             
-            self.typeAheadHeight.constant = 0.0
+//            self.typeAheadHeight.constant = 0.0
             self.tableView.reloadData()
             self.textfieldCommentBody.becomeFirstResponder()
             
@@ -175,7 +216,7 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             self.hashtagTypeAhead.hidden = false
             self.dataSource.results = [String]()
             
-            self.typeAheadHeight.constant = 128.0
+//            self.typeAheadHeight.constant = 128.0
             self.tableView.reloadData()
             self.textfieldCommentBody.becomeFirstResponder()
             
@@ -219,7 +260,7 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
         self.hashtagSearchEnabled = false
         self.dataSource.results = [String]()
         
-        self.typeAheadHeight.constant = 0.0
+//        self.typeAheadHeight.constant = 0.0
         self.tableView.reloadData()
         self.textfieldCommentBody.becomeFirstResponder()
         
@@ -695,19 +736,11 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                 }
                 else {
                     rowHeight = 44.0
-            }
+                }
             case 1:
-                
-                if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == false) {
-                    rowHeight = 356.0
-                }
-                else if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == true) {
-                    rowHeight = 192.0
-                }
-                break
+                rowHeight = 680.0
             default:
                 rowHeight = 44.0
-                break
         }
         
         

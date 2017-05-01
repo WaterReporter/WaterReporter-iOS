@@ -63,10 +63,7 @@ class HashtagTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
 //        print("_finalSelection [\(_finalSelection)]")
         
         parent.selectedValue(_finalSelection)
-        
-        self.results = [String]()
-        self.selected = ""
-        self.search = ""
+
 
     }
     

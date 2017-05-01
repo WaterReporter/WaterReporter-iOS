@@ -359,7 +359,6 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         }
         else if self.selectedType == "People" && self.searchText != "" && self.isEmptyPeople == true {
             let cell = tableView.dequeueReusableCellWithIdentifier("searchEmptyTableViewCell", forIndexPath: indexPath)
-            print("EMPTY ROW FOR PEOPLE~!!!")
             return cell
         }
         else if self.selectedType == "Watersheds" && self.searchText != "" && self.isEmptyWatersheds == true {
@@ -824,7 +823,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                                 }
                             }
                             else if type == "Watersheds" {
-                                self.trendingWatersheds = value["features"] as! [AnyObject]
+                                self.trendingWatersheds = value["objects"] as! [AnyObject]
                                 self.trendingWatershedsJSON = JSON(value)
                                 
                                 // Check if we should paginate
@@ -1032,7 +1031,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             "page": "\(self.pageWatersheds)"
         ]
         
-        let endpoint = Endpoints.GET_MANY_TERRITORY
+        let endpoint = Endpoints.GET_MANY_HUC8WATERSHEDS
         
         self.performSearch(endpoint, type: "Watersheds", headers: headers, parameters: parameters, isRefreshingUserList: true)
         

@@ -8,7 +8,6 @@
 
 import ActiveLabel
 import Alamofire
-import FacebookShare
 import Foundation
 import Kingfisher
 import SwiftyJSON
@@ -35,7 +34,7 @@ class ActivityTableViewController: UITableViewController {
         let reportId: String = "\(_thisReport["id"])"
         var objectsToShare: [AnyObject] = [AnyObject]()
         let reportText = "Check out this report on WaterReporter"
-        let reportURL = NSURL(string: "https://www.waterreporter.org/reports/" + reportId)
+        let reportURL = NSURL(string: "https://www.waterreporter.org/community/reports/" + reportId)
         var reportImageURL:NSURL!
         let tmpImageView: UIImageView = UIImageView()
         
@@ -55,27 +54,23 @@ class ActivityTableViewController: UITableViewController {
             reportImageURL = NSURL(string: String(thisReportImageURL))
         }
         
-//        if UIApplication.sharedApplication().canOpenURL(NSURL(string: "fb://")!) {
-//            print("FACEBOOK APP INSTALLED")
-//            var content: FBSDKShareLinkContent = FBSDKShareLinkContent()
-//            content.contentURL = reportURL
-//        }
-        
         tmpImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
             (image, error, cacheType, imageUrl) in
             
             if (image != nil) {
                 objectsToShare.append(Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up))
-
+                
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 
                 activityVC.popoverPresentationController?.sourceView = sender
+
                 self.presentViewController(activityVC, animated: true, completion: nil)
             }
             else {
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 
                 activityVC.popoverPresentationController?.sourceView = sender
+
                 self.presentViewController(activityVC, animated: true, completion: nil)
             }
         })

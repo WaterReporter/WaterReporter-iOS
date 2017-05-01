@@ -125,6 +125,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.addDoneButtonOnKeyboard()
+        
         //
         // Make sure we are getting 'auto layout' specific sizes
         // otherwise any math we do will be messed up
@@ -208,10 +210,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             case 2:
 
                 if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == false) {
-                    rowHeight = 356.0
+                    rowHeight = 288.0
                 }
                 else if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == true) {
-                    rowHeight = 192.0
+                    rowHeight = 124.0
                 }
                 
             case 0:
@@ -290,6 +292,30 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     //
     // MARK: Custom functionality
     //
+    func addDoneButtonOnKeyboard() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
+        doneToolbar.barStyle = UIBarStyle.Default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(self.doneButtonAction))
+        
+        var items: [UIBarButtonItem]? = [UIBarButtonItem]()
+        
+        items?.append(flexSpace)
+        items?.append(done)
+        
+        doneToolbar.items = items
+        
+        doneToolbar.sizeToFit()
+        
+        self.textareaReportComment.inputAccessoryView = doneToolbar
+    }
+    
+    func doneButtonAction() {
+        self.textareaReportComment.resignFirstResponder()
+        self.textareaReportComment.resignFirstResponder()
+    }
+    
     func saving() {
         
         //

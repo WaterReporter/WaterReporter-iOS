@@ -64,10 +64,6 @@ class CommentHashtagTableView: UITableView, UITableViewDataSource, UITableViewDe
         
         parent.selectedValue(_finalSelection)
         
-        self.results = [String]()
-        self.selected = ""
-        self.search = ""
-        
     }
     
 }
