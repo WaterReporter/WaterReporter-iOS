@@ -225,28 +225,30 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
             // Identify hashtag search
             //
             let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
-            let _hashtag_search = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
-            
-            // Add what the user is typing to the top of the list
-            //
-            print("Hashtag Search: Performing search for \(_hashtag_search)")
-            
-            dataSource.results = ["\(_hashtag_search)"]
-            dataSource.search = "\(_hashtag_search)"
-            
-            dataSource.numberOfRowsInSection(dataSource.results.count)
-            
-            self.hashtagTypeAhead.reloadData()
-            
-            // Execute the serverside search BUT wait a few milliseconds between
-            // each character so we aren't returning inconsistent results to
-            // the user
-            //
-            print("Hashtag Search: Timer reset to zero")
-            self.hashtagSearchTimer.invalidate()
-            
-            print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
-            self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(NewReportTableViewController.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
+            if ((_hashtag_identifier) != nil) {
+                let _hashtag_search = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
+                
+                // Add what the user is typing to the top of the list
+                //
+                print("Hashtag Search: Performing search for \(_hashtag_search)")
+                
+                dataSource.results = ["\(_hashtag_search)"]
+                dataSource.search = "\(_hashtag_search)"
+                
+                dataSource.numberOfRowsInSection(dataSource.results.count)
+                
+                self.hashtagTypeAhead.reloadData()
+                
+                // Execute the serverside search BUT wait a few milliseconds between
+                // each character so we aren't returning inconsistent results to
+                // the user
+                //
+                print("Hashtag Search: Timer reset to zero")
+                self.hashtagSearchTimer.invalidate()
+                
+                print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
+                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(NewReportTableViewController.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
+            }
         }
     }
     
