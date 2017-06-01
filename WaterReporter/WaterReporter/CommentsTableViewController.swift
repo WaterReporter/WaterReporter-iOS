@@ -73,7 +73,7 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
         self.tableView.scrollsToTop = true
 
         self.tableView.rowHeight = UITableViewAutomaticDimension;
-        self.tableView.estimatedRowHeight = 400.0;
+        self.tableView.estimatedRowHeight = 640.0;
 
         //
         // Setup pull to refresh functionality for our TableView
@@ -280,7 +280,7 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
                     }
                     cell.commentDescriptionImage.clipsToBounds = true
                     
-                    cell.commentDescriptionImageHeightConstraint.constant = 200.0
+                    cell.commentDescriptionImageHeightConstraint.constant = 320.0
                 })
 
             } else {

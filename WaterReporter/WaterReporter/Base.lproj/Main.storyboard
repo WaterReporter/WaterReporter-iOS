@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -35,7 +35,7 @@
                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                             <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="200" id="1zq-nd-nTC"/>
+                                                <constraint firstAttribute="height" constant="320" id="1zq-nd-nTC"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REPORT_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uzf-nX-7zv" customClass="ActiveLabel" customModule="ActiveLabel">
@@ -325,7 +325,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SingleReportComment" id="ojo-gH-6Em" customClass="CommentTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SingleReportComment" id="ojo-gH-6Em" customClass="CommentTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="158" width="375" height="403"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ojo-gH-6Em" id="giK-Z4-Jrm">
@@ -358,11 +358,11 @@
                                             <color key="textColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FSq-Qd-heq">
+                                        <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FSq-Qd-heq">
                                             <rect key="frame" x="0.0" y="68" width="375" height="200"/>
                                             <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="200" id="I4W-gG-dD2"/>
+                                                <constraint firstAttribute="height" constant="320" id="I4W-gG-dD2"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmW-jN-uuK" customClass="ActiveLabel" customModule="ActiveLabel">
@@ -377,7 +377,6 @@
                                         <constraint firstItem="epS-rn-EKx" firstAttribute="leading" secondItem="WvL-oU-nmc" secondAttribute="trailing" constant="8" id="2me-tj-OM3"/>
                                         <constraint firstItem="WvL-oU-nmc" firstAttribute="leading" secondItem="giK-Z4-Jrm" secondAttribute="leadingMargin" constant="8" id="4Ey-po-5Za"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="ZmW-jN-uuK" secondAttribute="trailing" constant="8" id="6gc-Bf-5iK"/>
-                                        <constraint firstItem="FSq-Qd-heq" firstAttribute="centerX" secondItem="giK-Z4-Jrm" secondAttribute="centerX" id="6lO-x8-nxI"/>
                                         <constraint firstItem="ZmW-jN-uuK" firstAttribute="top" secondItem="FSq-Qd-heq" secondAttribute="bottom" constant="16" id="F9W-w5-81w"/>
                                         <constraint firstItem="FSq-Qd-heq" firstAttribute="width" secondItem="giK-Z4-Jrm" secondAttribute="width" id="FJE-Gk-pAd"/>
                                         <constraint firstItem="WvL-oU-nmc" firstAttribute="top" secondItem="giK-Z4-Jrm" secondAttribute="topMargin" constant="8" id="Fi8-xn-JnL"/>
@@ -482,11 +481,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="217"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xRm-Hd-b7f">
-                                                    <rect key="frame" x="0.0" y="9" width="375" height="200"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xRm-Hd-b7f">
+                                                    <rect key="frame" x="0.0" y="-51" width="375" height="320"/>
                                                     <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="200" id="cRw-fv-gFZ"/>
+                                                        <constraint firstAttribute="height" constant="320" id="cRw-fv-gFZ"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -1214,7 +1213,7 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cKk-5S-thH">
                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="200" id="vJ2-mL-mKp"/>
+                                                <constraint firstAttribute="height" constant="320" id="vJ2-mL-mKp"/>
                                             </constraints>
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qxP-m0-nX9">
@@ -1845,7 +1844,7 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GFR-e8-YJP">
                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="200" id="OiO-b0-pPb"/>
+                                                <constraint firstAttribute="height" constant="320" id="OiO-b0-pPb"/>
                                             </constraints>
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vZL-G8-t2l">
@@ -2027,7 +2026,7 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BfE-x8-VfL">
                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="200" id="4F7-HY-V6i"/>
+                                                <constraint firstAttribute="height" constant="320" id="4F7-HY-V6i"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdU-ps-ibJ" customClass="ActiveLabel" customModule="ActiveLabel">
@@ -3083,11 +3082,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="231"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" alpha="0.14999999999999999" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon--EmptyImage" translatesAutoresizingMaskIntoConstraints="NO" id="5ti-1F-3TM">
-                                                    <rect key="frame" x="0.0" y="16" width="600" height="200"/>
+                                                <imageView userInteractionEnabled="NO" alpha="0.14999999999999999" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--EmptyImageAlternate" translatesAutoresizingMaskIntoConstraints="NO" id="5ti-1F-3TM">
+                                                    <rect key="frame" x="0.0" y="-44" width="600" height="320"/>
                                                     <color key="backgroundColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="200" id="gd6-nh-Nvh"/>
+                                                        <constraint firstAttribute="height" constant="320" id="gd6-nh-Nvh"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -3837,7 +3836,7 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dOQ-p8-w9e">
                                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="200" id="ru2-lj-R9g"/>
+                                                                <constraint firstAttribute="height" constant="320" id="ru2-lj-R9g"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kMU-Kf-9xl" customClass="ActiveLabel" customModule="ActiveLabel">
@@ -4014,7 +4013,7 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="924-77-IMg">
                                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="200" id="2AG-8i-Z0V"/>
+                                                                <constraint firstAttribute="height" constant="320" id="2AG-8i-Z0V"/>
                                                             </constraints>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCJ-AP-TOL">
@@ -4480,7 +4479,7 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Qy-AB-VmD">
                                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="200" id="NqR-jB-5AG"/>
+                                                                <constraint firstAttribute="height" constant="320" id="NqR-jB-5AG"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDm-1u-I4T" customClass="ActiveLabel" customModule="ActiveLabel">
@@ -4662,7 +4661,7 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ykM-tp-KAb">
                                                             <rect key="frame" x="0.0" y="52" width="375" height="200"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="200" id="NE7-V0-opL"/>
+                                                                <constraint firstAttribute="height" constant="320" id="NE7-V0-opL"/>
                                                             </constraints>
                                                         </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PAc-1j-SpK">
@@ -6330,7 +6329,6 @@
     <resources>
         <image name="Icon--Comment" width="18" height="18"/>
         <image name="Icon--Directions" width="18" height="18"/>
-        <image name="Icon--EmptyImage" width="128" height="93"/>
         <image name="Icon--MapPin" width="18" height="18"/>
         <image name="Icon--Settings" width="18" height="18"/>
         <image name="Logo--WaterReporter--Stacked" width="192" height="168"/>
@@ -6340,6 +6338,7 @@
         <image name="badge--Congratulations" width="256" height="256"/>
         <image name="banner--CertifiedActionTaken--320" width="384" height="132"/>
         <image name="icon--AddButton" width="36" height="36"/>
+        <image name="icon--EmptyImageAlternate" width="640" height="640"/>
         <image name="icon--More" width="26" height="8"/>
         <image name="icon--Reloadbutton" width="36" height="36"/>
         <image name="icon--RemoveButton" width="36" height="36"/>
@@ -6349,7 +6348,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lai-Tz-aeP"/>
-        <segue reference="ZYV-r4-UXs"/>
         <segue reference="iuF-sG-GMf"/>
+        <segue reference="ZYV-r4-UXs"/>
     </inferredMetricsTieBreakers>
 </document>
