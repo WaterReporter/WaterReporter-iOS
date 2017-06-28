@@ -91,7 +91,7 @@ class ActivityTableViewController: UITableViewController {
 
     @IBAction func loadTerritoryProfile(sender: UIButton) {
         
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
         
         let _thisReport = JSON(self.reports[(sender.tag)])
         
