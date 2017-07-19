@@ -40,6 +40,7 @@ struct Endpoints {
     static let TRENDING_HASHTAG = "https://api.waterreporter.org/v2/data/trending/hashtag"
     static let TRENDING_PEOPLE = "https://api.waterreporter.org/v2/data/trending/people"
     static let TRENDING_TERRITORY = "https://api.waterreporter.org/v2/data/trending/territory"
+    static let TERRITORY = "https://huc.waterreporter.org/8/"
     
     //
     //

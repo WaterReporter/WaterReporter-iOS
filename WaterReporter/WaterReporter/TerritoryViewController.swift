@@ -6,16 +6,20 @@
 //  Copyright © 2017 Viable Industries, L.L.C. All rights reserved.
 //
 
+import Alamofire
+import Dispatch
 import Foundation
 import Mapbox
-import  UIKit
+import SwiftyJSON
+import UIKit
 
-class TerritoryViewController: UIViewController, MGLMapViewDelegate {
+class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     
     //
     // MARK: View-Global Variable
     //
+    let mapTesting: Bool = false
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
     
     var territory: String = ""
@@ -36,6 +40,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate {
     @IBOutlet weak var mapViewWatershed: MGLMapView!
     @IBOutlet weak var viewMapViewOverlay: UIView!
     
+    @IBOutlet weak var activityCollectionView: UICollectionView!
     
     //
     // MARK: @IBAction
@@ -53,6 +58,15 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // TEMPORARY REMOVE!!!!
+        //
+        if mapTesting == true {
+            self.buttonOverlay.hidden = true
+            self.buttonOverlay.enabled = false
+            
+            self.viewMapViewOverlay.hidden = true
+        }
         
         // Display the Territory (Watershed) name
         //
@@ -91,43 +105,50 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate {
         // Map View Overrides
         //
         self.mapViewWatershed.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        self.mapViewWatershed.setCenterCoordinate(CLLocationCoordinate2D(latitude: 45.520486, longitude: -122.673541), animated: false)
-        self.mapViewWatershed.setZoomLevel(11.0, animated: false)
+        
+        //
+        //
+        self.loadTerritoryData()
+        
+        //
+        //
+        self.activityCollectionView.dataSource = self
+        self.activityCollectionView.delegate = self
         
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
-        // Draw the Territory (Watershed) boundary
-        //
-        self.mapViewDrawBoundary(self.mapViewWatershed)
     }
     
-    
-    //
-    //
-    //
-    func mapViewDrawBoundary(mapView: MGLMapView) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        // Create a coordinates array to hold all of the coordinates for our shape.
-        var coordinates = [
-            CLLocationCoordinate2D(latitude: 45.522585, longitude: -122.685699),
-            CLLocationCoordinate2D(latitude: 45.530883, longitude: -122.678833),
-            CLLocationCoordinate2D(latitude: 45.530643, longitude: -122.660121),
-            CLLocationCoordinate2D(latitude: 45.521743, longitude: -122.659091),
-            CLLocationCoordinate2D(latitude: 45.515008, longitude: -122.664070),
-            CLLocationCoordinate2D(latitude: 45.515369, longitude: -122.678489),
-            CLLocationCoordinate2D(latitude: 45.522585, longitude: -122.685699)
-        ]
-        
-        let shape = MGLPolygon(coordinates: &coordinates, count: UInt(coordinates.count))
-        
-        
-        
-        mapView.addAnnotation(shape)
-    
+        if segue.identifier == "showTerritorySingleViewFromMap" ||
+           segue.identifier == "showTerritorySingleViewFromButton" {
+            let destViewController = segue.destinationViewController as! TerritorySingleViewController
+            
+            destViewController.territory = self.territory
+            destViewController.territoryId = self.territoryId
+            destViewController.territoryPage = self.territoryPage
+            destViewController.territoryHUC8Code = territoryHUC8Code
+            destViewController.territorySelectedContentType = self.territorySelectedContentType
+            
+        }
     }
+
+    
+    
+    //
+    //
+    //
+//    func mapViewDrawBoundary(mapView: MGLMapView) {
+//        
+//        
+//        
+//        
+//        mapView.addAnnotation(shape)
+//    
+//    }
 
     
     //
@@ -135,7 +156,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate {
     //  
 
     func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
-        return 0.5
+        return 0.25
     }
     
     func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
@@ -147,6 +168,255 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate {
     }
     
     func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
-        return UIColor(red: 59/255, green: 178/255, blue: 208/255, alpha: 1)
+        return UIColor(red: 153/255, green: 46/255, blue: 230/255, alpha: 1)
     }
+    
+    func mapViewDidFinishLoadingMap(mapView: MGLMapView) {
+        print("mapView::mapViewDidFinishLoadingMap")
+    }
+    
+    //
+    //
+    //
+    func loadTerritoryData() {
+        
+        // Double check to make sure we have a HUC 8 Code
+        //
+        if self.territoryHUC8Code == "" {
+            return;
+        }
+
+        if self.territoryHUC8Code.characters.count == 7 {
+            self.territoryHUC8Code = "0\(self.territoryHUC8Code)"
+        }
+
+        let _endpoint = "\(Endpoints.TERRITORY)\(self.territoryHUC8Code).json"
+        
+        Alamofire.request(.GET, _endpoint)
+            .responseJSON { response in
+                
+                switch response.result {
+                    case .Success(let value):
+                        print("loadTerritoryData::Request Success \(Endpoints.TERRITORY) \(value)")
+                        
+                        // Draw the Territory on the map
+                        //
+                        let territoryOutline : AnyObject = value
+                        
+                        self.drawTerritoryOnMap(territoryOutline)
+                        
+                        break
+                    case .Failure(let error):
+                        print("Request Failure: \(error)")
+                        
+                        // Stop showing the loading indicator
+                        //self.status("doneLoadingWithError")
+                        
+                        break
+                }
+                
+        }
+
+    }
+    
+    func deserializeGeoJSONToMGLPolygon(polygonGeoJSONArray: JSON, multiple: Bool = false) -> MGLPolygon {
+        
+        var _coordinates = [CLLocationCoordinate2D]()
+
+        for coordinate in polygonGeoJSONArray {
+            
+            if multiple == false {
+                let _latitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[1].double!)
+                let _longitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[0].double!)
+
+                let _newVertice = CLLocationCoordinate2D(latitude: _latitude, longitude: _longitude)
+                
+                _coordinates.append(_newVertice)
+            }
+            else {
+                let _latitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[0][1].double!)
+                let _longitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[0][0].double!)
+                
+                let _newVertice = CLLocationCoordinate2D(latitude: _latitude, longitude: _longitude)
+                print("coordinate \(coordinate)")
+                _coordinates.append(_newVertice)
+
+            }
+            
+        }
+
+        let _polygon: MGLPolygon = MGLPolygon(coordinates: &_coordinates, count: UInt(_coordinates.count))
+        
+        return _polygon
+    }
+    
+    func drawTerritoryOnMap(geoJSONData: AnyObject) {
+
+        print(":drawTerritoryOnMap \(geoJSONData)")
+        
+        var _json: JSON = JSON(geoJSONData)
+        
+        // We need to loop over multiple times here to ensure that multi-polygon
+        // shapes are being read and displayed properly.
+        //
+        if _json["features"][0]["geometry"]["coordinates"].count == 1 {
+            
+            let territoryShape: MGLPolygon = self.deserializeGeoJSONToMGLPolygon(_json["features"][0]["geometry"]["coordinates"][0])
+            
+            self.mapViewWatershed.addAnnotation(territoryShape)
+
+            self.mapViewWatershed.setVisibleCoordinateBounds(territoryShape.overlayBounds, animated: false)
+
+            // Update zoom level because the .setVisibleCoordinateBounds method
+            // has too tight of a crop and leaves no padding around the edges
+            //
+            let _updatedZoomLevel: Double = self.mapViewWatershed.zoomLevel*0.90
+            self.mapViewWatershed.setZoomLevel(_updatedZoomLevel, animated: false)
+            
+        }
+        else if _json["features"][0]["geometry"]["coordinates"].count > 1 {
+
+            print("This watershed contains \(_json["features"][0]["geometry"]["coordinates"].count) polygons and should be handled differently \(_json["features"])")
+            
+            var polygons = [MGLPolygon]()
+            
+            for polygon in _json["features"][0]["geometry"]["coordinates"] {
+                
+                print("polygon has \(polygon.1.count) inside of it >>>>> \(polygon.1)")
+                
+                if polygon.1.count == 1 {
+                    let _newPolygon: MGLPolygon = self.deserializeGeoJSONToMGLPolygon(_json["features"][0]["geometry"]["coordinates"][0], multiple: true)
+
+                    polygons.append(_newPolygon)
+                }
+                else if polygon.1.count > 1 {
+                    
+                    for _child in polygon.1 {
+                        
+                        print("_child \(_child)")
+
+                        let _newPolygon: MGLPolygon = self.deserializeGeoJSONToMGLPolygon(_child.1, multiple: false)
+                    
+                        polygons.append(_newPolygon)
+                    }
+                }
+
+            }
+            
+            print("polygons \(polygons)")
+
+            let territoryShape: MGLMultiPolygon = MGLMultiPolygon(polygons: polygons)
+            
+            for _displayPolygon in polygons {
+                
+                print("_displayPolygon \(_displayPolygon)")
+                
+                self.mapViewWatershed.addAnnotation(_displayPolygon)
+                
+            }
+            
+            print("territoryShape \(territoryShape.polygons)")
+            
+//            self.mapViewWatershed.setVisibleCoordinateBounds(territoryShape.overlayBounds, animated: false)
+
+            // Update zoom level because the .setVisibleCoordinateBounds method
+            // has too tight of a crop and leaves no padding around the edges
+            //
+//            let _updatedZoomLevel: Double = self.mapViewWatershed.zoomLevel*0.90
+//            self.mapViewWatershed.setZoomLevel(_updatedZoomLevel, animated: false)
+
+        }
+        
+        
+        ///
+        ///
+        ///
+        ///
+//        var maxLat: Float = -200
+//        var maxLong: Float = -200
+//        var minLat: Float = MAXFLOAT
+//        var minLong: Float = MAXFLOAT
+//        
+//        for coordinate in _json["features"][0]["geometry"]["coordinates"][0] {
+//            
+//            let _latitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[1].double!)
+//            let _longitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[0].double!)
+//            
+//            let _location = CLLocationCoordinate2D(latitude: _latitude, longitude: _longitude)
+//            
+//            // Find the minLat
+//            //
+//            let _minimumLatitudeString: String = String(minLat)
+//            let _minimumLatitudeDouble: Double = Double(_minimumLatitudeString)!
+//            
+//            if _location.latitude < CLLocationDegrees(floatLiteral: _minimumLatitudeDouble) {
+//                minLat = Float(_location.latitude);
+//            }
+//
+//            // Find the minLong
+//            //
+//            let _minimumLongitudeString: String = String(minLong)
+//            let _minimumLongitudeDouble: Double = Double(_minimumLongitudeString)!
+//            
+//            if _location.longitude < CLLocationDegrees(floatLiteral: _minimumLongitudeDouble) {
+//                minLong = Float(_location.longitude);
+//            }
+//            
+//            // Find the maxLat
+//            //
+//            let _maximumLatitudeString: String = String(maxLat)
+//            let _maximumLatitudeDouble: Double = Double(_maximumLatitudeString)!
+//            
+//            if _location.latitude > CLLocationDegrees(floatLiteral: _maximumLatitudeDouble) {
+//                maxLat = Float(_location.latitude);
+//            }
+//
+//            // Find the maxLong
+//            //
+//            let _maximumLongitudeString: String = String(maxLong)
+//            let _maximumLongitudeDouble: Double = Double(_maximumLongitudeString)!
+//            
+//            if _location.longitude > CLLocationDegrees(floatLiteral: _maximumLongitudeDouble) {
+//                maxLong = Float(_location.longitude);
+//            }
+//
+//
+//        }
+        
+        // Define Center Point
+        //
+//        let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake((Double(maxLat) + Double(minLat)) * 0.5, (Double(maxLong) + Double(minLong)) * 0.5);
+        
+//        self.mapViewWatershed.setCenterCoordinate(center, animated: false)
+        
+//        self.mapViewWatershed.setZoomLevel(6.5, animated: false)
+        
+    }
+    
+    //
+    // MARK: UICollectionView Overrides
+    //
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        print("UICollectionView::numberOfSections")
+        return 1
+    }
+
+    func collectionView(collectionView: UICollectionView,
+                                   numberOfItemsInSection section: Int) -> Int {
+        print("UICollectionView::collectionView::numberOfItemsInSection")
+        return 4
+    }
+    
+    //3
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+
+        print("UICollectionView::collectionView::cellForItemAt")
+
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionActivityReportsCollectionViewCell", forIndexPath: indexPath)
+
+        return cell
+    }
+
 }
+
+
