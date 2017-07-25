@@ -285,6 +285,10 @@ class ActivityTableViewController: UITableViewController {
             let destViewController = segue.destinationViewController as! CommentsTableViewController
             let report = self.reports[(sender?.tag)!]
             destViewController.report = report
+        } else if segue.identifier == "reportToReportLikes" {
+            let destViewController = segue.destinationViewController as! LikesTableViewController
+            let report = self.reports[(sender?.tag)!]
+            destViewController.report = report
         }
     }
     
@@ -508,6 +512,10 @@ class ActivityTableViewController: UITableViewController {
             cell.reportDirectionsButton.addTarget(self, action: #selector(openDirectionsURL(_:)), forControlEvents: .TouchUpInside)
             
             cell.reportShareButton.tag = indexPath.row
+            
+            
+            cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            cell.reportLikeButton.tag = indexPath.row
 
             
             //
@@ -551,5 +559,8 @@ class ActivityTableViewController: UITableViewController {
         
     }
     
+    func likeCurrentReport(sender: UIButton) {
+        print("Incrementing Report Likes by 1")
+    }
 
 }
