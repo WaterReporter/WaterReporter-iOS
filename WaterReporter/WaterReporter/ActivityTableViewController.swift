@@ -376,6 +376,28 @@ class ActivityTableViewController: UITableViewController {
                 cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
             }
             
+            // Likes Count
+            //
+            let reportLikes = report?.objectForKey("likes") as! NSArray
+            
+            var reportLikesCountText: String = "0 likes"
+            
+            if reportLikes.count == 1 {
+                reportLikesCountText = "1 like"
+            }
+            else if reportLikes.count >= 1 {
+                reportLikesCountText = String(reportLikes.count) + " likes"
+            }
+            else {
+                reportLikesCountText = "0 likes"
+            }
+            
+            cell.reportLikeCount.tag = indexPath.row
+            cell.reportLikeCount.setTitle(reportLikesCountText, forState: UIControlState.Normal)
+            
+            cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            cell.reportLikeButton.tag = indexPath.row
+            
             
             //
             // GROUPS
@@ -514,10 +536,6 @@ class ActivityTableViewController: UITableViewController {
             cell.reportShareButton.tag = indexPath.row
             
             
-            cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-            cell.reportLikeButton.tag = indexPath.row
-
-            
             //
             // CONTIUOUS SCROLL
             //
@@ -558,9 +576,81 @@ class ActivityTableViewController: UITableViewController {
         }
         
     }
+
+    
+    //
+    // MARK: Like Functionality
+    //
+    func updateReportLikeCount(indexPathRow: Int) {
+        
+        let _indexPath = NSIndexPath(forRow: indexPathRow, inSection: 0)
+        
+        let _cell: TableViewCell = self.tableView.cellForRowAtIndexPath(_indexPath) as! TableViewCell
+        
+        // Change the Heart icon to red
+        //
+        _cell.reportLikeButton.setImage(UIImage(named: "icon-heartred"), forState: .Normal)
+
+        // Update the total likes count
+        //
+        let _report = JSON(self.reports[(indexPathRow)].objectForKey("properties")!)
+        let _report_likes_count: Int = _report["likes"].count
+        let _report_likes_updated_total: Int = _report_likes_count+1
+        
+        var reportLikesCountText: String = ""
+        
+        if _report_likes_updated_total == 1 {
+            reportLikesCountText = "1 like"
+        }
+        else if _report_likes_updated_total >= 1 {
+            reportLikesCountText = "\(_report_likes_updated_total) likes"
+        }
+        
+        _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
+
+        
+    }
     
     func likeCurrentReport(sender: UIButton) {
-        print("Incrementing Report Likes by 1")
+        
+        // Update the visible "# like" count of likes
+        //
+        self.updateReportLikeCount(sender.tag)
+        
+        print("Incrementing Report Likes by 1 \(self.reports[sender.tag])")
+
+        // Create necessary Authorization header for our request
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let _headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        //
+        // PARAMETERS
+        //
+        let _report = JSON(self.reports[(sender.tag)])
+        let _report_id: String = "\(_report["id"])"
+
+        let _parameters: [String:AnyObject] = [
+            "report_id": _report_id
+        ]
+        
+        Alamofire.request(.POST, Endpoints.POST_LIKE, parameters: _parameters, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                print("Response \(response)")
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Response Success \(value)")
+                    break
+                case .Failure(let error):
+                    print("Response Failure \(error)")
+                    break
+                }
+                
+        }
     }
 
 }
