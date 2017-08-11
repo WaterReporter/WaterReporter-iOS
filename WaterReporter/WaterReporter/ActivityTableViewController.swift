@@ -111,9 +111,15 @@ class ActivityTableViewController: UITableViewController {
     //
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
 
-    var reports = [AnyObject]()
+//    var reports = [AnyObject]()
+    
+    var reports: NSMutableArray = NSMutableArray()
     var singleReport: Bool = false
     var page: Int = 1
+    
+    var like: LikeController = LikeController.init()
+    
+    
     
     
     //
@@ -246,11 +252,12 @@ class ActivityTableViewController: UITableViewController {
                     // list of reports
                     //
                     if (isRefreshingReportsList) {
-                        self.reports = value["features"] as! [AnyObject]
+                        self.reports = (value["features"] as! NSArray).mutableCopy() as! NSMutableArray
+                        
                         self.refreshControl?.endRefreshing()
                     }
                     else {
-                        self.reports += value["features"] as! [AnyObject]
+                        self.reports.addObjectsFromArray(value["features"] as! NSArray as [AnyObject])
                     }
 
                     self.tableView.reloadData()
@@ -394,9 +401,24 @@ class ActivityTableViewController: UITableViewController {
             
             cell.reportLikeCount.tag = indexPath.row
             cell.reportLikeCount.setTitle(reportLikesCountText, forState: UIControlState.Normal)
-            
-            cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+
+            // Report Like Button
+            //
             cell.reportLikeButton.tag = indexPath.row
+            
+            let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
+
+            let _hasLiked = self.like.userHasLikedReport(reportJson, _current_user_id: _user_id_number.integerValue)
+            
+            cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+
+            if (_hasLiked) {
+                cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            }
+            else {
+                cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            }
             
             
             //
@@ -581,7 +603,22 @@ class ActivityTableViewController: UITableViewController {
     //
     // MARK: Like Functionality
     //
-    func updateReportLikeCount(indexPathRow: Int) {
+    func userHasLikedReport(_report: JSON, _current_user_id: Int) -> Bool {
+        
+        if (_report["likes"].count != 0) {
+            for _like in _report["likes"] {
+                if (_like.1["properties"]["owner_id"].intValue == _current_user_id) {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    func updateReportLikeCount(indexPathRow: Int, addLike: Bool = true) {
+        
+        print("LikeController::updateReportLikeCount")
         
         let _indexPath = NSIndexPath(forRow: indexPathRow, inSection: 0)
         
@@ -589,13 +626,27 @@ class ActivityTableViewController: UITableViewController {
         
         // Change the Heart icon to red
         //
-        _cell.reportLikeButton.setImage(UIImage(named: "icon-heartred"), forState: .Normal)
-
+        if (addLike) {
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            //_cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+        } else {
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+            //_cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+        }
+        
         // Update the total likes count
         //
         let _report = JSON(self.reports[(indexPathRow)].objectForKey("properties")!)
         let _report_likes_count: Int = _report["likes"].count
-        let _report_likes_updated_total: Int = _report_likes_count+1
+        
+        var _report_likes_updated_total: Int! = _report_likes_count
+        
+        if (addLike) {
+            _report_likes_updated_total = _report_likes_count+1
+        }
+        else {
+            _report_likes_updated_total = _report_likes_count-1
+        }
         
         var reportLikesCountText: String = ""
         
@@ -605,20 +656,24 @@ class ActivityTableViewController: UITableViewController {
         else if _report_likes_updated_total >= 1 {
             reportLikesCountText = "\(_report_likes_updated_total) likes"
         }
+        else {
+            reportLikesCountText = "0 likes"
+        }
         
         _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
-
+        
         
     }
     
     func likeCurrentReport(sender: UIButton) {
         
+        print("LikeController::likeCurrentReport Incrementing Report Likes by 1")
+        
         // Update the visible "# like" count of likes
         //
         self.updateReportLikeCount(sender.tag)
         
-        print("Incrementing Report Likes by 1 \(self.reports[sender.tag])")
-
+        
         // Create necessary Authorization header for our request
         //
         let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
@@ -631,7 +686,7 @@ class ActivityTableViewController: UITableViewController {
         //
         let _report = JSON(self.reports[(sender.tag)])
         let _report_id: String = "\(_report["id"])"
-
+        
         let _parameters: [String:AnyObject] = [
             "report_id": _report_id
         ]
@@ -639,11 +694,92 @@ class ActivityTableViewController: UITableViewController {
         Alamofire.request(.POST, Endpoints.POST_LIKE, parameters: _parameters, headers: _headers, encoding: .JSON)
             .responseJSON { response in
                 
-                print("Response \(response)")
+                switch response.result {
+                case .Success(let value):
+                    print("Response Success \(value)")
+                    let _reports = self.reports[(sender.tag)]
+                    
+                    //                    _reports.addObject(value)
+                    
+                    //                    self.tableView.reloadData()
+                    
+                    break
+                case .Failure(let error):
+                    print("Response Failure \(error)")
+                    break
+                }
+                
+        }
+    }
+    
+    func unlikeCurrentReport(sender: UIButton) {
+        
+        print("LikeController::unlikeCurrentReport  Decrementing Report Likes by 1")
+        // Update the visible "# like" count of likes
+        //
+        self.updateReportLikeCount(sender.tag, addLike: false)
+        
+        
+        // Create necessary Authorization header for our request
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let _headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        //
+        // PARAMETERS
+        //
+        let _report = JSON(self.reports[(sender.tag)])
+        let _report_id: String = "\(_report["id"])"
+        
+        let _parameters: [String:AnyObject] = [
+            "report_id": _report_id
+        ]
+        
+        //
+        // ENDPOINT
+        //
+        var _like_id: String = ""
+        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
+        var _like_index: Int = 0
+        
+        if (_report["properties"]["likes"].count != 0) {
+            
+            for _like in _report["properties"]["likes"] {
+                if (_like.1["properties"]["owner_id"].intValue == _user_id_number.integerValue) {
+                    print("_like.1 \(_like.1)")
+                    _like_id = "\(_like.1["id"])"
+                    _like_index = Int(_like.0)!
+                }
+            }
+        }
+        
+        let _endpoint: String = Endpoints.DELETE_LIKE + "/\(_like_id)"
+        
+        print("_endpoint \(_endpoint)")
+        
+        
+        //
+        // REQUEST
+        //
+        Alamofire.request(.DELETE, _endpoint, parameters: _parameters, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
                 
                 switch response.result {
                 case .Success(let value):
                     print("Response Success \(value)")
+                    
+                    if (_like_index != 0) {
+                        let _reports = self.reports[(sender.tag)]
+                        let _properties = _reports.objectForKey("properties")
+                        let _likes : NSMutableArray = (_properties!.objectForKey("likes") as! NSArray).mutableCopy() as! NSMutableArray
+                        
+                        //                        _likes.removeObjectAtIndex(_like_index)
+                    }
+                    
+                    //                    self.tableView.reloadData()
+                    
                     break
                 case .Failure(let error):
                     print("Response Failure \(error)")

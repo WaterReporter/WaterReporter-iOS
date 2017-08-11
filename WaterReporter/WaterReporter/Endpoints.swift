@@ -13,7 +13,9 @@ struct Endpoints {
     static let GET_MANY_REPORTS = "https://api.waterreporter.org/v2/data/report"
     static let POST_REPORT = "https://api.waterreporter.org/v2/data/report"
 
+    static let GET_MANY_REPORT_LIKES = "https://api.waterreporter.org/v2/data/like"
     static let POST_LIKE = "https://api.waterreporter.org/v2/data/like"
+    static let DELETE_LIKE = "https://api.waterreporter.org/v2/data/like"
 
     static let GET_MANY_USER = "https://api.waterreporter.org/v2/data/user"
     
