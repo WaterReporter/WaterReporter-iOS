@@ -697,11 +697,13 @@ class ActivityTableViewController: UITableViewController {
                 switch response.result {
                 case .Success(let value):
                     print("Response Success \(value)")
-                    let _reports = self.reports[(sender.tag)]
                     
-                    //                    _reports.addObject(value)
+                    // REMOVE OLD VERSION OF REPORT FROM LIST
+                    //
+                    print("Remove this \(self.reports[(sender.tag)])")
                     
-                    //                    self.tableView.reloadData()
+                    self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
+                    
                     
                     break
                 case .Failure(let error):
@@ -770,15 +772,7 @@ class ActivityTableViewController: UITableViewController {
                 case .Success(let value):
                     print("Response Success \(value)")
                     
-                    if (_like_index != 0) {
-                        let _reports = self.reports[(sender.tag)]
-                        let _properties = _reports.objectForKey("properties")
-                        let _likes : NSMutableArray = (_properties!.objectForKey("likes") as! NSArray).mutableCopy() as! NSMutableArray
-                        
-                        //                        _likes.removeObjectAtIndex(_like_index)
-                    }
-                    
-                    //                    self.tableView.reloadData()
+                    self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
                     
                     break
                 case .Failure(let error):
@@ -787,6 +781,35 @@ class ActivityTableViewController: UITableViewController {
                 }
                 
         }
+    }
+    
+    func updateReportLikes(_report_id: String, reportSenderTag: Int) {
+        
+        // Create necessary Authorization header for our request
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let _headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+    
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS + "/\(_report_id)", headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Response value \(value)")
+                    
+                    self.reports[reportSenderTag] = value
+                    
+                    break
+                case .Failure(let error):
+                    print("Response Failure \(error)")
+                    break
+                    
+                }
+                
+        }
+        
     }
 
 }
