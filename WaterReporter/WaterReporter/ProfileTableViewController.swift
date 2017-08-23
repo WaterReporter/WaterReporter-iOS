@@ -341,12 +341,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         
-        if self.isMovingFromParentViewController()
-        {
-            self.navigationController?.navigationBarHidden = true
+        if (self.isMovingFromParentViewController()) {
+            if (self.navigationController?.viewControllers.last?.restorationIdentifier! == "SearchTableViewController") {
+                self.navigationController?.navigationBarHidden = true
+            } else {
+                self.navigationController?.navigationBarHidden = false
+            }
         }
-        else
-        {
+        else {
             self.navigationController?.navigationBarHidden = false
         }
     }

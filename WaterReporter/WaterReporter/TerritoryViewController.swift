@@ -26,6 +26,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     var territoryId: String = ""
     var territoryHUC8Code: String = ""
     var territoryPage: Int = 1
+    var territoryOutline : AnyObject?
     
     var territorySelectedContentType: String! = "Posts"
     
@@ -75,9 +76,27 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     //
     @IBAction func openWatershedView(sender: UIButton) {
         
-        let _territory = "\(self.territory)"
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
-        print("openWatershedView \(_territory)")
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("TerritorySingleViewController") as! TerritorySingleViewController
+
+        nextViewController.territory = self.territory
+
+        print("openWatershedView \(self.territory)")
+
+        nextViewController.territoryId = self.territoryId
+        nextViewController.territoryHUC8Code = self.territoryHUC8Code
+        nextViewController.territoryPage = self.territoryPage
+        nextViewController.territoryOutline = self.territoryOutline
+
+        nextViewController.territoryContent = self.territoryContent
+        nextViewController.territoryContentRaw = self.territoryContentRaw
+
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+
     }
     
     @IBAction func openSingleReportView(sender: UIButton) {
@@ -386,6 +405,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                         // Draw the Territory on the map
                         //
                         let territoryOutline : AnyObject = value
+                        self.territoryOutline = territoryOutline
                         
                         self.drawTerritoryOnMap(territoryOutline)
                         
@@ -912,12 +932,14 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             
             cell.reportLink.tag = indexPath.row
             
+            cell.reportLink.removeTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
             cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleGroupView(_:)), forControlEvents: .TouchUpInside)
             
         }
         else {
             cell.reportLink.tag = indexPath.row
             
+            cell.reportLink.removeTarget(self, action: #selector(TerritoryViewController.openSingleGroupView(_:)), forControlEvents: .TouchUpInside)
             cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
         }
 
