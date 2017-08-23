@@ -11,7 +11,6 @@ import UIKit
 class ReusableProfileCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var reportUserProfileImage: UIImageView!
-    @IBOutlet weak var reportUserProfileLink: UIButton!
     @IBOutlet weak var reportUserProfileName: UILabel!
     @IBOutlet weak var reportImage: UIImageView!
     @IBOutlet weak var reportDescription: UILabel!

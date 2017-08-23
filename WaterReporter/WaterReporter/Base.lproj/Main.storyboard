@@ -1683,8 +1683,8 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionActivityReportsCollectionViewCell" id="cVq-F2-UrS">
-                                        <rect key="frame" x="0.0" y="50" width="150" height="200"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="collectionActivityReportsCollectionViewCell" reuseIdentifier="CollectionActivityReportsCollectionViewCell" id="cVq-F2-UrS" customClass="ReusableProfileCollectionViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="49.5" width="150" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="200"/>
@@ -1701,11 +1701,12 @@
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="8"/>
                                                         </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deb Kramer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fg4-BB-OVJ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deb Kramer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fg4-BB-OVJ">
                                                     <rect key="frame" x="28" y="11.5" width="106" height="10"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="8"/>
                                                     <color key="textColor" red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1717,9 +1718,9 @@
                                                         <constraint firstAttribute="width" constant="100" id="mls-hW-qeo"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This pile of sticks, branches, and logs demonstrates the power of high moving water" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gE8-wQ-7la">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This pile of sticks, branches, and logs demonstrates the power of high moving water" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gE8-wQ-7la">
                                                     <rect key="frame" x="8" y="136" width="126" height="43.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="8"/>
                                                     <color key="textColor" red="0.31764705882352939" green="0.31764705882352939" blue="0.31764705882352939" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1729,6 +1730,9 @@
                                                     <color key="textColor" red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xig-fu-MtJ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="150" height="200"/>
+                                                </button>
                                             </subviews>
                                         </view>
                                         <constraints>
@@ -1743,13 +1747,25 @@
                                             <constraint firstAttribute="trailingMargin" secondItem="gE8-wQ-7la" secondAttribute="trailing" constant="8" id="a8r-hr-QPl"/>
                                             <constraint firstAttribute="bottomMargin" secondItem="OiX-Lz-ipL" secondAttribute="bottom" id="ag1-x1-gSN"/>
                                             <constraint firstItem="xg9-qc-M2A" firstAttribute="top" secondItem="0rP-cq-76h" secondAttribute="bottom" constant="8" id="bEF-gk-8aw"/>
+                                            <constraint firstItem="xig-fu-MtJ" firstAttribute="centerY" secondItem="cVq-F2-UrS" secondAttribute="centerY" id="bXv-k2-dvg"/>
+                                            <constraint firstItem="xig-fu-MtJ" firstAttribute="height" secondItem="cVq-F2-UrS" secondAttribute="height" id="eCC-PT-2wl"/>
                                             <constraint firstItem="xg9-qc-M2A" firstAttribute="leading" secondItem="cVq-F2-UrS" secondAttribute="leadingMargin" id="fcN-aR-7kY"/>
                                             <constraint firstItem="fg4-BB-OVJ" firstAttribute="leading" secondItem="0rP-cq-76h" secondAttribute="trailing" constant="4" id="gEf-JW-jEa"/>
+                                            <constraint firstItem="xig-fu-MtJ" firstAttribute="width" secondItem="cVq-F2-UrS" secondAttribute="width" id="jiH-n0-TXF"/>
+                                            <constraint firstItem="xig-fu-MtJ" firstAttribute="centerX" secondItem="cVq-F2-UrS" secondAttribute="centerX" id="lfN-kt-fGt"/>
                                             <constraint firstItem="0rP-cq-76h" firstAttribute="top" secondItem="cVq-F2-UrS" secondAttribute="topMargin" id="xBn-IN-PqQ"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="reportDate" destination="OiX-Lz-ipL" id="piP-rQ-vxT"/>
+                                            <outlet property="reportDescription" destination="gE8-wQ-7la" id="SUw-uu-E6v"/>
+                                            <outlet property="reportImage" destination="xg9-qc-M2A" id="7TG-iT-ovx"/>
+                                            <outlet property="reportLink" destination="xig-fu-MtJ" id="3kO-Sj-uVc"/>
+                                            <outlet property="reportUserProfileImage" destination="0rP-cq-76h" id="pF7-gG-4rQ"/>
+                                            <outlet property="reportUserProfileName" destination="fg4-BB-OVJ" id="8e3-99-yRW"/>
+                                        </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionActivityActionsCollectionViewCell" id="sVR-le-RC1">
-                                        <rect key="frame" x="150" y="50" width="150" height="200"/>
+                                        <rect key="frame" x="150" y="49.5" width="150" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="200"/>
@@ -1757,7 +1773,7 @@
                                         </view>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionActivityGroupsCollectionViewCell" id="S0Q-wn-TVY">
-                                        <rect key="frame" x="300" y="50" width="150" height="200"/>
+                                        <rect key="frame" x="300" y="49.5" width="150" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="200"/>
@@ -1765,7 +1781,7 @@
                                         </view>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionActivityNewsCollectionViewCell" id="XCx-MU-3TH">
-                                        <rect key="frame" x="450" y="50" width="150" height="200"/>
+                                        <rect key="frame" x="450" y="49.5" width="150" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="200"/>
@@ -1811,6 +1827,7 @@
                         <outlet property="buttonViewWatershed" destination="tJF-aX-FFe" id="Ik1-JU-UH0"/>
                         <outlet property="labelTerritoryName" destination="gCL-uP-Cr4" id="q7n-Z9-E9b"/>
                         <outlet property="mapViewWatershed" destination="ydF-3f-UQa" id="ggj-un-YQ6"/>
+                        <outlet property="territoryContentCollectionView" destination="5Wt-nY-xyc" id="eT3-s7-KFO"/>
                         <outlet property="viewMapViewOverlay" destination="kJU-h1-77C" id="Gnz-Li-WrC"/>
                     </connections>
                 </viewController>
