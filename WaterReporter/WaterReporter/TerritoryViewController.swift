@@ -30,10 +30,26 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     var territorySelectedContentType: String! = "Posts"
     
     @IBOutlet weak var territoryContentCollectionView: UICollectionView!
+
     var territoryContent: JSON?
     var territoryContentRaw = [AnyObject]()
     var territoryContentPage: Int = 1
     var territoryContentRefreshControl: UIRefreshControl = UIRefreshControl()
+
+    var territoryActionContent: JSON?
+    var territoryActionContentRaw = [AnyObject]()
+    var territoryActionContentPage: Int = 1
+    var territoryActionContentRefreshControl: UIRefreshControl = UIRefreshControl()
+
+    var territoryGroupContent: JSON?
+    var territoryGroupContentRaw = [AnyObject]()
+    var territoryGroupContentPage: Int = 1
+    var territoryGroupContentRefreshControl: UIRefreshControl = UIRefreshControl()
+
+    var territoryNewsContent: JSON?
+    var territoryNewsContentRaw = [AnyObject]()
+    var territoryNewsContentPage: Int = 1
+    var territoryNewsContentRefreshControl: UIRefreshControl = UIRefreshControl()
 
     
     //
@@ -51,6 +67,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     
     @IBOutlet weak var contentTypeView: UIView!
     @IBOutlet weak var buttonTerritoryActionsContentType: UIButton!
+    @IBOutlet weak var buttonTerritoryPostsContentType: UIButton!
     @IBOutlet weak var buttonTerritoryGroupsContentType: UIButton!
     @IBOutlet weak var buttonTerritoryNewsContentType: UIButton!
     //
@@ -72,13 +89,42 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         
         let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ActivityTableViewController") as! ActivityTableViewController
         
-        nextViewController.singleReport = true
-        nextViewController.reports = [self.territoryContentRaw[sender.tag]]
+        if self.territorySelectedContentType == "Posts" {
+            let _report = self.territoryContentRaw[sender.tag]
+            nextViewController.singleReport = true
+            nextViewController.reports = [_report]
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+        else if self.territorySelectedContentType == "Actions" {
+            let _report = self.territoryActionContentRaw[sender.tag]
+            nextViewController.singleReport = true
+            nextViewController.reports = [_report]
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+        else if self.territorySelectedContentType == "News" {
+            let _report = self.territoryNewsContentRaw[sender.tag]
+            nextViewController.singleReport = true
+            nextViewController.reports = [_report]
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+        
+    }
+
+    @IBAction func openSingleGroupView(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
+        
+        let _group = self.territoryGroupContent!["features"][sender.tag]
+
+        print("sender.tag \(sender.tag) _group \(_group)")
+        
+        nextViewController.groupId = "\(_group["id"])"
+        nextViewController.groupObject = _group
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
 
     }
-    
+
     
     //
     // MARK: Overrides
@@ -137,6 +183,8 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         //
         self.loadTerritoryData()
         self.attemptLoadTerritorySubmissions(true)
+        self.attemptLoadTerritoryActions(true)
+        self.attemptLoadTerritoryGroups(true)
         
         //
         //
@@ -144,8 +192,15 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         self.activityCollectionView.delegate = self
         
         self.buttonTerritoryContentType.addTarget(self, action: #selector(TerritoryViewController.toggleMenu(_:)), forControlEvents: .TouchUpInside)
+        self.buttonTerritoryPostsContentType.addTarget(self, action: #selector(TerritoryViewController.changeContentType(_:)), forControlEvents: .TouchUpInside)
+        self.buttonTerritoryGroupsContentType.addTarget(self, action: #selector(TerritoryViewController.changeContentType(_:)), forControlEvents: .TouchUpInside)
+        self.buttonTerritoryActionsContentType.addTarget(self, action: #selector(TerritoryViewController.changeContentType(_:)), forControlEvents: .TouchUpInside)
         
         self.buttonTerritoryContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        
+        self.buttonTerritoryPostsContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        self.buttonTerritoryPostsContentType.setTitleColor(UIColor.colorBrand(), forState: .Normal)
+        
         self.buttonTerritoryActionsContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         self.buttonTerritoryGroupsContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         self.buttonTerritoryNewsContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
@@ -171,6 +226,62 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         else {
             self.contentTypeView.hidden = true
         }
+        
+    }
+    
+    func changeContentType(sender: UIButton) {
+        print("changeContentType \(sender)")
+        
+        if sender.restorationIdentifier == "postsButton" {
+            self.territorySelectedContentType = "Posts"
+
+            self.buttonTerritoryActionsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryGroupsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryNewsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryPostsContentType.setTitleColor(UIColor.colorBrand(), forState: .Normal)
+            
+            self.buttonTerritoryContentType.setTitle("\(self.territoryContent!["properties"]["num_results"]) posts in watershed", forState: .Normal)
+
+            self.activityCollectionView.reloadData()
+        }
+        else if sender.restorationIdentifier == "groupsButton" {
+            self.territorySelectedContentType = "Groups"
+
+            self.buttonTerritoryPostsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryActionsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryNewsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryGroupsContentType.setTitleColor(UIColor.colorBrand(), forState: .Normal)
+
+            self.buttonTerritoryContentType.setTitle("\(self.territoryGroupContent!["properties"]["num_results"]) active groups", forState: .Normal)
+
+            self.activityCollectionView.reloadData()
+        }
+        else if sender.restorationIdentifier == "actionsButton" {
+            self.territorySelectedContentType = "Actions"
+
+            self.buttonTerritoryPostsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryGroupsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryNewsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryActionsContentType.setTitleColor(UIColor.colorBrand(), forState: .Normal)
+
+            self.buttonTerritoryContentType.setTitle("\(self.territoryActionContent!["properties"]["num_results"]) posts with actions", forState: .Normal)
+
+            self.activityCollectionView.reloadData()
+        }
+        else if sender.restorationIdentifier == "newsButton" {
+            self.territorySelectedContentType = "News"
+
+            self.buttonTerritoryPostsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryActionsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryGroupsContentType.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+            self.buttonTerritoryNewsContentType.setTitleColor(UIColor.colorBrand(), forState: .Normal)
+
+            self.buttonTerritoryContentType.setTitle("\(self.territoryNewsContent!["properties"]["num_results"]) news stories", forState: .Normal)
+
+            self.activityCollectionView.reloadData()
+        }
+
+        self.contentTypeView.hidden = true
         
     }
     
@@ -514,12 +625,115 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     if (_content_count != "") {
                         self.buttonTerritoryContentType.hidden = false
                         self.buttonTerritoryContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
+                        self.buttonTerritoryPostsContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
                     }
                     
                     // Refresh the data in the table so the newest items appear
                     self.territoryContentCollectionView.reloadData()
                     
                     self.territoryContentPage += 1
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+                
+        }
+        
+    }
+
+    func attemptLoadTerritoryActions(isRefreshingReportsList: Bool = false) {
+        
+        let _parameters = [
+            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "page": "\(self.territoryGroupContentPage)"
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("attemptLoadTerritoryActions::Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+                    
+                    // Assign response to groups variable
+                    if (isRefreshingReportsList) {
+                        self.territoryActionContent = JSON(value)
+                        self.territoryActionContentRaw = value["features"] as! [AnyObject]
+                        self.territoryActionContentRefreshControl.endRefreshing()
+                    }
+                    else {
+                        self.territoryActionContent = JSON(value)
+                        self.territoryActionContentRaw += value["features"] as! [AnyObject]
+                    }
+                    
+                    // Set visible button count
+                    let _action_count = self.territoryActionContent!["properties"]["num_results"]
+                    
+                    if (_action_count != "") {
+                        self.buttonTerritoryActionsContentType.setTitle("\(_action_count) posts with actions", forState: .Normal)
+                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.territoryContentCollectionView.reloadData()
+                    
+                    self.territoryActionContentPage += 1
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+                
+        }
+        
+    }
+    
+    func attemptLoadTerritoryGroups(isRefreshingReportsList: Bool = false) {
+        
+        let _parameters = [
+            "q": "{\"filters\":[{\"name\":\"reports\",\"op\":\"any\",\"val\":{\"name\":\"territory\",\"op\":\"has\",\"val\":{\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}}}]}",
+            "page": "\(self.territoryGroupContentPage)"
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_ORGANIZATIONS, parameters: _parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("attemptLoadTerritoryGroups::Request Success \(Endpoints.GET_MANY_ORGANIZATIONS) \(value)")
+                    
+                    // Assign response to groups variable
+                    if (isRefreshingReportsList) {
+                        self.territoryGroupContent = JSON(value)
+                        self.territoryGroupContentRaw = value["features"] as! [AnyObject]
+                        self.territoryGroupContentRefreshControl.endRefreshing()
+                    }
+                    else {
+                        self.territoryGroupContent = JSON(value)
+                        self.territoryGroupContentRaw += value["features"] as! [AnyObject]
+                    }
+                    
+                    // Set visible button count
+                    let _group_count = self.territoryGroupContent!["properties"]["num_results"]
+                    
+                    if (_group_count >= 1) {
+                        self.buttonTerritoryGroupsContentType.setTitle("\(_group_count) active groups", forState: .Normal)
+                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.territoryContentCollectionView.reloadData()
+                    
+                    self.territoryGroupContentPage += 1
                     
                     break
                 case .Failure(let error):
@@ -547,7 +761,18 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func collectionView(collectionView: UICollectionView,
                                    numberOfItemsInSection section: Int) -> Int {
         print("UICollectionView::collectionView::numberOfItemsInSection")
-        return self.territoryContentRaw.count
+
+        if (self.territorySelectedContentType == "Actions") {
+            return self.territoryActionContentRaw.count
+        }
+        else if (self.territorySelectedContentType == "Groups") {
+            return self.territoryGroupContentRaw.count
+        }
+        else {
+            return self.territoryContentRaw.count
+        }
+
+        return 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -556,10 +781,21 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
 
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionActivityReportsCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
         
-        let _report = JSON(self.territoryContentRaw[indexPath.row])
-        let _owner = _report["properties"]["owner"]
+        let _report: JSON!
+        let _owner: JSON!
         
-        print("Processing _report \(_report)")
+        if (self.territorySelectedContentType == "Actions") {
+            _report = JSON(self.territoryActionContentRaw[indexPath.row])
+            _owner = _report!["properties"]["owner"]
+        }
+        else if (self.territorySelectedContentType == "Groups") {
+            _report = JSON(self.territoryGroupContentRaw[indexPath.row])
+            _owner = _report!["properties"]["owner"]
+        }
+        else {
+            _report = JSON(self.territoryContentRaw[indexPath.row])
+            _owner = _report!["properties"]["owner"]
+        }
         
         // REPORT > USER > First and Last Name
         //
@@ -569,24 +805,33 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         // REPORT > USER > Profile Image
         //
         // Display Group Image
-        var userProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
-        
-        if let userProfileImageString = _owner["properties"]["picture"].string {
-            userProfileImageURL = NSURL(string: String(userProfileImageString))
-        }
-        
-        cell.reportUserProfileImage.kf_indicatorType = .Activity
-        cell.reportUserProfileImage.kf_showIndicatorWhenLoading = true
-        
-        cell.reportUserProfileImage.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-            (image, error, cacheType, imageUrl) in
-            if (image != nil) {
-                cell.reportUserProfileImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+        if self.territorySelectedContentType != "Groups" {
+            
+            var userProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+            
+            if let userProfileImageString = _owner["properties"]["picture"].string {
+                userProfileImageURL = NSURL(string: String(userProfileImageString))
             }
-        })
-        
-        cell.reportUserProfileImage.layer.cornerRadius = 8.0
-        cell.reportUserProfileImage.clipsToBounds = true
+            
+            cell.reportUserProfileImage.kf_indicatorType = .Activity
+            cell.reportUserProfileImage.kf_showIndicatorWhenLoading = true
+            
+            cell.reportUserProfileImage.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                if (image != nil) {
+                    cell.reportUserProfileImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+            })
+            
+            cell.reportUserProfileImage.layer.cornerRadius = 8.0
+            cell.reportUserProfileImage.clipsToBounds = true
+
+        }
+        else {
+            cell.reportUserProfileName.text = ""
+            cell.reportUserProfileImage.backgroundColor = UIColor.clearColor()
+            cell.reportUserProfileImage.image = UIImage()
+        }
         
         
         // REPORT > IMAGE
@@ -611,34 +856,50 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         
         // REPORT > DATE
         //
-        let reportDate = _report["properties"]["report_date"].string
-        
-        if (reportDate != nil) {
-            let dateString: String = reportDate!
+        if self.territorySelectedContentType != "Groups" {
+
+            let reportDate = _report["properties"]["report_date"].string
             
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            
-            let stringToFormat = dateFormatter.dateFromString(dateString)
-            dateFormatter.dateFormat = "MMM d, yyyy"
-            
-            let displayDate = dateFormatter.stringFromDate(stringToFormat!)
-            
-            if let thisDisplayDate: String? = displayDate {
-                cell.reportDate.text = thisDisplayDate
+            if (reportDate != nil) {
+                let dateString: String = reportDate!
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                
+                let stringToFormat = dateFormatter.dateFromString(dateString)
+                dateFormatter.dateFormat = "MMM d, yyyy"
+                
+                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                
+                if let thisDisplayDate: String? = displayDate {
+                    cell.reportDate.text = thisDisplayDate
+                }
+            }
+            else {
+                cell.reportDate.text = ""
             }
         }
         else {
             cell.reportDate.text = ""
         }
         
-        
         // REPORT > DESCRIPTION
         //
-        let reportDescription = "\(_report["properties"]["report_description"])"
-        
-        if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
-            cell.reportDescription.text = "\(reportDescription)"
+        if self.territorySelectedContentType != "Groups" {
+
+            let reportDescription = "\(_report["properties"]["report_description"])"
+            
+            if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
+                cell.reportDescription.text = "\(reportDescription)"
+            }
+            else {
+                cell.reportDescription.text = ""
+            }
+        }
+        else if self.territorySelectedContentType == "Groups" {
+            
+            cell.reportDescription.text = "\(_report["properties"]["name"])"
+
         }
         else {
             cell.reportDescription.text = ""
@@ -647,10 +908,20 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         
         // REPORT > Link
         //
-        cell.reportLink.tag = indexPath.row
-        
-        cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
+        if self.territorySelectedContentType == "Groups" {
+            
+            cell.reportLink.tag = indexPath.row
+            
+            cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleGroupView(_:)), forControlEvents: .TouchUpInside)
+            
+        }
+        else {
+            cell.reportLink.tag = indexPath.row
+            
+            cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
+        }
 
+        
         if (indexPath.row == self.territoryContentRaw.count - 2 && self.territoryContentRaw.count < self.territoryContent!["properties"]["num_results"].int) {
             self.attemptLoadTerritorySubmissions()
         }
@@ -787,41 +1058,41 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         
     }
     
-    func loadAllReportsInRegion(mapView: AnyObject) {
-        
-        //
-        // Send a request to the defined endpoint with the given parameters
-        //
-        let region = getViewportBoundaryString(mapView.visibleCoordinateBounds)
-        let polygon = "SRID=4326;POLYGON((" + region + "))"
-        let parameters = [
-            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
-        ]
-        
-        print("polygon \(polygon)")
-        print("parameters \(parameters)")
-        
-        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters)
-            .responseJSON { response in
-                
-                switch response.result {
-                case .Success(let value):
-                    
-                    print("value \(value)")
-                    
-                    let returnValue = value["features"] as! [AnyObject]
-                    
-                    self.territoryContentRaw = returnValue // WE NEED TO FILTER DOWN SO THERE ARE NO DUPLICATE REPORTS LOADED ONTO THE MAP
-                    self.addReportsToMap(mapView, reports:self.territoryContentRaw)
-                    
-                case .Failure(let error):
-                    print(error)
-                    break
-                }
-        }
-        
-        
-    }
+//    func loadAllReportsInRegion(mapView: AnyObject) {
+//        
+//        //
+//        // Send a request to the defined endpoint with the given parameters
+//        //
+//        let region = getViewportBoundaryString(mapView.visibleCoordinateBounds)
+//        let polygon = "SRID=4326;POLYGON((" + region + "))"
+//        let parameters = [
+//            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+//        ]
+//        
+//        print("polygon \(polygon)")
+//        print("parameters \(parameters)")
+//        
+//        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters)
+//            .responseJSON { response in
+//                
+//                switch response.result {
+//                case .Success(let value):
+//                    
+//                    print("value \(value)")
+//                    
+//                    let returnValue = value["features"] as! [AnyObject]
+//                    
+//                    self.territoryContentRaw = returnValue // WE NEED TO FILTER DOWN SO THERE ARE NO DUPLICATE REPORTS LOADED ONTO THE MAP
+//                    self.addReportsToMap(mapView, reports:self.territoryContentRaw)
+//                    
+//                case .Failure(let error):
+//                    print(error)
+//                    break
+//                }
+//        }
+//        
+//        
+//    }
     
     func addReportsToMap(mapView: AnyObject, reports: NSArray) {
         

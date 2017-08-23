@@ -1628,7 +1628,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ydF-3f-UQa" customClass="MGLMapView">
-                                <rect key="frame" x="0.0" y="64" width="375" height="289.5"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="289"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="allowsZooming" value="YES"/>
@@ -1643,27 +1643,27 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kJU-h1-77C">
-                                <rect key="frame" x="0.0" y="276.5" width="375" height="77"/>
+                                <rect key="frame" x="0.0" y="276" width="375" height="77"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="77" id="Cgp-hH-QmI"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vEa-SN-vMg">
-                                <rect key="frame" x="0.0" y="64" width="375" height="289.5"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="289"/>
                                 <connections>
                                     <action selector="openWatershedView:" destination="VP8-sC-muy" eventType="touchUpInside" id="oqA-Ag-CAo"/>
                                     <segue destination="z2g-t3-Y54" kind="show" identifier="showTerritorySingleViewFromMap" id="8rg-eD-VZI"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watershed Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gCL-uP-Cr4">
-                                <rect key="frame" x="16" y="329.5" width="162" height="25.5"/>
+                                <rect key="frame" x="16" y="329" width="162" height="26"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <color key="textColor" red="0.20784313725490194" green="0.20784313725490194" blue="0.20784313725490194" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tJF-aX-FFe">
-                                <rect key="frame" x="182" y="334.5" width="80" height="16"/>
+                                <rect key="frame" x="182" y="334" width="80" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="7qA-VR-LVg"/>
                                     <constraint firstAttribute="width" constant="80" id="gC7-4Q-Chi"/>
@@ -1677,14 +1677,14 @@
                                     <segue destination="z2g-t3-Y54" kind="show" identifier="showTerritorySingleViewFromButton" id="npE-Zu-jP5"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xza-8Y-zDt">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="toggleButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xza-8Y-zDt">
                                 <rect key="frame" x="16" y="355" width="150" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="WuM-0R-YJk"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                <state key="normal" title="47 posts in watershed        ">
-                                    <color key="titleColor" red="0.20784313725490194" green="0.20784313725490194" blue="0.20784313725490194" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="0 posts in watershed">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Wt-nY-xyc">
@@ -1808,27 +1808,34 @@
                                 </connections>
                             </collectionView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wXQ-ds-m6p">
-                                <rect key="frame" x="12" y="378.5" width="251" height="125"/>
+                                <rect key="frame" x="12" y="378.5" width="251" height="156"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvf-9C-UXK">
-                                        <rect key="frame" x="16" y="12" width="219" height="27"/>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="actionsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvf-9C-UXK">
+                                        <rect key="frame" x="16" y="43" width="219" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                         <state key="normal" title="0 posts with actions">
-                                            <color key="titleColor" red="0.20784313730000001" green="0.20784313730000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PB4-Ey-Ufr">
-                                        <rect key="frame" x="16" y="47" width="219" height="27"/>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="groupsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PB4-Ey-Ufr">
+                                        <rect key="frame" x="16" y="78" width="219" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                         <state key="normal" title="0 active groups">
-                                            <color key="titleColor" red="0.20784313730000001" green="0.20784313730000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2z-qw-7FM">
-                                        <rect key="frame" x="16" y="82" width="219" height="27"/>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="newsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2z-qw-7FM">
+                                        <rect key="frame" x="16" y="113" width="219" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                         <state key="normal" title="0 news stories">
-                                            <color key="titleColor" red="0.20784313730000001" green="0.20784313730000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="postsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jd-hz-LsZ">
+                                        <rect key="frame" x="16" y="8" width="219" height="27"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
+                                        <state key="normal" title="0 posts in watershed">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
                                 </subviews>
@@ -1836,18 +1843,21 @@
                                 <constraints>
                                     <constraint firstItem="PB4-Ey-Ufr" firstAttribute="top" secondItem="fvf-9C-UXK" secondAttribute="bottom" constant="8" id="0ZP-i4-o7R"/>
                                     <constraint firstItem="PB4-Ey-Ufr" firstAttribute="leading" secondItem="wXQ-ds-m6p" secondAttribute="leading" constant="16" id="1iM-zq-bHQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="7jd-hz-LsZ" secondAttribute="trailing" constant="16" id="7Qg-5p-x9L"/>
+                                    <constraint firstItem="fvf-9C-UXK" firstAttribute="top" secondItem="7jd-hz-LsZ" secondAttribute="bottom" constant="8" id="9kH-HA-F8E"/>
+                                    <constraint firstItem="7jd-hz-LsZ" firstAttribute="top" secondItem="wXQ-ds-m6p" secondAttribute="top" constant="8" id="ARb-Rs-rBz"/>
                                     <constraint firstAttribute="bottom" secondItem="D2z-qw-7FM" secondAttribute="bottom" constant="16" id="AbE-L8-3Kk"/>
+                                    <constraint firstItem="7jd-hz-LsZ" firstAttribute="leading" secondItem="wXQ-ds-m6p" secondAttribute="leading" constant="16" id="DhC-Hc-2cn"/>
                                     <constraint firstAttribute="trailing" secondItem="D2z-qw-7FM" secondAttribute="trailing" constant="16" id="JfS-1X-vTz"/>
                                     <constraint firstItem="fvf-9C-UXK" firstAttribute="leading" secondItem="wXQ-ds-m6p" secondAttribute="leading" constant="16" id="O7I-Mg-qu0"/>
                                     <constraint firstItem="D2z-qw-7FM" firstAttribute="leading" secondItem="wXQ-ds-m6p" secondAttribute="leading" constant="16" id="PfS-Qb-zwA"/>
                                     <constraint firstItem="D2z-qw-7FM" firstAttribute="top" secondItem="PB4-Ey-Ufr" secondAttribute="bottom" constant="8" id="Phn-fy-BUw"/>
                                     <constraint firstAttribute="trailing" secondItem="fvf-9C-UXK" secondAttribute="trailing" constant="16" id="Qgv-BS-x30"/>
                                     <constraint firstAttribute="trailing" secondItem="PB4-Ey-Ufr" secondAttribute="trailing" constant="16" id="axf-i2-CKh"/>
-                                    <constraint firstItem="fvf-9C-UXK" firstAttribute="top" secondItem="wXQ-ds-m6p" secondAttribute="top" constant="12" id="lqh-Hc-JWN"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--caret" translatesAutoresizingMaskIntoConstraints="NO" id="dnd-OW-YiW">
-                                <rect key="frame" x="157" y="366.5" width="9" height="4"/>
+                                <rect key="frame" x="157" y="367" width="9" height="4"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="9" id="dyb-75-ZoO"/>
                                     <constraint firstAttribute="height" constant="4" id="tdi-eq-fWh"/>
@@ -1894,6 +1904,7 @@
                         <outlet property="buttonTerritoryContentType" destination="Xza-8Y-zDt" id="SA9-NT-jCv"/>
                         <outlet property="buttonTerritoryGroupsContentType" destination="PB4-Ey-Ufr" id="C2E-oK-wDD"/>
                         <outlet property="buttonTerritoryNewsContentType" destination="D2z-qw-7FM" id="LwZ-gs-VD6"/>
+                        <outlet property="buttonTerritoryPostsContentType" destination="7jd-hz-LsZ" id="NuS-Kg-awi"/>
                         <outlet property="buttonViewWatershed" destination="tJF-aX-FFe" id="Ik1-JU-UH0"/>
                         <outlet property="contentTypeView" destination="wXQ-ds-m6p" id="EMl-cw-z5r"/>
                         <outlet property="labelTerritoryName" destination="gCL-uP-Cr4" id="q7n-Z9-E9b"/>
