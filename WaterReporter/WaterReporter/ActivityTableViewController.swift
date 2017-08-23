@@ -33,14 +33,14 @@ class ActivityTableViewController: UITableViewController {
         let _thisReport = JSON(self.reports[(sender.tag)])
         let reportId: String = "\(_thisReport["id"])"
         var objectsToShare: [AnyObject] = [AnyObject]()
-        let reportText = "Check out this report on WaterReporter"
+//        let reportText = "Check out this report on WaterReporter"
         let reportURL = NSURL(string: "https://www.waterreporter.org/community/reports/" + reportId)
         var reportImageURL:NSURL!
         let tmpImageView: UIImageView = UIImageView()
         
         // SHARE > REPORT > TITLE
         //
-        objectsToShare.append(reportText)
+        objectsToShare.append("\(_thisReport["properties"]["report_description"])")
 
         // SHARE > REPORT > URL
         //
