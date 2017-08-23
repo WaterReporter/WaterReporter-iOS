@@ -40,6 +40,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     // MARK: @IBOutlet
     //
     @IBOutlet weak var labelTerritoryName: UILabel!
+    @IBOutlet weak var buttonTerritoryContentType: UIButton!
     @IBOutlet weak var buttonViewWatershed: UIButton!
 
     @IBOutlet weak var buttonOverlay: UIButton!
@@ -48,6 +49,10 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     
     @IBOutlet weak var activityCollectionView: UICollectionView!
     
+    @IBOutlet weak var contentTypeView: UIView!
+    @IBOutlet weak var buttonTerritoryActionsContentType: UIButton!
+    @IBOutlet weak var buttonTerritoryGroupsContentType: UIButton!
+    @IBOutlet weak var buttonTerritoryNewsContentType: UIButton!
     //
     // MARK: @IBAction
     //
@@ -107,7 +112,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
 
             print("Territory Geographic ID Available, update the self.navigationItem.prompt label with \(self.territoryHUC8Code)")
 
-            self.navigationItem.prompt = "\(self.territoryHUC8Code)"
+            //self.navigationItem.prompt = "\(self.territoryHUC8Code)"
         }
         
         // Apply the background gradient to the viewMapViewOverlay
@@ -137,6 +142,35 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         //
         self.activityCollectionView.dataSource = self
         self.activityCollectionView.delegate = self
+        
+        self.buttonTerritoryContentType.addTarget(self, action: #selector(TerritoryViewController.toggleMenu(_:)), forControlEvents: .TouchUpInside)
+        
+        self.buttonTerritoryContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        self.buttonTerritoryActionsContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        self.buttonTerritoryGroupsContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        self.buttonTerritoryNewsContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        
+        self.contentTypeView.layer.shadowColor = UIColor.blackColor().CGColor
+        self.contentTypeView.layer.shadowOpacity = 0.25
+        self.contentTypeView.layer.shadowOffset = CGSize.init(width: 4, height: 4)
+        self.contentTypeView.layer.shadowRadius = 4.0
+
+        self.contentTypeView.layer.cornerRadius = 3.0
+        
+        self.buttonViewWatershed.backgroundColor = UIColor.whiteColor()
+        self.buttonViewWatershed.layer.borderWidth = 1.0
+        self.buttonViewWatershed.layer.borderColor = UIColor.colorBrand().CGColor
+        
+    }
+    
+    func toggleMenu(sender: UIButton) {
+        
+        if self.contentTypeView.hidden {
+            self.contentTypeView.hidden = false
+        }
+        else {
+            self.contentTypeView.hidden = true
+        }
         
     }
     
@@ -431,16 +465,6 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
 //        self.mapViewWatershed.setZoomLevel(6.5, animated: false)
         
     }
-
-    func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
-    
-        let source = MGLVectorSource(identifier: "drone-restrictions", configurationURL: URL(string: "mapbox://examples.0cd7imtl")!)
-        style.addSource(source)
-        
-        let layer = MGLLineStyleLayer(identifier: "drone-restrictions-style", source: source)
-        
-
-    }
     
     //
     // MARK: HTTP Request/Response functionality
@@ -485,11 +509,12 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     self.addReportsToMap(self.mapViewWatershed, reports:self.territoryContentRaw)
 
                     // Set visible button count
-//                    let _content_count = self.territorySubmissions!["properties"]["num_results"]
+                    let _content_count = self.territoryContent!["properties"]["num_results"]
                     
-//                    if (_submission_count != "") {
-//                        self.territorySubmissionsCount.setTitle("\(_content_count)", forState: .Normal)
-//                    }
+                    if (_content_count != "") {
+                        self.buttonTerritoryContentType.hidden = false
+                        self.buttonTerritoryContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
+                    }
                     
                     // Refresh the data in the table so the newest items appear
                     self.territoryContentCollectionView.reloadData()
