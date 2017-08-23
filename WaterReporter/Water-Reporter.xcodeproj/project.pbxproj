@@ -52,6 +52,7 @@
 		CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */; };
 		CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */; };
 		CE0D91141EA92E3E0088F789 /* TerritoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0D91131EA92E3E0088F789 /* TerritoryTableViewController.swift */; };
+		CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */; };
 		CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */; };
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
 		CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */; };
@@ -146,6 +147,7 @@
 		CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagAutocompleteTableViewCell.swift; sourceTree = "<group>"; };
 		CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableView.swift; sourceTree = "<group>"; };
 		CE0D91131EA92E3E0088F789 /* TerritoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryTableViewController.swift; sourceTree = "<group>"; };
+		CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryViewController.swift; sourceTree = "<group>"; };
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				CE0D91131EA92E3E0088F789 /* TerritoryTableViewController.swift */,
 				CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */,
 				CEF1D8701F15648D00113D97 /* TerritorySingleViewController.swift */,
+				CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */,
 			);
 			name = Territory;
 			sourceTree = "<group>";
@@ -629,6 +632,7 @@
 				CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */,
 				C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */,
 				C1C5FD2B1DDB38E400EF6302 /* ProfileTableViewController.swift in Sources */,
+				CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */,
 				C185025D1DC779BC00C0F0DA /* CommentTableViewCell.swift in Sources */,
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
 				C18D76A91DAD87EB0012584C /* Environment.swift in Sources */,

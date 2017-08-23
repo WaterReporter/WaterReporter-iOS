@@ -26,6 +26,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     var territoryId: String = ""
     var territoryHUC8Code: String = ""
     var territoryPage: Int = 1
+    var territorySubmissionsPage: Int = 1
     
     var territorySelectedContentType: String! = "Posts"
     
@@ -109,6 +110,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         //
         //
         self.loadTerritoryData()
+        self.attemptLoadTerritorySubmissions(true)
         
         //
         //
@@ -170,7 +172,11 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
         return UIColor(red: 153/255, green: 46/255, blue: 230/255, alpha: 1)
     }
-    
+
+    func mapView(mapView: MGLMapView, strokeColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
+        return UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1)
+    }
+
     func mapViewDidFinishLoadingMap(mapView: MGLMapView) {
         print("mapView::mapViewDidFinishLoadingMap")
     }
@@ -392,6 +398,73 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
 //        self.mapViewWatershed.setZoomLevel(6.5, animated: false)
         
     }
+
+    
+    //
+    // MARK: HTTP Request/Response functionality
+    //
+    func buildRequestHeaders() -> [String: String] {
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        
+        return [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+    }
+    
+    func attemptLoadTerritorySubmissions(isRefreshingReportsList: Bool = false) {
+        
+        let _parameters = [
+            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "page": "\(self.territorySubmissionsPage)"
+        ]
+        
+        print("_parameters \(_parameters)")
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("attemptLoadTerritorySubmissions::Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+                    
+//                    // Assign response to groups variable
+//                    if (isRefreshingReportsList) {
+//                        self.territorySubmissions = JSON(value)
+//                        self.territorySubmissionsObjects = value["features"] as! [AnyObject]
+//                        self.territorySubmissionsRefreshControl.endRefreshing()
+//                    }
+//                    else {
+//                        self.territorySubmissions = JSON(value)
+//                        self.territorySubmissionsObjects += value["features"] as! [AnyObject]
+//                    }
+//                    
+//                    // Set visible button count
+//                    let _submission_count = self.territorySubmissions!["properties"]["num_results"]
+//                    
+//                    if (_submission_count != "") {
+//                        self.territorySubmissionsCount.setTitle("\(_submission_count)", forState: .Normal)
+//                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+//                    self.tableView.reloadData()
+                    
+//                    self.territorySubmissionsPage += 1
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+                
+        }
+        
+    }
+
     
     //
     // MARK: UICollectionView Overrides
