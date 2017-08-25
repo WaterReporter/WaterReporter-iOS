@@ -340,8 +340,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     
     //
     // MARK: Mapbox Overrides
-    //  
-
+    //
     func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
         return 0.25
     }
@@ -350,22 +349,6 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         return 3.0
     }
     
-//    func mapView(mapView: MGLMapView, lineWidthForPolygonAnnotation annotation: MGLPolyline) -> CGFloat {
-//        return 2.0
-//    }
-//
-//    func mapView(mapView: MGLMapView, strokeWidthForShapeAnnotation annotation: MGLShape) -> CGFloat {
-//        return 2.0
-//    }
-//
-//    func mapView(mapView: MGLMapView, strokeWidthForPolygonAnnotation annotation: MGLShape) -> CGFloat {
-//        return 2.0
-//    }
-//    
-//    func mapView(mapView: MGLMapView, strokeColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
-//        return UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1)
-//    }
-
     func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         return UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
     }
@@ -377,6 +360,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func mapViewDidFinishLoadingMap(mapView: MGLMapView) {
         print("mapView::mapViewDidFinishLoadingMap")
     }
+    
     
     //
     //

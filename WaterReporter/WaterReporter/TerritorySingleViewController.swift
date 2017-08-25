@@ -26,7 +26,7 @@ class TerritorySingleViewController: UIViewController, MGLMapViewDelegate {
     var territoryId: String = ""
     var territoryHUC8Code: String = ""
     var territoryPage: Int = 1
-    var territoryOutline : AnyObject?
+    var territoryOutline : AnyObject!
 
     var territoryContent: JSON?
     var territoryContentRaw = [AnyObject]()
@@ -55,17 +55,24 @@ class TerritorySingleViewController: UIViewController, MGLMapViewDelegate {
             self.navigationItem.title = "\(self.territory)"
         }
         
-        // Display the Territory's (Watershed) related geographic ID (HUC 8
-        // Code)
+        
+        // Map View Overrides
         //
-        if self.territoryHUC8Code != "" {
-            
-            print("Territory Geographic ID Available, update the self.navigationItem.prompt label with \(self.territoryHUC8Code)")
-            
-            self.navigationItem.prompt = "\(self.territoryHUC8Code)"
+        self.mapViewWatershed.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        
+        
+        // Ensure territory outline was passed from parent view controller.
+        // After verification attempt to draw outline.
+        //
+        if self.territoryOutline != nil {
+            self.drawTerritoryOnMap(self.territoryOutline)
         }
         
-        //        self.drawTerritoryOnMap(self.territoryOutline!)
+        if self.territoryContentRaw.count != 0 {
+            self.addReportsToMap(self.mapViewWatershed, reports:self.territoryContentRaw)
+        }
+
+
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -75,10 +82,10 @@ class TerritorySingleViewController: UIViewController, MGLMapViewDelegate {
     
     func drawTerritoryOnMap(geoJSONData: AnyObject) {
         
-        print(":drawTerritoryOnMap \(geoJSONData)")
-        
         var _json: JSON = JSON(geoJSONData)
-        
+
+        print("TerritorySingleViewController:drawTerritoryOnMap \(_json)")
+
         // We need to loop over multiple times here to ensure that multi-polygon
         // shapes are being read and displayed properly.
         //
@@ -93,7 +100,7 @@ class TerritorySingleViewController: UIViewController, MGLMapViewDelegate {
             // Update zoom level because the .setVisibleCoordinateBounds method
             // has too tight of a crop and leaves no padding around the edges
             //
-            let _updatedZoomLevel: Double = self.mapViewWatershed.zoomLevel*0.90
+            let _updatedZoomLevel: Double = self.mapViewWatershed.zoomLevel*0.88
             self.mapViewWatershed.setZoomLevel(_updatedZoomLevel, animated: false)
             
         }
@@ -245,6 +252,148 @@ class TerritorySingleViewController: UIViewController, MGLMapViewDelegate {
         let _polygon: MGLPolygon = MGLPolygon(coordinates: &_coordinates, count: UInt(_coordinates.count))
         
         return _polygon
+    }
+
+    
+    //
+    // MARK: Mapbox Overrides
+    //
+    func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
+        return 0.25
+    }
+    
+    func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+        return 3.0
+    }
+    
+    func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
+        return UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+    }
+    
+    func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
+        return UIColor(red: 153/255, green: 46/255, blue: 230/255, alpha: 1)
+    }
+    
+    func mapView(mapView: MGLMapView, viewForAnnotation annotation: MGLAnnotation) -> MGLAnnotationView? {
+        
+        guard annotation is MGLPointAnnotation else {
+            return nil
+        }
+        
+        let report = JSON(annotation.report)
+        let reuseIdentifier = "report_\(report["id"])"
+        
+        // For better performance, always try to reuse existing annotations.
+        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
+        
+        if annotationView == nil {
+            
+            // Add outline to the Report marker view
+            //
+            annotationView = MGLAnnotationView(reuseIdentifier: reuseIdentifier)
+            annotationView!.frame = CGRectMake(0, 0, 5, 5)
+            
+            // Add a 2px stroke to the pin and color it white
+            annotationView!.layer.borderColor = UIColor.whiteColor().CGColor
+            annotationView!.layer.borderWidth = 1.0
+            
+            // Make sure the pin is circle
+            annotationView!.layer.cornerRadius = 2.5
+            annotationView!.clipsToBounds = true
+            
+            // Change the pin color
+            annotationView?.backgroundColor = UIColor.colorBrand()
+            
+        }
+        
+        return annotationView
+    }
+    
+    func mapView(mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        return true
+    }
+
+    func mapView(mapView: MGLMapView, rightCalloutAccessoryViewForAnnotation annotation: MGLAnnotation) -> UIView? {
+        
+        let annotationButton: UIButton = UIButton(type: .DetailDisclosure)
+        
+        return annotationButton
+    }
+
+    func mapView(mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
+        
+        //
+        // Hide the pop up
+        //
+        mapView.deselectAnnotation(annotation, animated: false)
+        
+        //
+        // Load the activity controller from the storyboard
+        //
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("ActivityTableViewController") as! ActivityTableViewController
+        
+        nextViewController.singleReport = true
+        nextViewController.reports = [annotation.report]
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+
+    func addReportToMap(mapView: AnyObject, report: AnyObject, latitude: Double, longitude: Double, center:Bool) {
+        
+        let _report = JSON(report)
+        let thisAnnotation = MGLPointAnnotation()
+        let _title = _report["properties"]["report_description"].string
+        var _subtitle: String = "Reported on "
+        let _date = "\(_report["properties"]["report_date"])"
+        
+        thisAnnotation.report = report
+        
+        let dateString = _date
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
+        let stringToFormat = dateFormatter.dateFromString(dateString)
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        
+        let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+        
+        if let thisDisplayDate: String? = displayDate {
+            _subtitle += thisDisplayDate!
+        }
+        
+        
+        thisAnnotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        thisAnnotation.title = _title
+        thisAnnotation.subtitle = _subtitle
+        
+        print("Adding annotation to map \(thisAnnotation.title)")
+        
+        mapView.addAnnotation(thisAnnotation)
+        
+    }
+    
+    func addReportsToMap(mapView: AnyObject, reports: NSArray) {
+        
+        let _reportObject = self.territoryContent
+        
+        for _report in reports {
+            
+            let _thisReport = JSON(_report)
+            
+            if "\(_thisReport["id"])" != "\(_reportObject!["id"])" {
+                let _geometry = _thisReport["geometry"]["geometries"][0]["coordinates"]
+                
+                let reportLongitude = _geometry[0].double
+                let reportLatitude = _geometry[1].double
+                
+                self.addReportToMap(mapView, report: _report, latitude: reportLatitude!, longitude: reportLongitude!, center:false)
+            }
+            
+        }
+        
     }
 
 }
