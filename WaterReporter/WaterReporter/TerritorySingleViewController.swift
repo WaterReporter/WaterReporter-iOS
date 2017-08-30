@@ -291,14 +291,14 @@ class TerritorySingleViewController: UIViewController, MGLMapViewDelegate {
             // Add outline to the Report marker view
             //
             annotationView = MGLAnnotationView(reuseIdentifier: reuseIdentifier)
-            annotationView!.frame = CGRectMake(0, 0, 5, 5)
+            annotationView!.frame = CGRectMake(0, 0, 8, 8)
             
             // Add a 2px stroke to the pin and color it white
             annotationView!.layer.borderColor = UIColor.whiteColor().CGColor
             annotationView!.layer.borderWidth = 1.0
             
             // Make sure the pin is circle
-            annotationView!.layer.cornerRadius = 2.5
+            annotationView!.layer.cornerRadius = 4.0
             annotationView!.clipsToBounds = true
             
             // Change the pin color

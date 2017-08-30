@@ -227,7 +227,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
 
     @IBAction func loadTerritoryProfileFromSubmissions(sender: UIButton) {
         
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
         
         var _thisReport: JSON!
         
@@ -244,7 +244,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     
     @IBAction func loadTerritoryProfileFromActions(sender: UIButton) {
         
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
         
         var _thisReport: JSON!
         

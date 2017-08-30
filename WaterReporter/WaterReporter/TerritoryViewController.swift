@@ -803,7 +803,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         
         // REPORT > USER > First and Last Name
         //
-        cell.reportUserProfileName.text = "\(_owner["properties"]["first_name"]) \(_owner["properties"]["first_name"])"
+        cell.reportUserProfileName.text = "\(_owner["properties"]["first_name"]) \(_owner["properties"]["last_name"])"
         
         
         // REPORT > USER > Profile Image

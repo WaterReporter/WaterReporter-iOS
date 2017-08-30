@@ -178,7 +178,7 @@ class HashtagTableViewController: UITableViewController {
     
     @IBAction func loadTerritoryProfile(sender: UIButton) {
         
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
         
         var _thisReport: JSON!
         
