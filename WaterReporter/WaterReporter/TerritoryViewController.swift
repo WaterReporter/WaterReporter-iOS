@@ -914,57 +914,6 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             // Change the pin color
             annotationView?.backgroundColor = UIColor.colorBrand()
             
-//            // Add Report > Image to the marker view
-//            //
-//            let reportImageURL: NSURL = NSURL(string: "\(report["properties"]["images"][0]["properties"]["icon"])")!
-//            
-//            let reportImageView = UIImageView()
-//            var reportImageUpdate: Image?
-//            reportImageView.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
-//            
-//            
-//            reportImageView.kf_indicatorType = .Activity
-//            reportImageView.kf_showIndicatorWhenLoading = true
-//            
-//            reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-//                (image, error, cacheType, imageUrl) in
-//                
-//                reportImageUpdate = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-//                
-//                reportImageView.image = reportImageUpdate
-//                reportImageView.layer.cornerRadius = reportImageView.frame.size.width / 2
-//                reportImageView.clipsToBounds = true
-//                
-//                reportImageView.layer.cornerRadius = reportImageView.frame.width / 2
-//                reportImageView.layer.borderWidth = 4
-//                reportImageView.layer.borderColor = UIColor.whiteColor().CGColor
-//                
-//            })
-            
-            //
-            //
-//            annotationView?.addSubview(reportImageView)
-//            annotationView?.bringSubviewToFront(reportImageView)
-            
-            // If report is closed, at the action marker view
-            //
-//            if "\(report["properties"]["state"])" == "closed" {
-//                print("show report view closed badge")
-//                let reportBadgeImageView = UIImageView()
-//                let reportBadgeImage = UIImage(named: "icon--Badge")!
-//                reportBadgeImageView.contentMode = .ScaleAspectFill
-//                
-//                reportBadgeImageView.image = reportBadgeImage
-//                
-//                reportBadgeImageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
-//                
-//                annotationView?.addSubview(reportBadgeImageView)
-//                annotationView?.bringSubviewToFront(reportBadgeImageView)
-//            }
-//            else {
-//                print("hide report closed badge")
-//            }
-            
         }
         
         return annotationView
