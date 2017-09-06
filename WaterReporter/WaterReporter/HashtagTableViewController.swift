@@ -518,12 +518,20 @@ class HashtagTableViewController: UITableViewController {
         if self.hashtagSelectedTab == "Submissions" {
             
             guard (JSON(self.hashtagSubmissionsObjects) != nil) else { return 0 }
-            
+
+            if self.hashtagSubmissionsObjects.count == 0 {
+                return 1
+            }
+
             return (self.hashtagSubmissionsObjects.count)
             
         } else if self.hashtagSelectedTab == "Actions" {
             
             guard (JSON(self.hashtagActionsObjects) != nil) else { return 0 }
+
+            if self.hashtagActionsObjects.count == 0 {
+                return 1
+            }
             
             return (self.hashtagActionsObjects.count)
             
@@ -531,6 +539,10 @@ class HashtagTableViewController: UITableViewController {
             
             guard (JSON(self.hashtagGroupsObjects) != nil) else { return 0 }
             
+            if self.hashtagGroupsObjects.count == 0 {
+                return 1
+            }
+
             return (self.hashtagGroupsObjects.count)
             
         }
@@ -540,15 +552,25 @@ class HashtagTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        let emptyCell = tableView.dequeueReusableCellWithIdentifier("emptyTableViewCell", forIndexPath: indexPath) as! EmptyTableViewCell
+        
         if self.hashtagSelectedTab == "Submissions" {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("hashtagSubmissionCell", forIndexPath: indexPath) as! UserProfileSubmissionTableViewCell
             
-            guard (JSON(self.hashtagSubmissionsObjects) != nil) else { return cell }
+            guard (JSON(self.hashtagSubmissionsObjects) != nil) else { return emptyCell }
             
             let _submission = JSON(self.hashtagSubmissionsObjects)
             let _thisSubmission = _submission[indexPath.row]["properties"]
             
+            if _thisSubmission == nil {
+                
+                emptyCell.emptyMessageDescription.text = "Looks like this group hasn't posted anything yet.  Join their group and share a report to get them started!"
+                emptyCell.emptyMessageAction.hidden = false
+                
+                return emptyCell
+            }
+
             // Report > Owner > Image
             //
             var reportOwnerProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
@@ -738,13 +760,25 @@ class HashtagTableViewController: UITableViewController {
         }
         else if self.hashtagSelectedTab == "Actions" {
             
+            print("ACTIONS TABLE")
+            
             let cell = tableView.dequeueReusableCellWithIdentifier("hashtagActionCell", forIndexPath: indexPath) as! UserProfileActionsTableViewCell
             
-            guard (JSON(self.hashtagActionsObjects) != nil) else { return cell }
+            guard (JSON(self.hashtagActionsObjects) != nil) else {
+                return emptyCell
+            }
             
             let _actions = JSON(self.hashtagActionsObjects)
             let _thisSubmission = _actions[indexPath.row]["properties"]
             print("Show _thisSubmission \(_thisSubmission)")
+            
+            if _thisSubmission == nil {
+                
+                emptyCell.emptyMessageDescription.text = "Looks like no actions have been taken yet."
+                emptyCell.emptyMessageAction.hidden = true
+                
+                return emptyCell
+            }
             
             // Report > Owner > Image
             //
@@ -933,11 +967,19 @@ class HashtagTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("hashtagGroupCell", forIndexPath: indexPath) as! UserProfileGroupsTableViewCell
             
-            guard (JSON(self.hashtagGroupsObjects) != nil) else { return cell }
+            guard (JSON(self.hashtagGroupsObjects) != nil) else { return emptyCell }
             
             // Display Group Name
             let _groups = JSON(self.hashtagGroupsObjects)
             
+            if _groups[indexPath.row]["properties"] == nil {
+                
+                emptyCell.emptyMessageDescription.text = "Looks like no groups have used this hashtag. Be the agent of change!"
+                emptyCell.emptyMessageAction.hidden = false
+                
+                return emptyCell
+            }
+
             cell.labelUserProfileGroupName.text = "\(_groups[indexPath.row]["properties"]["name"])"
             
             cell.buttonGroupSelection.tag = indexPath.row
@@ -963,15 +1005,13 @@ class HashtagTableViewController: UITableViewController {
                 self.attemptLoadHashtagGroups()
             }
             
-            if (indexPath.row == self.hashtagGroupsObjects.count - 2 && self.hashtagGroupsObjects.count < self.hashtagGroups!["properties"]["num_results"].int) {
-                self.attemptLoadHashtagGroups()
-            }
-            
             return cell
 
         }
         
-        return UITableViewCell()
+        print("NO CELL SHOW THE EMPTY!!!!")
+
+        return emptyCell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
