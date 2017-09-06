@@ -384,7 +384,6 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                 
                 switch response.result {
                     case .Success(let value):
-                        print("loadTerritoryData::Request Success \(Endpoints.TERRITORY) \(value)")
                         
                         // Draw the Territory on the map
                         //
@@ -410,7 +409,9 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func deserializeGeoJSONToMGLPolygon(polygonGeoJSONArray: JSON, multiple: Bool = false) -> MGLPolygon {
         
         var _coordinates = [CLLocationCoordinate2D]()
-
+        
+        print("Polygon::deserializeGeoJSONToMGLPolygon contains \(polygonGeoJSONArray.count) objects and should be displayed as multiple? \(multiple)")
+        
         for coordinate in polygonGeoJSONArray {
             
             if multiple == false {
@@ -440,17 +441,19 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     
     func drawTerritoryOnMap(geoJSONData: AnyObject) {
 
-        print(":drawTerritoryOnMap \(geoJSONData)")
-        
+//        print(":drawTerritoryOnMap \(geoJSONData)")
+
         var _json: JSON = JSON(geoJSONData)
-        
+
         // We need to loop over multiple times here to ensure that multi-polygon
         // shapes are being read and displayed properly.
         //
         if _json["features"][0]["geometry"]["coordinates"].count == 1 {
-            
+
+            print("Polygon::Contains \(_json["features"][0]["geometry"]["coordinates"].count) Polygon \(_json["features"][0]["geometry"]["coordinates"][0])")
+
             let territoryShape: MGLPolygon = self.deserializeGeoJSONToMGLPolygon(_json["features"][0]["geometry"]["coordinates"][0])
-            
+
             self.mapViewWatershed.addAnnotation(territoryShape)
 
             self.mapViewWatershed.setVisibleCoordinateBounds(territoryShape.overlayBounds, animated: false)
@@ -460,28 +463,35 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             //
             let _updatedZoomLevel: Double = self.mapViewWatershed.zoomLevel*0.90
             self.mapViewWatershed.setZoomLevel(_updatedZoomLevel, animated: false)
-            
+
         }
         else if _json["features"][0]["geometry"]["coordinates"].count > 1 {
 
-            print("This watershed contains \(_json["features"][0]["geometry"]["coordinates"].count) polygons and should be handled differently \(_json["features"])")
-            
+            print("MultiPolygon::Contains \(_json["features"][0]["geometry"]["coordinates"].count) Additional Polygon >>>>> \(_json["features"][0]["geometry"]["coordinates"])")
+
+//            print("This watershed contains \(_json["features"][0]["geometry"]["coordinates"].count) polygons and should be handled differently \(_json["features"])")
+
             var polygons = [MGLPolygon]()
-            
+
             for polygon in _json["features"][0]["geometry"]["coordinates"] {
                 
-                print("polygon has \(polygon.1.count) inside of it >>>>> \(polygon.1)")
+                print("Polygon::Contains \(polygon.1.count) Additional Polygon >>>>> \(polygon.1)")
                 
                 if polygon.1.count == 1 {
-                    let _newPolygon: MGLPolygon = self.deserializeGeoJSONToMGLPolygon(_json["features"][0]["geometry"]["coordinates"][0], multiple: true)
+
+                    print("Polygon::Count is 1[\(polygon.1.count)] Appending Polygon \(polygon.1[0])")
+
+                    let _newPolygon: MGLPolygon = self.deserializeGeoJSONToMGLPolygon(polygon.1[0], multiple: false)
 
                     polygons.append(_newPolygon)
                 }
                 else if polygon.1.count > 1 {
                     
+                    print("Polygon::Count is >1 [\(polygon.1.count)] Recusive >>>>> Polygon")
+
                     for _child in polygon.1 {
                         
-                        print("_child \(_child)")
+                        print("Polygon::Child is >1 [\(_child.1)] Recusive >>>>> Polygon")
 
                         let _newPolygon: MGLPolygon = self.deserializeGeoJSONToMGLPolygon(_child.1, multiple: false)
                     
@@ -505,79 +515,15 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             
             print("territoryShape \(territoryShape.polygons)")
             
-//            self.mapViewWatershed.setVisibleCoordinateBounds(territoryShape.overlayBounds, animated: false)
+            self.mapViewWatershed.setVisibleCoordinateBounds(territoryShape.overlayBounds, animated: false)
 
             // Update zoom level because the .setVisibleCoordinateBounds method
             // has too tight of a crop and leaves no padding around the edges
             //
-//            let _updatedZoomLevel: Double = self.mapViewWatershed.zoomLevel*0.90
-//            self.mapViewWatershed.setZoomLevel(_updatedZoomLevel, animated: false)
+            let _updatedZoomLevel: Double = self.mapViewWatershed.zoomLevel*0.90
+            self.mapViewWatershed.setZoomLevel(_updatedZoomLevel, animated: false)
 
         }
-        
-        
-        ///
-        ///
-        ///
-        ///
-//        var maxLat: Float = -200
-//        var maxLong: Float = -200
-//        var minLat: Float = MAXFLOAT
-//        var minLong: Float = MAXFLOAT
-//        
-//        for coordinate in _json["features"][0]["geometry"]["coordinates"][0] {
-//            
-//            let _latitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[1].double!)
-//            let _longitude: CLLocationDegrees = CLLocationDegrees(floatLiteral: coordinate.1[0].double!)
-//            
-//            let _location = CLLocationCoordinate2D(latitude: _latitude, longitude: _longitude)
-//            
-//            // Find the minLat
-//            //
-//            let _minimumLatitudeString: String = String(minLat)
-//            let _minimumLatitudeDouble: Double = Double(_minimumLatitudeString)!
-//            
-//            if _location.latitude < CLLocationDegrees(floatLiteral: _minimumLatitudeDouble) {
-//                minLat = Float(_location.latitude);
-//            }
-//
-//            // Find the minLong
-//            //
-//            let _minimumLongitudeString: String = String(minLong)
-//            let _minimumLongitudeDouble: Double = Double(_minimumLongitudeString)!
-//            
-//            if _location.longitude < CLLocationDegrees(floatLiteral: _minimumLongitudeDouble) {
-//                minLong = Float(_location.longitude);
-//            }
-//            
-//            // Find the maxLat
-//            //
-//            let _maximumLatitudeString: String = String(maxLat)
-//            let _maximumLatitudeDouble: Double = Double(_maximumLatitudeString)!
-//            
-//            if _location.latitude > CLLocationDegrees(floatLiteral: _maximumLatitudeDouble) {
-//                maxLat = Float(_location.latitude);
-//            }
-//
-//            // Find the maxLong
-//            //
-//            let _maximumLongitudeString: String = String(maxLong)
-//            let _maximumLongitudeDouble: Double = Double(_maximumLongitudeString)!
-//            
-//            if _location.longitude > CLLocationDegrees(floatLiteral: _maximumLongitudeDouble) {
-//                maxLong = Float(_location.longitude);
-//            }
-//
-//
-//        }
-        
-        // Define Center Point
-        //
-//        let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake((Double(maxLat) + Double(minLat)) * 0.5, (Double(maxLong) + Double(minLong)) * 0.5);
-        
-//        self.mapViewWatershed.setCenterCoordinate(center, animated: false)
-        
-//        self.mapViewWatershed.setZoomLevel(6.5, animated: false)
         
     }
     
@@ -776,7 +722,6 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             return self.territoryContentRaw.count
         }
 
-        return 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -1063,42 +1008,6 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         mapView.addAnnotation(thisAnnotation)
         
     }
-    
-//    func loadAllReportsInRegion(mapView: AnyObject) {
-//        
-//        //
-//        // Send a request to the defined endpoint with the given parameters
-//        //
-//        let region = getViewportBoundaryString(mapView.visibleCoordinateBounds)
-//        let polygon = "SRID=4326;POLYGON((" + region + "))"
-//        let parameters = [
-//            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
-//        ]
-//        
-//        print("polygon \(polygon)")
-//        print("parameters \(parameters)")
-//        
-//        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: parameters)
-//            .responseJSON { response in
-//                
-//                switch response.result {
-//                case .Success(let value):
-//                    
-//                    print("value \(value)")
-//                    
-//                    let returnValue = value["features"] as! [AnyObject]
-//                    
-//                    self.territoryContentRaw = returnValue // WE NEED TO FILTER DOWN SO THERE ARE NO DUPLICATE REPORTS LOADED ONTO THE MAP
-//                    self.addReportsToMap(mapView, reports:self.territoryContentRaw)
-//                    
-//                case .Failure(let error):
-//                    print(error)
-//                    break
-//                }
-//        }
-//        
-//        
-//    }
     
     func addReportsToMap(mapView: AnyObject, reports: NSArray) {
         
