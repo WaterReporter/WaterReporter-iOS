@@ -285,6 +285,28 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.navigationController?.pushViewController(nextViewController, animated: true)
         }
     }
+    
+    @IBAction func emptyMessageAddReport(sender: UIButton) {
+        
+        self.tabBarController?.selectedIndex = 2
+        
+    }
+
+    @IBAction func emptyMessageUpdateProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserProfileEditTableViewController") as! UserProfileEditTableViewController
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+
+    @IBAction func emptyMessageJoinGroup(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("GroupsTableViewController") as! GroupsTableViewController
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
 
     //
     // MARK: Variables
@@ -405,6 +427,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         self.actionsTableView.rowHeight = UITableViewAutomaticDimension;
         self.actionsTableView.estimatedRowHeight = 368.0;
+
+        self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
+        self.groupsTableView.estimatedRowHeight = 368.0;
 
         //
         //
@@ -528,28 +553,53 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     func displayUserProfileInformation(withoutReportReload: Bool = false) {
         
-        // Ensure we have loaded the user profile
-        guard (self.userProfile != nil) else { return }
+        print("displayUserProfileInformation")
         
-        // Display user's first and last name
-        if let _first_name = self.userProfile!["properties"]["first_name"].string,
-            let _last_name = self.userProfile!["properties"]["last_name"].string {
-            self.labelUserProfileName.text = _first_name + " " + _last_name
+        // Ensure we have loaded the user profile
+        guard (self.userProfile != nil) else {
+            print("RETURNING NIL")
+            return
+        }
+        
+        if self.userProfile!["properties"]["first_name"].string != "" && self.userProfile!["properties"]["last_name"].string != "" {
+            // Display user's first and last name
+
+            self.labelUserProfileName.text = self.userProfile!["properties"]["first_name"].string! + " " + self.userProfile!["properties"]["last_name"].string!
+            
+            print("Display User's Name \(self.labelUserProfileName.text)")
+        }
+        else {
+            self.labelUserProfileName.text = ""
+            
+            //
+            // Activate the "Finish Profile" prompt
+            //
+            print("Display Finish Profile Prompt")
+
         }
         
         // Display user's title
-        if let _title = self.userProfile!["properties"]["title"].string {
-            self.labelUserProfileTitle.text = _title
+        if self.userProfile!["properties"]["title"].string != "" {
+            self.labelUserProfileTitle.text = self.userProfile!["properties"]["title"].string
+        }
+        else {
+            self.labelUserProfileTitle.text = ""
         }
 
         // Display user's organization name
-        if let _organization_name = self.userProfile!["properties"]["organization_name"].string {
-            self.labelUserProfileOrganizationName.text = _organization_name
+        if self.userProfile!["properties"]["organization_name"].string != "" {
+            self.labelUserProfileOrganizationName.text = self.userProfile!["properties"]["organization_name"].string
+        }
+        else {
+            self.labelUserProfileOrganizationName.text = ""
         }
 
         // Display user's description/bio
-        if let _description = self.userProfile!["properties"]["description"].string {
-            self.labelUserProfileDescription.text = _description
+        if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
+            self.labelUserProfileDescription.text = self.userProfile!["properties"]["description"].string
+        }
+        else {
+            self.labelUserProfileDescription.text = ""
         }
 
         // Display user's profile picture
@@ -876,52 +926,69 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         if (tableView.restorationIdentifier == "submissionsTableView") {
             
             guard (JSON(self.userSubmissionsObjects) != nil) else { return 0 }
-            
+
+            if self.userSubmissionsObjects.count == 0 {
+                return 1
+            }
+
             return (self.userSubmissionsObjects.count)
 
         } else if (tableView.restorationIdentifier == "actionsTableView") {
 
             guard (JSON(self.userActionsObjects) != nil) else { return 0 }
-            
+
+            if self.userActionsObjects.count == 0 {
+                return 1
+            }
+
             return (self.userActionsObjects.count)
         
         } else if (tableView.restorationIdentifier == "groupsTableView") {
             
             guard (JSON(self.userGroupsObjects) != nil) else { return 0 }
-            
+
+            if self.userGroupsObjects.count == 0 {
+                print("Groups showing 0, make sure at least 1 row is visible.")
+                return 1
+            }
+
+            print("Groups showing count \(self.userGroupsObjects.count)")
+
             return (self.userGroupsObjects.count)
 
-        } else {
-            return 0
         }
-        
+
+        return 0
     }
-    
-//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        if (tableView.restorationIdentifier == "submissionsTableView") {
-//            return 44.0
-//        } else if (tableView.restorationIdentifier == "actionsTableView") {
-//            return 44.0
-//        } else if (tableView.restorationIdentifier == "groupsTableView") {
-//            return 72.0
-//        } else {
-//            return 44.0
-//        }
-//    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        let emptyCell = tableView.dequeueReusableCellWithIdentifier("emptyTableViewCell", forIndexPath: indexPath) as! EmptyTableViewCell
+
         if (tableView.restorationIdentifier == "submissionsTableView") {
             //
             // Submissions
             //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileSubmissionCell", forIndexPath: indexPath) as! UserProfileSubmissionTableViewCell
             
+            guard (self.userSubmissions != nil) else { return emptyCell }
+
             let _submissions = JSON(self.userSubmissionsObjects)
-            guard (_submissions != nil) else { return cell }
             
             let _thisSubmission = _submissions[indexPath.row]["properties"]
             
+            print("Show (submissions) _thisSubmission \(_thisSubmission)")
+
+            if _thisSubmission == nil {
+                
+                emptyCell.emptyMessageDescription.text = "No reports yet, post your first one now!"
+                
+                emptyCell.emptyMessageAction.hidden = false
+                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageAddReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+
+                return emptyCell
+            }
+
             // Report > Owner > Image
             //
             if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
@@ -1129,12 +1196,20 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileActionCell", forIndexPath: indexPath) as! UserProfileActionsTableViewCell
             
-            guard (self.userActions != nil) else { return cell }
-            
+            guard (self.userActions != nil) else { return emptyCell }
+
             let _actions = JSON(self.userActionsObjects)
             let _thisSubmission = _actions[indexPath.row]["properties"]
-            print("Show _thisSubmission \(_thisSubmission)")
+            print("Show (actions) _thisSubmission \(_thisSubmission)")
             
+            if _thisSubmission == nil {
+                
+                emptyCell.emptyMessageDescription.text = "Looks like no actions have been taken yet."
+                emptyCell.emptyMessageAction.hidden = true
+                
+                return emptyCell
+            }
+
             // Report > Owner > Image
             //
             if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
@@ -1323,10 +1398,27 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileGroupCell", forIndexPath: indexPath) as! UserProfileGroupsTableViewCell
             
-            guard (JSON(self.userGroupsObjects) != nil) else { return cell }
+            print("Groups cell")
             
+            guard (self.userGroups != nil) else { return emptyCell }
+
             // Display Group Name
             let _groups = JSON(self.userGroupsObjects)
+            
+            let _thisSubmission = _groups[indexPath.row]["properties"]
+            print("Show (group) _thisSubmission \(_thisSubmission)")
+            
+            if _thisSubmission == nil {
+                
+                print("Showing empty cell")
+                emptyCell.emptyMessageDescription.text = "There’s power in numbers, join a group"
+                emptyCell.emptyMessageAction.hidden = false
+                emptyCell.emptyMessageAction.setTitle("Join a group", forState: .Normal)
+                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageJoinGroup(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                
+                return emptyCell
+            }
+            
             if let _group_name = _groups[indexPath.row]["properties"]["organization"]["properties"]["name"].string {
                 cell.labelUserProfileGroupName.text = _group_name
             }
@@ -1357,10 +1449,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             }
             
             return cell
-        } else {
-            return UITableViewCell()
         }
         
+        return emptyCell
+
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

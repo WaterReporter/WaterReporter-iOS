@@ -180,7 +180,7 @@ class RegisterTableViewController: UITableViewController {
     // Open the URL to the Terms and Conditions in a Safari window
     func openTermsURL(sender: UIButton) {
         
-        let termsUrl: NSURL! = NSURL(string: "https://www.waterreporter.org/terms")
+        let termsUrl: NSURL! = NSURL(string: "https://www.waterreporter.org/community/terms")
         
         UIApplication.sharedApplication().openURL(termsUrl)
     }

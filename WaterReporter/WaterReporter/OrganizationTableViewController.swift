@@ -258,7 +258,29 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             self.navigationController?.pushViewController(nextViewController, animated: true)
         }
     }
+
+    @IBAction func emptyMessageAddReport(sender: UIButton) {
+        
+        self.tabBarController?.selectedIndex = 2
+        
+    }
     
+    @IBAction func emptyMessageUpdateProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserProfileEditTableViewController") as! UserProfileEditTableViewController
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+    
+    @IBAction func emptyMessageJoinGroup(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("GroupsTableViewController") as! GroupsTableViewController
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+
     //
     // MARK: Variables
     //
@@ -322,7 +344,10 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
         self.actionTableView.rowHeight = UITableViewAutomaticDimension;
         self.actionTableView.estimatedRowHeight = 368.0;
-        
+
+        self.memberTableView.rowHeight = UITableViewAutomaticDimension;
+        self.memberTableView.estimatedRowHeight = 368.0;
+
         //
         //
         //
@@ -588,6 +613,10 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                 case .Success(let value):
                     print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
                     
+                    if (value.objectForKey("code") != nil) {
+                        break
+                    }
+                    
                     // Assign response to groups variable
                     if (isRefreshingReportsList) {
                         self.groupSubmissions = JSON(value)
@@ -639,7 +668,11 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                 switch response.result {
                 case .Success(let value):
                     print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
-                    
+
+                    if (value.objectForKey("code") != nil) {
+                        break
+                    }
+
                     // Assign response to groups variable
                     if (isRefreshingReportsList) {
                         self.groupActions = JSON(value)
@@ -688,17 +721,29 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             
             guard (JSON(self.groupSubmissionsObjects) != nil) else { return 0 }
             
+            if self.groupSubmissionsObjects.count == 0 {
+                return 1
+            }
+
             return (self.groupSubmissionsObjects.count)
 
         } else if (tableView.restorationIdentifier == "actionsTableView") {
             
             guard (JSON(self.groupActionsObjects) != nil) else { return 0 }
             
+            if self.groupActionsObjects.count == 0 {
+                return 1
+            }
+
             return (self.groupActionsObjects.count)
             
         } else if (tableView.restorationIdentifier == "membersTableView") {
             
             guard (JSON(self.groupMembersObjects) != nil) else { return 0 }
+
+            if self.groupMembersObjects.count == 0 {
+                return 1
+            }
 
             return (self.groupMembersObjects.count)
             
@@ -710,18 +755,29 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        let emptyCell = tableView.dequeueReusableCellWithIdentifier("emptyTableViewCell", forIndexPath: indexPath) as! EmptyTableViewCell
+
         if (tableView.restorationIdentifier == "submissionsTableView") {
             //
             // Submissions
             //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileSubmissionCell", forIndexPath: indexPath) as! UserProfileSubmissionTableViewCell
             
-            guard (JSON(self.groupSubmissionsObjects) != nil) else { return cell }
+            guard (JSON(self.groupSubmissionsObjects) != nil) else { return emptyCell }
             
             let _submission = JSON(self.groupSubmissionsObjects)
             let _thisSubmission = _submission[indexPath.row]["properties"]
             print("Show _thisSubmission \(_thisSubmission)")
             
+            if _thisSubmission == nil {
+                
+                emptyCell.emptyMessageDescription.text = "Looks like this group hasn't posted anything yet.  Join their group and share a report to get them started!"
+                emptyCell.emptyMessageAction.hidden = false
+                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageAddReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+
+                return emptyCell
+            }
+
             // Report > Owner > Image
             //
             if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
@@ -913,12 +969,20 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileActionCell", forIndexPath: indexPath) as! UserProfileActionsTableViewCell
             
-            guard (JSON(self.groupActionsObjects) != nil) else { return cell }
+            guard (JSON(self.groupActionsObjects) != nil) else { return emptyCell }
             
             let _actions = JSON(self.groupActionsObjects)
             let _thisSubmission = _actions[indexPath.row]["properties"]
             print("Show _thisSubmission \(_thisSubmission)")
             
+            if _thisSubmission == nil {
+                
+                emptyCell.emptyMessageDescription.text = "Looks like this group hasn't posted anything yet.  Join their group and share a report to get them started!"
+                emptyCell.emptyMessageAction.hidden = false
+                
+                return emptyCell
+            }
+
             // Report > Owner > Image
             //
             if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
@@ -1114,12 +1178,21 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileMemberCell", forIndexPath: indexPath) as! UserProfileMembersTableViewCell
             
-            guard (JSON(self.groupMembersObjects) != nil) else { return cell }
+            guard (JSON(self.groupMembersObjects) != nil) else { return emptyCell }
             
             let _members = JSON(self.groupMembersObjects)
             let _thisSubmission = _members[indexPath.row]["properties"]
             print("Show _thisSubmission \(_thisSubmission)")
 
+            if _thisSubmission == nil {
+                
+                emptyCell.emptyMessageDescription.text = "No members yet but you can always join!"
+                emptyCell.emptyMessageAction.hidden = false
+                emptyCell.emptyMessageAction.setTitle("Join this group", forState: .Normal)
+                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageJoinGroup(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                
+                return emptyCell
+            }
             
             // Display Member Name
             if let _first_name = _thisSubmission["first_name"].string,
@@ -1152,10 +1225,9 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             }
 
             return cell
-        } else {
-            return UITableViewCell()
         }
         
+        return emptyCell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
