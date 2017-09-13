@@ -56,13 +56,13 @@ class EditReportTableViewController: UITableViewController, UINavigationControll
         toolBar.translucent = true
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(NewReportTableViewController.doneButton(_:)))
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(EditReportTableViewController.doneButton(_:)))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
         
         toolBar.setItems([spaceButton, doneButton], animated: false)
         toolBar.userInteractionEnabled = true
         
-        datePickerView.addTarget(self, action: #selector(NewReportTableViewController.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
+        datePickerView.addTarget(self, action: #selector(EditReportTableViewController.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
         
         sender.inputView = datePickerView
         sender.inputAccessoryView = toolBar

@@ -20,26 +20,16 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // MARK: @IBOutlets
     //
     @IBOutlet weak var textareaReportComment: UITextView!
-    @IBOutlet weak var buttonReportImageRemove: UIButton!
-    @IBOutlet weak var buttonReportImageRemoveIcon: UIImageView!
     @IBOutlet weak var buttonReportImage: UIButton!
     @IBOutlet weak var buttonReportImageAddIcon: UIImageView!
-    @IBOutlet weak var imageReportImagePreview: UIImageView!
     
     @IBOutlet weak var navigationBarButtonSave: UIBarButtonItem!
     
     @IBOutlet weak var tableViewCellReportImage: UITableViewCell!
     
-    @IBOutlet weak var mapReportLocation: MGLMapView!
-
-    @IBOutlet weak var mapReportLocationButton: UIButton!
     @IBOutlet weak var addReportLocationButton: UIButton!
     @IBOutlet weak var addReportLocationButtonImage: UIImageView!
-    @IBOutlet weak var changeReportLocationButtonImage: UIImageView!
-    @IBOutlet weak var changeReportLocationButton: UIButton!
-    @IBOutlet weak var textfieldReportDate: UITextField!
     
-    @IBOutlet weak var labelReportLocationLongitude: UILabel!
     @IBOutlet weak var labelReportLocationLatitude: UILabel!
     
     @IBOutlet var indicatorLoadingView: UIView!
@@ -52,30 +42,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     @IBAction func launchNewReportLocationSelector(sender: AnyObject) {
         self.performSegueWithIdentifier("setLocationForNewReport", sender: sender)
     }
-    
-    @IBAction func textfieldDatePickerEditingDidBegin(sender: UITextField) {
-
-        let datePickerView:UIDatePicker = UIDatePicker()
-        datePickerView.datePickerMode = UIDatePickerMode.Date
-
-        let toolBar = UIToolbar()
-        toolBar.barStyle = UIBarStyle.Default
-        toolBar.translucent = true
-        toolBar.sizeToFit()
-        
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action:#selector(NewReportTableViewController.doneButton(_:)))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        
-        toolBar.setItems([spaceButton, doneButton], animated: false)
-        toolBar.userInteractionEnabled = true
-        
-        datePickerView.addTarget(self, action: #selector(NewReportTableViewController.datePickerValueChanged(_:)), forControlEvents: .ValueChanged)
-
-        sender.inputView = datePickerView
-        sender.inputAccessoryView = toolBar
-    }
-    
-    @IBAction func textfieldDatePickerEditingDidEnd(sender: UITextField) {}
     
     @IBAction func attemptOpenPhotoTypeSelector(sender: AnyObject) {
         
@@ -105,6 +71,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     var thisLocationManager: CLLocationManager = CLLocationManager()
     var tempGroups: [String] = [String]()
     var hashtagAutocomplete: [String] = [String]()
+    var groups: JSON?
 
     var hashtagSearchEnabled: Bool = false
     
@@ -145,16 +112,13 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
         
         textareaReportComment.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
-        textfieldReportDate.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
 
         buttonReportImage.addTarget(self, action: #selector(NewReportTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
-        buttonReportImageRemove.addTarget(self, action: #selector(NewReportTableViewController.attemptRemoveImageFromPreview(_:)), forControlEvents: .TouchUpInside)
         
         //
         // Make sure the Add and Change location buttons perform the same action as touching the map
         //
         addReportLocationButton.addTarget(self, action: #selector(NewReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
-        changeReportLocationButton.addTarget(self, action: #selector(NewReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
         
         //
         // Setup Navigation Bar
@@ -162,36 +126,59 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         navigationBarButtonSave.target = self
         navigationBarButtonSave.action = #selector(buttonSaveNewReportTableViewController(_:))
         
-        //
-        // Set Default Date
-        //
-        let dateFormatter = NSDateFormatter()
-        let date = NSDate()
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        textfieldReportDate.text = dateFormatter.stringFromDate(date)
         
+        print("Do something here to change the number of rows in the last section default is \(self.tableView.numberOfRowsInSection(2))")
+        
+        self.attemptLoadUserGroups()
         
         self.isReady()
     }
-
     
-    //
-    // MARK: Table View Controller Customization
-    //
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
-        if (tableView.restorationIdentifier == "formTableView") {
-            let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        // [text isEqualToString:[UIPasteboard generalPasteboard].string]
+        let _pasteboard = UIPasteboard.generalPasteboard().string
+        
+        if (text == _pasteboard) {
+            //
+            // Step 1: Get the information being pasted
+            //
+            print("Pasting text", _pasteboard)
             
-            header.textLabel!.font = UIFont.systemFontOfSize(12)
-            header.textLabel!.textColor = UIColor.colorDarkGray(0.5)
-            
-            header.contentView.backgroundColor = UIColor.colorBackground(1.00)            
+            //
+            // Step 2: Check to see if the text being pasted is a link
+            //
+            if self.verifyUrl(_pasteboard) {
+                print("Pasted text is a URL")
+            }
+            else {
+                print("Not a url")
+            }
         }
         
+        return true
     }
     
+    func verifyUrl (urlString: String?) -> Bool {
+        //Check for nil
+        if let urlString = urlString {
+            // create NSURL instance
+            if let url = NSURL(string: urlString) {
+                // check if your application can open the NSURL instance
+                return UIApplication.sharedApplication().canOpenURL(url)
+            }
+        }
+        return false
+    }
+    
+//    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+//        if text == "\n" {
+//            textView.resignFirstResponder()
+//        }
+//        return true
+//    }
+
+
     @IBAction func buttonSaveNewReportTableViewController(sender: UIBarButtonItem) {
         
         let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
@@ -203,34 +190,118 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
     }
     
+    //
+    // MARK: Table Overrides
+    //
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        if (tableView.restorationIdentifier == "formTableView") {
+            let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+            
+            header.textLabel!.font = UIFont.systemFontOfSize(12)
+            header.textLabel!.textColor = UIColor.colorDarkGray(0.5)
+            
+            header.contentView.backgroundColor = UIColor.colorBackground(1.00)
+        }
+        
+    }
+    
+//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    
+//        let cell = tableView.dequeueReusableCellWithIdentifier("reportGroupTableViewCell", forIndexPath: indexPath) as! ReportGroupTableViewCell
+//        
+//        //
+//        // Assign the organization logo to the UIImageView
+//        //
+//        cell.imageViewGroupLogo.tag = indexPath.row
+//        
+//        var organizationImageUrl:NSURL!
+//        
+//        if let thisOrganizationImageUrl: String = self.groups?["features"][indexPath.row]["properties"]["organization"]["properties"]["picture"].string {
+//            organizationImageUrl = NSURL(string: thisOrganizationImageUrl)
+//        }
+//        
+//        cell.imageViewGroupLogo.kf_indicatorType = .Activity
+//        cell.imageViewGroupLogo.kf_showIndicatorWhenLoading = true
+//        
+//        cell.imageViewGroupLogo.kf_setImageWithURL(organizationImageUrl, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+//            (image, error, cacheType, imageUrl) in
+//            cell.imageViewGroupLogo.image = image
+//            cell.imageViewGroupLogo.layer.cornerRadius = cell.imageViewGroupLogo.frame.size.width / 2
+//            cell.imageViewGroupLogo.clipsToBounds = true
+//        })
+//        
+//        //
+//        // Assign the organization name to the UILabel
+//        //
+//        if let thisOrganizationName: String = self.groups?["features"][indexPath.row]["properties"]["organization"]["properties"]["name"].string {
+//            cell.labelGroupName.text = thisOrganizationName
+//        }
+//        
+//        // Assign existing groups to the group field
+//        cell.switchSelectGroup.tag = indexPath.row
+//        
+//        if let _organization_id_number = self.groups?["features"][indexPath.row]["properties"]["organization_id"] {
+//            
+//            if self.tempGroups.contains("\(_organization_id_number)") {
+//                cell.switchSelectGroup.on = true
+//            }
+//            else {
+//                cell.switchSelectGroup.on = false
+//            }
+//            
+//        }
+        
+        
+//        return cell
+        
+//        return UITableViewCell()
+//    }
+    
+    override func tableView(tableView:UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        var numberOfRows: Int = 0;
+        
+        switch (section) {
+        case 0:
+            numberOfRows = 2;
+        case 1:
+            numberOfRows = 1;
+        case 2:
+            
+//            if self.groups == nil {
+                numberOfRows = 1;
+//            }
+//            else {
+//                numberOfRows = (self.groups?.count)!;
+//            }
+            
+        default:
+            numberOfRows = 0;
+        }
+        
+        print("tableView::numberOfRowsInSection section \(section); numberOfRows \(numberOfRows)")
+        
+        return numberOfRows
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         var rowHeight:CGFloat = 44.0
 
         if (tableView.restorationIdentifier == "formTableView") {
             switch indexPath.section {
-            case 2:
+                case 0:
 
-                if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == false) {
-                    rowHeight = 288.0
-                }
-                else if (indexPath.row == 0 && self.hashtagTypeAhead.hidden == true) {
-                    rowHeight = 124.0
-                }
+                    if (indexPath.row == 1 && self.hashtagTypeAhead.hidden == false) {
+                        rowHeight = 288.0
+                    }
+                    else if (indexPath.row == 1 && self.hashtagTypeAhead.hidden == true) {
+                        rowHeight = 124.0
+                    }
                 
-            case 0:
-                if indexPath.row == 0 {
-                    rowHeight = 232.0
-                }
-                else {
+                default:
                     rowHeight = 44.0
-                }
-            case 3:
-                if (indexPath.row == 0) {
-                    rowHeight = 232.0
-                }
-            default:
-                rowHeight = 44.0
             }
         }
         
@@ -269,22 +340,37 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
 
     }
+    
+    func onSetCoordinatesComplete(isFinished: Bool) {
+        
+        print("onSetCoordinatesComplete")
+        
+//        let thisMapView: MGLMapView = self.mapReportLocation
+//        let thisMapCenterCoordinates: CLLocationCoordinate2D = self.userSelectedCoorindates
+//        let thisMapCenter: Bool = true
+//        
+//        switch isFinished {
+//        case true:
+//            
+//            // Disable UserTrackingMode.Follow action
+//            mapReportLocation.showsUserLocation = false
+//            
+//            // Add an annotation to the map using the new coordinates
+//            self.addLocationToMap(thisMapView, latitude: thisMapCenterCoordinates.latitude, longitude: thisMapCenterCoordinates.longitude, center: thisMapCenter)
+//            
+//            break
+//            
+//        default:
+//            break
+//            
+//        }
+        
+        return
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-
-    func datePickerValueChanged(sender:UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        textfieldReportDate.text = dateFormatter.stringFromDate(sender.date)
-    }
-
-    func doneButton(sender:UIBarButtonItem) {
-        self.textfieldReportDate.resignFirstResponder()
     }
     
     func loadGroups() {
@@ -337,7 +423,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         // Make doubly sure the keyboard is closed
         //
-        self.textfieldReportDate.resignFirstResponder()
         self.textareaReportComment.resignFirstResponder()
         
         //
@@ -362,7 +447,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         // Make doubly sure the keyboard is closed
         //
-        self.textfieldReportDate.resignFirstResponder()
         self.textareaReportComment.resignFirstResponder()
         
         //
@@ -372,30 +456,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         
         // Reset all fields
-        self.imageReportImagePreview.image = UIImage(named: "Icon--EmptyImage")
-        self.imageReportImagePreview.alpha = 0.15
         self.imageReportImagePreviewIsSet = false
 
         self.userSelectedCoorindates = CLLocationCoordinate2D()
-        self.resetLocationOnMap(self.mapReportLocation)
         
-        self.labelReportLocationLatitude.text = "Latitude: Unknown"
-        self.labelReportLocationLongitude.text = "Longitude Unknown"
+        self.labelReportLocationLatitude.text = "Confirm location"
         self.textareaReportComment.text = ""
 
-        // Reset date field
-        let dateFormatter = NSDateFormatter()
-        let date = NSDate()
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        textfieldReportDate.text = dateFormatter.stringFromDate(date)
-
-        //
-        buttonReportImageRemove.hidden = true;
-        buttonReportImageRemoveIcon.hidden = true;
-        
-        buttonReportImage.hidden = false
-        buttonReportImageAddIcon.hidden = false
+//        buttonReportImage.hidden = false
+//        buttonReportImageAddIcon.hidden = false
 
     }
     
@@ -403,55 +472,23 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.navigationItem.rightBarButtonItem?.enabled = true
     }
 
-    func isReady() {
-        buttonReportImageRemove.hidden = true;
-        buttonReportImageRemoveIcon.hidden = true;
-        
-        self.hasNoLocationSet()
-    }
+    func isReady() {}
     
-    func hasLocationSet() {
-        self.addReportLocationButton.hidden = true
-        self.addReportLocationButtonImage.hidden = true
-
-        self.changeReportLocationButton.hidden = false
-        self.changeReportLocationButtonImage.hidden = false
-    }
+//    func isReadyAfterRemove() {
+//        buttonReportImage.hidden = false;
+//        buttonReportImageAddIcon.hidden = false;
+//    }
     
-    func hasNoLocationSet() {
-        self.addReportLocationButton.hidden = false
-        self.addReportLocationButtonImage.hidden = false
-
-        self.changeReportLocationButton.hidden = true
-        self.changeReportLocationButtonImage.hidden = true
-    }
-    
-    func isReadyAfterRemove() {
-        buttonReportImage.hidden = false;
-        buttonReportImageAddIcon.hidden = false;
-        
-        buttonReportImageRemove.hidden = true;
-        buttonReportImageRemoveIcon.hidden = true;
-    }
-    
-    func isReadyWithLocation() {
-        mapReportLocation.hidden = false;
-    }
-
     func isUpdatingReportLocation() {
         print("isUpdatingReportLocation")
     }
 
-    func isReadyWithImage() {
-        buttonReportImage.hidden = true;
-        buttonReportImageAddIcon.hidden = true;
-        
-        buttonReportImageRemove.hidden = false;
-        buttonReportImageRemoveIcon.hidden = false;
-    }
+//    func isReadyWithImage() {
+//        buttonReportImage.hidden = true;
+//        buttonReportImageAddIcon.hidden = true;
+//    }
 
     func startLocationServices(sender: AnyObject) {
-        self.isReadyWithLocation()
         self.tableView.reloadData()
     }
     
@@ -476,21 +513,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        imageReportImagePreview.image = image
+        buttonReportImageAddIcon.image = image
         imageReportImagePreviewIsSet = true
-        imageReportImagePreview.alpha = 1.0
         self.dismissViewControllerAnimated(true, completion: {
-            self.isReadyWithImage()
+//            self.isReadyWithImage()
             self.tableView.reloadData()
         })
-    }
-    
-    func attemptRemoveImageFromPreview(sender: AnyObject) {
-        imageReportImagePreview.image = nil
-        imageReportImagePreviewIsSet = false
-        imageReportImagePreview.alpha = 0.15
-        self.isReadyAfterRemove()
-        tableView.reloadData()
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -620,39 +648,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.userSelectedCoorindates = coordinates
         
         // Fill the display fields
-        self.labelReportLocationLatitude.text = "Lat: " + String(self.userSelectedCoorindates.latitude)
-        self.labelReportLocationLongitude.text = "Lng: " + String(self.userSelectedCoorindates.longitude)
+        self.labelReportLocationLatitude.text = String(self.userSelectedCoorindates.longitude) + " " + String(self.userSelectedCoorindates.latitude)
         
-        // Hide the "Add Button" and show the "Choose different" button
-        self.hasLocationSet()
-        
-    }
-    
-    func onSetCoordinatesComplete(isFinished: Bool) {
-        
-        print("onSetCoordinatesComplete")
-        
-        let thisMapView: MGLMapView = self.mapReportLocation
-        let thisMapCenterCoordinates: CLLocationCoordinate2D = self.userSelectedCoorindates
-        let thisMapCenter: Bool = true
-        
-        switch isFinished {
-            case true:
-            
-                // Disable UserTrackingMode.Follow action
-                mapReportLocation.showsUserLocation = false
-                
-                // Add an annotation to the map using the new coordinates
-                self.addLocationToMap(thisMapView, latitude: thisMapCenterCoordinates.latitude, longitude: thisMapCenterCoordinates.longitude, center: thisMapCenter)
-                
-                break
-            
-            default:
-                break
-            
-        }
-        
-        return
     }
     
     // Child Delegate
@@ -747,7 +744,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         var parameters: [String: AnyObject] = [
             "report_description": self.textareaReportComment.text!,
             "is_public": "true",
-            "report_date": self.textfieldReportDate.text!,
             "geometry": geometryCollection,
             "state": "open"
         ]
@@ -774,12 +770,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         // Make request
         //
-        if (self.imageReportImagePreview.image != nil) {
+        if (self.buttonReportImageAddIcon.image != nil) {
             
             Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
                 
                 // import image to request
-                if let imageData = UIImageJPEGRepresentation(self.imageReportImagePreview.image!, 1) {
+                if let imageData = UIImageJPEGRepresentation(self.buttonReportImageAddIcon.image!, 1) {
                     multipartFormData.appendBodyPart(data: imageData, name: "image", fileName: "ReportImageFromiPhone.jpg", mimeType: "image/jpeg")
                 }
                 
@@ -846,13 +842,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.presentViewController(alertController, animated: true, completion: nil)
     }
 
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            textView.resignFirstResponder()
-        }
-        return true
-    }
-
     func searchHashtags(timer: NSTimer) {
         
         let queryText: String! = "\(timer.userInfo!)"
@@ -890,6 +879,85 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     break
                 }
                 
+        }
+    }
+    
+    func buildRequestHeaders() -> [String: String] {
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        
+        return [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+    }
+    
+    func attemptLoadUserGroups() {
+        
+        // Set headers
+        let _headers = self.buildRequestHeaders()
+        
+        if let userId = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+            
+            let GET_GROUPS_ENDPOINT = Endpoints.GET_USER_PROFILE + "\(userId)" + "/groups"
+            
+            Alamofire.request(.GET, GET_GROUPS_ENDPOINT, headers: _headers, encoding: .JSON).responseJSON { response in
+                
+                print("response.result \(response.result)")
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Request Success for Groups: \(value)")
+                    
+                    // Assign response to groups variable
+                    self.groups = JSON(value)["features"]
+                    
+                    // Tell the refresh control to stop spinning
+//                    self.refreshControl?.endRefreshing()
+                    
+//                    // Set status to complete
+//                    self.status("complete")
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.tableView.reloadData()
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+//                    
+//                    // Stop showing the loading indicator
+//                    self.status("doneLoadingWithError")
+                    
+                    break
+                }
+            }
+            
+        } else {
+            self.attemptRetrieveUserID()
+        }
+        
+    }
+    
+    func attemptRetrieveUserID() {
+        
+        // Set headers
+        let _headers = self.buildRequestHeaders()
+        
+        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    let json = JSON(value)
+                    
+                    if let data: AnyObject = json.rawValue {
+                        NSUserDefaults.standardUserDefaults().setValue(data["id"], forKeyPath: "currentUserAccountUID")
+                        
+                        self.attemptLoadUserGroups()
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                }
         }
     }
 
