@@ -628,12 +628,12 @@ class ActivityTableViewController: UITableViewController {
         //
         if (addLike) {
             _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
-            //_cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            _cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         } else {
             _cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
-            //_cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            _cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         }
-        
+
         // Update the total likes count
         //
         let _report = JSON(self.reports[(indexPathRow)].objectForKey("properties")!)
