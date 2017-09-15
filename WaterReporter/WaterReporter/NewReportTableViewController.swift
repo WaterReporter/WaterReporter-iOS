@@ -9,6 +9,7 @@
 import Alamofire
 import CoreLocation
 import Mapbox
+import OpenGraph
 import SwiftyJSON
 import UIKit
 
@@ -148,12 +149,20 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             //
             // Step 2: Check to see if the text being pasted is a link
             //
-            if self.verifyUrl(_pasteboard) {
+//            if self.verifyUrl(_pasteboard) {
                 print("Pasted text is a URL")
-            }
-            else {
-                print("Not a url")
-            }
+                print("Now check for Open Graph support")
+                let _url = NSURL(string: _pasteboard!)
+                OpenGraph.fetch(_url!) { og, error in
+                    print("Open Graph \(og)") // => og:title of the web site
+//                    print("Open Graph \(og?[.type])")  // => og:type of the web site
+//                    print("Open Graph \(og?[.image])") // => og:image of the web site
+//                    print("Open Graph \(og?[.url])")   // => og:url of the web site
+                }
+//            }
+//            else {
+//                print("Not a url")
+//            }
         }
         
         return true
