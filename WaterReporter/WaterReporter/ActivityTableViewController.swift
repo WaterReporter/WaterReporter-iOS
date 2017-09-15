@@ -391,12 +391,15 @@ class ActivityTableViewController: UITableViewController {
             
             if reportLikes.count == 1 {
                 reportLikesCountText = "1 like"
+                cell.reportLikeCount.hidden = false
             }
             else if reportLikes.count >= 1 {
                 reportLikesCountText = String(reportLikes.count) + " likes"
+                cell.reportLikeCount.hidden = false
             }
             else {
                 reportLikesCountText = "0 likes"
+                cell.reportLikeCount.hidden = true
             }
             
             cell.reportLikeCount.tag = indexPath.row
@@ -407,17 +410,22 @@ class ActivityTableViewController: UITableViewController {
             cell.reportLikeButton.tag = indexPath.row
             
             let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
-
-            let _hasLiked = self.like.userHasLikedReport(reportJson, _current_user_id: _user_id_number.integerValue)
+            let _user_id_integer = _user_id_number.integerValue
             
-            cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
-
-            if (_hasLiked) {
-                cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-                cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
-            }
-            else {
-                cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            if _user_id_integer != 0 {
+                
+                let _hasLiked = self.like.userHasLikedReport(reportJson, _current_user_id: _user_id_integer)
+                
+                cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+                
+                if (_hasLiked) {
+                    cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                    cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+                }
+                else {
+                    cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                }
+                
             }
             
             
@@ -652,12 +660,15 @@ class ActivityTableViewController: UITableViewController {
         
         if _report_likes_updated_total == 1 {
             reportLikesCountText = "1 like"
+            _cell.reportLikeCount.hidden = false
         }
         else if _report_likes_updated_total >= 1 {
             reportLikesCountText = "\(_report_likes_updated_total) likes"
+            _cell.reportLikeCount.hidden = false
         }
         else {
             reportLikesCountText = "0 likes"
+            _cell.reportLikeCount.hidden = true
         }
         
         _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
@@ -702,8 +713,15 @@ class ActivityTableViewController: UITableViewController {
                     //
                     print("Remove this \(self.reports[(sender.tag)])")
                     
-                    self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
-                    
+                    if let _code = value["code"] {
+                        if _code?.stringValue == "400" {
+                            print("You already liked this post ... do nothing.")
+                        }
+                    }
+                    else {
+                        print("You're liking this post for the first time")
+                        self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
+                    }
                     
                     break
                 case .Failure(let error):

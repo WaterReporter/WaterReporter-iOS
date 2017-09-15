@@ -403,7 +403,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             }
             
             self.navigationItem.rightBarButtonItem?.enabled = false
-
             
             // Show the data on screen
             self.displayUserProfileInformation()
@@ -983,10 +982,20 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
             if _thisSubmission == nil {
                 
-                emptyCell.emptyMessageDescription.text = "No reports yet, post your first one now!"
-                
-                emptyCell.emptyMessageAction.hidden = false
-                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageAddReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                //
+                // If the User Profile being viewed is no the Acting User's Profile
+                // we need to change the empty message sentence to make sense in
+                // this context.
+                //
+                if self.navigationItem.rightBarButtonItem?.enabled == false {
+                    emptyCell.emptyMessageDescription.text = "Looks like this user hasn't submitted any reports."
+                    emptyCell.emptyMessageAction.hidden = true
+                }
+                else {
+                    emptyCell.emptyMessageDescription.text = "No reports yet, post your first one now!"
+                    emptyCell.emptyMessageAction.hidden = false
+                    emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageAddReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                }
 
                 return emptyCell
             }
