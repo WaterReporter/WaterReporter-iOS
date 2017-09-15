@@ -117,7 +117,7 @@
                                                 <constraint firstAttribute="height" constant="24" id="ZOj-Kv-Xn5"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                            <state key="normal" title="0 comments">
+                                            <state key="normal" title="0">
                                                 <color key="titleColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </state>
                                             <connections>
@@ -140,6 +140,27 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19" id="7VC-k0-RLy"/>
                                             </constraints>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rna-Ip-3qO">
+                                            <rect key="frame" x="266" y="261" width="28" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="rZe-aS-Yg3"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <state key="normal" title="0 likes">
+                                                <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <segue destination="u30-AQ-V7K" kind="show" identifier="reportToReportLikes" id="BxN-b7-rn1"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTy-nl-eSP">
+                                            <rect key="frame" x="224" y="261" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="hsl-2y-Av6"/>
+                                                <constraint firstAttribute="height" constant="20" id="spo-rG-gfC"/>
+                                            </constraints>
+                                            <state key="normal" image="icon--heart"/>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -165,8 +186,10 @@
                                         <constraint firstAttribute="bottomMargin" secondItem="4hV-IB-V95" secondAttribute="bottom" constant="823.5" id="JkX-wY-fn3"/>
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="centerX" secondItem="iIs-hU-ppC" secondAttribute="centerX" id="Jkp-Zc-v4R"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="4Sg-oM-EMq" secondAttribute="trailing" constant="8" id="KsB-7S-RSd"/>
+                                        <constraint firstItem="rna-Ip-3qO" firstAttribute="leading" secondItem="bTy-nl-eSP" secondAttribute="trailing" constant="4" id="LU9-B7-c3S"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Fxw-iA-4dw" secondAttribute="trailing" constant="-8" id="LhC-T6-jt1"/>
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" id="Ncf-b2-wtZ"/>
+                                        <constraint firstItem="rna-Ip-3qO" firstAttribute="centerY" secondItem="bTy-nl-eSP" secondAttribute="centerY" id="QsV-6H-FAC"/>
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="width" secondItem="iIs-hU-ppC" secondAttribute="height" multiplier="24:35" id="QyY-PE-BUC"/>
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="centerX" secondItem="iIs-hU-ppC" secondAttribute="centerX" id="R0i-8C-jBG"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="g3K-N8-Lar" secondAttribute="trailing" constant="72" id="RGu-rE-0sE"/>
@@ -193,7 +216,9 @@
                                         <constraint firstItem="4hV-IB-V95" firstAttribute="leading" secondItem="iIs-hU-ppC" secondAttribute="leadingMargin" constant="8" id="nTf-71-eNE"/>
                                         <constraint firstItem="Hqo-EG-TlL" firstAttribute="top" secondItem="Fxw-iA-4dw" secondAttribute="bottom" constant="8" id="qBD-GU-ktQ"/>
                                         <constraint firstItem="aKB-H4-8aI" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" constant="8" id="qPa-KJ-uki"/>
+                                        <constraint firstItem="bTy-nl-eSP" firstAttribute="centerY" secondItem="tnf-6Y-yAX" secondAttribute="centerY" id="qZE-R6-NqV"/>
                                         <constraint firstItem="tnf-6Y-yAX" firstAttribute="centerY" secondItem="vAv-oZ-7LT" secondAttribute="centerY" id="tQc-q3-ARP"/>
+                                        <constraint firstItem="bTy-nl-eSP" firstAttribute="leading" secondItem="tnf-6Y-yAX" secondAttribute="trailing" constant="4" id="uhc-zW-OgG"/>
                                         <constraint firstItem="mWJ-bg-niv" firstAttribute="top" secondItem="Fxw-iA-4dw" secondAttribute="bottom" constant="8" id="uwJ-II-Stt"/>
                                         <constraint firstItem="mWJ-bg-niv" firstAttribute="leading" secondItem="jzA-J4-UR2" secondAttribute="trailing" constant="16" id="wv0-tm-rtE"/>
                                         <constraint firstItem="vAv-oZ-7LT" firstAttribute="top" secondItem="Fxw-iA-4dw" secondAttribute="bottom" constant="8" id="yft-0r-eMP"/>
@@ -231,6 +256,8 @@
                                     <outlet property="reportGetDirectionsButton" destination="jzA-J4-UR2" id="fbV-Ih-EC1"/>
                                     <outlet property="reportGroups" destination="4Sg-oM-EMq" id="uX6-lG-hHM"/>
                                     <outlet property="reportImage" destination="Fxw-iA-4dw" id="ykS-n1-s4a"/>
+                                    <outlet property="reportLikeButton" destination="bTy-nl-eSP" id="MGA-71-ckp"/>
+                                    <outlet property="reportLikeCount" destination="rna-Ip-3qO" id="7li-VO-wPK"/>
                                     <outlet property="reportOwnerImage" destination="4hV-IB-V95" id="WWH-zQ-gTx"/>
                                     <outlet property="reportOwnerImageButton" destination="1F4-QA-bwJ" id="bVv-wo-9H6"/>
                                     <outlet property="reportShareButton" destination="Hqo-EG-TlL" id="bDL-Aj-RFP"/>
@@ -295,6 +322,83 @@
                 </view>
             </objects>
             <point key="canvasLocation" x="1724" y="-2271.8140929535234"/>
+        </scene>
+        <!--Likes-->
+        <scene sceneID="PIP-U5-FcP">
+            <objects>
+                <tableViewController storyboardIdentifier="LikesTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="u30-AQ-V7K" customClass="LikesTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="28" sectionFooterHeight="28" id="Qew-PE-T8B">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserLikesTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="userLikesTableViewCell" rowHeight="96" id="ode-8E-cvk" customClass="BasicTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="96"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ode-8E-cvk" id="daY-2J-Hww">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="95"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HzW-XZ-Ido">
+                                            <rect key="frame" x="16" y="16" width="64" height="64.5"/>
+                                            <color key="tintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="64" id="0od-hd-UY3"/>
+                                                <constraint firstAttribute="width" constant="64" id="t1T-dA-AJk"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="32"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="clipToBounds" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xJ1-Bg-Vid">
+                                            <rect key="frame" x="96" y="37.5" width="263" height="20.5"/>
+                                            <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R4Y-wQ-esD">
+                                            <rect key="frame" x="8" y="8" width="359" height="79.5"/>
+                                            <connections>
+                                                <action selector="openSearchDetailView:" destination="FSr-P1-NPM" eventType="touchUpInside" id="fwr-Qg-FCB"/>
+                                                <action selector="openUserMemberView:" destination="u30-AQ-V7K" eventType="touchUpInside" id="Pmn-3c-qQf"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="R4Y-wQ-esD" secondAttribute="bottom" id="2ug-1R-K7Z"/>
+                                        <constraint firstItem="xJ1-Bg-Vid" firstAttribute="leading" secondItem="HzW-XZ-Ido" secondAttribute="trailing" constant="16" id="3eY-ex-FrY"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="R4Y-wQ-esD" secondAttribute="trailing" id="4bb-GF-nh7"/>
+                                        <constraint firstItem="HzW-XZ-Ido" firstAttribute="leading" secondItem="daY-2J-Hww" secondAttribute="leadingMargin" constant="8" id="AhE-RI-QPJ"/>
+                                        <constraint firstItem="R4Y-wQ-esD" firstAttribute="leading" secondItem="daY-2J-Hww" secondAttribute="leadingMargin" id="GNf-tW-CkO"/>
+                                        <constraint firstItem="HzW-XZ-Ido" firstAttribute="centerY" secondItem="daY-2J-Hww" secondAttribute="centerY" id="HE7-Hy-jTP"/>
+                                        <constraint firstItem="xJ1-Bg-Vid" firstAttribute="centerY" secondItem="daY-2J-Hww" secondAttribute="centerY" id="Prd-ns-fiP"/>
+                                        <constraint firstItem="R4Y-wQ-esD" firstAttribute="top" secondItem="daY-2J-Hww" secondAttribute="topMargin" id="fhQ-7K-orD"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="xJ1-Bg-Vid" secondAttribute="trailing" constant="8" id="z0L-dZ-AAJ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="searchResultImage" destination="HzW-XZ-Ido" id="6Nl-kj-TWz"/>
+                                    <outlet property="searchResultImageConstraintPaddingLeft" destination="3eY-ex-FrY" id="o0s-Kz-vfO"/>
+                                    <outlet property="searchResultImageConstraintWidth" destination="t1T-dA-AJk" id="TjG-qK-75y"/>
+                                    <outlet property="searchResultLink" destination="R4Y-wQ-esD" id="zVo-M5-Iq6"/>
+                                    <outlet property="searchResultTitle" destination="xJ1-Bg-Vid" id="xxf-5F-L8g"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="u30-AQ-V7K" id="SxZ-1e-TRA"/>
+                            <outlet property="delegate" destination="u30-AQ-V7K" id="pKr-XN-EaA"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Likes" id="dyP-yf-QvM"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aBf-k5-NrE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2560.8000000000002" y="-1569.265367316342"/>
         </scene>
         <!--Comments-->
         <scene sceneID="hEq-2r-Nsf">
@@ -804,7 +908,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchPeopleTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchPeopleTableViewCell" rowHeight="96" id="Nn9-TD-f4T" customClass="SearchTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchPeopleTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchPeopleTableViewCell" rowHeight="96" id="Nn9-TD-f4T" customClass="BasicTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="244" width="375" height="96"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nn9-TD-f4T" id="8bx-BV-Y67">
@@ -859,7 +963,7 @@
                                     <outlet property="searchResultTitle" destination="lID-GB-YMD" id="wta-lC-AGN"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchWatershedsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchWatershedsTableViewCell" rowHeight="96" id="w5E-MD-VlP" customClass="SearchTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchWatershedsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchWatershedsTableViewCell" rowHeight="96" id="w5E-MD-VlP" customClass="BasicTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="340" width="375" height="96"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w5E-MD-VlP" id="2fc-5W-FKf">
@@ -914,7 +1018,7 @@
                                     <outlet property="searchResultTitle" destination="OGe-sz-eVX" id="moV-rd-r5U"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchGroupsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchGroupsTableViewCell" rowHeight="96" id="ETi-lj-0QC" customClass="SearchTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchGroupsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchGroupsTableViewCell" rowHeight="96" id="ETi-lj-0QC" customClass="BasicTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="436" width="375" height="96"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ETi-lj-0QC" id="rZS-kB-pe9">
@@ -969,7 +1073,7 @@
                                     <outlet property="searchResultTitle" destination="iwZ-Ms-ygr" id="dF8-jN-qFb"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchTagsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchTagsTableViewCell" rowHeight="96" id="Yh1-9m-cwk" customClass="SearchTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SearchTagsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchTagsTableViewCell" rowHeight="96" id="Yh1-9m-cwk" customClass="BasicTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="532" width="375" height="96"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yh1-9m-cwk" id="cQW-FJ-raX">
@@ -6388,6 +6492,7 @@
         <image name="icon--link" width="32" height="32"/>
         <image name="icon--location" width="32" height="32"/>
         <image name="icon--caret" width="9" height="4"/>
+        <image name="icon--heart" width="17" height="16"/>
         <image name="icon--search" width="18" height="18"/>
         <image name="logo--WaterReporter--Horizontal" width="91" height="32"/>
     </resources>

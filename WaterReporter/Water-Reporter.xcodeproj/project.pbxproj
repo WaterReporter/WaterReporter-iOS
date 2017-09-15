@@ -57,10 +57,12 @@
 		CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */; };
 		CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */; };
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
-		CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */; };
+		CECCEA831F27D1D300A8AAB4 /* LikesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCEA821F27D1D300A8AAB4 /* LikesTableViewController.swift */; };
 		CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */; };
+		CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1B44D1F3A5B1E0068351E /* LikeController.swift */; };
 		CEEA52751EB27F5200934D18 /* CommentHashtagTypeAhead.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEA52741EB27F5200934D18 /* CommentHashtagTypeAhead.swift */; };
 		CEF1D8711F15648D00113D97 /* TerritorySingleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF1D8701F15648D00113D97 /* TerritorySingleViewController.swift */; };
+		CEF2257E1F3E248E00FAC041 /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF2257D1F3E248E00FAC041 /* BasicTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,10 +156,12 @@
 		CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryViewController.swift; sourceTree = "<group>"; };
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
-		CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		CECCEA821F27D1D300A8AAB4 /* LikesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesTableViewController.swift; sourceTree = "<group>"; };
 		CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableViewController.swift; sourceTree = "<group>"; };
+		CEE1B44D1F3A5B1E0068351E /* LikeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeController.swift; sourceTree = "<group>"; };
 		CEEA52741EB27F5200934D18 /* CommentHashtagTypeAhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentHashtagTypeAhead.swift; sourceTree = "<group>"; };
 		CEF1D8701F15648D00113D97 /* TerritorySingleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritorySingleViewController.swift; sourceTree = "<group>"; };
+		CEF2257D1F3E248E00FAC041 /* BasicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
 		D8993E8D85322C529237865F /* Pods-WaterReporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaterReporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WaterReporter/Pods-WaterReporter.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -245,10 +249,12 @@
 		C125B7551DDB8EED005E7E5B /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				C185025C1DC779BC00C0F0DA /* CommentTableViewCell.swift */,
 				C125B7571DDB8F07005E7E5B /* Comments */,
 				C12CAFA01D466659002881A6 /* TableViewCell.swift */,
 				C12CAF9E1D4656A5002881A6 /* ActivityTableViewController.swift */,
 				C1AF41FB1D4FA60F00E7F7C5 /* ActivityMapViewController.swift */,
+				CECCEA821F27D1D300A8AAB4 /* LikesTableViewController.swift */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -270,7 +276,6 @@
 		C125B7571DDB8F07005E7E5B /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				C185025C1DC779BC00C0F0DA /* CommentTableViewCell.swift */,
 				C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */,
 				C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */,
 				CEEA52741EB27F5200934D18 /* CommentHashtagTypeAhead.swift */,
@@ -337,6 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				CE0886EC1F606ACB00F92BA8 /* Reusable Cells */,
+				CEE1B44C1F3A5B0F0068351E /* Like */,
 				C1C8267A1D4562FF00516871 /* AppDelegate.swift */,
 				C1C826881D4562FF00516871 /* Info.plist */,
 				C1F230101DAE83CB00DA2854 /* Main.storyboard */,
@@ -351,6 +357,7 @@
 				C125B7541DDB8EE3005E7E5B /* Organization Profile */,
 				CEC951F01E9EFE2200DEB124 /* Hashtag */,
 				CE0D91121EA92E150088F789 /* Territory */,
+				CEF2257D1F3E248E00FAC041 /* BasicTableViewCell.swift */,
 			);
 			path = WaterReporter;
 			sourceTree = "<group>";
@@ -397,7 +404,6 @@
 			isa = PBXGroup;
 			children = (
 				CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */,
-				CE9B91671E9D2DB0001EBA66 /* SearchTableViewCell.swift */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -408,6 +414,14 @@
 				CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */,
 			);
 			name = Hashtag;
+			sourceTree = "<group>";
+		};
+		CEE1B44C1F3A5B0F0068351E /* Like */ = {
+			isa = PBXGroup;
+			children = (
+				CEE1B44D1F3A5B1E0068351E /* LikeController.swift */,
+			);
+			name = Like;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -611,6 +625,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEF2257E1F3E248E00FAC041 /* BasicTableViewCell.swift in Sources */,
 				C116EC881DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift in Sources */,
 				C15965861D5B9C59009099EF /* MGLPointAnnotationExtension.swift in Sources */,
 				C198C0D61DDB2B3000AA5E59 /* ReportGroupTableViewCell.swift in Sources */,
@@ -632,6 +647,7 @@
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
 				CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */,
 				CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */,
+				CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */,
 				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
 				C1434E551DEF5A67009F6884 /* EditReportTableViewController.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
@@ -652,9 +668,9 @@
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
 				C18D76A91DAD87EB0012584C /* Environment.swift in Sources */,
 				C14448B81D6B7234000564BF /* UserProfileTableViewCell.swift in Sources */,
+				CECCEA831F27D1D300A8AAB4 /* LikesTableViewController.swift in Sources */,
 				C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */,
 				C12CAFA11D466659002881A6 /* TableViewCell.swift in Sources */,
-				CE9B91681E9D2DB0001EBA66 /* SearchTableViewCell.swift in Sources */,
 				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,
 				CE1CE5111F69B40300684B3E /* GroupsTableView.swift in Sources */,
 				CEF1D8711F15648D00113D97 /* TerritorySingleViewController.swift in Sources */,

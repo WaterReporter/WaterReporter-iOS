@@ -27,7 +27,8 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportCommentButton: UIButton!
     @IBOutlet weak var reportDirectionsButton: UIButton!
     @IBOutlet weak var reportShareButton: UIButton!
-    
+    @IBOutlet weak var reportLikeButton: UIButton!
+    @IBOutlet weak var reportLikeCount: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

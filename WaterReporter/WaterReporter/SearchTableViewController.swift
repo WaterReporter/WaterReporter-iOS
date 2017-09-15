@@ -379,7 +379,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
                 return UITableViewCell()
             }
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("searchPeopleTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchPeopleTableViewCell", forIndexPath: indexPath) as! BasicTableViewCell
 
             let result = self.trendingPeople[indexPath.row].objectForKey("properties")
             let resultJSON = JSON(result!)
@@ -465,7 +465,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             let result = self.trendingWatersheds[indexPath.row].objectForKey("properties")
             let resultJSON = JSON(result!)
         
-            let cell = tableView.dequeueReusableCellWithIdentifier("searchWatershedsTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchWatershedsTableViewCell", forIndexPath: indexPath) as! BasicTableViewCell
 
             //
             // WATERSHED > TITLE
@@ -524,7 +524,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             let result = self.trendingGroups[indexPath.row].objectForKey("properties")
             let resultJSON = JSON(result!)
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("searchGroupsTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchGroupsTableViewCell", forIndexPath: indexPath) as! BasicTableViewCell
 
             //
             // GROUP > TITLE
@@ -605,7 +605,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
             let result = self.trendingTags[indexPath.row].objectForKey("properties")
             let resultJSON = JSON(result!)
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("searchTagsTableViewCell", forIndexPath: indexPath) as! SearchTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchTagsTableViewCell", forIndexPath: indexPath) as! BasicTableViewCell
 
             //
             // TAG > TITLE

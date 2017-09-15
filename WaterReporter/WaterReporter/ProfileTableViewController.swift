@@ -350,7 +350,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
-                self.attemptLoadUserProfile(self.userId, withoutReportReload: true)
+                self.attemptLoadUserProfile(self.userId, withoutReportReload: false)
             } else {
                 self.attemptRetrieveUserID()
             }
