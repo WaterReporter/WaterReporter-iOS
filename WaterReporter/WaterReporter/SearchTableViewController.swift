@@ -45,7 +45,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         else if (self.selectedType == "Watersheds") {
             let _object = JSON(self.trendingWatersheds[sender.tag])
 
-            let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+            let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
             
             nextViewController.territory = "\(_object["properties"]["huc_8_name"])"
             nextViewController.territoryId = "\(_object["id"])"

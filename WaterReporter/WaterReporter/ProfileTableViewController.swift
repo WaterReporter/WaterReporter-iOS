@@ -254,7 +254,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     @IBAction func loadTerritoryProfileFromSubmissions(sender: UIButton) {
         
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
         
         var _thisReport: JSON!
         
@@ -271,7 +271,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     @IBAction func loadTerritoryProfileFromActions(sender: UIButton) {
         
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryTableViewController") as! TerritoryTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
         
         var _thisReport: JSON!
         
@@ -363,12 +363,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         
-        if self.isMovingFromParentViewController()
-        {
-            self.navigationController?.navigationBarHidden = true
+        if (self.isMovingFromParentViewController()) {
+            if (self.navigationController?.viewControllers.last?.restorationIdentifier! == "SearchTableViewController") {
+                self.navigationController?.navigationBarHidden = true
+            } else {
+                self.navigationController?.navigationBarHidden = false
+            }
         }
-        else
-        {
+        else {
             self.navigationController?.navigationBarHidden = false
         }
     }
