@@ -107,14 +107,14 @@ class EditReportTableViewController: UITableViewController, UINavigationControll
         
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
         
-        textareaReportComment.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
-        textfieldReportDate.targetForAction(#selector(NewReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
+        textareaReportComment.targetForAction(#selector(EditReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
+        textfieldReportDate.targetForAction(#selector(EditReportTableViewController.textFieldShouldReturn(_:)), withSender: self)
         
         //
         // Make sure the Add and Change location buttons perform the same action as touching the map
         //
-        addReportLocationButton.addTarget(self, action: #selector(NewReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
-        changeReportLocationButton.addTarget(self, action: #selector(NewReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
+        addReportLocationButton.addTarget(self, action: #selector(EditReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
+        changeReportLocationButton.addTarget(self, action: #selector(EditReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
         
         //
         // Setup Navigation Bar

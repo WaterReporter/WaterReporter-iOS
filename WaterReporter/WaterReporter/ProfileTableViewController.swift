@@ -744,8 +744,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     self.userGroupsObjects = value["features"] as! [AnyObject]
                     self.groupsRefreshControl.endRefreshing()
                 } else {
-                    self.userGroups = JSON(value)
-                    self.userGroupsObjects += value["features"] as! [AnyObject]
+                    if (value["features"] != nil) {
+                        // Assign response to groups variable
+                        self.userGroups = JSON(value)
+                        self.userGroupsObjects += value["features"] as! [AnyObject]
+                    }
                     
                 }
                 
@@ -795,9 +798,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                         self.userSubmissionsObjects = value["features"] as! [AnyObject]
                         self.submissionRefreshControl.endRefreshing()
                     } else {
-                        // Assign response to groups variable
-                        self.userSubmissions = JSON(value)
-                        self.userSubmissionsObjects += value["features"] as! [AnyObject]
+                        if (value["features"] != nil) {
+                            // Assign response to groups variable
+                            self.userSubmissions = JSON(value)
+                            self.userSubmissionsObjects += value["features"] as! [AnyObject]
+                        }
                     }
                     
                     // Set visible button count
@@ -876,8 +881,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                                 self.actionRefreshControl.endRefreshing()
                             } else {
                                 // Assign response to groups variable
-                                self.userActions = JSON(value)
-                                self.userActionsObjects += value["features"] as! [AnyObject]
+                                if (value["features"] != nil) {
+                                    self.userActions = JSON(value)
+                                    self.userActionsObjects += value["features"] as! [AnyObject]
+                                }
                             }
                             
                             // Set visible button count

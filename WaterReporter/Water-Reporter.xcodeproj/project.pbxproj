@@ -49,6 +49,10 @@
 		C1F230121DAE83CB00DA2854 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1F230101DAE83CB00DA2854 /* Main.storyboard */; };
 		C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */; };
 		CE015EEE1F6C419D00447C34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE015EED1F6C419D00447C34 /* Assets.xcassets */; };
+		CE015EF01F6C42CE00447C34 /* NewReportLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE015EEF1F6C42CE00447C34 /* NewReportLinkTableViewCell.swift */; };
+		CE015EF21F6C42EB00447C34 /* NewReportContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE015EF11F6C42EB00447C34 /* NewReportContentTableViewCell.swift */; };
+		CE015EF41F6C430400447C34 /* NewReportLocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE015EF31F6C430400447C34 /* NewReportLocationTableViewCell.swift */; };
+		CE015EF61F6C431600447C34 /* NewReportGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE015EF51F6C431600447C34 /* NewReportGroupTableViewCell.swift */; };
 		CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */; };
 		CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */; };
 		CE0886EE1F606AE000F92BA8 /* EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */; };
@@ -148,6 +152,10 @@
 		C1F230111DAE83CB00DA2854 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C1F230151DAED3AF00DA2854 /* UserProfileEditTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileEditTableViewController.swift; sourceTree = "<group>"; };
 		CE015EED1F6C419D00447C34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CE015EEF1F6C42CE00447C34 /* NewReportLinkTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportLinkTableViewCell.swift; sourceTree = "<group>"; };
+		CE015EF11F6C42EB00447C34 /* NewReportContentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportContentTableViewCell.swift; sourceTree = "<group>"; };
+		CE015EF31F6C430400447C34 /* NewReportLocationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportLocationTableViewCell.swift; sourceTree = "<group>"; };
+		CE015EF51F6C431600447C34 /* NewReportGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReportGroupTableViewCell.swift; sourceTree = "<group>"; };
 		CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagAutocompleteTableViewCell.swift; sourceTree = "<group>"; };
 		CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableView.swift; sourceTree = "<group>"; };
 		CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyTableViewCell.swift; sourceTree = "<group>"; };
@@ -385,6 +393,10 @@
 			children = (
 				CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */,
 				CE1CE5101F69B40300684B3E /* GroupsTableView.swift */,
+				CE015EEF1F6C42CE00447C34 /* NewReportLinkTableViewCell.swift */,
+				CE015EF11F6C42EB00447C34 /* NewReportContentTableViewCell.swift */,
+				CE015EF31F6C430400447C34 /* NewReportLocationTableViewCell.swift */,
+				CE015EF51F6C431600447C34 /* NewReportGroupTableViewCell.swift */,
 			);
 			name = "Reusable Cells";
 			sourceTree = "<group>";
@@ -638,6 +650,7 @@
 				C1C4DAE01DAFDAEA002B4946 /* UserProfileSettingsTableViewController.swift in Sources */,
 				C1F230171DAED3D500DA2854 /* UserProfileEditTableViewController.swift in Sources */,
 				C139109C1D787C8B00806F01 /* OrganizationTableViewController.swift in Sources */,
+				CE015EF41F6C430400447C34 /* NewReportLocationTableViewCell.swift in Sources */,
 				C19F677A1DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift in Sources */,
 				C12CAFA71D46902D002881A6 /* ImageLoader.swift in Sources */,
 				C1AF41FC1D4FA60F00E7F7C5 /* ActivityMapViewController.swift in Sources */,
@@ -648,6 +661,7 @@
 				CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */,
 				CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */,
 				CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */,
+				CE015EF61F6C431600447C34 /* NewReportGroupTableViewCell.swift in Sources */,
 				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
 				C1434E551DEF5A67009F6884 /* EditReportTableViewController.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
@@ -663,12 +677,14 @@
 				CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */,
 				C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */,
 				C1C5FD2B1DDB38E400EF6302 /* ProfileTableViewController.swift in Sources */,
+				CE015EF01F6C42CE00447C34 /* NewReportLinkTableViewCell.swift in Sources */,
 				CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */,
 				C185025D1DC779BC00C0F0DA /* CommentTableViewCell.swift in Sources */,
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
 				C18D76A91DAD87EB0012584C /* Environment.swift in Sources */,
 				C14448B81D6B7234000564BF /* UserProfileTableViewCell.swift in Sources */,
 				CECCEA831F27D1D300A8AAB4 /* LikesTableViewController.swift in Sources */,
+				CE015EF21F6C42EB00447C34 /* NewReportContentTableViewCell.swift in Sources */,
 				C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */,
 				C12CAFA11D466659002881A6 /* TableViewCell.swift in Sources */,
 				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,

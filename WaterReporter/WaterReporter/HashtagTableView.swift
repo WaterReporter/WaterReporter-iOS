@@ -13,7 +13,7 @@ class HashtagTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
     var results: [String]! = [String]()
     var selected: String! = ""
     var search: String! = ""
-    var parent: NewReportTableViewController!
+    var parent: NewReportContentTableViewCell!
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         

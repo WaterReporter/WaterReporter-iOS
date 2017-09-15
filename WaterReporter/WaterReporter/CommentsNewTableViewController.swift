@@ -247,7 +247,7 @@ class CommentsNewTableViewController: UITableViewController, UIImagePickerContro
                 self.hashtagSearchTimer.invalidate()
                 
                 print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
-                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(NewReportTableViewController.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
+                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(CommentsNewTableViewController.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
             }
         }
     }
