@@ -419,10 +419,12 @@ class ActivityTableViewController: UITableViewController {
                 cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
                 
                 if (_hasLiked) {
+                    cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
                     cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
                     cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
                 }
                 else {
+                    cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
                     cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
                 }
                 
@@ -636,9 +638,11 @@ class ActivityTableViewController: UITableViewController {
         //
         if (addLike) {
             _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
             _cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         } else {
             _cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
             _cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         }
 
@@ -707,12 +711,6 @@ class ActivityTableViewController: UITableViewController {
                 
                 switch response.result {
                 case .Success(let value):
-                    print("Response Success \(value)")
-                    
-                    // REMOVE OLD VERSION OF REPORT FROM LIST
-                    //
-                    print("Remove this \(self.reports[(sender.tag)])")
-                    
                     if let _code = value["code"] {
                         if _code?.stringValue == "400" {
                             print("You already liked this post ... do nothing.")
@@ -776,9 +774,7 @@ class ActivityTableViewController: UITableViewController {
         }
         
         let _endpoint: String = Endpoints.DELETE_LIKE + "/\(_like_id)"
-        
-        print("_endpoint \(_endpoint)")
-        
+                
         
         //
         // REQUEST
