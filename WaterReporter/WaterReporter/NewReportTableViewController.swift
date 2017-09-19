@@ -98,6 +98,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     var groups: JSON?
 
     var reportImage: UIImage!
+    var reportDescription: String = ""
     
     //
     // MARK: Overrides
@@ -340,6 +341,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 destinationNewReportLocationSelectorViewController.delegate = self
                 destinationNewReportLocationSelectorViewController.userSelectedCoordinates = self.userSelectedCoorindates
                 break
+            
             default:
                 break
         }
@@ -411,9 +413,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 
         self.userSelectedCoorindates = CLLocationCoordinate2D()
         
-//        self.labelReportLocationLatitude.text = "Confirm location"
-//        self.textareaReportComment.text = ""
-
     }
     
     func finishedSavingWithError() {
@@ -446,6 +445,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // has selected to be their report image.
         //
         self.reportImage = image
+        self.imageReportImagePreviewIsSet = true
         
         // Refresh the table view to display the updated image data
         //
@@ -554,8 +554,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // PARAMETERS
         //
         var parameters: [String: AnyObject] = [
-//            "report_description": self.textareaReportComment.text!,
-            "report_description": "",
+            "report_description": self.reportDescription,
             "is_public": "true",
             "geometry": geometryCollection,
             "state": "open"
@@ -567,82 +566,82 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         var _temporary_groups: [AnyObject] = [AnyObject]()
 
-//        for _organization_id in tempGroups {
-//            print("group id \(_organization_id)")
-//            
-//            let _group = [
-//                "id": "\(_organization_id)",
-//            ]
-//            
-//            _temporary_groups.append(_group)
-//            
-//        }
+        for _organization_id in tempGroups {
+            print("group id \(_organization_id)")
+            
+            let _group = [
+                "id": "\(_organization_id)",
+            ]
+            
+            _temporary_groups.append(_group)
+            
+        }
         
         parameters["groups"] = _temporary_groups
 
         //
         // Make request
         //
-//        if (self.buttonReportImageAddIcon.image != nil) {
-//            
-//            Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
-//                
-//                // import image to request
-//                if let imageData = UIImageJPEGRepresentation(self.buttonReportImageAddIcon.image!, 1) {
-//                    multipartFormData.appendBodyPart(data: imageData, name: "image", fileName: "ReportImageFromiPhone.jpg", mimeType: "image/jpeg")
-//                }
-//                
-//                }, encodingCompletion: {
-//                    encodingResult in
-//                    switch encodingResult {
-//                    case .Success(let upload, _, _):
-//                        upload.responseJSON { response in
-//                            print("Image uploaded \(response)")
-//                            
-//                            if let value = response.result.value {
-//                                let imageResponse = JSON(value)
-//                                
-//                                let image = [
-//                                    "id": String(imageResponse["id"].rawValue)
-//                                ]
-//                                let images: [AnyObject] = [image]
-//                                
-//                                parameters["images"] = images
-//                                
-//                                print("parameters \(parameters)")
-//                                
-//                                Alamofire.request(.POST, Endpoints.POST_REPORT, parameters: parameters, headers: headers, encoding: .JSON)
-//                                    .responseJSON { response in
-//                                        
-//                                        print("Response \(response)")
-//                                        
-//                                        switch response.result {
-//                                        case .Success(let value):
-//                                            
-//                                            print("Response Sucess \(value)")
-//                                            
-//                                            // Hide the loading indicator
-//                                            self.finishedSaving()
-//                                            
-//                                            // Send user to the Activty Feed
-//                                            self.tabBarController?.selectedIndex = 0
-//                                            
-//                                        case .Failure(let error):
-//                                            
-//                                            print("Response Failure \(error)")
-//                                            
-//                                            break
-//                                        }
-//                                        
-//                                }
-//                            }
-//                        }
-//                    case .Failure(let encodingError):
-//                        print(encodingError)
-//                    }
-//            })
-//            
-//        }
+        if (self.reportImage != nil) {
+            
+            Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
+                
+                // import image to request
+                if let imageData = UIImageJPEGRepresentation(self.reportImage!, 1) {
+                    multipartFormData.appendBodyPart(data: imageData, name: "image", fileName: "ReportImageFromiPhone.jpg", mimeType: "image/jpeg")
+                }
+                
+                }, encodingCompletion: {
+                    encodingResult in
+                    switch encodingResult {
+                    case .Success(let upload, _, _):
+                        upload.responseJSON { response in
+                            print("Image uploaded \(response)")
+                            
+                            if let value = response.result.value {
+                                let imageResponse = JSON(value)
+                                
+                                let image = [
+                                    "id": String(imageResponse["id"].rawValue)
+                                ]
+                                let images: [AnyObject] = [image]
+                                
+                                parameters["images"] = images
+                                
+                                print("parameters \(parameters)")
+                                
+                                Alamofire.request(.POST, Endpoints.POST_REPORT, parameters: parameters, headers: headers, encoding: .JSON)
+                                    .responseJSON { response in
+                                        
+                                        print("Response \(response)")
+                                        
+                                        switch response.result {
+                                        case .Success(let value):
+                                            
+                                            print("Response Sucess \(value)")
+                                            
+                                            // Hide the loading indicator
+                                            self.finishedSaving()
+                                            
+                                            // Send user to the Activty Feed
+                                            self.tabBarController?.selectedIndex = 0
+                                            
+                                        case .Failure(let error):
+                                            
+                                            print("Response Failure \(error)")
+                                            
+                                            break
+                                        }
+                                        
+                                }
+                            }
+                        }
+                    case .Failure(let encodingError):
+                        print(encodingError)
+                    }
+            })
+            
+        }
         
     }
 
