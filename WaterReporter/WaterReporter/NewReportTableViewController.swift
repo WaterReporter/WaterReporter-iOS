@@ -16,7 +16,6 @@ import UIKit
 class NewReportTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, MGLMapViewDelegate, NewReportLocationSelectorDelegate {
     
     
-    
     //
     // MARK: @IBOutlets
     //
@@ -24,8 +23,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 //    @IBOutlet weak var buttonReportImage: UIButton!
 //    @IBOutlet weak var buttonReportImageAddIcon: UIImageView!
 //    
-//    @IBOutlet weak var navigationBarButtonSave: UIBarButtonItem!
-//    
+    @IBOutlet weak var navigationBarButtonSave: UIBarButtonItem!
+//
 //    @IBOutlet weak var tableViewCellReportImage: UITableViewCell!
 //    
 //    @IBOutlet weak var addReportLocationButton: UIButton!
@@ -33,14 +32,14 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 //    
 //    @IBOutlet weak var labelReportLocationLatitude: UILabel!
 //    
-//    @IBOutlet var indicatorLoadingView: UIView!
+    @IBOutlet var indicatorLoadingView: UIView!
 //
 //    @IBOutlet weak var hashtagTypeAhead: UITableView!
     
     //
     // MARK: @IBActions
     //
-    @IBAction func launchNewReportLocationSelector(sender: AnyObject) {
+    @IBAction func launchNewReportLocationSelector(sender: UIButton) {
         self.performSegueWithIdentifier("setLocationForNewReport", sender: sender)
     }
     
@@ -69,6 +68,20 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         ]
         
         self.attemptNewReportSave(headers)
+        
+    }
+
+    @IBAction func selectGroup(sender: UISwitch) {
+        
+        if sender.on {
+            let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["properties"]["organization_id"])"
+            self.tempGroups.append(_organization_id_number)
+            print("addGroup::finished::tempGroups \(self.tempGroups)")
+        } else {
+            let _organization_id_number: String! = "\(self.groups!["features"][sender.tag]["properties"]["organization_id"])"
+            self.tempGroups = self.tempGroups.filter() {$0 != _organization_id_number}
+            print("removeGroup::finished::tempGroups \(self.tempGroups)")
+        }
         
     }
 
@@ -116,15 +129,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 //
         
         //
-        // Make sure the Add and Change location buttons perform the same action as touching the map
-        //
-//        addReportLocationButton.addTarget(self, action: #selector(NewReportTableViewController.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
-        
-        //
         // Setup Navigation Bar
         //
-//        navigationBarButtonSave.target = self
-//        navigationBarButtonSave.action = #selector(buttonSaveNewReportTableViewController(_:))
+        navigationBarButtonSave.target = self
+        navigationBarButtonSave.action = #selector(buttonSaveNewReportTableViewController(_:))
         
         self.attemptLoadUserGroups()
         
@@ -180,19 +188,21 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // MARK: Table Overrides
     //
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(tableView:UITableView, numberOfRowsInSection section: Int) -> Int {
         
         var numberOfRows: Int = 2
         
-        if self.groups != nil {
-
-            let numberOfGroups: Int = (self.groups?["features"].count)!
-            
-            numberOfRows = (numberOfRows + numberOfGroups)
-            
+        if section == 1 {
+            if self.groups != nil {
+                
+                let numberOfGroups: Int = (self.groups?["features"].count)!
+                
+                numberOfRows = (numberOfGroups)
+                
+            }
         }
         
         return numberOfRows
@@ -200,36 +210,54 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("newReportContentTableViewCell", forIndexPath: indexPath) as! NewReportContentTableViewCell
-            
-            // Report Image
-            //
-            cell.buttonReportAddImage.addTarget(self, action: #selector(NewReportTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
-            
-            if (self.reportImage != nil) {
-                cell.imageReportImage.image = self.reportImage
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("newReportContentTableViewCell", forIndexPath: indexPath) as! NewReportContentTableViewCell
+                
+                // Report Image
+                //
+                cell.buttonReportAddImage.addTarget(self, action: #selector(NewReportTableViewController.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
+                
+                if (self.reportImage != nil) {
+                    cell.imageReportImage.image = self.reportImage
+                }
+                
+                // Report Description
+                //
+                
+                return cell
             }
-            
-            // Report Description
-            //
-            
-            return cell
+            else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("newReportLocationTableViewCell", forIndexPath: indexPath) as! NewReportLocationTableViewCell
+                
+                print("Location Row")
+                
+                // Display location selection map when Confirm Location button is
+                // tapped/touched
+                //
+                cell.buttonChangeLocation.addTarget(self, action: #selector(self.launchNewReportLocationSelector(_:)), forControlEvents: .TouchUpInside)
+                
+                
+                // Update the text display for the user selected coordinates when
+                // the self.userSelectedCoorindates variable is not empty
+                //
+                print("self.userSelectedCoorindates \(self.userSelectedCoorindates)")
+                
+                if self.userSelectedCoorindates != nil {
+                    cell.labelLocation.text = String(self.userSelectedCoorindates.longitude) + " " + String(self.userSelectedCoorindates.latitude)
+                }
+                
+                
+                return cell
+            }
         }
-        else if indexPath.row == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("newReportLocationTableViewCell", forIndexPath: indexPath) as! NewReportLocationTableViewCell
-            
-            print("Location Row")
-
-            return cell
-        }
-        else if indexPath.row >= 2 {
+        else if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("newReportGroupTableViewCell", forIndexPath: indexPath) as! NewReportGroupTableViewCell
             
             guard (self.groups != nil) else { return cell }
             
-            let _index = (indexPath.row-2)
+            let _index = indexPath.row
             let group = self.groups?["features"][_index]
             
             if group != nil {
@@ -256,6 +284,22 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 //
                 cell.labelGroupName.text = "\(group!["properties"]["organization"]["properties"]["name"])"
                 
+                
+                // Organization Switch/Selection
+                //
+                cell.switchGroupSelect.tag = _index
+
+                if let _organization_id_number = self.groups?["features"][indexPath.row]["properties"]["organization_id"] {
+                    
+                    if self.tempGroups.contains("\(_organization_id_number)") {
+                        cell.switchGroupSelect.on = true
+                    }
+                    else {
+                        cell.switchGroupSelect.on = false
+                    }
+                    
+                }
+
             }
             
             return cell
@@ -311,74 +355,70 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     //
     // MARK: Custom functionality
     //
-    
-//    func saving() {
-//        
-//        //
-//        // Create a view that covers the entire screen
-//        //
-//        self.loadingView = self.indicatorLoadingView
-//        self.loadingView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
-//        
-//        self.view.addSubview(self.loadingView)
-//        self.view.bringSubviewToFront(self.loadingView)
-//        
-//        //
-//        // Make sure that the Done/Save button is disabled
-//        //
-//        self.navigationItem.rightBarButtonItem?.enabled = false
-//        
-//        //
-//        // Make doubly sure the keyboard is closed
-//        //
+    func saving() {
+        
+        //
+        // Create a view that covers the entire screen
+        //
+        self.loadingView = self.indicatorLoadingView
+        self.loadingView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+        
+        self.view.addSubview(self.loadingView)
+        self.view.bringSubviewToFront(self.loadingView)
+        
+        //
+        // Make sure that the Done/Save button is disabled
+        //
+        self.navigationItem.rightBarButtonItem?.enabled = false
+        
+        //
+        // Make doubly sure the keyboard is closed
+        //
 //        self.textareaReportComment.resignFirstResponder()
-//        
-//        //
-//        // Make sure our view is scrolled to the top
-//        //
-//        self.tableView.setContentOffset(CGPointZero, animated: false)
-//        
-//    }
-//
-//    func finishedSaving() {
-//        
-//        //
-//        // Create a view that covers the entire screen
-//        //
-//        self.loadingView.removeFromSuperview()
-//        
-//        //
-//        // Make sure that the Done/Save button is disabled
-//        //
-//        self.navigationItem.rightBarButtonItem?.enabled = true
-//        
-//        //
-//        // Make doubly sure the keyboard is closed
-//        //
+        
+        //
+        // Make sure our view is scrolled to the top
+        //
+        self.tableView.setContentOffset(CGPointZero, animated: false)
+        
+    }
+
+    func finishedSaving() {
+        
+        //
+        // Create a view that covers the entire screen
+        //
+        self.loadingView.removeFromSuperview()
+        
+        //
+        // Make sure that the Done/Save button is disabled
+        //
+        self.navigationItem.rightBarButtonItem?.enabled = true
+        
+        //
+        // Make doubly sure the keyboard is closed
+        //
 //        self.textareaReportComment.resignFirstResponder()
-//        
-//        //
-//        // Make sure our view is scrolled to the top
-//        //
-//        self.tableView.setContentOffset(CGPointZero, animated: false)
-//        
-//        
-//        // Reset all fields
-//        self.imageReportImagePreviewIsSet = false
-//
-//        self.userSelectedCoorindates = CLLocationCoordinate2D()
-//        
+        
+        //
+        // Make sure our view is scrolled to the top
+        //
+        self.tableView.setContentOffset(CGPointZero, animated: false)
+        
+        
+        // Reset all fields
+        self.imageReportImagePreviewIsSet = false
+
+        self.userSelectedCoorindates = CLLocationCoordinate2D()
+        
 //        self.labelReportLocationLatitude.text = "Confirm location"
 //        self.textareaReportComment.text = ""
-//
-////        buttonReportImage.hidden = false
-////        buttonReportImageAddIcon.hidden = false
-//
-//    }
-//    
-//    func finishedSavingWithError() {
-//        self.navigationItem.rightBarButtonItem?.enabled = true
-//    }
+
+    }
+    
+    func finishedSavingWithError() {
+        self.navigationItem.rightBarButtonItem?.enabled = true
+    }
 
     func cameraActionHandler(action:UIAlertAction) -> Void {
         if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
@@ -447,118 +487,86 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // MARK: Child Delegate
     //
     func sendCoordinates(coordinates: CLLocationCoordinate2D) {
-//        print("PARENT:sendCoordinates see \(coordinates)")
-//        
-//        // Pass off coorindates to the self.userSelectedCoordinates
-//        self.userSelectedCoorindates = coordinates
-//        
-//        // Fill the display fields
-//        self.labelReportLocationLatitude.text = String(self.userSelectedCoorindates.longitude) + " " + String(self.userSelectedCoorindates.latitude)
-        
-    }
-    
-    // Child Delegate
-    func sendGroups(groups: [String]) {
-//        self.tempGroups = groups
-    }
+        print("PARENT:sendCoordinates see \(coordinates)")
 
-    func addLocationToMap(mapView: AnyObject, latitude: Double, longitude: Double, center:Bool) {
+        // Pass off coorindates to the self.userSelectedCoordinates
+        //
+        self.userSelectedCoorindates = coordinates
         
-//        let thisAnnotation = MGLPointAnnotation()
-//        
-//        
-//        thisAnnotation.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//        
-//        mapView.addAnnotation(thisAnnotation)
-//        
-//        if center {
-//            // Center the map on the annotation.
-//            mapView.setCenterCoordinate(thisAnnotation.coordinate, zoomLevel: 15, animated: false)
-//            
-//            // Pop-up the callout view.
-//            mapView.selectAnnotation(thisAnnotation, animated: true)
-//        }
+        // Update the display of the returned coordinates in the "Confirm
+        // Location" table view cell label
+        //
+        self.tableView.reloadData()
     }
-    
-    func resetLocationOnMap(mapView: MGLMapView) {
-        
-//        let _coordinates = CLLocationCoordinate2DMake(39.5, -98.35)
-//
-//        mapView.setCenterCoordinate(_coordinates, zoomLevel: 15, animated: false)
-//        
-//        if (mapView.annotations?.count >= 1) {
-//            mapView.removeAnnotations(mapView.annotations!)
-//        }
-    }
-    
     
     //
     // MARK: Server Request/Response functionality
     //
     func attemptNewReportSave(headers: [String: String]) {
-//
-//        //
-//        // Error Check for Geometry
-//        //
-//        var geometryCollection: [String: AnyObject] = [
-//            "type": "GeometryCollection"
-//        ]
-//
-//        if (self.userSelectedCoorindates != nil) {
-//            
-//            var geometry: [String: AnyObject] = [
-//                "type": "Point"
-//            ]
-//
-//            let coordinates: Array = [
-//                self.userSelectedCoorindates.longitude,
-//                self.userSelectedCoorindates.latitude
-//            ]
-//
-//            geometry["coordinates"] = coordinates
-//            
-//            let geometries: [AnyObject] = [geometry]
-//            geometryCollection["geometries"] = geometries
-//        }
-//        else {
-//            self.displayErrorMessage("Location Field Empty", message: "Please add a location to your report before saving")
-//            
-//            self.finishedSavingWithError()
-//
-//            return
-//        }
-//        
-//        //
-//        // Check image value
-//        //
-//        if (!imageReportImagePreviewIsSet) {
-//            self.displayErrorMessage("Image Field Empty", message: "Please add an image to your report before saving")
-//
-//            self.finishedSavingWithError()
-//            
-//            return
-//        }
-//
-//        // Before starting the saving process, hide the form
-//        // and show the user the saving indicator
-//        self.saving()
-//
-//        //
-//        // PARAMETERS
-//        //
-//        var parameters: [String: AnyObject] = [
+
+        //
+        // Error Check for Geometry
+        //
+        var geometryCollection: [String: AnyObject] = [
+            "type": "GeometryCollection"
+        ]
+
+        if (self.userSelectedCoorindates != nil) {
+            
+            var geometry: [String: AnyObject] = [
+                "type": "Point"
+            ]
+
+            let coordinates: Array = [
+                self.userSelectedCoorindates.longitude,
+                self.userSelectedCoorindates.latitude
+            ]
+
+            geometry["coordinates"] = coordinates
+            
+            let geometries: [AnyObject] = [geometry]
+            geometryCollection["geometries"] = geometries
+        }
+        else {
+            self.displayErrorMessage("Location Field Empty", message: "Please add a location to your report before saving")
+            
+            self.finishedSavingWithError()
+
+            return
+        }
+        
+        //
+        // Check image value
+        //
+        if (!imageReportImagePreviewIsSet) {
+            self.displayErrorMessage("Image Field Empty", message: "Please add an image to your report before saving")
+
+            self.finishedSavingWithError()
+            
+            return
+        }
+
+        // Before starting the saving process, hide the form
+        // and show the user the saving indicator
+        self.saving()
+
+        //
+        // PARAMETERS
+        //
+        var parameters: [String: AnyObject] = [
 //            "report_description": self.textareaReportComment.text!,
-//            "is_public": "true",
-//            "geometry": geometryCollection,
-//            "state": "open"
-//        ]
-//        
-//
-//        //
-//        // GROUPS
-//        //
-//        var _temporary_groups: [AnyObject] = [AnyObject]()
-//
+            "report_description": "",
+            "is_public": "true",
+            "geometry": geometryCollection,
+            "state": "open"
+        ]
+        
+
+        //
+        // GROUPS
+        //
+        var _temporary_groups: [AnyObject] = [AnyObject]()
+
 //        for _organization_id in tempGroups {
 //            print("group id \(_organization_id)")
 //            
@@ -569,12 +577,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 //            _temporary_groups.append(_group)
 //            
 //        }
-//        
-//        parameters["groups"] = _temporary_groups
-//
-//        //
-//        // Make request
-//        //
+        
+        parameters["groups"] = _temporary_groups
+
+        //
+        // Make request
+        //
 //        if (self.buttonReportImageAddIcon.image != nil) {
 //            
 //            Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
@@ -635,18 +643,18 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 //            })
 //            
 //        }
-//        
+        
     }
-//
-//    func displayErrorMessage(title: String, message: String) {
-//        
-//        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
-//        
-//        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-//        
-//        self.presentViewController(alertController, animated: true, completion: nil)
-//    }
-//
+
+    func displayErrorMessage(title: String, message: String) {
+        
+        let alertController = UIAlertController(title: title, message:message, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+
     
     func buildRequestHeaders() -> [String: String] {
         

@@ -13,7 +13,7 @@ class NewReportLocationTableViewCell: UITableViewCell {
     @IBOutlet weak var labelLocation: UILabel!
     @IBOutlet weak var imageLocationIcon: UIImageView!
     @IBOutlet weak var buttonChangeLocation: UIButton!
-    
+        
     //
     // MARK: Overrides
     //
