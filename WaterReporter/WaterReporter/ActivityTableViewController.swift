@@ -651,13 +651,28 @@ class ActivityTableViewController: UITableViewController {
         let _report = JSON(self.reports[(indexPathRow)].objectForKey("properties")!)
         let _report_likes_count: Int = _report["likes"].count
         
+        // Check if we have previously liked this photo. If so, we need to take
+        // that into account when adding a new like.
+        //
+        let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
+        
         var _report_likes_updated_total: Int! = _report_likes_count
         
         if (addLike) {
-            _report_likes_updated_total = _report_likes_count+1
+            if (_previously_liked) {
+                _report_likes_updated_total = _report_likes_count
+            }
+            else {
+                _report_likes_updated_total = _report_likes_count+1
+            }
         }
         else {
-            _report_likes_updated_total = _report_likes_count-1
+            if (_previously_liked) {
+                _report_likes_updated_total = _report_likes_count-1
+            }
+            else {
+                _report_likes_updated_total = _report_likes_count
+            }
         }
         
         var reportLikesCountText: String = ""
@@ -672,12 +687,30 @@ class ActivityTableViewController: UITableViewController {
         }
         else {
             reportLikesCountText = "0 likes"
-            _cell.reportLikeCount.hidden = true
+            _cell.reportLikeCount.hidden = false
         }
         
         _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         
         
+    }
+    
+    func hasPreviouslyLike(likes: JSON) -> Bool {
+        
+        print("hasPreviouslyLike::likes \(likes)")
+        
+        // LOOP OVER PREVIOUS LIKES AND SEE IF CURRENT USER ID IS ONE OF THE OWNER IDS
+        
+        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
+
+        for _like in likes {
+            if (_like.1["properties"]["owner_id"].intValue == _user_id_number.integerValue) {
+                print("_like.1 \(_like.1)")
+                return true
+            }
+        }
+        
+        return false
     }
     
     func likeCurrentReport(sender: UIButton) {
@@ -689,45 +722,45 @@ class ActivityTableViewController: UITableViewController {
         self.updateReportLikeCount(sender.tag)
         
         
-        // Create necessary Authorization header for our request
-        //
-        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
-        let _headers = [
-            "Authorization": "Bearer " + (accessToken! as! String)
-        ]
-        
-        //
-        // PARAMETERS
-        //
-        let _report = JSON(self.reports[(sender.tag)])
-        let _report_id: String = "\(_report["id"])"
-        
-        let _parameters: [String:AnyObject] = [
-            "report_id": _report_id
-        ]
-        
-        Alamofire.request(.POST, Endpoints.POST_LIKE, parameters: _parameters, headers: _headers, encoding: .JSON)
-            .responseJSON { response in
-                
-                switch response.result {
-                case .Success(let value):
-                    if let _code = value["code"] {
-                        if _code?.stringValue == "400" {
-                            print("You already liked this post ... do nothing.")
-                        }
-                    }
-                    else {
-                        print("You're liking this post for the first time")
-                        self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
-                    }
-                    
-                    break
-                case .Failure(let error):
-                    print("Response Failure \(error)")
-                    break
-                }
-                
-        }
+//        // Create necessary Authorization header for our request
+//        //
+//        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+//        let _headers = [
+//            "Authorization": "Bearer " + (accessToken! as! String)
+//        ]
+//        
+//        //
+//        // PARAMETERS
+//        //
+//        let _report = JSON(self.reports[(sender.tag)])
+//        let _report_id: String = "\(_report["id"])"
+//        
+//        let _parameters: [String:AnyObject] = [
+//            "report_id": _report_id
+//        ]
+//        
+//        Alamofire.request(.POST, Endpoints.POST_LIKE, parameters: _parameters, headers: _headers, encoding: .JSON)
+//            .responseJSON { response in
+//                
+//                switch response.result {
+//                case .Success(let value):
+//                    if let _code = value["code"] {
+//                        if _code?.stringValue == "400" {
+//                            print("You already liked this post ... do nothing.")
+//                        }
+//                    }
+//                    else {
+//                        print("You're liking this post for the first time")
+//                        self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
+//                    }
+//                    
+//                    break
+//                case .Failure(let error):
+//                    print("Response Failure \(error)")
+//                    break
+//                }
+//                
+//        }
     }
     
     func unlikeCurrentReport(sender: UIButton) {
@@ -738,63 +771,63 @@ class ActivityTableViewController: UITableViewController {
         self.updateReportLikeCount(sender.tag, addLike: false)
         
         
-        // Create necessary Authorization header for our request
-        //
-        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
-        let _headers = [
-            "Authorization": "Bearer " + (accessToken! as! String)
-        ]
-        
-        //
-        // PARAMETERS
-        //
-        let _report = JSON(self.reports[(sender.tag)])
-        let _report_id: String = "\(_report["id"])"
-        
-        let _parameters: [String:AnyObject] = [
-            "report_id": _report_id
-        ]
-        
-        //
-        // ENDPOINT
-        //
-        var _like_id: String = ""
-        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
-        var _like_index: Int = 0
-        
-        if (_report["properties"]["likes"].count != 0) {
-            
-            for _like in _report["properties"]["likes"] {
-                if (_like.1["properties"]["owner_id"].intValue == _user_id_number.integerValue) {
-                    print("_like.1 \(_like.1)")
-                    _like_id = "\(_like.1["id"])"
-                    _like_index = Int(_like.0)!
-                }
-            }
-        }
-        
-        let _endpoint: String = Endpoints.DELETE_LIKE + "/\(_like_id)"
-                
-        
-        //
-        // REQUEST
-        //
-        Alamofire.request(.DELETE, _endpoint, parameters: _parameters, headers: _headers, encoding: .JSON)
-            .responseJSON { response in
-                
-                switch response.result {
-                case .Success(let value):
-                    print("Response Success \(value)")
-                    
-                    self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
-                    
-                    break
-                case .Failure(let error):
-                    print("Response Failure \(error)")
-                    break
-                }
-                
-        }
+//        // Create necessary Authorization header for our request
+//        //
+//        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+//        let _headers = [
+//            "Authorization": "Bearer " + (accessToken! as! String)
+//        ]
+//        
+//        //
+//        // PARAMETERS
+//        //
+//        let _report = JSON(self.reports[(sender.tag)])
+//        let _report_id: String = "\(_report["id"])"
+//        
+//        let _parameters: [String:AnyObject] = [
+//            "report_id": _report_id
+//        ]
+//        
+//        //
+//        // ENDPOINT
+//        //
+//        var _like_id: String = ""
+//        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
+//        var _like_index: Int = 0
+//        
+//        if (_report["properties"]["likes"].count != 0) {
+//            
+//            for _like in _report["properties"]["likes"] {
+//                if (_like.1["properties"]["owner_id"].intValue == _user_id_number.integerValue) {
+//                    print("_like.1 \(_like.1)")
+//                    _like_id = "\(_like.1["id"])"
+//                    _like_index = Int(_like.0)!
+//                }
+//            }
+//        }
+//        
+//        let _endpoint: String = Endpoints.DELETE_LIKE + "/\(_like_id)"
+//                
+//        
+//        //
+//        // REQUEST
+//        //
+//        Alamofire.request(.DELETE, _endpoint, parameters: _parameters, headers: _headers, encoding: .JSON)
+//            .responseJSON { response in
+//                
+//                switch response.result {
+//                case .Success(let value):
+//                    print("Response Success \(value)")
+//                    
+//                    self.updateReportLikes(_report_id, reportSenderTag: sender.tag)
+//                    
+//                    break
+//                case .Failure(let error):
+//                    print("Response Failure \(error)")
+//                    break
+//                }
+//                
+//        }
     }
     
     func updateReportLikes(_report_id: String, reportSenderTag: Int) {
