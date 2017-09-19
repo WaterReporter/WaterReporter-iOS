@@ -3268,7 +3268,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NewReportTableViewController" id="bvG-U0-PAy" customClass="NewReportTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="kBz-It-rwF">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="S9K-yl-Wvs">
@@ -3278,7 +3278,7 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GR7-9Q-XYl">
                                     <rect key="frame" x="16" y="32" width="343" height="42"/>
                                     <attributedString key="attributedText">
-                                        <fragment content="To get started, tap on the camera icon to add a photo or paste a link into the comment field.">
+                                        <fragment content="To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share.">
                                             <attributes>
                                                 <color key="NSColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                                                 <font key="NSFont" size="11" name=".SFNSText"/>
@@ -3299,7 +3299,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="5Id-5V-0AF">
-                            <rect key="frame" x="0.0" y="549" width="375" height="128"/>
+                            <rect key="frame" x="0.0" y="821" width="375" height="128"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dDu-Dc-esr">
@@ -3326,7 +3326,7 @@
                                 <rect key="frame" x="0.0" y="134" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CKF-qk-yHg" id="cvd-IP-Kb0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--link" translatesAutoresizingMaskIntoConstraints="NO" id="fgA-jQ-fbz">
@@ -3347,11 +3347,11 @@
                                     <outlet property="imageLinkIcon" destination="fgA-jQ-fbz" id="e0Y-Td-EOa"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NewReportContentTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="newReportContentTableViewCell" rowHeight="255" id="0Hs-aH-DFJ" customClass="NewReportContentTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="178" width="375" height="255"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NewReportContentTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="newReportContentTableViewCell" rowHeight="527" id="0Hs-aH-DFJ" customClass="NewReportContentTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="178" width="375" height="527"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Hs-aH-DFJ" id="tVh-CE-xUO">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="254.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="526"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Id9-Yu-fIc">
@@ -3369,7 +3369,7 @@
                                                 <constraint firstAttribute="height" constant="32" id="FoM-UO-oJp"/>
                                             </constraints>
                                         </imageView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nuF-zA-Mlu">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" text="Write a few words about the photo or paste a link…" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nuF-zA-Mlu">
                                             <rect key="frame" x="56" y="8" width="295" height="96"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
@@ -3383,7 +3383,7 @@
                                             </connections>
                                         </textView>
                                         <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="hashtagTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zYQ-26-xfX" customClass="HashtagTableView" customModule="Water_Reporter" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="126" width="375" height="128"/>
+                                            <rect key="frame" x="0.0" y="398.5" width="375" height="128"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="128" id="jZ1-BA-GHa"/>
@@ -3393,7 +3393,7 @@
                                                     <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7u6-ou-1wC" id="ccP-3R-17Q">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#example" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s84-Lb-FMQ">
@@ -3416,21 +3416,60 @@
                                             </prototypes>
                                             <sections/>
                                         </tableView>
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LEx-8q-kPI">
+                                            <rect key="frame" x="16" y="120" width="343" height="256"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LHK-Cd-Jhq">
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="160"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="160" id="MhC-LW-Dyd"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PSk-KC-t0B">
+                                                    <rect key="frame" x="8" y="168" width="327" height="18"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1g-XJ-oHY">
+                                                    <rect key="frame" x="8" y="202" width="327" height="13.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" red="0.36888950892857142" green="0.36888950892857142" blue="0.36888950892857142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="PSk-KC-t0B" secondAttribute="trailing" constant="8" id="8yp-qd-h67"/>
+                                                <constraint firstItem="LHK-Cd-Jhq" firstAttribute="leading" secondItem="LEx-8q-kPI" secondAttribute="leading" id="Bn5-h4-Ra5"/>
+                                                <constraint firstItem="PSk-KC-t0B" firstAttribute="leading" secondItem="LEx-8q-kPI" secondAttribute="leading" constant="8" id="Her-Fc-WoU"/>
+                                                <constraint firstAttribute="trailing" secondItem="p1g-XJ-oHY" secondAttribute="trailing" constant="8" id="Woy-K4-9hu"/>
+                                                <constraint firstItem="p1g-XJ-oHY" firstAttribute="leading" secondItem="LEx-8q-kPI" secondAttribute="leading" constant="8" id="anA-qX-Vui"/>
+                                                <constraint firstItem="p1g-XJ-oHY" firstAttribute="top" secondItem="PSk-KC-t0B" secondAttribute="bottom" constant="16" id="gUc-4N-EUA"/>
+                                                <constraint firstAttribute="trailing" secondItem="LHK-Cd-Jhq" secondAttribute="trailing" id="ktc-Fl-X5a"/>
+                                                <constraint firstAttribute="height" constant="256" id="lPy-n8-D9S"/>
+                                                <constraint firstItem="LHK-Cd-Jhq" firstAttribute="top" secondItem="LEx-8q-kPI" secondAttribute="top" id="oVB-mo-42X"/>
+                                                <constraint firstItem="PSk-KC-t0B" firstAttribute="top" secondItem="LHK-Cd-Jhq" secondAttribute="bottom" constant="8" id="tiv-66-lDx"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Id9-Yu-fIc" firstAttribute="centerY" secondItem="gpO-Jx-Dyv" secondAttribute="centerY" id="1xB-5M-4YD"/>
                                         <constraint firstItem="nuF-zA-Mlu" firstAttribute="top" secondItem="tVh-CE-xUO" secondAttribute="topMargin" id="2Zf-4A-pZN"/>
                                         <constraint firstItem="gpO-Jx-Dyv" firstAttribute="top" secondItem="tVh-CE-xUO" secondAttribute="topMargin" constant="-4" id="48E-3E-Df9"/>
+                                        <constraint firstItem="LEx-8q-kPI" firstAttribute="top" secondItem="nuF-zA-Mlu" secondAttribute="bottom" constant="16" id="AqB-vH-gwY"/>
                                         <constraint firstAttribute="topMargin" secondItem="gpO-Jx-Dyv" secondAttribute="top" id="B6U-e5-flj"/>
                                         <constraint firstItem="Id9-Yu-fIc" firstAttribute="centerX" secondItem="gpO-Jx-Dyv" secondAttribute="centerX" id="CSF-sW-XW0"/>
+                                        <constraint firstItem="zYQ-26-xfX" firstAttribute="top" secondItem="LEx-8q-kPI" secondAttribute="bottom" constant="22.5" id="ENn-9x-z4c"/>
                                         <constraint firstItem="nuF-zA-Mlu" firstAttribute="leading" secondItem="gpO-Jx-Dyv" secondAttribute="trailing" constant="8" id="Fed-K6-WjJ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="zYQ-26-xfX" secondAttribute="bottom" constant="-8" id="HQ0-AV-wXh"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="gpO-Jx-Dyv" secondAttribute="leading" id="MV0-2n-Tip"/>
                                         <constraint firstItem="gpO-Jx-Dyv" firstAttribute="centerY" secondItem="Id9-Yu-fIc" secondAttribute="centerY" id="Op3-I4-2Ak"/>
                                         <constraint firstItem="gpO-Jx-Dyv" firstAttribute="leading" secondItem="tVh-CE-xUO" secondAttribute="leadingMargin" constant="8" id="PSX-fL-Dlo"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="nuF-zA-Mlu" secondAttribute="trailing" constant="16" id="RdF-fQ-gzv"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="LEx-8q-kPI" secondAttribute="trailing" constant="8" id="cF1-CW-pQa"/>
+                                        <constraint firstItem="LEx-8q-kPI" firstAttribute="leading" secondItem="tVh-CE-xUO" secondAttribute="leadingMargin" constant="8" id="fhF-Ib-Vjm"/>
                                         <constraint firstItem="zYQ-26-xfX" firstAttribute="leading" secondItem="tVh-CE-xUO" secondAttribute="leadingMargin" constant="-8" id="iq0-fa-3F8"/>
-                                        <constraint firstItem="zYQ-26-xfX" firstAttribute="top" secondItem="nuF-zA-Mlu" secondAttribute="bottom" constant="22" id="v8E-e9-7G4"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="zYQ-26-xfX" secondAttribute="trailing" constant="-8" id="xd0-Rz-jVI"/>
                                     </constraints>
                                     <variation key="default">
@@ -3445,16 +3484,21 @@
                                 <connections>
                                     <outlet property="buttonReportAddImage" destination="Id9-Yu-fIc" id="sSt-rH-w0T"/>
                                     <outlet property="imageReportImage" destination="gpO-Jx-Dyv" id="wcD-Gh-XSi"/>
+                                    <outlet property="ogDescription" destination="p1g-XJ-oHY" id="Q1K-ae-U4g"/>
+                                    <outlet property="ogImage" destination="LHK-Cd-Jhq" id="jZI-JN-MXr"/>
+                                    <outlet property="ogTitle" destination="PSk-KC-t0B" id="ctA-br-WY5"/>
+                                    <outlet property="ogView" destination="LEx-8q-kPI" id="n5H-cb-pMD"/>
+                                    <outlet property="ogViewHeightConstraint" destination="lPy-n8-D9S" id="OoL-h4-K8B"/>
                                     <outlet property="tableViewHashtag" destination="zYQ-26-xfX" id="m45-tG-1Rg"/>
                                     <outlet property="textviewReportDescription" destination="nuF-zA-Mlu" id="B9c-sO-RD7"/>
                                     <outlet property="typeAheadHeight" destination="GIB-VL-ROa" id="zi0-Ih-Np0"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NewReportLocationTableViewCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="newReportLocationTableViewCell" rowHeight="44" id="RNU-rz-TE0" customClass="NewReportLocationTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="433" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="705" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RNU-rz-TE0" id="Ihf-ta-jEP">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i8B-b6-NIX">
@@ -3496,10 +3540,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NewReportGroupTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="newReportGroupTableViewCell" rowHeight="72" id="FIX-wh-upI" customClass="NewReportGroupTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="477" width="375" height="72"/>
+                                <rect key="frame" x="0.0" y="749" width="375" height="72"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FIX-wh-upI" id="GZl-mn-mxG">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="71.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9gS-EN-5yV">
@@ -3552,6 +3596,8 @@
                     <navigationItem key="navigationItem" id="FeF-GF-O3A">
                         <barButtonItem key="rightBarButtonItem" title="Save" id="Hif-xY-oqu"/>
                     </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="1000"/>
                     <connections>
                         <outlet property="indicatorLoadingView" destination="1U4-NR-F7b" id="i5c-Fx-lNz"/>
                         <outlet property="navigationBarButtonSave" destination="Hif-xY-oqu" id="Mqp-G1-90T"/>
@@ -3582,7 +3628,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="2798" y="-922"/>
+            <point key="canvasLocation" x="2793" y="-616"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="C1x-if-a0S">
@@ -3609,11 +3655,11 @@
                         <viewControllerLayoutGuide type="bottom" id="00r-Fr-n6N"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="NewReportLocationSelector" id="GqO-mr-yC8" customClass="NewReport">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i05-ED-dv3" customClass="MGLMapView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/rdawes1/circfufio0013h4nlhibdw240"/>
@@ -3624,7 +3670,7 @@
                                 </connections>
                             </view>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ld2-JX-Wlo">
-                                <rect key="frame" x="171.5" y="365.5" width="32" height="32"/>
+                                <rect key="frame" x="171.5" y="532" width="32" height="32"/>
                                 <color key="backgroundColor" red="1" green="0.082352941176470587" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="1" green="0.082352941176470587" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>

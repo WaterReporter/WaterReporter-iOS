@@ -738,31 +738,45 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             case .Success(let value):
                 print("Request Success: \(value)")
                 
-                // Assign response to groups variable
-                if (isRefreshingReportsList) {
-                    self.userGroups = JSON(value)
-                    self.userGroupsObjects = value["features"] as! [AnyObject]
-                    self.groupsRefreshControl.endRefreshing()
+                // Before anything else, check to make sure we are
+                // processing a valid request. Sometimes we get error
+                // codes and we need to handle them appropriately.
+                //
+                let responseCode = value["code"]
+                
+                if responseCode == nil {
+                    print("Unable to continue processing error encountered \(responseCode)")
                 } else {
-                    if (value["features"] != nil) {
-                        // Assign response to groups variable
+                    // No response code found, so go ahead and
+                    // continue processing the response.
+                    //
+                    if (isRefreshingReportsList) {
                         self.userGroups = JSON(value)
-                        self.userGroupsObjects += value["features"] as! [AnyObject]
+                        self.userGroupsObjects = value["features"] as! [AnyObject]
+                        self.groupsRefreshControl.endRefreshing()
+                    } else {
+                        if let features = value["features"] {
+                            if features != nil {
+                                self.userGroups = JSON(value)
+                                self.userGroupsObjects += features as! [AnyObject]
+                            }
+                        }
+                        
                     }
                     
-                }
-                
-                // Set the number on the profile page
-                let _group_count = self.userGroups!["properties"]["num_results"]
-                
-                if (_group_count != "") {
-                    self.buttonUserProfileGroupCount.setTitle("\(_group_count)", forState: .Normal)
-                }
+                    // Set the number on the profile page
+                    let _group_count = self.userGroups!["properties"]["num_results"]
+                    
+                    if (_group_count != "") {
+                        self.buttonUserProfileGroupCount.setTitle("\(_group_count)", forState: .Normal)
+                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.groupsTableView.reloadData()
+                    
+                    self.userGroupsPage += 1
 
-                // Refresh the data in the table so the newest items appear
-                self.groupsTableView.reloadData()
-                
-                self.userGroupsPage += 1
+                }
                 
                 break
             case .Failure(let error):
@@ -792,30 +806,44 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     
                     print("Response Success: value")
                     
-                    if (isRefreshingReportsList) {
-                        // Assign response to groups variable
-                        self.userSubmissions = JSON(value)
-                        self.userSubmissionsObjects = value["features"] as! [AnyObject]
-                        self.submissionRefreshControl.endRefreshing()
+                    // Before anything else, check to make sure we are
+                    // processing a valid request. Sometimes we get error
+                    // codes and we need to handle them appropriately.
+                    //
+                    let responseCode = value["code"]
+                    
+                    if responseCode == nil {
+                        print("Unable to continue processing error encountered \(responseCode)")
                     } else {
-                        if (value["features"] != nil) {
+                        // No response code found, so go ahead and
+                        // continue processing the response.
+                        //
+                        if (isRefreshingReportsList) {
                             // Assign response to groups variable
                             self.userSubmissions = JSON(value)
-                            self.userSubmissionsObjects += value["features"] as! [AnyObject]
+                            self.userSubmissionsObjects = value["features"] as! [AnyObject]
+                            self.submissionRefreshControl.endRefreshing()
+                        } else {
+                            if let features = value["features"] {
+                                if features != nil {
+                                    self.userSubmissions = JSON(value)
+                                    self.userSubmissionsObjects += features as! [AnyObject]
+                                }
+                            }
                         }
+                        
+                        // Set visible button count
+                        let _submission_count = self.userSubmissions!["properties"]["num_results"]
+                        
+                        if (_submission_count != "") {
+                            self.buttonUserProfileSubmissionCount.setTitle("\(_submission_count)", forState: .Normal)
+                        }
+                        
+                        // Refresh the data in the table so the newest items appear
+                        self.submissionTableView.reloadData()
+                        
+                        self.userSubmissionsPage += 1
                     }
-                    
-                    // Set visible button count
-                    let _submission_count = self.userSubmissions!["properties"]["num_results"]
-                    
-                    if (_submission_count != "") {
-                        self.buttonUserProfileSubmissionCount.setTitle("\(_submission_count)", forState: .Normal)
-                    }
-                    
-                    // Refresh the data in the table so the newest items appear
-                    self.submissionTableView.reloadData()
-                    
-                    self.userSubmissionsPage += 1
                     
                     break
                 case .Failure(let error):
@@ -874,30 +902,46 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                         case .Success(let value):
                             print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
                             
-                            if (isRefreshingReportsList) {
-                                // Assign response to groups variable
-                                self.userActions = JSON(value)
-                                self.userActionsObjects = value["features"] as! [AnyObject]
-                                self.actionRefreshControl.endRefreshing()
+                            // Before anything else, check to make sure we are
+                            // processing a valid request. Sometimes we get error
+                            // codes and we need to handle them appropriately.
+                            //
+                            let responseCode = value["code"]
+                            
+                            if responseCode == nil {
+                                print("Unable to continue processing error encountered \(responseCode)")
                             } else {
-                                // Assign response to groups variable
-                                if (value["features"] != nil) {
+                                // No response code found, so go ahead and
+                                // continue processing the response.
+                                //
+                                if (isRefreshingReportsList) {
+                                    // Assign response to groups variable
                                     self.userActions = JSON(value)
-                                    self.userActionsObjects += value["features"] as! [AnyObject]
+                                    self.userActionsObjects = value["features"] as! [AnyObject]
+                                    self.actionRefreshControl.endRefreshing()
+                                } else {
+                                    
+                                    if let features = value["features"] {
+                                        if features != nil {
+                                            self.userActions = JSON(value)
+                                            self.userActionsObjects += features as! [AnyObject]
+                                        }
+                                    }
+                                    
                                 }
+
+                                // Set visible button count
+                                let _action_count = self.userActions!["properties"]["num_results"]
+                                
+                                if (_action_count >= 1) {
+                                    self.buttonUserProfileActionCount.setTitle("\(_action_count)", forState: .Normal)
+                                }
+                                
+                                // Refresh the data in the table so the newest items appear
+                                self.actionsTableView.reloadData()
+                                
+                                self.userActionsPage += 1
                             }
-                            
-                            // Set visible button count
-                            let _action_count = self.userActions!["properties"]["num_results"]
-                            
-                            if (_action_count >= 1) {
-                                self.buttonUserProfileActionCount.setTitle("\(_action_count)", forState: .Normal)
-                            }
-                            
-                            // Refresh the data in the table so the newest items appear
-                            self.actionsTableView.reloadData()
-                            
-                            self.userActionsPage += 1
                             
                             break
                         case .Failure(let error):

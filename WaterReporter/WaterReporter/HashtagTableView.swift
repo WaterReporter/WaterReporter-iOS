@@ -64,7 +64,6 @@ class HashtagTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
         
         parent.selectedValue(_finalSelection)
 
-
     }
     
 }

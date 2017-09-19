@@ -30,6 +30,12 @@ class NewReportContentTableViewCell: UITableViewCell {
     @IBOutlet weak var textviewReportDescription: UITextView!
     @IBOutlet weak var tableViewHashtag: HashtagTableView!
     @IBOutlet weak var typeAheadHeight: NSLayoutConstraint!
+    @IBOutlet weak var ogViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var ogView: UIView!
+    @IBOutlet weak var ogImage: UIImageView!
+    @IBOutlet weak var ogTitle: UILabel!
+    @IBOutlet weak var ogDescription: UILabel!
 
     
     //
@@ -42,12 +48,7 @@ class NewReportContentTableViewCell: UITableViewCell {
         //
         self.addDoneButtonOnKeyboard()
         
-        
-        // Enable Hashtag Tableview
-        //
-        self.tableViewHashtag.delegate = self.dataSource
-        self.tableViewHashtag.dataSource = self.dataSource
-        dataSource.parent = self
+//        dataSource.parent = self
 
     }
     
@@ -85,118 +86,37 @@ class NewReportContentTableViewCell: UITableViewCell {
         self.textviewReportDescription.resignFirstResponder()
         self.textviewReportDescription.resignFirstResponder()
     }
-    
-    
-    //
-    // MARK: Hashtag
-    //
-    func searchHashtags(timer: NSTimer) {
 
-        let queryText: String! = "\(timer.userInfo!)"
-
-        print("searchHashtags fired with \(queryText)")
-
-        //
-        // Send a request to the defined endpoint with the given parameters
-        //
-        let parameters = [
-            "q": "{\"filters\": [{\"name\":\"tag\",\"op\":\"like\",\"val\":\"\(queryText)%\"}]}"
-        ]
-
-        Alamofire.request(.GET, Endpoints.GET_MANY_HASHTAGS, parameters: parameters)
-            .responseJSON { response in
-
-                switch response.result {
-                case .Success(let value):
-
-                    let _results = JSON(value)
-                    print("_results \(_results)")
-
-                    for _result in _results["features"] {
-                        print("_result \(_result.1["properties"]["tag"])")
-                        let _tag = "\(_result.1["properties"]["tag"])"
-                        self.dataSource.results.append(_tag)
-                    }
-
-                    self.dataSource.numberOfRowsInSection(_results["features"].count)
-
-                    self.tableViewHashtag.reloadData()
-
-                case .Failure(let error):
-                    print(error)
-                    break
-                }
-                
+    func textViewShouldReturn(textField: UITextView) -> Bool {
+        
+        let nextTag = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
+        
+        if (nextResponder != nil){
+            nextResponder?.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
         }
+        
+        return false
     }
-
-    func textViewDidChange(textView: UITextView) {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        let _text: String = "\(textView.text)"
+        let nextTag = textField.tag + 1;
+        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
         
-        if _text != "" && _text.characters.last! == "#" {
-            self.hashtagSearchEnabled = true
-            self.textviewReportDescription.becomeFirstResponder()
-            
-            print("Hashtag Search: Found start of hashtag")
+        if (nextResponder != nil){
+            nextResponder?.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
         }
-        else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
-            self.tableViewHashtag.hidden = true
-            self.hashtagSearchEnabled = false
-            self.dataSource.results = [String]()
-            
-            self.typeAheadHeight.constant = 0.0
-            self.tableViewHashtag.reloadData()
-            self.textviewReportDescription.becomeFirstResponder()
-            
-            print("Hashtag Search: Disabling search because space was entered")
-            print("Hashtag Search: Timer reset to zero due to search termination (space entered)")
-            self.hashtagSearchTimer.invalidate()
-            
-        }
-        else if _text != "" && self.hashtagSearchEnabled == true {
-            
-            self.tableViewHashtag.hidden = false
-            self.dataSource.results = [String]()
-            
-            self.typeAheadHeight.constant = 128.0
-            self.tableViewHashtag.reloadData()
-            self.textviewReportDescription.becomeFirstResponder()
-            
-            // Identify hashtag search
-            //
-            let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
-            if ((_hashtag_identifier) != nil) {
-                let _hashtag_search: String! = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
-                
-                // Add what the user is typing to the top of the list
-                //
-                print("Hashtag Search: Performing search for \(_hashtag_search)")
-                
-                dataSource.results = ["\(_hashtag_search)"]
-                dataSource.search = "\(_hashtag_search)"
-                
-                dataSource.numberOfRowsInSection(dataSource.results.count)
-                
-                self.tableViewHashtag.reloadData()
-                
-                // Execute the serverside search BUT wait a few milliseconds between
-                // each character so we aren't returning inconsistent results to
-                // the user
-                //
-                print("Hashtag Search: Timer reset to zero")
-                self.hashtagSearchTimer.invalidate()
-                
-                print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
-                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(self.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
-                
-            }
-            
-        }
+        
+        return false
     }
     
     func selectedValue(value: String) {
-
+        
         // Add the hashtag to the text
         //
         self.textviewReportDescription.text = "\(self.textviewReportDescription.text)\(value)"
@@ -217,9 +137,7 @@ class NewReportContentTableViewCell: UITableViewCell {
         
         print("Hashtag Search: Timer reset to zero due to user selection")
         self.hashtagSearchTimer.invalidate()
-
-
+        
+        
     }
-
-    
 }
