@@ -214,6 +214,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         return true
     }
     
+    func textViewDidBeginEditing(textView: UITextView) {
+        textView.text = ""
+    }
+
+    
     func textViewDidChange(textView: UITextView) {
         
         let _text: String = "\(textView.text)"
@@ -373,8 +378,12 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                         cell.ogImage.kf_setImageWithURL(ogImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                             (image, error, cacheType, imageUrl) in
                             cell.ogImage.image = image
-                            self.reportImage = image
-                            self.imageReportImagePreviewIsSet = true
+                            
+                            if (self.imageReportImagePreviewIsSet == false) {
+                                self.reportImage = image
+                                self.imageReportImagePreviewIsSet = true
+                                self.tableView.reloadData()
+                            }
                         })
 
                     }
@@ -718,6 +727,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         // PARAMETERS
         //
+        if self.reportDescription == "Write a few words about the photo or paste a link..." {
+            self.reportDescription = ""
+        }
+
         var parameters: [String: AnyObject] = [
             "report_description": self.reportDescription,
             "is_public": "true",
