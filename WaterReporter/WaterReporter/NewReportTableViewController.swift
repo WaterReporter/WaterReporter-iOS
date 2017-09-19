@@ -230,11 +230,9 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             print("Hashtag Search: Found start of hashtag")
         }
         else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
-            //            self.tableViewHashtag.hidden = true
             self.hashtagSearchEnabled = false
             self.dataSource.results = [String]()
             
-            //            self.typeAheadHeight.constant = 0.0
             self.tableView.reloadData()
             
             print("Hashtag Search: Disabling search because space was entered")
@@ -244,13 +242,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
         else if _text != "" && self.hashtagSearchEnabled == true {
             
-            //            self.tableViewHashtag.hidden = false
             self.dataSource.results = [String]()
-            //
-            //            self.typeAheadHeight.constant = 128.0
-            //            self.tableViewHashtag.reloadData()
+
             self.tableView.reloadData()
-            //            self.textviewReportDescription.becomeFirstResponder()
+            self.view.endEditing(false)
+//            self.tableViewPostComments.reloadSections(IndexSet(integersIn: 0...0), with: UITableViewRowAnimation.top)
             
             // Identify hashtag search
             //
@@ -267,8 +263,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 
                 dataSource.numberOfRowsInSection(dataSource.results.count)
                 
-                //                self.tableViewHashtag.reloadData()
                 self.tableView.reloadData()
+                self.view.endEditing(false)
                 
                 // Execute the serverside search BUT wait a few milliseconds between
                 // each character so we aren't returning inconsistent results to
@@ -291,7 +287,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // MARK: Table Overrides
     //
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(tableView:UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -299,6 +295,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         var numberOfRows: Int = 2
         
         if section == 1 {
+            if self.dataSource.results != nil {
+                let numberOfHashtags: Int = (self.dataSource.results.count)
+                numberOfRows = numberOfHashtags
+            }
+        } else if section == 2 {
             if self.groups != nil {
                 
                 let numberOfGroups: Int = (self.groups?["features"].count)!
@@ -334,6 +335,15 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 //
                 cell.tableViewHashtag.delegate = self.dataSource
                 cell.tableViewHashtag.dataSource = self.dataSource
+                
+                if self.hashtagSearchEnabled == true {
+                    cell.tableViewHashtag.hidden = false
+                    cell.typeAheadHeight.constant = 128.0
+                }
+                else {
+                    cell.tableViewHashtag.hidden = true
+                    cell.typeAheadHeight.constant = 0.0
+                }
                 
                 
                 // Report Description > Open Graph
@@ -400,6 +410,9 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             }
         }
         else if indexPath.section == 1 {
+            print("do something with hashtags here")
+        }
+        else if indexPath.section == 2 {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("newReportGroupTableViewCell", forIndexPath: indexPath) as! NewReportGroupTableViewCell
             
@@ -478,6 +491,9 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     else if (self.hashtagSearchEnabled == false) {
                         rowHeight = 384.0
                     }
+                }
+                else {
+                    rowHeight = 128.0
                 }
             }
         }
@@ -878,7 +894,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 case .Success(let value):
                     
                     let _results = JSON(value)
-                    print("self.dataSource >>>> _results \(_results)")
+//                    print("self.dataSource >>>> _results \(_results)")
                     
                     for _result in _results["features"] {
                         print("_result \(_result.1["properties"]["tag"])")
@@ -888,7 +904,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     
                     self.dataSource.numberOfRowsInSection(_results["features"].count)
                     
-                    self.tableView.reloadData()
+                    //self.tableView.reloadData()
                     
                 case .Failure(let error):
                     print(error)

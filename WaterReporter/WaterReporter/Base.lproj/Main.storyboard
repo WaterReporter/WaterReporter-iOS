@@ -3491,7 +3491,7 @@
                                     <outlet property="ogViewHeightConstraint" destination="lPy-n8-D9S" id="OoL-h4-K8B"/>
                                     <outlet property="tableViewHashtag" destination="zYQ-26-xfX" id="m45-tG-1Rg"/>
                                     <outlet property="textviewReportDescription" destination="nuF-zA-Mlu" id="B9c-sO-RD7"/>
-                                    <outlet property="typeAheadHeight" destination="GIB-VL-ROa" id="zi0-Ih-Np0"/>
+                                    <outlet property="typeAheadHeight" destination="jZ1-BA-GHa" id="riE-GR-T0h"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NewReportLocationTableViewCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="newReportLocationTableViewCell" rowHeight="44" id="RNU-rz-TE0" customClass="NewReportLocationTableViewCell" customModule="Water_Reporter" customModuleProvider="target">

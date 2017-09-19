@@ -84,7 +84,6 @@ class NewReportContentTableViewCell: UITableViewCell {
 
     func doneButtonAction() {
         self.textviewReportDescription.resignFirstResponder()
-        self.textviewReportDescription.resignFirstResponder()
     }
 
     func textViewShouldReturn(textField: UITextView) -> Bool {
