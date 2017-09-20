@@ -489,14 +489,6 @@ class ActivityTableViewController: UITableViewController {
                     print("Success. You just tapped the \(url) url")
                     
                     UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
-
-                    
-//                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
-//                    
-//                    nextViewController.hashtag = hashtag
-//                    
-//                    self.navigationController?.pushViewController(nextViewController, animated: true)
-                    
                 }
 
             }

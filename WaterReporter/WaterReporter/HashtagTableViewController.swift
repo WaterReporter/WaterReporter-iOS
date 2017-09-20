@@ -657,6 +657,12 @@ class HashtagTableViewController: UITableViewController {
                     
                 }
                 
+                cell.labelReportDescription.handleURLTap { url in
+                    print("Success. You just tapped the \(url) url")
+                    
+                    UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
+                }
+
             }
             else {
                 cell.labelReportDescription.text = ""
@@ -864,6 +870,11 @@ class HashtagTableViewController: UITableViewController {
                     
                     self.navigationController?.pushViewController(nextViewController, animated: true)
                     
+                }
+                cell.labelReportDescription.handleURLTap { url in
+                    print("Success. You just tapped the \(url) url")
+                    
+                    UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
                 }
                 
             }

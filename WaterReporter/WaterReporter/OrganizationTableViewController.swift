@@ -862,7 +862,12 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                     self.navigationController?.pushViewController(nextViewController, animated: true)
                     
                 }
-                
+                cell.labelReportDescription.handleURLTap { url in
+                    print("Success. You just tapped the \(url) url")
+                    
+                    UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
+                }
+
             }
             else {
                 cell.labelReportDescription.text = ""
@@ -1068,7 +1073,12 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                     self.navigationController?.pushViewController(nextViewController, animated: true)
                     
                 }
-                
+                cell.labelReportDescription.handleURLTap { url in
+                    print("Success. You just tapped the \(url) url")
+                    
+                    UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
+                }
+
             }
             else {
                 cell.labelReportDescription.text = ""

@@ -258,6 +258,12 @@ class CommentsTableViewController: UITableViewController, NewCommentReportUpdate
                         
                     }
                     
+                    cell.commentDescription.handleURLTap { url in
+                        print("Success. You just tapped the \(url) url")
+                        
+                        UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
+                    }
+
                 }
             }
 
