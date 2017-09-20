@@ -414,8 +414,12 @@ class ActivityTableViewController: UITableViewController {
             if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 _user_id_integer = _user_id_number.integerValue
             }
+            
+            print("_user_id_integer \(_user_id_integer)")
 
             if _user_id_integer != 0 {
+                
+                print("Setup the like stuff")
                 
                 let _hasLiked = self.like.userHasLikedReport(reportJson, _current_user_id: _user_id_integer)
                 
@@ -439,10 +443,13 @@ class ActivityTableViewController: UITableViewController {
                 cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
                 cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
                 cell.reportOpenGraphStoryLink.clipsToBounds = true
+                
+                cell.reportDate.hidden = true
 
             }
             else {
                 cell.reportOpenGraphStoryLink.hidden = true
+                cell.reportDate.hidden = false
             }
             
             //

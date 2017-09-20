@@ -8,6 +8,7 @@
 
 import Alamofire
 import Foundation
+import SwiftyJSON
 import UIKit
 
 class LoginTableViewController: UITableViewController {
@@ -229,18 +230,7 @@ class LoginTableViewController: UITableViewController {
                                 NSUserDefaults.standardUserDefaults().setValue(value["access_token"], forKeyPath: "currentUserAccountAccessToken")
                                 NSUserDefaults.standardUserDefaults().setValue(self.textfieldEmailAddress.text, forKeyPath: "currentUserAccountEmailAddress")
                                 
-                                self.textfieldPassword.text = ""
-                                self.isReady()
-
-                                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                                
-                                let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
-                                
-                                self.presentViewController(nextViewController, animated: false, completion: {
-                                    print("PrimaryTabBarController > presentViewController")
-
-                                })
-                                
+                                self.attemptRetrieveUserID()
                             }
                         }
 
@@ -253,6 +243,59 @@ class LoginTableViewController: UITableViewController {
                 
         }
     }
+    
+    //
+    // MARK: HTTP Request/Response functionality
+    //
+    func buildRequestHeaders() -> [String: String] {
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        
+        return [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+    }
+
+    func attemptRetrieveUserID() {
+        
+        let _headers = buildRequestHeaders()
+        
+        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    let json = JSON(value)
+                    
+                    if let data: AnyObject = json.rawValue {
+                        
+                        // Set the user id as a number and save it to the application cache
+                        //
+                        let _user_id = data["id"] as! NSNumber
+                        NSUserDefaults.standardUserDefaults().setValue(_user_id, forKeyPath: "currentUserAccountUID")
+                        
+                        // Continue loading the user profile
+                        //
+                        self.textfieldPassword.text = ""
+                        self.isReady()
+                        
+                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                        
+                        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("PrimaryTabBarController") as! UITabBarController
+                        
+                        self.presentViewController(nextViewController, animated: false, completion: {
+                            print("PrimaryTabBarController > presentViewController")
+                            
+                        })
+                        
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                }
+        }
+    }
+
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
 
