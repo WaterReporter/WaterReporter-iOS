@@ -79,9 +79,7 @@ class GroupsTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
 //    }
 
     func tableView(tableView:UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        print("GroupsTableView::tableView::numberOfRowsInSection")
-        
+                
         if self.groups == nil {
             print("Showing 0 group cells")
             return 0

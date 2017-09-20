@@ -32,6 +32,7 @@ class UserProfileSubmissionTableViewCell: UITableViewCell {
     @IBOutlet weak var buttonModifyReport: UIButton!
     @IBOutlet weak var buttonReportTerritory: UIButton!
     
+    @IBOutlet weak var buttonOpenGraphLink: UIButton!
     
     //
     // MARK: Overrides

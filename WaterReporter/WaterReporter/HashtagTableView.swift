@@ -13,7 +13,7 @@ class HashtagTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
     var results: [String]! = [String]()
     var selected: String! = ""
     var search: String! = ""
-    var parent: NewReportContentTableViewCell!
+    var parent: NewReportTableViewController!
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
@@ -56,13 +56,9 @@ class HashtagTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
             return
         }
         
-        print("Remove search text [\(self.search)] from selection [\(_selection)]")
+        print("Returning selected hashtag >>>> \(_selection)")
         
-        let _finalSelection = _selection.stringByReplacingOccurrencesOfString(self.search, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil);
-        
-        print("_finalSelection [\(_finalSelection)]")
-        
-        parent.selectedValue(_finalSelection)
+        parent.selectedValue(_selection, searchText: self.search)
 
     }
     

@@ -114,29 +114,4 @@ class NewReportContentTableViewCell: UITableViewCell {
         return false
     }
     
-    func selectedValue(value: String) {
-        
-        // Add the hashtag to the text
-        //
-        self.textviewReportDescription.text = "\(self.textviewReportDescription.text)\(value)"
-        self.tableViewHashtag.reloadData()
-
-        self.textviewReportDescription.becomeFirstResponder()
-
-
-        // Reset the search
-        //
-        self.tableViewHashtag.hidden = true
-        self.hashtagSearchEnabled = false
-        self.dataSource.results = [String]()
-
-        self.typeAheadHeight.constant = 0.0
-        self.tableViewHashtag.reloadData()
-        self.textviewReportDescription.becomeFirstResponder()
-        
-        print("Hashtag Search: Timer reset to zero due to user selection")
-        self.hashtagSearchTimer.invalidate()
-        
-        
-    }
 }

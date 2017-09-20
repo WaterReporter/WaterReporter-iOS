@@ -100,9 +100,7 @@ class LikesTableViewController : UITableViewController, UINavigationControllerDe
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        print("tableView::numberOfRowsInSection")
-        
+                
         var _count: Int = 0
         
         if (self.likes.count >= 1) {

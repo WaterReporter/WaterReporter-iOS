@@ -40,6 +40,30 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // MARK: @IBActions
     //
+    @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
+        
+        let reportId = sender.tag
+        let report = JSON(self.userSubmissionsObjects[reportId])
+        
+        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+        
+        print("openOpenGraphURL \(reportURL)")
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+    }
+
+    @IBAction func openActionsOpenGraphURL(sender: UIButton) {
+        
+        let reportId = sender.tag
+        let report = JSON(self.userActionsObjects[reportId])
+        
+        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+        
+        print("openOpenGraphURL \(reportURL)")
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+    }
+
     @IBAction func changeUserProfileTab(sender: UIButton) {
         
         if (sender.restorationIdentifier == "buttonTabActionNumber" || sender.restorationIdentifier == "buttonTabActionLabel") {
@@ -1119,9 +1143,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
                 cell.labelReportDescription.text = "\(reportDescription)"
-                cell.labelReportDescription.enabledTypes = [.Hashtag]
-                cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
-                cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
+                cell.labelReportDescription.enabledTypes = [.Hashtag, .URL]
+
                 
                 cell.labelReportDescription.handleHashtagTap { hashtag in
                     print("Success. You just tapped the \(hashtag) hashtag")
@@ -1138,10 +1161,25 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     
                     UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
                 }
-
             }
             else {
                 cell.labelReportDescription.text = ""
+            }
+
+
+            if _thisSubmission["social"] != nil && _thisSubmission["social"].count != 0 {
+                cell.buttonOpenGraphLink.hidden = false
+                cell.buttonOpenGraphLink.tag = indexPath.row
+                cell.buttonOpenGraphLink.addTarget(self, action: #selector(self.openSubmissionOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                cell.buttonOpenGraphLink.layer.cornerRadius = 10.0
+                cell.buttonOpenGraphLink.clipsToBounds = true
+                
+                cell.reportDate.hidden = true
+                
+            }
+            else {
+                cell.buttonOpenGraphLink.hidden = true
+                cell.reportDate.hidden = false
             }
 
             // Report > Groups
@@ -1339,16 +1377,30 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 cell.reportDate.text = ""
             }
             
+            if _thisSubmission["social"] != nil && _thisSubmission["social"].count != 0 {
+                cell.buttonOpenGraphLink.hidden = false
+                cell.buttonOpenGraphLink.tag = indexPath.row
+                cell.buttonOpenGraphLink.addTarget(self, action: #selector(self.openSubmissionOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                cell.buttonOpenGraphLink.layer.cornerRadius = 10.0
+                cell.buttonOpenGraphLink.clipsToBounds = true
+                
+                cell.reportDate.hidden = true
+                
+            }
+            else {
+                cell.buttonOpenGraphLink.hidden = true
+                cell.reportDate.hidden = false
+            }
+
+            
             // Report > Description
             //
             let reportDescription = "\(_thisSubmission["report_description"])"
             
             if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
                 cell.labelReportDescription.text = "\(reportDescription)"
-                cell.labelReportDescription.enabledTypes = [.Hashtag]
-                cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
-                cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
-                
+                cell.labelReportDescription.enabledTypes = [.Hashtag, .URL]
+
                 cell.labelReportDescription.handleHashtagTap { hashtag in
                     print("Success. You just tapped the \(hashtag) hashtag")
                     
@@ -1359,11 +1411,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     self.navigationController?.pushViewController(nextViewController, animated: true)
                     
                 }
+                
                 cell.labelReportDescription.handleURLTap { url in
                     print("Success. You just tapped the \(url) url")
                     
                     UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
                 }
+                
 
             }
             else {

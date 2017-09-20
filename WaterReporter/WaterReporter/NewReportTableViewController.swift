@@ -87,10 +87,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     var reportImage: UIImage!
     var reportDescription: String = ""
     
-    var dataSource: HashtagTableView = HashtagTableView()
     var hashtagAutocomplete: [String] = [String]()
-    var hashtagSearchTimer: NSTimer = NSTimer()
     var hashtagSearchEnabled: Bool = false
+    var dataSource: HashtagTableView = HashtagTableView()
+    var hashtagSearchTimer: NSTimer = NSTimer()
     
     var og_paste: String!
     var og_active: Bool = false
@@ -107,7 +107,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        tableView.reloadData()
+
+        //
+        // Load default list of groups into the form
+        //
+        self.attemptLoadUserGroups()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -128,16 +132,14 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         self.tableView.backgroundColor = UIColor.colorBackground(1.00)
         
+        self.dataSource.parent = self
+
+        
         //
         // Setup Navigation Bar
         //
         navigationBarButtonSave.target = self
         navigationBarButtonSave.action = #selector(buttonSaveNewReportTableViewController(_:))
-        
-        //
-        // Load default list of groups into the form
-        //
-        self.attemptLoadUserGroups()
         
     }
     
@@ -157,7 +159,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             //
             print("Pasting text", _pasteboard)
             
-            if self.verifyUrl(_pasteboard) {
+            if self.verifyUrl(_pasteboard) && self.imageReportImagePreviewIsSet == false {
                 //
                 // Step 2: Check to see if the text being pasted is a link
                 //
@@ -174,6 +176,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     let _og_description_encoded = og?[.description]!
                     let _og_description = _og_description_encoded?.stringByDecodingHTMLEntities
                     self.og_description = "\(_og_description!)"
+                    self.reportDescription = "\(_og_description!)"
                     
                     let _og_type = og?[.type]!
                     self.og_type = "\(_og_type!)"
@@ -231,14 +234,17 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     }
 
     func textViewDidBeginEditing(textView: UITextView) {
-        textView.text = ""
+        if textView.text == "Write a few words about the photo or paste a link..." {
+            textView.text = ""
+        }
     }
 
     
     func textViewDidChange(textView: UITextView) {
         
         let _text: String = "\(textView.text)"
-        
+        let _index = NSIndexPath.init(forRow: 0, inSection: 0)
+
         // Always make sure we are constantly copying what is entered into the
         // remote text field into this controller so that we can pass it along
         // to the report save methods.
@@ -254,7 +260,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             self.hashtagSearchEnabled = false
             self.dataSource.results = [String]()
             
-            self.tableView.reloadData()
+//            self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
             
             print("Hashtag Search: Disabling search because space was entered")
             print("Hashtag Search: Timer reset to zero due to search termination (space entered)")
@@ -265,9 +271,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             
             self.dataSource.results = [String]()
 
-            self.tableView.reloadData()
-            self.view.endEditing(false)
-//            self.tableViewPostComments.reloadSections(IndexSet(integersIn: 0...0), with: UITableViewRowAnimation.top)
+//            self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
             
             // Identify hashtag search
             //
@@ -284,8 +288,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 
                 dataSource.numberOfRowsInSection(dataSource.results.count)
                 
-                self.tableView.reloadData()
-                self.view.endEditing(false)
+//                self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
                 
                 // Execute the serverside search BUT wait a few milliseconds between
                 // each character so we aren't returning inconsistent results to
@@ -295,7 +298,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 self.hashtagSearchTimer.invalidate()
                 
                 print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
-                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(self.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
+//                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(self.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
                 
             }
             
@@ -308,19 +311,20 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     // MARK: Table Overrides
     //
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     override func tableView(tableView:UITableView, numberOfRowsInSection section: Int) -> Int {
         
         var numberOfRows: Int = 2
         
-        if section == 1 {
-            if self.dataSource.results != nil {
-                let numberOfHashtags: Int = (self.dataSource.results.count)
-                numberOfRows = numberOfHashtags
-            }
-        } else if section == 2 {
+        if section == 0 {
+            numberOfRows = 2
+//            if self.dataSource.results != nil {
+//                let numberOfHashtags: Int = (self.dataSource.results.count)
+//                numberOfRows = numberOfHashtags
+//            }
+        } else if section == 1 {
             if self.groups != nil {
                 
                 let numberOfGroups: Int = (self.groups?["features"].count)!
@@ -335,6 +339,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
+        self.view.endEditing(false)
+
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCellWithIdentifier("newReportContentTableViewCell", forIndexPath: indexPath) as! NewReportContentTableViewCell
@@ -346,9 +352,17 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 if (self.reportImage != nil) {
                     cell.imageReportImage.image = self.reportImage
                 }
+                else {
+                    cell.imageReportImage.image = UIImage(named: "icon--camera")
+                }
                 
                 // Report Description
                 //
+                if self.reportDescription != "" {
+                    cell.textviewReportDescription.text = self.reportDescription
+                    cell.textviewReportDescription.becomeFirstResponder()
+                }
+                
                 cell.textviewReportDescription.delegate = self
                 cell.textviewReportDescription.targetForAction(#selector(self.textViewDidChange(_:)), withSender: self)
                 
@@ -405,6 +419,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     }
                 }
                 else {
+                    cell.ogView.hidden = true
                     cell.ogViewHeightConstraint.constant = 0.0
                 }
                 
@@ -435,9 +450,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             }
         }
         else if indexPath.section == 1 {
-            print("do something with hashtags here")
-        }
-        else if indexPath.section == 2 {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("newReportGroupTableViewCell", forIndexPath: indexPath) as! NewReportGroupTableViewCell
             
@@ -603,6 +615,21 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         
         // Reset all fields
         self.imageReportImagePreviewIsSet = false
+        self.reportDescription = "Write a few words about the photo or paste a link..."
+        self.reportImage = nil
+        
+        self.og_paste = ""
+        self.og_active = false
+        self.og_title = ""
+        self.og_description = ""
+        self.og_sitename = ""
+        self.og_type = ""
+        self.og_image = ""
+        self.og_url = ""
+        
+        self.tempGroups = [String]()
+
+        self.tableView.reloadData()
 
         self.userSelectedCoorindates = CLLocationCoordinate2D()
         
@@ -966,14 +993,48 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     
                     self.dataSource.numberOfRowsInSection(_results["features"].count)
                     
-                    //self.tableView.reloadData()
+                    let _index = NSIndexPath.init(forRow: 0, inSection: 0)
                     
+                    self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
+
                 case .Failure(let error):
                     print(error)
                     break
                 }
                 
         }
+    }
+    
+    
+    func selectedValue(value: String, searchText: String) {
+        
+        let _index = NSIndexPath.init(forRow: 0, inSection: 0)
+        
+        let _selection = "\(value)"
+
+        print("Hashtag Selected, now we need to update the textview with selected \(value) and search text \(searchText) so that it makes sense with \(self.reportDescription)")
+        
+        let _temporaryCopy = self.reportDescription
+        
+        let _updatedDescription = _temporaryCopy.stringByReplacingOccurrencesOfString(searchText, withString: _selection, options: NSStringCompareOptions.LiteralSearch, range: nil)
+        
+        print("Updated Text \(_updatedDescription)")
+
+        // Add the hashtag to the text
+        //
+        self.reportDescription = "\(_updatedDescription)"
+        
+        // Reset the search
+        //
+        self.hashtagSearchEnabled = false
+        self.dataSource.results = [String]()
+        
+        self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
+
+        print("Hashtag Search: Timer reset to zero due to user selection")
+        self.hashtagSearchTimer.invalidate()
+
+
     }
 
 }
@@ -1335,5 +1396,5 @@ extension String {
         // Return results
         return (decodedString: result, replacementOffsets: replacementOffsets)
     }
-    
+
 }

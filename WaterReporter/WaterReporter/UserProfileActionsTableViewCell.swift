@@ -29,7 +29,9 @@ class UserProfileActionsTableViewCell: UITableViewCell {
     @IBOutlet weak var labelReportDescription: ActiveLabel!
     @IBOutlet weak var labelReportGroups: UILabel!
     @IBOutlet weak var buttonReportTerritory: UIButton!
-    
+
+    @IBOutlet weak var buttonOpenGraphLink: UIButton!
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
