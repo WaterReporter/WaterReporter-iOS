@@ -724,6 +724,18 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // and show the user the saving indicator
         self.saving()
         
+        
+        //
+        // REPORT DATE
+        //
+        let dateFormatter = NSDateFormatter()
+        let date = NSDate()
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        let report_date: String = dateFormatter.stringFromDate(date)
+        
+        print("report_date \(report_date)")
+        
 
         //
         // PARAMETERS
@@ -734,6 +746,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 
         var parameters: [String: AnyObject] = [
             "report_description": self.reportDescription,
+            "report_date": report_date,
             "is_public": "true",
             "geometry": geometryCollection,
             "state": "open"
