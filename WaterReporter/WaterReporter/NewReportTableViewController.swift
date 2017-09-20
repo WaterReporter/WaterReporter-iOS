@@ -723,6 +723,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         // Before starting the saving process, hide the form
         // and show the user the saving indicator
         self.saving()
+        
 
         //
         // PARAMETERS
@@ -756,6 +757,25 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         }
         
         parameters["groups"] = _temporary_groups
+
+        
+        //
+        // OPEN GRAPH
+        //
+        var open_graph: [AnyObject] = [AnyObject]()
+
+        if self.og_active {
+            let _social = [
+                "og_title": self.og_title,
+                "og_type": self.og_type,
+                "og_url": self.og_url,
+                "og_image_url": self.og_image,
+                "og_description": self.og_description
+            ]
+            open_graph.append(_social)
+        }
+        
+        parameters["social"] = open_graph
 
         //
         // Make request
