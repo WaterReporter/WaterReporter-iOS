@@ -333,6 +333,9 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     var groupActionsUnderline = CALayer()
     var groupUsersUnderline = CALayer()
     
+    var likeDelay: NSTimer = NSTimer()
+    var unlikeDelay: NSTimer = NSTimer()
+
     //
     // MARK: UIKit Overrides
     //
@@ -1300,5 +1303,329 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("row tapped \(indexPath)")
     }
+
+    //
+    // MARK: Like Functionality
+    //
+    func userHasLikedReport(_report: JSON, _current_user_id: Int) -> Bool {
+        
+        if (_report["likes"].count != 0) {
+            for _like in _report["likes"] {
+                if (_like.1["properties"]["owner_id"].intValue == _current_user_id) {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
     
+    func updateReportLikeCount(indexPathRow: Int, addLike: Bool = true) {
+        
+        print("LikeController::updateReportLikeCount")
+        
+        let _indexPath = NSIndexPath(forRow: indexPathRow, inSection: 0)
+        
+        var _cell: TableViewCell!
+        var _report: JSON!
+        
+        if (self.actionTableView.hidden == false) {
+            _cell = self.actionTableView.cellForRowAtIndexPath(_indexPath) as! TableViewCell
+            _report = JSON(self.groupActionsObjects[(indexPathRow)].objectForKey("properties")!)
+        }
+        else if (self.submissionTableView.hidden == false) {
+            _cell = self.submissionTableView.cellForRowAtIndexPath(_indexPath) as! TableViewCell
+            _report = JSON(self.groupSubmissionsObjects[(indexPathRow)].objectForKey("properties")!)
+        }
+        else {
+            return;
+        }
+        
+        // Change the Heart icon to red
+        //
+        if (addLike) {
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+        } else {
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+        }
+        
+        // Update the total likes count
+        //
+        let _report_likes_count: Int = _report["likes"].count
+        
+        // Check if we have previously liked this photo. If so, we need to take
+        // that into account when adding a new like.
+        //
+        let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
+        
+        var _report_likes_updated_total: Int! = _report_likes_count
+        
+        if (addLike) {
+            if (_previously_liked) {
+                _report_likes_updated_total = _report_likes_count
+            }
+            else {
+                _report_likes_updated_total = _report_likes_count+1
+            }
+        }
+        else {
+            if (_previously_liked) {
+                _report_likes_updated_total = _report_likes_count-1
+            }
+            else {
+                _report_likes_updated_total = _report_likes_count
+            }
+        }
+        
+        var reportLikesCountText: String = ""
+        
+        if _report_likes_updated_total == 1 {
+            reportLikesCountText = "1 like"
+            _cell.reportLikeCount.hidden = false
+        }
+        else if _report_likes_updated_total >= 1 {
+            reportLikesCountText = "\(_report_likes_updated_total) likes"
+            _cell.reportLikeCount.hidden = false
+        }
+        else {
+            reportLikesCountText = "0 likes"
+            _cell.reportLikeCount.hidden = false
+        }
+        
+        _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
+        
+        
+    }
+    
+    func hasPreviouslyLike(likes: JSON) -> Bool {
+        
+        print("hasPreviouslyLike::likes \(likes)")
+        
+        // LOOP OVER PREVIOUS LIKES AND SEE IF CURRENT USER ID IS ONE OF THE OWNER IDS
+        
+        let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
+        
+        for _like in likes {
+            if (_like.1["properties"]["owner_id"].intValue == _user_id_number.integerValue) {
+                print("_like.1 \(_like.1)")
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    func likeCurrentReport(sender: UIButton) {
+        
+        print("LikeController::likeCurrentReport Incrementing Report Likes by 1")
+        
+        // Update the visible "# like" count of likes
+        //
+        self.updateReportLikeCount(sender.tag)
+        
+        // Restart delay
+        //
+        self.likeDelay.invalidate()
+        
+        let infoDict : [String : AnyObject] = ["sender": sender.tag]
+        
+        self.likeDelay = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(self.attemptLikeCurrentReport(_:)), userInfo: infoDict, repeats: false)
+        
+    }
+    
+    func attemptLikeCurrentReport(timer: NSTimer) {
+        print("userInfo \(timer.userInfo!)")
+        
+        let _arguments = timer.userInfo as! [String : AnyObject]
+        
+        if let _sender_tag = _arguments["sender"] {
+            
+            let senderTag = _sender_tag.integerValue
+            
+            print("_sender_tag \(senderTag)")
+            
+            // Create necessary Authorization header for our request
+            //
+            let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+            let _headers = [
+                "Authorization": "Bearer " + (accessToken! as! String)
+            ]
+            
+            //
+            // PARAMETERS
+            //
+            var _report: JSON!
+            
+            if (self.actionTableView.hidden == false) {
+                _report = JSON(self.groupActionsObjects[(senderTag)])
+            }
+            else if (self.submissionTableView.hidden == false) {
+                _report = JSON(self.groupSubmissionsObjects[(senderTag)])
+            }
+            else {
+                return;
+            }
+            
+            let _report_id: String = "\(_report["id"])"
+            
+            let _parameters: [String:AnyObject] = [
+                "report_id": _report_id
+            ]
+            
+            Alamofire.request(.POST, Endpoints.POST_LIKE, parameters: _parameters, headers: _headers, encoding: .JSON)
+                .responseJSON { response in
+                    
+                    switch response.result {
+                    case .Success(let value):
+                        print("Response Success \(value)")
+                        self.updateReportLikes(_report_id, reportSenderTag: senderTag)
+                        
+                        break
+                    case .Failure(let error):
+                        print("Response Failure \(error)")
+                        break
+                    }
+                    
+            }
+        }
+    }
+    
+    func unlikeCurrentReport(sender: UIButton) {
+        
+        print("LikeController::unlikeCurrentReport  Decrementing Report Likes by 1")
+        // Update the visible "# like" count of likes
+        //
+        self.updateReportLikeCount(sender.tag, addLike: false)
+        
+        // Restart delay
+        //
+        self.unlikeDelay.invalidate()
+        
+        let infoDict : [String : AnyObject] = ["sender": sender.tag]
+        
+        self.unlikeDelay = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(self.attemptUnikeCurrentReport(_:)), userInfo: infoDict, repeats: false)
+        
+    }
+    
+    func attemptUnikeCurrentReport(timer: NSTimer) {
+        print("userInfo \(timer.userInfo!)")
+        
+        let _arguments = timer.userInfo as! [String : AnyObject]
+        
+        if let _sender_tag = _arguments["sender"] {
+            
+            let senderTag = _sender_tag.integerValue
+            
+            print("_sender_tag \(senderTag)")
+            
+            // Create necessary Authorization header for our request
+            //
+            let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+            let _headers = [
+                "Authorization": "Bearer " + (accessToken! as! String)
+            ]
+            
+            //
+            // PARAMETERS
+            //
+            var _report: JSON!
+            
+            if (self.actionTableView.hidden == false) {
+                _report = JSON(self.groupActionsObjects[(senderTag)])
+            }
+            else if (self.submissionTableView.hidden == false) {
+                _report = JSON(self.groupSubmissionsObjects[(senderTag)])
+            }
+            else {
+                return;
+            }
+            
+            let _report_id: String = "\(_report["id"])"
+            
+            let _parameters: [String:AnyObject] = [
+                "report_id": _report_id
+            ]
+            
+            //
+            // ENDPOINT
+            //
+            var _like_id: String = ""
+            let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
+            
+            if (_report["properties"]["likes"].count != 0) {
+                
+                for _like in _report["properties"]["likes"] {
+                    if (_like.1["properties"]["owner_id"].intValue == _user_id_number.integerValue) {
+                        print("_like.1 \(_like.1)")
+                        _like_id = "\(_like.1["id"])"
+                    }
+                }
+            }
+            
+            let _endpoint: String = Endpoints.DELETE_LIKE + "/\(_like_id)"
+            
+            
+            //
+            // REQUEST
+            //
+            Alamofire.request(.DELETE, _endpoint, parameters: _parameters, headers: _headers, encoding: .JSON)
+                .responseJSON { response in
+                    
+                    switch response.result {
+                    case .Success(let value):
+                        print("Response Success \(value)")
+                        
+                        self.updateReportLikes(_report_id, reportSenderTag: senderTag)
+                        
+                        break
+                    case .Failure(let error):
+                        print("Response Failure \(error)")
+                        break
+                    }
+                    
+            }
+        }
+        
+    }
+    
+    func updateReportLikes(_report_id: String, reportSenderTag: Int) {
+        
+        // Create necessary Authorization header for our request
+        //
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let _headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS + "/\(_report_id)", headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("Response value \(value)")
+                    
+                    if (self.actionTableView.hidden == false) {
+                        self.groupActionsObjects[(reportSenderTag)] = value
+                    }
+                    else if (self.submissionTableView.hidden == false) {
+                        self.groupSubmissionsObjects[(reportSenderTag)] = value
+                    }
+                    else {
+                        return;
+                    }
+                    
+                    break
+                case .Failure(let error):
+                    print("Response Failure \(error)")
+                    break
+                    
+                }
+                
+        }
+        
+    }
 }

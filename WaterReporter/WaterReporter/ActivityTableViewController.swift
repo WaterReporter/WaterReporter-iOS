@@ -110,14 +110,10 @@ class ActivityTableViewController: UITableViewController {
     // MARK: Variables
     //
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-
-//    var reports = [AnyObject]()
     
     var reports: NSMutableArray = NSMutableArray()
     var singleReport: Bool = false
     var page: Int = 1
-    
-    var like: LikeController = LikeController.init()
     
     var likeDelay: NSTimer = NSTimer()
     var unlikeDelay: NSTimer = NSTimer()
@@ -421,7 +417,7 @@ class ActivityTableViewController: UITableViewController {
                 
                 print("Setup the like stuff")
                 
-                let _hasLiked = self.like.userHasLikedReport(reportJson, _current_user_id: _user_id_integer)
+                let _hasLiked = self.userHasLikedReport(reportJson, _current_user_id: _user_id_integer)
                 
                 cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
                 
