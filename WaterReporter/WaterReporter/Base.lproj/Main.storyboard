@@ -1460,6 +1460,20 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagColor">
+                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagSelectedColor">
+                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="URLColor">
+                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="URLSelectedColor">
+                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N9D-gM-8LP">
                                             <rect key="frame" x="8" y="428" width="359" height="0.0"/>
@@ -1473,8 +1487,21 @@
                                                 <action selector="loadTerritoryProfile:" destination="Eed-hC-qwi" eventType="touchUpInside" id="0jj-Yu-Zls"/>
                                             </connections>
                                         </button>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2HC-ZQ-IG7">
+                                            <rect key="frame" x="155" y="175" width="64" height="20"/>
+                                            <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="64" id="vKt-IL-bsk"/>
+                                                <constraint firstAttribute="height" constant="20" id="xFR-0R-ZLI"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
+                                            <state key="normal" title="Read story">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="2HC-ZQ-IG7" firstAttribute="centerY" secondItem="CxH-Io-hiZ" secondAttribute="centerY" id="00s-vp-2bH"/>
                                         <constraint firstItem="5si-fI-ODT" firstAttribute="top" secondItem="p56-XC-6nS" secondAttribute="bottom" constant="8" id="1m2-L4-rPb"/>
                                         <constraint firstAttribute="topMargin" secondItem="8pU-jG-07m" secondAttribute="top" constant="-3" id="48i-KF-DBq"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="N9D-gM-8LP" secondAttribute="bottom" constant="16" id="4An-lX-SaX"/>
@@ -1494,6 +1521,7 @@
                                         <constraint firstItem="cKk-5S-thH" firstAttribute="top" secondItem="L8i-gW-k0U" secondAttribute="bottom" constant="8" id="Sok-sM-HIc"/>
                                         <constraint firstItem="p56-XC-6nS" firstAttribute="leading" secondItem="Thb-sl-wMZ" secondAttribute="trailing" constant="16" id="W8Z-qK-nGf"/>
                                         <constraint firstItem="hYr-iS-vRq" firstAttribute="leading" secondItem="CxH-Io-hiZ" secondAttribute="trailing" constant="8" id="Wy0-dk-Yhv"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="2HC-ZQ-IG7" secondAttribute="trailing" constant="4" id="XuB-5n-LgY"/>
                                         <constraint firstItem="OGL-3e-W6Q" firstAttribute="top" secondItem="cKk-5S-thH" secondAttribute="bottom" constant="8" id="YfT-1o-qYP"/>
                                         <constraint firstItem="L8i-gW-k0U" firstAttribute="leading" secondItem="AjR-uA-KiV" secondAttribute="leadingMargin" id="YpY-dx-bQN"/>
                                         <constraint firstItem="OGL-3e-W6Q" firstAttribute="leading" secondItem="qxP-m0-nX9" secondAttribute="trailing" constant="16" id="ZRm-ci-cs3"/>
@@ -1518,6 +1546,7 @@
                                 </constraints>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                 <connections>
+                                    <outlet property="buttonOpenGraphLink" destination="2HC-ZQ-IG7" id="uxw-D5-soc"/>
                                     <outlet property="buttonReportComments" destination="p56-XC-6nS" id="EhA-ZP-Ks8"/>
                                     <outlet property="buttonReportDirections" destination="Thb-sl-wMZ" id="921-lI-TbK"/>
                                     <outlet property="buttonReportMap" destination="OGL-3e-W6Q" id="gfu-q7-tEX"/>
@@ -1591,6 +1620,20 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagColor">
+                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagSelectedColor">
+                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="URLColor">
+                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="URLSelectedColor">
+                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yje-aV-KCl">
                                             <rect key="frame" x="8" y="308" width="359" height="38"/>
@@ -1658,6 +1701,18 @@
                                                 <action selector="loadTerritoryProfile:" destination="Eed-hC-qwi" eventType="touchUpInside" id="ORn-oW-aWO"/>
                                             </connections>
                                         </button>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iK3-ov-eaX">
+                                            <rect key="frame" x="155" y="174" width="64" height="20"/>
+                                            <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="64" id="3wD-fL-t1i"/>
+                                                <constraint firstAttribute="height" constant="20" id="Npz-cX-UAa"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
+                                            <state key="normal" title="Read story">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="F9e-yQ-gHK" firstAttribute="leading" secondItem="Skh-uy-rN8" secondAttribute="trailing" constant="16" id="0w3-1H-F7l"/>
@@ -1674,6 +1729,7 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="yje-aV-KCl" secondAttribute="trailing" id="Jaq-im-YzR"/>
                                         <constraint firstItem="yje-aV-KCl" firstAttribute="top" secondItem="QEW-yz-4cJ" secondAttribute="bottom" constant="16" id="Ky4-Ks-ywh"/>
                                         <constraint firstItem="QEW-yz-4cJ" firstAttribute="top" secondItem="eRX-2O-pwy" secondAttribute="bottom" constant="8" id="LVa-xz-UYc"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="iK3-ov-eaX" secondAttribute="trailing" constant="4" id="NEr-4x-I1o"/>
                                         <constraint firstItem="UPM-FC-5Zx" firstAttribute="top" secondItem="mYc-FV-WbC" secondAttribute="bottom" id="NaM-o6-cyV"/>
                                         <constraint firstItem="QEW-yz-4cJ" firstAttribute="top" secondItem="F9e-yQ-gHK" secondAttribute="bottom" constant="8" id="SLW-Ec-0If"/>
                                         <constraint firstItem="uV6-yH-FmS" firstAttribute="leading" secondItem="eRX-2O-pwy" secondAttribute="trailing" constant="16" id="UAl-c0-tbh"/>
@@ -1682,6 +1738,7 @@
                                         <constraint firstItem="3VD-uf-IgA" firstAttribute="top" secondItem="VX0-uB-6Si" secondAttribute="topMargin" constant="10" id="acF-kL-el2"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="3VD-uf-IgA" secondAttribute="trailing" id="bpH-2m-TkN"/>
                                         <constraint firstItem="3VD-uf-IgA" firstAttribute="leading" secondItem="UPM-FC-5Zx" secondAttribute="trailing" constant="16" id="bzL-k7-vI9"/>
+                                        <constraint firstItem="iK3-ov-eaX" firstAttribute="centerY" secondItem="Pr8-zB-JHi" secondAttribute="centerY" id="dd6-LE-Xd5"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="yje-aV-KCl" secondAttribute="leading" id="drJ-FT-C36"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="QEW-yz-4cJ" secondAttribute="trailing" id="eLs-fp-Tet"/>
                                         <constraint firstItem="mYc-FV-WbC" firstAttribute="leading" secondItem="Pr8-zB-JHi" secondAttribute="trailing" constant="8" id="hKE-Lg-gyq"/>
@@ -1699,6 +1756,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="buttonOpenGraphLink" destination="iK3-ov-eaX" id="DHd-Fy-WR9"/>
                                     <outlet property="buttonReportComments" destination="uV6-yH-FmS" id="8xm-5p-3KU"/>
                                     <outlet property="buttonReportDirections" destination="eRX-2O-pwy" id="mch-Iv-9Bk"/>
                                     <outlet property="buttonReportMap" destination="F9e-yQ-gHK" id="NzG-ZX-xFR"/>
@@ -4478,7 +4536,7 @@
                                                             </connections>
                                                         </button>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fql-7E-IGc">
-                                                            <rect key="frame" x="317" y="11" width="46" height="30"/>
+                                                            <rect key="frame" x="299" y="16" width="64" height="20"/>
                                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="8Ti-xf-sDV"/>
@@ -5017,6 +5075,20 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagColor">
+                                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagSelectedColor">
+                                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="URLColor">
+                                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="URLSelectedColor">
+                                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBa-pf-PAl">
                                                             <rect key="frame" x="8" y="308" width="359" height="38"/>
@@ -5080,6 +5152,18 @@
                                                                 <action selector="loadTerritoryProfileFromActions:" destination="myK-YS-uzI" eventType="touchUpInside" id="iPP-Wi-4Su"/>
                                                             </connections>
                                                         </button>
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hdj-gB-swA">
+                                                            <rect key="frame" x="155" y="174" width="64" height="20"/>
+                                                            <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="64" id="cGd-hn-ksJ"/>
+                                                                <constraint firstAttribute="height" constant="20" id="eZ2-y0-1vE"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
+                                                            <state key="normal" title="Read story">
+                                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="hS7-LT-yJg" firstAttribute="leading" secondItem="2rN-wa-ALO" secondAttribute="leadingMargin" id="04A-be-v3I"/>
@@ -5098,6 +5182,7 @@
                                                         <constraint firstItem="8Qy-AB-VmD" firstAttribute="top" secondItem="hS7-LT-yJg" secondAttribute="bottom" constant="8" id="QK2-Ok-UvS"/>
                                                         <constraint firstItem="IF2-gP-vjq" firstAttribute="leading" secondItem="2rN-wa-ALO" secondAttribute="leadingMargin" id="S5l-qY-bZq"/>
                                                         <constraint firstItem="XDm-1u-I4T" firstAttribute="top" secondItem="k6w-Gj-rwn" secondAttribute="bottom" constant="8" id="T9N-iA-2DE"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="hdj-gB-swA" secondAttribute="trailing" constant="4" id="Vz0-AJ-YXn"/>
                                                         <constraint firstAttribute="bottomMargin" secondItem="yBa-pf-PAl" secondAttribute="bottom" constant="16" id="XL2-oE-04h"/>
                                                         <constraint firstItem="UjV-s8-wMy" firstAttribute="leading" secondItem="IF2-gP-vjq" secondAttribute="trailing" constant="8" id="YMg-8V-QFC"/>
                                                         <constraint firstItem="XDm-1u-I4T" firstAttribute="top" secondItem="lVy-hn-MnZ" secondAttribute="bottom" constant="8" id="YfF-Al-WvO"/>
@@ -5111,6 +5196,7 @@
                                                         <constraint firstAttribute="trailingMargin" secondItem="yBa-pf-PAl" secondAttribute="trailing" id="j6F-Cv-23b"/>
                                                         <constraint firstAttribute="leadingMargin" secondItem="yBa-pf-PAl" secondAttribute="leading" id="le2-m2-E0R"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="pOW-yx-2Dd" secondAttribute="trailing" id="pFi-VJ-guc"/>
+                                                        <constraint firstItem="hdj-gB-swA" firstAttribute="centerY" secondItem="IF2-gP-vjq" secondAttribute="centerY" id="piU-ZT-XVU"/>
                                                         <constraint firstItem="k6w-Gj-rwn" firstAttribute="top" secondItem="8Qy-AB-VmD" secondAttribute="bottom" constant="8" id="q58-JB-DPS"/>
                                                         <constraint firstItem="IF2-gP-vjq" firstAttribute="top" secondItem="2rN-wa-ALO" secondAttribute="topMargin" id="tgh-5p-7Xi"/>
                                                         <constraint firstItem="pOW-yx-2Dd" firstAttribute="top" secondItem="2rN-wa-ALO" secondAttribute="topMargin" constant="10" id="waD-AR-qRd"/>
@@ -5121,6 +5207,7 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="buttonOpenGraphLink" destination="hdj-gB-swA" id="Rdn-Bx-XjN"/>
                                                     <outlet property="buttonReportComments" destination="k6w-Gj-rwn" id="LgK-vT-SeU"/>
                                                     <outlet property="buttonReportDirections" destination="pR1-y8-TQA" id="ICl-zF-8Xp"/>
                                                     <outlet property="buttonReportMap" destination="B4o-RU-wOW" id="bUK-4J-9fI"/>
@@ -5307,6 +5394,20 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagColor">
+                                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="hashtagSelectedColor">
+                                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="URLColor">
+                                                                    <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="URLSelectedColor">
+                                                                    <color key="value" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6lf-gK-Nza">
                                                             <rect key="frame" x="8" y="428" width="359" height="0.0"/>
@@ -5320,6 +5421,18 @@
                                                                 <action selector="loadTerritoryProfileFromSubmissions:" destination="myK-YS-uzI" eventType="touchUpInside" id="bw9-Vz-69f"/>
                                                             </connections>
                                                         </button>
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ky-Zq-aO9">
+                                                            <rect key="frame" x="155" y="173" width="64" height="20"/>
+                                                            <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="Cgq-l2-s5b"/>
+                                                                <constraint firstAttribute="width" constant="64" id="rcQ-qQ-6dR"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
+                                                            <state key="normal" title="Read story">
+                                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="c6C-i3-8xZ" firstAttribute="leading" secondItem="F1r-Gh-MCx" secondAttribute="trailing" constant="16" id="2Ue-Wo-4KM"/>
@@ -5328,6 +5441,7 @@
                                                         <constraint firstItem="60o-Qa-esf" firstAttribute="top" secondItem="PAc-1j-SpK" secondAttribute="bottom" constant="8" id="5l2-rc-7VY"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="60o-Qa-esf" secondAttribute="trailing" id="9AN-Rg-4A8"/>
                                                         <constraint firstItem="vKw-HN-mlh" firstAttribute="top" secondItem="qQ9-20-Bcm" secondAttribute="bottom" id="9Qv-i9-HR3"/>
+                                                        <constraint firstItem="9ky-Zq-aO9" firstAttribute="centerY" secondItem="pBq-V4-Jwv" secondAttribute="centerY" id="9qa-pw-ja8"/>
                                                         <constraint firstAttribute="leadingMargin" secondItem="6lf-gK-Nza" secondAttribute="leading" id="ABV-VT-eXo"/>
                                                         <constraint firstItem="LkH-45-CFz" firstAttribute="top" secondItem="ykM-tp-KAb" secondAttribute="bottom" constant="8" id="EBs-fJ-JPR"/>
                                                         <constraint firstItem="vKw-HN-mlh" firstAttribute="leading" secondItem="EqC-cl-cWj" secondAttribute="trailing" constant="8" id="Erq-ey-VlJ"/>
@@ -5335,6 +5449,7 @@
                                                         <constraint firstAttribute="bottomMargin" secondItem="6lf-gK-Nza" secondAttribute="bottom" constant="16" id="HDF-xj-fnj"/>
                                                         <constraint firstItem="c6C-i3-8xZ" firstAttribute="top" secondItem="ANT-iR-Wvg" secondAttribute="topMargin" constant="10" id="Hce-Jb-OPl"/>
                                                         <constraint firstItem="EqC-cl-cWj" firstAttribute="leading" secondItem="ANT-iR-Wvg" secondAttribute="leadingMargin" id="Jah-ze-onF"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="9ky-Zq-aO9" secondAttribute="trailing" constant="4" id="JrI-cR-243"/>
                                                         <constraint firstItem="PAc-1j-SpK" firstAttribute="top" secondItem="ykM-tp-KAb" secondAttribute="bottom" constant="8" id="Kfa-gW-ash"/>
                                                         <constraint firstItem="ykM-tp-KAb" firstAttribute="leading" secondItem="ANT-iR-Wvg" secondAttribute="leadingMargin" constant="-8" id="PCN-yT-h2O"/>
                                                         <constraint firstItem="6lf-gK-Nza" firstAttribute="top" secondItem="60o-Qa-esf" secondAttribute="bottom" constant="16" id="U25-NN-WMC"/>
@@ -5365,6 +5480,7 @@
                                                 </constraints>
                                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                                 <connections>
+                                                    <outlet property="buttonOpenGraphLink" destination="9ky-Zq-aO9" id="puJ-1F-1Pl"/>
                                                     <outlet property="buttonReportComments" destination="vJx-Sc-7lf" id="p97-pU-Bwx"/>
                                                     <outlet property="buttonReportDirections" destination="iMU-pe-Szt" id="Bc2-ky-hTV"/>
                                                     <outlet property="buttonReportMap" destination="LkH-45-CFz" id="EFa-Og-anX"/>

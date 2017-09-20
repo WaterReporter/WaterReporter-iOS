@@ -60,6 +60,31 @@ class HashtagTableViewController: UITableViewController {
     //
     // MARK: @IBAction
     //
+    @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
+        
+        let reportId = sender.tag
+        let report = JSON(self.hashtagSubmissionsObjects[reportId])
+        
+        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+        
+        print("openOpenGraphURL \(reportURL)")
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+    }
+    
+    @IBAction func openActionsOpenGraphURL(sender: UIButton) {
+        
+        let reportId = sender.tag
+        let report = JSON(self.hashtagActionsObjects[reportId])
+        
+        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+        
+        print("openOpenGraphURL \(reportURL)")
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+    }
+
+    
     @IBAction func openUserSubmissionDirectionsURL(sender: UIButton) {
         
         let _submissions = JSON(self.hashtagSubmissionsObjects)
@@ -642,7 +667,7 @@ class HashtagTableViewController: UITableViewController {
             
             if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
                 cell.labelReportDescription.text = "\(reportDescription)"
-                cell.labelReportDescription.enabledTypes = [.Hashtag]
+                cell.labelReportDescription.enabledTypes = [.Hashtag, .URL]
                 cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
                 cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
                 
@@ -668,6 +693,21 @@ class HashtagTableViewController: UITableViewController {
                 cell.labelReportDescription.text = ""
             }
             
+            if _thisSubmission["social"] != nil && _thisSubmission["social"].count != 0 {
+                cell.buttonOpenGraphLink.hidden = false
+                cell.buttonOpenGraphLink.tag = indexPath.row
+                cell.buttonOpenGraphLink.addTarget(self, action: #selector(self.openSubmissionOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                cell.buttonOpenGraphLink.layer.cornerRadius = 10.0
+                cell.buttonOpenGraphLink.clipsToBounds = true
+                
+                cell.reportDate.hidden = true
+                
+            }
+            else {
+                cell.buttonOpenGraphLink.hidden = true
+                cell.reportDate.hidden = false
+            }
+
             // Report > Groups
             //
             cell.labelReportGroups.text = "Report Group Names"
@@ -857,7 +897,7 @@ class HashtagTableViewController: UITableViewController {
             
             if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
                 cell.labelReportDescription.text = "\(reportDescription)"
-                cell.labelReportDescription.enabledTypes = [.Hashtag]
+                cell.labelReportDescription.enabledTypes = [.Hashtag, .URL]
                 cell.labelReportDescription.hashtagColor = UIColor.colorBrand()
                 cell.labelReportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
                 
@@ -882,6 +922,22 @@ class HashtagTableViewController: UITableViewController {
                 cell.labelReportDescription.text = ""
             }
             
+
+            if _thisSubmission["social"] != nil && _thisSubmission["social"].count != 0 {
+                cell.buttonOpenGraphLink.hidden = false
+                cell.buttonOpenGraphLink.tag = indexPath.row
+                cell.buttonOpenGraphLink.addTarget(self, action: #selector(self.openSubmissionOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                cell.buttonOpenGraphLink.layer.cornerRadius = 10.0
+                cell.buttonOpenGraphLink.clipsToBounds = true
+                
+                cell.reportDate.hidden = true
+                
+            }
+            else {
+                cell.buttonOpenGraphLink.hidden = true
+                cell.reportDate.hidden = false
+            }
+
             // Report > Group > Name
             //
             let reportGroups = _thisSubmission["groups"]
