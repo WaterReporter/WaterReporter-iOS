@@ -409,9 +409,12 @@ class ActivityTableViewController: UITableViewController {
             //
             cell.reportLikeButton.tag = indexPath.row
             
-            let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as! NSNumber
-            let _user_id_integer = _user_id_number.integerValue
+            var _user_id_integer: Int = 0
             
+            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                _user_id_integer = _user_id_number.integerValue
+            }
+
             if _user_id_integer != 0 {
                 
                 let _hasLiked = self.like.userHasLikedReport(reportJson, _current_user_id: _user_id_integer)
@@ -430,6 +433,17 @@ class ActivityTableViewController: UITableViewController {
                 
             }
             
+            if reportJson["social"] != nil && reportJson["social"].count != 0 {
+                cell.reportOpenGraphStoryLink.hidden = false
+                cell.reportOpenGraphStoryLink.tag = indexPath.row
+                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
+                cell.reportOpenGraphStoryLink.clipsToBounds = true
+
+            }
+            else {
+                cell.reportOpenGraphStoryLink.hidden = true
+            }
             
             //
             // GROUPS
@@ -590,14 +604,26 @@ class ActivityTableViewController: UITableViewController {
         
         let reportId = sender.tag
         let report = self.reports[reportId]
-
+        
         let reportGeometry = report.objectForKey("geometry")
         let reportGeometries = reportGeometry!.objectForKey("geometries")
         let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
         
         UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportCoordinates[1]) + "," + String(reportCoordinates[0]))!)
     }
-    
+
+    func openOpenGraphURL(sender: UIButton) {
+        
+        let reportId = sender.tag
+        let report = JSON(self.reports[reportId])
+        
+        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+        
+        print("openOpenGraphURL \(reportURL)")
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+    }
+
     func refreshTableView(refreshControl: UIRefreshControl) {
         
         //

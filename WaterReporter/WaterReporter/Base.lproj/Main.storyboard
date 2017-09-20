@@ -88,6 +88,18 @@
                                             <color key="textColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm1-9E-ifh">
+                                            <rect key="frame" x="311" y="11" width="46" height="30"/>
+                                            <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="eUr-f2-ACc"/>
+                                                <constraint firstAttribute="width" constant="64" id="ixd-FU-Xe0"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
+                                            <state key="normal" title="Read story">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-EG-TlL">
                                             <rect key="frame" x="8" y="260" width="24" height="24"/>
                                             <constraints>
@@ -202,6 +214,7 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="4Sg-oM-EMq" secondAttribute="trailing" constant="8" id="KsB-7S-RSd"/>
                                         <constraint firstItem="rna-Ip-3qO" firstAttribute="leading" secondItem="bTy-nl-eSP" secondAttribute="trailing" constant="4" id="LU9-B7-c3S"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Fxw-iA-4dw" secondAttribute="trailing" constant="-8" id="LhC-T6-jt1"/>
+                                        <constraint firstItem="xm1-9E-ifh" firstAttribute="top" secondItem="iIs-hU-ppC" secondAttribute="topMargin" constant="10" id="NW6-Yc-Tj1"/>
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" id="Ncf-b2-wtZ"/>
                                         <constraint firstItem="rna-Ip-3qO" firstAttribute="centerY" secondItem="bTy-nl-eSP" secondAttribute="centerY" id="QsV-6H-FAC"/>
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="width" secondItem="iIs-hU-ppC" secondAttribute="height" multiplier="24:35" id="QyY-PE-BUC"/>
@@ -216,7 +229,7 @@
                                         <constraint firstItem="T40-KM-JjO" firstAttribute="top" secondItem="iIs-hU-ppC" secondAttribute="topMargin" constant="10" id="Vfk-ZZ-DPM"/>
                                         <constraint firstItem="4Sg-oM-EMq" firstAttribute="leading" secondItem="iIs-hU-ppC" secondAttribute="leadingMargin" constant="8" id="WRA-zk-lEw"/>
                                         <constraint firstItem="Gdi-7Z-AJY" firstAttribute="top" secondItem="aKB-H4-8aI" secondAttribute="bottom" id="WoJ-ao-qKR"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Gdi-7Z-AJY" secondAttribute="trailing" constant="62" id="ZXD-I7-WV8"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Gdi-7Z-AJY" secondAttribute="trailing" constant="96" id="ZXD-I7-WV8"/>
                                         <constraint firstItem="4Sg-oM-EMq" firstAttribute="top" secondItem="uzf-nX-7zv" secondAttribute="bottom" constant="8" id="atz-VP-5bu"/>
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="4hV-IB-V95" secondAttribute="bottom" constant="8" id="bJ3-Sz-S0u"/>
                                         <constraint firstItem="vAv-oZ-7LT" firstAttribute="leading" secondItem="mWJ-bg-niv" secondAttribute="trailing" constant="16" id="ci2-9B-mdZ"/>
@@ -227,6 +240,7 @@
                                         <constraint firstItem="Fxw-iA-4dw" firstAttribute="width" secondItem="iIs-hU-ppC" secondAttribute="width" id="lfP-eT-wY3"/>
                                         <constraint firstItem="1F4-QA-bwJ" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="leading" id="lhi-WZ-xcX"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Fxw-iA-4dw" secondAttribute="bottom" constant="8" id="mAe-r5-6ZT"/>
+                                        <constraint firstItem="T40-KM-JjO" firstAttribute="leading" secondItem="xm1-9E-ifh" secondAttribute="trailing" constant="8" id="n4T-gN-XNo"/>
                                         <constraint firstItem="4hV-IB-V95" firstAttribute="leading" secondItem="iIs-hU-ppC" secondAttribute="leadingMargin" constant="8" id="nTf-71-eNE"/>
                                         <constraint firstItem="Hqo-EG-TlL" firstAttribute="top" secondItem="Fxw-iA-4dw" secondAttribute="bottom" constant="8" id="qBD-GU-ktQ"/>
                                         <constraint firstItem="aKB-H4-8aI" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" constant="8" id="qPa-KJ-uki"/>
@@ -272,6 +286,7 @@
                                     <outlet property="reportImage" destination="Fxw-iA-4dw" id="ykS-n1-s4a"/>
                                     <outlet property="reportLikeButton" destination="bTy-nl-eSP" id="MGA-71-ckp"/>
                                     <outlet property="reportLikeCount" destination="rna-Ip-3qO" id="7li-VO-wPK"/>
+                                    <outlet property="reportOpenGraphStoryLink" destination="xm1-9E-ifh" id="hIC-fz-1Zt"/>
                                     <outlet property="reportOwnerImage" destination="4hV-IB-V95" id="WWH-zQ-gTx"/>
                                     <outlet property="reportOwnerImageButton" destination="1F4-QA-bwJ" id="bVv-wo-9H6"/>
                                     <outlet property="reportShareButton" destination="Hqo-EG-TlL" id="bDL-Aj-RFP"/>
