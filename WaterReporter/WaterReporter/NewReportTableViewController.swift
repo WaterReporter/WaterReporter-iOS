@@ -157,63 +157,79 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             //
             print("Pasting text", _pasteboard)
             
-            //
-            // Step 2: Check to see if the text being pasted is a link
-            //
-            let _url = NSURL(string: _pasteboard!)
-            OpenGraph.fetch(_url!) { og, error in
-                print("Open Graph \(og)")
-                
-                self.og_paste = "\(_pasteboard!)"
-
-                let _og_title_encoded = og?[.title]!
-                let _og_title = _og_title_encoded?.stringByDecodingHTMLEntities
-                self.og_title = "\(_og_title!)"
-
-                let _og_description_encoded = og?[.description]!
-                let _og_description = _og_description_encoded?.stringByDecodingHTMLEntities
-                self.og_description = "\(_og_description!)"
-
-                let _og_type = og?[.type]!
-                self.og_type = "\(_og_type!)"
-
-                let _og_site_name = og?[.site_name]!
-                self.og_sitename = "\(_og_site_name!)"
-                
-                let _ogImage = og?[.image]!
-                print("_ogImage \(_ogImage!)")
-
-                let _tmpImage = "\(_ogImage!)"
-                let _image = _tmpImage.characters.split{$0 == " "}.map(String.init)
-                
-                if _image.count >= 1 {
-                    
-                    var _imageUrl = _image[0]
-                    
-                    if let imageURLRange = _imageUrl.rangeOfString("?") {
-                        _imageUrl.removeRange(imageURLRange.startIndex..<_imageUrl.endIndex)
-                        self.og_image = "\(_imageUrl)"
-                    }
-                }
-                
-                let _og_url = og?[.url]!
-                self.og_url = "\(_og_url!)"
-                
-                self.og_active = true
-                
-                // We need to wait for all other tasks to finish before 
-                // executing the table reload
+            if self.verifyUrl(_pasteboard) {
                 //
-                NSOperationQueue.mainQueue().addOperationWithBlock {
-                    self.tableView.reloadData()
+                // Step 2: Check to see if the text being pasted is a link
+                //
+                let _url = NSURL(string: _pasteboard!)
+                OpenGraph.fetch(_url!) { og, error in
+                    print("Open Graph \(og)")
+                    
+                    self.og_paste = "\(_pasteboard!)"
+                    
+                    let _og_title_encoded = og?[.title]!
+                    let _og_title = _og_title_encoded?.stringByDecodingHTMLEntities
+                    self.og_title = "\(_og_title!)"
+                    
+                    let _og_description_encoded = og?[.description]!
+                    let _og_description = _og_description_encoded?.stringByDecodingHTMLEntities
+                    self.og_description = "\(_og_description!)"
+                    
+                    let _og_type = og?[.type]!
+                    self.og_type = "\(_og_type!)"
+                    
+                    let _og_site_name = og?[.site_name]!
+                    self.og_sitename = "\(_og_site_name!)"
+                    
+                    let _ogImage = og?[.image]!
+                    print("_ogImage \(_ogImage!)")
+                    
+                    let _tmpImage = "\(_ogImage!)"
+                    let _image = _tmpImage.characters.split{$0 == " "}.map(String.init)
+                    
+                    if _image.count >= 1 {
+                        
+                        var _imageUrl = _image[0]
+                        
+                        if let imageURLRange = _imageUrl.rangeOfString("?") {
+                            _imageUrl.removeRange(imageURLRange.startIndex..<_imageUrl.endIndex)
+                            self.og_image = "\(_imageUrl)"
+                        }
+                    }
+                    
+                    let _og_url = og?[.url]!
+                    self.og_url = "\(_og_url!)"
+                    
+                    self.og_active = true
+                    
+                    // We need to wait for all other tasks to finish before
+                    // executing the table reload
+                    //
+                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                        self.tableView.reloadData()
+                    }
+                    
                 }
-
             }
+
+            
         }
         
         return true
     }
-    
+
+    func verifyUrl (urlString: String?) -> Bool {
+        //Check for nil
+        if let urlString = urlString {
+            // create NSURL instance
+            if let url = NSURL(string: urlString) {
+                // check if your application can open the NSURL instance
+                return UIApplication.sharedApplication().canOpenURL(url)
+            }
+        }
+        return false
+    }
+
     func textViewDidBeginEditing(textView: UITextView) {
         textView.text = ""
     }
