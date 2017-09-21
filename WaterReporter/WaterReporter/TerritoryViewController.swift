@@ -711,27 +711,33 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func collectionView(collectionView: UICollectionView,
                                    numberOfItemsInSection section: Int) -> Int {
         print("UICollectionView::collectionView::numberOfItemsInSection")
+        
+        var numberOfRows: Int = 0
 
         if (self.territorySelectedContentType == "Actions") {
-            return self.territoryActionContentRaw.count
+            numberOfRows = self.territoryActionContentRaw.count
         }
         else if (self.territorySelectedContentType == "Groups") {
-            return self.territoryGroupContentRaw.count
+            numberOfRows = self.territoryGroupContentRaw.count
+        }
+        else if (self.territorySelectedContentType == "Submissions") {
+            numberOfRows = self.territoryContentRaw.count
         }
         else {
-            return self.territoryContentRaw.count
+            numberOfRows = 1
         }
 
+        return numberOfRows
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
         print("UICollectionView::collectionView::cellForItemAt")
 
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionActivityReportsCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
+        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionActivityReportsCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
         
-        let _report: JSON!
-        let _owner: JSON!
+        var _report: JSON!
+        var _owner: JSON!
         
         if (self.territorySelectedContentType == "Actions") {
             _report = JSON(self.territoryActionContentRaw[indexPath.row])
@@ -741,140 +747,144 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             _report = JSON(self.territoryGroupContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }
-        else {
+        else if (self.territorySelectedContentType == "Groups") {
             _report = JSON(self.territoryContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }
+        else {
+            return collectionView.dequeueReusableCellWithReuseIdentifier("CollectionEmptyCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
+        }
         
-        // REPORT > USER > First and Last Name
-        //
-        cell.reportUserProfileName.text = "\(_owner["properties"]["first_name"]) \(_owner["properties"]["last_name"])"
-        
-        
-        // REPORT > USER > Profile Image
-        //
-        // Display Group Image
-        if self.territorySelectedContentType != "Groups" {
+        if _report != nil && _owner != nil {
+            // REPORT > USER > First and Last Name
+            //
+            cell.reportUserProfileName.text = "\(_owner["properties"]["first_name"]) \(_owner["properties"]["last_name"])"
             
-            var userProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
             
-            if let userProfileImageString = _owner["properties"]["picture"].string {
-                userProfileImageURL = NSURL(string: String(userProfileImageString))
+            // REPORT > USER > Profile Image
+            //
+            // Display Group Image
+            if self.territorySelectedContentType != "Groups" {
+                
+                var userProfileImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+                
+                if let userProfileImageString = _owner["properties"]["picture"].string {
+                    userProfileImageURL = NSURL(string: String(userProfileImageString))
+                }
+                
+                cell.reportUserProfileImage.kf_indicatorType = .Activity
+                cell.reportUserProfileImage.kf_showIndicatorWhenLoading = true
+                
+                cell.reportUserProfileImage.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    if (image != nil) {
+                        cell.reportUserProfileImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                    }
+                })
+                
+                cell.reportUserProfileImage.layer.cornerRadius = 8.0
+                cell.reportUserProfileImage.clipsToBounds = true
+                
+            }
+            else {
+                cell.reportUserProfileName.text = ""
+                cell.reportUserProfileImage.backgroundColor = UIColor.clearColor()
+                cell.reportUserProfileImage.image = UIImage()
             }
             
-            cell.reportUserProfileImage.kf_indicatorType = .Activity
-            cell.reportUserProfileImage.kf_showIndicatorWhenLoading = true
             
-            cell.reportUserProfileImage.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+            // REPORT > IMAGE
+            //
+            var reportImageURL:NSURL!
+            
+            if let thisReportImageURL = _report["properties"]["images"][0]["properties"]["square"].string {
+                reportImageURL = NSURL(string: String(thisReportImageURL))
+            }
+
+            cell.reportImage.kf_indicatorType = .Activity
+            cell.reportImage.kf_showIndicatorWhenLoading = true
+            
+            cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                 (image, error, cacheType, imageUrl) in
+                
                 if (image != nil) {
-                    cell.reportUserProfileImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                    cell.reportImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
                 }
             })
-            
-            cell.reportUserProfileImage.layer.cornerRadius = 8.0
-            cell.reportUserProfileImage.clipsToBounds = true
 
-        }
-        else {
-            cell.reportUserProfileName.text = ""
-            cell.reportUserProfileImage.backgroundColor = UIColor.clearColor()
-            cell.reportUserProfileImage.image = UIImage()
-        }
-        
-        
-        // REPORT > IMAGE
-        //
-        var reportImageURL:NSURL!
-        
-        if let thisReportImageURL = _report["properties"]["images"][0]["properties"]["square"].string {
-            reportImageURL = NSURL(string: String(thisReportImageURL))
-        }
-        
-        cell.reportImage.kf_indicatorType = .Activity
-        cell.reportImage.kf_showIndicatorWhenLoading = true
-        
-        cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-            (image, error, cacheType, imageUrl) in
-            
-            if (image != nil) {
-                cell.reportImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-            }
-        })
-        
-        
-        // REPORT > DATE
-        //
-        if self.territorySelectedContentType != "Groups" {
-
-            let reportDate = _report["properties"]["report_date"].string
-            
-            if (reportDate != nil) {
-                let dateString: String = reportDate!
+            // REPORT > DATE
+            //
+            if self.territorySelectedContentType != "Groups" {
                 
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                let reportDate = _report["properties"]["report_date"].string
                 
-                let stringToFormat = dateFormatter.dateFromString(dateString)
-                dateFormatter.dateFormat = "MMM d, yyyy"
-                
-                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
-                
-                if let thisDisplayDate: String? = displayDate {
-                    cell.reportDate.text = thisDisplayDate
+                if (reportDate != nil) {
+                    let dateString: String = reportDate!
+                    
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                    
+                    let stringToFormat = dateFormatter.dateFromString(dateString)
+                    dateFormatter.dateFormat = "MMM d, yyyy"
+                    
+                    let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                    
+                    if let thisDisplayDate: String? = displayDate {
+                        cell.reportDate.text = thisDisplayDate
+                    }
+                }
+                else {
+                    cell.reportDate.text = ""
                 }
             }
             else {
                 cell.reportDate.text = ""
             }
-        }
-        else {
-            cell.reportDate.text = ""
-        }
-        
-        // REPORT > DESCRIPTION
-        //
-        if self.territorySelectedContentType != "Groups" {
-
-            let reportDescription = "\(_report["properties"]["report_description"])"
             
-            if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
-                cell.reportDescription.text = "\(reportDescription)"
+            // REPORT > DESCRIPTION
+            //
+            if self.territorySelectedContentType != "Groups" {
+                
+                let reportDescription = "\(_report["properties"]["report_description"])"
+                
+                if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
+                    cell.reportDescription.text = "\(reportDescription)"
+                }
+                else {
+                    cell.reportDescription.text = ""
+                }
+            }
+            else if self.territorySelectedContentType == "Groups" {
+                
+                cell.reportDescription.text = "\(_report["properties"]["name"])"
+                
             }
             else {
                 cell.reportDescription.text = ""
             }
-        }
-        else if self.territorySelectedContentType == "Groups" {
             
-            cell.reportDescription.text = "\(_report["properties"]["name"])"
-
-        }
-        else {
-            cell.reportDescription.text = ""
-        }
-        
-        
-        // REPORT > Link
-        //
-        if self.territorySelectedContentType == "Groups" {
             
-            cell.reportLink.tag = indexPath.row
+            // REPORT > Link
+            //
+            if self.territorySelectedContentType == "Groups" {
+                
+                cell.reportLink.tag = indexPath.row
+                
+                cell.reportLink.removeTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
+                cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleGroupView(_:)), forControlEvents: .TouchUpInside)
+                
+            }
+            else {
+                cell.reportLink.tag = indexPath.row
+                
+                cell.reportLink.removeTarget(self, action: #selector(TerritoryViewController.openSingleGroupView(_:)), forControlEvents: .TouchUpInside)
+                cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
+            }
             
-            cell.reportLink.removeTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
-            cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleGroupView(_:)), forControlEvents: .TouchUpInside)
             
-        }
-        else {
-            cell.reportLink.tag = indexPath.row
-            
-            cell.reportLink.removeTarget(self, action: #selector(TerritoryViewController.openSingleGroupView(_:)), forControlEvents: .TouchUpInside)
-            cell.reportLink.addTarget(self, action: #selector(TerritoryViewController.openSingleReportView(_:)), forControlEvents: .TouchUpInside)
-        }
-
-        
-        if (indexPath.row == self.territoryContentRaw.count - 2 && self.territoryContentRaw.count < self.territoryContent!["properties"]["num_results"].int) {
-            self.attemptLoadTerritorySubmissions()
+            if (indexPath.row == self.territoryContentRaw.count - 2 && self.territoryContentRaw.count < self.territoryContent!["properties"]["num_results"].int) {
+                self.attemptLoadTerritorySubmissions()
+            }
         }
 
         return cell

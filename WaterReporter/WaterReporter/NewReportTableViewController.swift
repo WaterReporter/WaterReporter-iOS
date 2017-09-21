@@ -477,6 +477,9 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 if self.userSelectedCoorindates != nil {
                     cell.labelLocation.text = String(self.userSelectedCoorindates.longitude) + " " + String(self.userSelectedCoorindates.latitude)
                 }
+                else {
+                    cell.labelLocation.text = "Confirm location"
+                }
                 
                 
                 return cell
@@ -664,7 +667,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
 
         self.tableView.reloadData()
 
-        self.userSelectedCoorindates = CLLocationCoordinate2D()
+        self.userSelectedCoorindates = nil
         
     }
     
