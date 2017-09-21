@@ -150,7 +150,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
         // [text isEqualToString:[UIPasteboard generalPasteboard].string]
-        var _pasteboard = UIPasteboard.generalPasteboard().string
+        let _pasteboard = UIPasteboard.generalPasteboard().string
         
         if (text == _pasteboard) {
             
@@ -189,8 +189,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     }
                     else {
                         self.og_description = ""
-                        self.reportDescription = ""
-
                     }
 
                     if og?[.type] != nil {
