@@ -150,7 +150,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
         // [text isEqualToString:[UIPasteboard generalPasteboard].string]
-        let _pasteboard = UIPasteboard.generalPasteboard().string
+        var _pasteboard = UIPasteboard.generalPasteboard().string
         
         if (text == _pasteboard) {
             
@@ -159,15 +159,18 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             //
             print("Pasting text", _pasteboard)
             
-            if self.verifyUrl(_pasteboard) && self.imageReportImagePreviewIsSet == false {
+//        _pasteboard =  _pasteboard!.stringByRemovingPercentEncoding!.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+
+        if let checkedUrl = NSURL(string: _pasteboard!) {
+
+//            if self.verifyUrl(_pasteboard) && self.imageReportImagePreviewIsSet == false {
                 //
                 // Step 2: Check to see if the text being pasted is a link
                 //
-                let _url = NSURL(string: _pasteboard!)
-                OpenGraph.fetch(_url!) { og, error in
+                OpenGraph.fetch(checkedUrl) { og, error in
                     print("Open Graph \(og)")
                     
-                    self.og_paste = "\(_pasteboard!)"
+                    self.og_paste = "\(checkedUrl)"
                     
                     if og?[.title] != nil {
                         let _og_title = og?[.title]!.stringByDecodingHTMLEntities
@@ -203,8 +206,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                         let _ogImage = og?[.image]!
                         print("_ogImage \(_ogImage!)")
                     
-                        if self.verifyUrl(_ogImage) {
-                            self.og_image = "\(_ogImage!)"
+                        if let imageURL = NSURL(string: _ogImage!) {
+                            self.og_image = "\(imageURL)"
                         }
                         else {
                             let _tmpImage = "\(_ogImage!)"
