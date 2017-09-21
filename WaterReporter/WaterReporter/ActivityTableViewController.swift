@@ -242,6 +242,8 @@ class ActivityTableViewController: UITableViewController {
                 switch response.result {
                 case .Success(let value):
                     
+//                    print("loadReports::Success \(value)")
+                    
                     //
                     // Choose whether or not the reports should refresh or
                     // whether loaded reports should be appended to the existing
@@ -323,7 +325,6 @@ class ActivityTableViewController: UITableViewController {
             cell.reportObject = report
             
             let reportDescription = report?.objectForKey("report_description")
-            let reportImages = report?.objectForKey("images")![0]?.objectForKey("properties")
             //        let reportClosed = report?.objectForKey("closed_by")
             
             let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
@@ -540,22 +541,51 @@ class ActivityTableViewController: UITableViewController {
             //
             // REPORT > IMAGE
             //
-            var reportImageURL:NSURL!
+            let reportImages = report?.objectForKey("images")!
             
-            if let thisReportImageURL = reportImages?.objectForKey("square") {
-                reportImageURL = NSURL(string: String(thisReportImageURL))
-            }
-            
-            cell.reportImage.kf_indicatorType = .Activity
-            cell.reportImage.kf_showIndicatorWhenLoading = true
-            
-            cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                (image, error, cacheType, imageUrl) in
+            if (reportImages != nil && reportImages!.count != 0) {
+                print("Show report image \(reportImages)")
+
+                var reportImageURL:NSURL!
                 
-                if (image != nil) {
-                    cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                if let thisReportImageURL = reportImages![0]?.objectForKey("properties")!.objectForKey("square") {
+                    reportImageURL = NSURL(string: String(thisReportImageURL))
                 }
-            })
+                
+                cell.reportImage.kf_indicatorType = .Activity
+                cell.reportImage.kf_showIndicatorWhenLoading = true
+                
+                cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    
+                    if (image != nil) {
+                        cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                    }
+                })
+
+            }
+            else if (reportJson["social"] != nil && reportJson["social"].count != 0) {
+                print("Show open graph image \(reportJson["social"])")
+
+                if let reportImageURL = NSURL(string: String(reportJson["social"][0]["properties"]["og_image_url"])) {
+                    
+                    cell.reportImage.kf_indicatorType = .Activity
+                    cell.reportImage.kf_showIndicatorWhenLoading = true
+                    
+                    cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                        (image, error, cacheType, imageUrl) in
+                        
+                        if (image != nil) {
+                            cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                        }
+                    })
+                    
+                }
+            }
+            else {
+                print("No image to show")
+                cell.reportImage.image = nil
+            }
             
             //
             // DATE
@@ -799,7 +829,7 @@ class ActivityTableViewController: UITableViewController {
     
                     switch response.result {
                     case .Success(let value):
-                        print("Response Success \(value)")
+//                        print("Response Success \(value)")
                         self.updateReportLikes(_report_id, reportSenderTag: senderTag)
                         
                         break
@@ -884,7 +914,7 @@ class ActivityTableViewController: UITableViewController {
                     
                     switch response.result {
                     case .Success(let value):
-                        print("Response Success \(value)")
+//                        print("Response Success \(value)")
                         
                         self.updateReportLikes(_report_id, reportSenderTag: senderTag)
                         

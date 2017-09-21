@@ -696,7 +696,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             case .Success(let value):
                 let json = JSON(value)
                 
-                print("Response Success \(value)")
+//                print("Response Success \(value)")
                 
                 if (json != nil) {
                     
@@ -927,7 +927,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                         
                         switch response.result {
                         case .Success(let value):
-                            print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+//                            print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
                             
                             // Before anything else, check to make sure we are
                             // processing a valid request. Sometimes we get error
@@ -1191,22 +1191,67 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             // Report > Image
             //
-            var reportImageURL:NSURL!
-            
-            if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
-                reportImageURL = NSURL(string: String(thisReportImageURL))
-            }
-
-            cell.reportImageView.kf_indicatorType = .Activity
-            cell.reportImageView.kf_showIndicatorWhenLoading = true
-            
-            cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                (image, error, cacheType, imageUrl) in
+            let reportImages = _thisSubmission["images"]
+            if (reportImages != nil && reportImages.count != 0) {
+                print("Show report image \(reportImages)")
                 
-                if (image != nil) {
-                    cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                var reportImageURL:NSURL!
+                
+                if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
+                    reportImageURL = NSURL(string: String(thisReportImageURL))
                 }
-            })
+                
+                cell.reportImageView.kf_indicatorType = .Activity
+                cell.reportImageView.kf_showIndicatorWhenLoading = true
+                
+                cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    
+                    if (image != nil) {
+                        cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                    }
+                })
+                
+            }
+            else if (_thisSubmission["social"] != nil && _thisSubmission["social"].count != 0) {
+                print("Show open graph image \(_thisSubmission["social"])")
+                
+                if let reportImageURL = NSURL(string: String(_thisSubmission["social"][0]["properties"]["og_image_url"])) {
+                    
+                    cell.reportImageView.kf_indicatorType = .Activity
+                    cell.reportImageView.kf_showIndicatorWhenLoading = true
+                    
+                    cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                        (image, error, cacheType, imageUrl) in
+                        
+                        if (image != nil) {
+                            cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                        }
+                    })
+                    
+                }
+            }
+            else {
+                print("No image to show")
+                cell.reportImageView.image = nil
+            }
+            
+//            var reportImageURL:NSURL!
+//            
+//            if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
+//                reportImageURL = NSURL(string: String(thisReportImageURL))
+//            }
+//
+//            cell.reportImageView.kf_indicatorType = .Activity
+//            cell.reportImageView.kf_showIndicatorWhenLoading = true
+//            
+//            cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+//                (image, error, cacheType, imageUrl) in
+//                
+//                if (image != nil) {
+//                    cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+//                }
+//            })
             
             // Report > Group > Name
             //
@@ -1450,27 +1495,74 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             cell.labelReportGroups.text = reportGroupsNames
             
+//            // Report > Image
+//            //
+//            //
+//            // REPORT > IMAGE
+//            //
+//            var reportImageURL:NSURL!
+//            
+//            if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
+//                reportImageURL = NSURL(string: String(thisReportImageURL))
+//            }
+//            
+//            cell.reportImageView.kf_indicatorType = .Activity
+//            cell.reportImageView.kf_showIndicatorWhenLoading = true
+//            
+//            cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+//                (image, error, cacheType, imageUrl) in
+//                
+//                if (image != nil) {
+//                    cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+//                }
+//            })
+
             // Report > Image
             //
-            //
-            // REPORT > IMAGE
-            //
-            var reportImageURL:NSURL!
-            
-            if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
-                reportImageURL = NSURL(string: String(thisReportImageURL))
-            }
-            
-            cell.reportImageView.kf_indicatorType = .Activity
-            cell.reportImageView.kf_showIndicatorWhenLoading = true
-            
-            cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                (image, error, cacheType, imageUrl) in
+            let reportImages = _thisSubmission["images"]
+            if (reportImages != nil && reportImages.count != 0) {
+                print("Show report image \(reportImages)")
                 
-                if (image != nil) {
-                    cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                var reportImageURL:NSURL!
+                
+                if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
+                    reportImageURL = NSURL(string: String(thisReportImageURL))
                 }
-            })
+                
+                cell.reportImageView.kf_indicatorType = .Activity
+                cell.reportImageView.kf_showIndicatorWhenLoading = true
+                
+                cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    
+                    if (image != nil) {
+                        cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                    }
+                })
+                
+            }
+            else if (_thisSubmission["social"] != nil && _thisSubmission["social"].count != 0) {
+                print("Show open graph image \(_thisSubmission["social"])")
+                
+                if let reportImageURL = NSURL(string: String(_thisSubmission["social"][0]["properties"]["og_image_url"])) {
+                    
+                    cell.reportImageView.kf_indicatorType = .Activity
+                    cell.reportImageView.kf_showIndicatorWhenLoading = true
+                    
+                    cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                        (image, error, cacheType, imageUrl) in
+                        
+                        if (image != nil) {
+                            cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                        }
+                    })
+                    
+                }
+            }
+            else {
+                print("No image to show")
+                cell.reportImageView.image = nil
+            }
             
             // Buttons > Share
             //
@@ -1836,7 +1928,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     
                     switch response.result {
                     case .Success(let value):
-                        print("Response Success \(value)")
+//                        print("Response Success \(value)")
                         self.updateReportLikes(_report_id, reportSenderTag: senderTag)
                         
                         break
@@ -1932,7 +2024,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     
                     switch response.result {
                     case .Success(let value):
-                        print("Response Success \(value)")
+//                        print("Response Success \(value)")
                         
                         self.updateReportLikes(_report_id, reportSenderTag: senderTag)
                         
