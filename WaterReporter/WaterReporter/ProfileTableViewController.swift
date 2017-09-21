@@ -422,7 +422,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             // Retain the returned data
             self.userProfile = self.userObject
             
-            print("User Profile \(self.userProfile)")
+            print("Loading another user's profile \(self.userProfile)")
             
             if let _first_name = self.userProfile!["properties"]["first_name"].string,
                 let _last_name = self.userProfile!["properties"]["last_name"].string {
@@ -436,6 +436,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
         }
         else if self.userId == nil {
+
+            print("Loading current user's profile")
 
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
