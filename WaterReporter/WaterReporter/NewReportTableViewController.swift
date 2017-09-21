@@ -169,41 +169,73 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                     
                     self.og_paste = "\(_pasteboard!)"
                     
-                    let _og_title_encoded = og?[.title]!
-                    let _og_title = _og_title_encoded?.stringByDecodingHTMLEntities
-                    self.og_title = "\(_og_title!)"
-                    
-                    let _og_description_encoded = og?[.description]!
-                    let _og_description = _og_description_encoded?.stringByDecodingHTMLEntities
-                    self.og_description = "\(_og_description!)"
-                    self.reportDescription = "\(_og_description!)"
-                    
-                    let _og_type = og?[.type]!
-                    self.og_type = "\(_og_type!)"
-                    
-                    let _og_site_name = og?[.site_name]!
-                    self.og_sitename = "\(_og_site_name!)"
-                    
-                    let _ogImage = og?[.image]!
-                    print("_ogImage \(_ogImage!)")
-                    
-                    let _tmpImage = "\(_ogImage!)"
-                    let _image = _tmpImage.characters.split{$0 == " "}.map(String.init)
-                    
-                    if _image.count >= 1 {
-                        
-                        var _imageUrl = _image[0]
-                        
-                        if let imageURLRange = _imageUrl.rangeOfString("?") {
-                            _imageUrl.removeRange(imageURLRange.startIndex..<_imageUrl.endIndex)
-                            self.og_image = "\(_imageUrl)"
-                        }
+                    if og?[.title] != nil {
+                        let _og_title = og?[.title]!.stringByDecodingHTMLEntities
+                        self.og_title = "\(_og_title!)"
+                    }
+                    else {
+                        self.og_title = ""
                     }
                     
-                    let _og_url = og?[.url]!
-                    self.og_url = "\(_og_url!)"
+                    if og?[.description] != nil {
+                        let _og_description_encoded = og?[.description]!
+                        let _og_description = _og_description_encoded?.stringByDecodingHTMLEntities
+                        self.og_description = "\(_og_description!)"
+                        self.reportDescription = "\(_og_description!)"
+
+                    }
+                    else {
+                        self.og_description = ""
+                        self.reportDescription = ""
+
+                    }
+
+                    if og?[.type] != nil {
+                        let _og_type = og?[.type]!
+                        self.og_type = "\(_og_type!)"
+                    }
+                    else {
+                        self.og_type = ""
+                    }
                     
-                    self.og_active = true
+                    
+                    if og?[.image] != nil {
+                        let _ogImage = og?[.image]!
+                        print("_ogImage \(_ogImage!)")
+                    
+                        if self.verifyUrl(_ogImage) {
+                            self.og_image = "\(_ogImage!)"
+                        }
+                        else {
+                            let _tmpImage = "\(_ogImage!)"
+                            let _image = _tmpImage.characters.split{$0 == " "}.map(String.init)
+                            
+                            if _image.count >= 1 {
+                                
+                                var _imageUrl = _image[0]
+                                
+                                if let imageURLRange = _imageUrl.rangeOfString("?") {
+                                    _imageUrl.removeRange(imageURLRange.startIndex..<_imageUrl.endIndex)
+                                    self.og_image = "\(_imageUrl)"
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        self.og_image = ""
+                    }
+                    
+                    if og?[.url] != nil {
+                        let _og_url = og?[.url]!
+                        self.og_url = "\(_og_url!)"
+                    }
+                    else {
+                        self.og_url = ""
+                    }
+                    
+                    if self.og_url != "" && self.og_image != "" {
+                        self.og_active = true
+                    }
                     
                     // We need to wait for all other tasks to finish before
                     // executing the table reload
