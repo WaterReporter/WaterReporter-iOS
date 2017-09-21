@@ -340,6 +340,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     var userId: String!
     var userObject: JSON?
     var userProfile: JSON?
+    var isActingUsersProfile: Bool = false
 
     var userGroups: JSON?
     var userGroupsObjects = [AnyObject]()
@@ -424,6 +425,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             print("Loading another user's profile \(self.userProfile)")
             
+            self.isActingUsersProfile = false
+            
             if let _first_name = self.userProfile!["properties"]["first_name"].string,
                 let _last_name = self.userProfile!["properties"]["last_name"].string {
                 self.navigationItem.title = _first_name + " " + _last_name
@@ -439,6 +442,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
             print("Loading current user's profile")
 
+            self.isActingUsersProfile = true
+            
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
                 self.attemptLoadUserProfile(self.userId)
@@ -1067,7 +1072,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 // we need to change the empty message sentence to make sense in
                 // this context.
                 //
-                if self.navigationItem.rightBarButtonItem?.enabled == false {
+                if self.isActingUsersProfile == false {
                     emptyCell.emptyMessageDescription.text = "Looks like this user hasn't submitted any reports."
                     emptyCell.emptyMessageAction.hidden = true
                 }
@@ -1356,11 +1361,24 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             let _actions = JSON(self.userActionsObjects)
             let _thisSubmission = _actions[indexPath.row]["properties"]
             print("Show (actions) _thisSubmission \(_thisSubmission)")
-            
+
+
+            //
+            // If the User Profile being viewed is no the Acting User's Profile
+            // we need to change the empty message sentence to make sense in
+            // this context.
+            //
             if _thisSubmission == nil {
-                
-                emptyCell.emptyMessageDescription.text = "Looks like no actions have been taken yet."
-                emptyCell.emptyMessageAction.hidden = true
+
+                if self.isActingUsersProfile == false {
+                    emptyCell.emptyMessageDescription.text = "Looks like this user isn't affiliated with any actions yet."
+                    emptyCell.emptyMessageAction.hidden = true
+                }
+                else {
+                    emptyCell.emptyMessageDescription.text = "Looks like no actions have been taken yet."
+                    emptyCell.emptyMessageAction.hidden = false
+                    emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageAddReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                }
                 
                 return emptyCell
             }
@@ -1633,11 +1651,16 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             if _thisSubmission == nil {
                 
-                print("Showing empty cell")
-                emptyCell.emptyMessageDescription.text = "There’s power in numbers, join a group"
-                emptyCell.emptyMessageAction.hidden = false
-                emptyCell.emptyMessageAction.setTitle("Join a group", forState: .Normal)
-                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageJoinGroup(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                if self.isActingUsersProfile == false {
+                    emptyCell.emptyMessageDescription.text = "Looks like this user hasn't joined any groups."
+                    emptyCell.emptyMessageAction.hidden = true
+                }
+                else {
+                    emptyCell.emptyMessageDescription.text = "There’s power in numbers, join a group"
+                    emptyCell.emptyMessageAction.hidden = false
+                    emptyCell.emptyMessageAction.setTitle("Join a group", forState: .Normal)
+                    emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageJoinGroup(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+                }
                 
                 return emptyCell
             }
