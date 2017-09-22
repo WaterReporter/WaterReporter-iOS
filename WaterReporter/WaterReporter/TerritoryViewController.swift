@@ -720,7 +720,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         else if (self.territorySelectedContentType == "Groups") {
             numberOfRows = self.territoryGroupContentRaw.count
         }
-        else if (self.territorySelectedContentType == "Submissions") {
+        else if (self.territorySelectedContentType == "Posts" && self.territoryContentRaw.count != 0) {
             numberOfRows = self.territoryContentRaw.count
         }
         else {
@@ -734,7 +734,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
 
         print("UICollectionView::collectionView::cellForItemAt")
 
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionActivityReportsCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionActivityReportsCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
         
         var _report: JSON!
         var _owner: JSON!
@@ -747,7 +747,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             _report = JSON(self.territoryGroupContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }
-        else if (self.territorySelectedContentType == "Groups") {
+        else if (self.territorySelectedContentType == "Posts" && self.territoryContentRaw.count != 0) {
             _report = JSON(self.territoryContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }

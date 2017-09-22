@@ -389,6 +389,7 @@
 		CE0886EC1F606ACB00F92BA8 /* Reusable Cells */ = {
 			isa = PBXGroup;
 			children = (
+				CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */,
 				CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */,
 				CE1CE5101F69B40300684B3E /* GroupsTableView.swift */,
 				CE015EEF1F6C42CE00447C34 /* NewReportLinkTableViewCell.swift */,
@@ -404,7 +405,6 @@
 			children = (
 				CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */,
 				CEF1D8701F15648D00113D97 /* TerritorySingleViewController.swift */,
-				CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */,
 			);
 			name = Territory;
 			sourceTree = "<group>";
