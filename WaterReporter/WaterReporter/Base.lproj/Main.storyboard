@@ -88,15 +88,14 @@
                                             <color key="textColor" red="0.5725490196078431" green="0.5725490196078431" blue="0.5725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm1-9E-ifh">
-                                            <rect key="frame" x="311" y="11" width="46" height="30"/>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm1-9E-ifh">
+                                            <rect key="frame" x="285" y="15" width="99" height="22"/>
                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="eUr-f2-ACc"/>
-                                                <constraint firstAttribute="width" constant="64" id="ixd-FU-Xe0"/>
+                                                <constraint firstAttribute="width" constant="32" id="ixd-FU-Xe0"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
-                                            <state key="normal" title="Read story">
+                                            <state key="normal" image="icon--arrowwhite">
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
@@ -1487,15 +1486,14 @@
                                                 <action selector="loadTerritoryProfile:" destination="Eed-hC-qwi" eventType="touchUpInside" id="0jj-Yu-Zls"/>
                                             </connections>
                                         </button>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2HC-ZQ-IG7">
-                                            <rect key="frame" x="299" y="97.5" width="64" height="20"/>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2HC-ZQ-IG7">
+                                            <rect key="frame" x="324" y="96.5" width="14" height="22"/>
                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="64" id="vKt-IL-bsk"/>
+                                                <constraint firstAttribute="width" constant="32" id="vKt-IL-bsk"/>
                                                 <constraint firstAttribute="height" constant="20" id="xFR-0R-ZLI"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
-                                            <state key="normal" title="Read story">
+                                            <state key="normal" image="icon--arrowwhite">
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
@@ -1701,15 +1699,14 @@
                                                 <action selector="loadTerritoryProfile:" destination="Eed-hC-qwi" eventType="touchUpInside" id="ORn-oW-aWO"/>
                                             </connections>
                                         </button>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iK3-ov-eaX">
-                                            <rect key="frame" x="299" y="16" width="64" height="20"/>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iK3-ov-eaX">
+                                            <rect key="frame" x="324" y="15" width="14" height="22"/>
                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="64" id="3wD-fL-t1i"/>
+                                                <constraint firstAttribute="width" constant="32" id="3wD-fL-t1i"/>
                                                 <constraint firstAttribute="height" constant="20" id="Npz-cX-UAa"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
-                                            <state key="normal" title="Read story">
+                                            <state key="normal" image="icon--arrowwhite">
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
@@ -1943,7 +1940,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="collectionEmptyCollectionViewCell" reuseIdentifier="CollectionEmptyCollectionViewCell" id="gvT-cj-1jX" customClass="ReusableProfileCollectionViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="45" width="140" height="200"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="140" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="140" height="200"/>
@@ -1978,7 +1975,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="collectionActivityReportsCollectionViewCell" reuseIdentifier="CollectionActivityReportsCollectionViewCell" id="cVq-F2-UrS" customClass="ReusableProfileCollectionViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                        <rect key="frame" x="140" y="45" width="140" height="200"/>
+                                        <rect key="frame" x="140" y="44.5" width="140" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="140" height="200"/>
@@ -2059,7 +2056,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionActivityActionsCollectionViewCell" id="sVR-le-RC1">
-                                        <rect key="frame" x="280" y="45" width="140" height="200"/>
+                                        <rect key="frame" x="280" y="44.5" width="140" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="140" height="200"/>
@@ -2067,7 +2064,7 @@
                                         </view>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionActivityGroupsCollectionViewCell" id="S0Q-wn-TVY">
-                                        <rect key="frame" x="420" y="45" width="140" height="200"/>
+                                        <rect key="frame" x="420" y="44.5" width="140" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="140" height="200"/>
@@ -2075,7 +2072,7 @@
                                         </view>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionActivityNewsCollectionViewCell" id="XCx-MU-3TH">
-                                        <rect key="frame" x="560" y="45" width="140" height="200"/>
+                                        <rect key="frame" x="560" y="44.5" width="140" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="140" height="200"/>
@@ -4297,15 +4294,14 @@
                                                                 <action selector="loadTerritoryProfileFromActions:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="Cvt-rE-uPN"/>
                                                             </connections>
                                                         </button>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y6Q-xF-QY2">
-                                                            <rect key="frame" x="164" y="169" width="46" height="30"/>
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y6Q-xF-QY2">
+                                                            <rect key="frame" x="137" y="173" width="101" height="22"/>
                                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="WFU-Uk-fCX"/>
-                                                                <constraint firstAttribute="width" constant="64" id="fBg-dr-qRH"/>
+                                                                <constraint firstAttribute="width" constant="32" id="fBg-dr-qRH"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
-                                                            <state key="normal" title="Read story">
+                                                            <state key="normal" image="icon--arrowwhite">
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
                                                         </button>
@@ -4570,24 +4566,43 @@
                                                                 <action selector="loadTerritoryProfileFromSubmissions:" destination="KzV-V9-Ipr" eventType="touchUpInside" id="aqd-wf-IQr"/>
                                                             </connections>
                                                         </button>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fql-7E-IGc">
-                                                            <rect key="frame" x="299" y="16" width="64" height="20"/>
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fql-7E-IGc">
+                                                            <rect key="frame" x="324" y="15" width="14" height="22"/>
                                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="8Ti-xf-sDV"/>
-                                                                <constraint firstAttribute="width" constant="64" id="VVD-Q5-QqA"/>
+                                                                <constraint firstAttribute="width" constant="32" id="VVD-Q5-QqA"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
-                                                            <state key="normal" title="Read story">
+                                                            <state key="normal" image="icon--arrowwhite">
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eJj-5k-YfA">
+                                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="24" id="7ao-LP-s4z"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <state key="normal" title="0 likes">
+                                                                <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lY9-Vf-kQg">
+                                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="fKp-Et-Jr3"/>
+                                                                <constraint firstAttribute="width" constant="20" id="kbu-71-aBC"/>
+                                                            </constraints>
+                                                            <state key="normal" image="icon--heart"/>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="C0J-UM-Kq9" firstAttribute="top" secondItem="t1k-3o-P9b" secondAttribute="bottom" constant="8" id="3Xa-z4-dgQ"/>
+                                                        <constraint firstItem="lY9-Vf-kQg" firstAttribute="leading" secondItem="FvB-K7-kCq" secondAttribute="trailing" constant="-40" id="3cS-ly-P0Z"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Fql-7E-IGc" secondAttribute="trailing" constant="4" id="3en-eb-I4e"/>
                                                         <constraint firstItem="C0J-UM-Kq9" firstAttribute="leading" secondItem="dP3-QI-2F0" secondAttribute="leadingMargin" id="4eX-6z-y9f"/>
                                                         <constraint firstAttribute="topMargin" secondItem="OPC-kq-QBe" secondAttribute="top" id="5ZE-gO-KO0"/>
+                                                        <constraint firstItem="eJj-5k-YfA" firstAttribute="leading" secondItem="lY9-Vf-kQg" secondAttribute="trailing" constant="4" id="6D4-aB-yyV"/>
                                                         <constraint firstItem="8tC-RN-7Vh" firstAttribute="top" secondItem="C0J-UM-Kq9" secondAttribute="bottom" constant="16" id="7V9-Ql-BDv"/>
                                                         <constraint firstAttribute="leadingMargin" secondItem="8tC-RN-7Vh" secondAttribute="leading" id="8A4-JW-GkC"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="8tC-RN-7Vh" secondAttribute="trailing" id="9bk-df-bBp"/>
@@ -4617,8 +4632,10 @@
                                                         <constraint firstItem="EOz-46-G2K" firstAttribute="top" secondItem="7FD-TM-RWx" secondAttribute="bottom" id="giO-gj-oVf"/>
                                                         <constraint firstItem="XlE-Dz-FWT" firstAttribute="leading" secondItem="dP3-QI-2F0" secondAttribute="leadingMargin" id="hJf-zF-viX"/>
                                                         <constraint firstItem="XlE-Dz-FWT" firstAttribute="top" secondItem="dP3-QI-2F0" secondAttribute="topMargin" id="irC-UQ-21A"/>
+                                                        <constraint firstItem="eJj-5k-YfA" firstAttribute="centerY" secondItem="lY9-Vf-kQg" secondAttribute="centerY" id="l1q-lw-hTv"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="924-77-IMg" secondAttribute="trailing" constant="-8" id="o9C-m0-cy3"/>
                                                         <constraint firstItem="t1k-3o-P9b" firstAttribute="leading" secondItem="RCJ-AP-TOL" secondAttribute="trailing" constant="16" id="oao-cO-7Vd"/>
+                                                        <constraint firstItem="lY9-Vf-kQg" firstAttribute="centerY" secondItem="FvB-K7-kCq" secondAttribute="centerY" id="tcB-T8-LeZ"/>
                                                         <constraint firstItem="XkY-zg-lMT" firstAttribute="leading" secondItem="T5e-pd-LKd" secondAttribute="trailing" constant="16" id="yIB-QA-4E0"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="XkY-zg-lMT" secondAttribute="trailing" id="ycg-Hd-Q4b"/>
                                                         <constraint firstItem="T5e-pd-LKd" firstAttribute="leading" secondItem="XlE-Dz-FWT" secondAttribute="trailing" constant="8" id="z27-gu-RjT"/>
@@ -5187,15 +5204,14 @@
                                                                 <action selector="loadTerritoryProfileFromActions:" destination="myK-YS-uzI" eventType="touchUpInside" id="iPP-Wi-4Su"/>
                                                             </connections>
                                                         </button>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hdj-gB-swA">
-                                                            <rect key="frame" x="155" y="174" width="64" height="20"/>
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hdj-gB-swA">
+                                                            <rect key="frame" x="180" y="173" width="14" height="22"/>
                                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="64" id="cGd-hn-ksJ"/>
+                                                                <constraint firstAttribute="width" constant="32" id="cGd-hn-ksJ"/>
                                                                 <constraint firstAttribute="height" constant="20" id="eZ2-y0-1vE"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
-                                                            <state key="normal" title="Read story">
+                                                            <state key="normal" image="icon--arrowwhite">
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
                                                         </button>
@@ -5456,15 +5472,14 @@
                                                                 <action selector="loadTerritoryProfileFromSubmissions:" destination="myK-YS-uzI" eventType="touchUpInside" id="bw9-Vz-69f"/>
                                                             </connections>
                                                         </button>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ky-Zq-aO9">
-                                                            <rect key="frame" x="299" y="100.5" width="64" height="20"/>
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ky-Zq-aO9">
+                                                            <rect key="frame" x="324" y="99.5" width="14" height="22"/>
                                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="Cgq-l2-s5b"/>
-                                                                <constraint firstAttribute="width" constant="64" id="rcQ-qQ-6dR"/>
+                                                                <constraint firstAttribute="width" constant="32" id="rcQ-qQ-6dR"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
-                                                            <state key="normal" title="Read story">
+                                                            <state key="normal" image="icon--arrowwhite">
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
                                                         </button>
@@ -7089,6 +7104,7 @@
         <image name="icon--Reloadbutton" width="36" height="36"/>
         <image name="icon--RemoveButton" width="36" height="36"/>
         <image name="icon--Share" width="17" height="20"/>
+        <image name="icon--arrowwhite" width="14" height="13"/>
         <image name="icon--camera" width="32" height="32"/>
         <image name="icon--caret" width="9" height="4"/>
         <image name="icon--emptyMessage" width="190" height="103"/>

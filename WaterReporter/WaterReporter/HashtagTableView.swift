@@ -36,6 +36,11 @@ class HashtagTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
         //
         let cell = tableView.dequeueReusableCellWithIdentifier("hashtagAutocompleteTableViewCell", forIndexPath: indexPath) as! HashtagAutocompleteTableViewCell
         
+        //
+        // BUG~~~~~
+        //
+        // GOT A CRASH BEHAVIOR HERE
+        //
         let _result = self.results[indexPath.row]
         
         guard (_result != "") else {

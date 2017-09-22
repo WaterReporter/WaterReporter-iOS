@@ -57,6 +57,7 @@
 		CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */; };
 		CE0886EE1F606AE000F92BA8 /* EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */; };
 		CE1CE5111F69B40300684B3E /* GroupsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CE5101F69B40300684B3E /* GroupsTableView.swift */; };
+		CE3D47171F755FBA00005DA7 /* VI+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D47161F755FBA00005DA7 /* VI+String.swift */; };
 		CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */; };
 		CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */; };
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
@@ -159,6 +160,7 @@
 		CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableView.swift; sourceTree = "<group>"; };
 		CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyTableViewCell.swift; sourceTree = "<group>"; };
 		CE1CE5101F69B40300684B3E /* GroupsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsTableView.swift; sourceTree = "<group>"; };
+		CE3D47161F755FBA00005DA7 /* VI+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VI+String.swift"; sourceTree = "<group>"; };
 		CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryViewController.swift; sourceTree = "<group>"; };
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 				C1F224E81DAD813A00363A8F /* UIColor.swift */,
 				C12CAFA61D46902D002881A6 /* ImageLoader.swift */,
 				C15965851D5B9C59009099EF /* MGLPointAnnotationExtension.swift */,
+				CE3D47161F755FBA00005DA7 /* VI+String.swift */,
 			);
 			name = _extensions;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */,
 				C1C5FD2B1DDB38E400EF6302 /* ProfileTableViewController.swift in Sources */,
 				CE015EF01F6C42CE00447C34 /* NewReportLinkTableViewCell.swift in Sources */,
+				CE3D47171F755FBA00005DA7 /* VI+String.swift in Sources */,
 				CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */,
 				C185025D1DC779BC00C0F0DA /* CommentTableViewCell.swift in Sources */,
 				C12CAF9F1D4656A5002881A6 /* ActivityTableViewController.swift in Sources */,
