@@ -851,7 +851,40 @@ class HashtagTableViewController: UITableViewController {
             }
             
             cell.buttonReportTerritory.tag = indexPath.row
+
             
+            // Report Like Button
+            //
+            cell.buttonReportLike.tag = indexPath.row
+            
+            var _user_id_integer: Int = 0
+            
+            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                _user_id_integer = _user_id_number.integerValue
+            }
+            
+            print("_user_id_integer \(_user_id_integer)")
+            
+            if _user_id_integer != 0 {
+                
+                print("Setup the like stuff")
+                
+                let _hasLiked = self.userHasLikedReport(_thisSubmission, _current_user_id: _user_id_integer)
+                
+                cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+                
+                if (_hasLiked) {
+                    cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                    cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                    cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+                }
+                else {
+                    cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                    cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                }
+                
+            }
+
             if (indexPath.row == self.hashtagSubmissionsObjects.count - 2 && self.hashtagSubmissionsObjects.count < self.hashtagSubmissions!["properties"]["num_results"].int) {
                 self.attemptLoadHashtagSubmissions()
             }
@@ -1126,6 +1159,39 @@ class HashtagTableViewController: UITableViewController {
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             }
             
+            // Report Like Button
+            //
+            cell.buttonReportLike.tag = indexPath.row
+            
+            var _user_id_integer: Int = 0
+            
+            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                _user_id_integer = _user_id_number.integerValue
+            }
+            
+            print("_user_id_integer \(_user_id_integer)")
+            
+            if _user_id_integer != 0 {
+                
+                print("Setup the like stuff")
+                
+                let _hasLiked = self.userHasLikedReport(_thisSubmission, _current_user_id: _user_id_integer)
+                
+                cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+                
+                if (_hasLiked) {
+                    cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                    cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                    cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+                }
+                else {
+                    cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                    cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                }
+                
+            }
+
+            
             if (indexPath.row == self.hashtagActionsObjects.count - 2 && self.hashtagActionsObjects.count < self.hashtagActions!["properties"]["num_results"].int) {
                 self.attemptLoadHashtagActions()
             }
@@ -1209,77 +1275,136 @@ class HashtagTableViewController: UITableViewController {
         
         let _indexPath = NSIndexPath(forRow: indexPathRow, inSection: 0)
         
-        var _cell: TableViewCell!
         var _report: JSON!
         
         if (self.hashtagSelectedTab == "Actions") {
-            _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! TableViewCell
+            var _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! UserProfileActionsTableViewCell
             _report = JSON(self.hashtagActionsObjects[(indexPathRow)].objectForKey("properties")!)
+            
+            // Change the Heart icon to red
+            //
+            if (addLike) {
+                _cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                _cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            } else {
+                _cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                _cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            }
+            
+            // Update the total likes count
+            //
+            let _report_likes_count: Int = _report["likes"].count
+            
+            // Check if we have previously liked this photo. If so, we need to take
+            // that into account when adding a new like.
+            //
+            let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
+            
+            var _report_likes_updated_total: Int! = _report_likes_count
+            
+            if (addLike) {
+                if (_previously_liked) {
+                    _report_likes_updated_total = _report_likes_count
+                }
+                else {
+                    _report_likes_updated_total = _report_likes_count+1
+                }
+            }
+            else {
+                if (_previously_liked) {
+                    _report_likes_updated_total = _report_likes_count-1
+                }
+                else {
+                    _report_likes_updated_total = _report_likes_count
+                }
+            }
+            
+            var reportLikesCountText: String = ""
+            
+            if _report_likes_updated_total == 1 {
+                reportLikesCountText = "1 like"
+                _cell.buttonReportLikeCount.hidden = false
+            }
+            else if _report_likes_updated_total >= 1 {
+                reportLikesCountText = "\(_report_likes_updated_total) likes"
+                _cell.buttonReportLikeCount.hidden = false
+            }
+            else {
+                reportLikesCountText = "0 likes"
+                _cell.buttonReportLikeCount.hidden = false
+            }
+            
+            _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
+            
         }
         else if (self.hashtagSelectedTab == "Submissions") {
-            _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! TableViewCell
+            var _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! UserProfileSubmissionTableViewCell
             _report = JSON(self.hashtagSubmissionsObjects[(indexPathRow)].objectForKey("properties")!)
+            
+            // Change the Heart icon to red
+            //
+            if (addLike) {
+                _cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                _cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            } else {
+                _cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                _cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            }
+            
+            // Update the total likes count
+            //
+            let _report_likes_count: Int = _report["likes"].count
+            
+            // Check if we have previously liked this photo. If so, we need to take
+            // that into account when adding a new like.
+            //
+            let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
+            
+            var _report_likes_updated_total: Int! = _report_likes_count
+            
+            if (addLike) {
+                if (_previously_liked) {
+                    _report_likes_updated_total = _report_likes_count
+                }
+                else {
+                    _report_likes_updated_total = _report_likes_count+1
+                }
+            }
+            else {
+                if (_previously_liked) {
+                    _report_likes_updated_total = _report_likes_count-1
+                }
+                else {
+                    _report_likes_updated_total = _report_likes_count
+                }
+            }
+            
+            var reportLikesCountText: String = ""
+            
+            if _report_likes_updated_total == 1 {
+                reportLikesCountText = "1 like"
+                _cell.buttonReportLikeCount.hidden = false
+            }
+            else if _report_likes_updated_total >= 1 {
+                reportLikesCountText = "\(_report_likes_updated_total) likes"
+                _cell.buttonReportLikeCount.hidden = false
+            }
+            else {
+                reportLikesCountText = "0 likes"
+                _cell.buttonReportLikeCount.hidden = false
+            }
+            
+            _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         }
         else {
             return;
         }
         
-        // Change the Heart icon to red
-        //
-        if (addLike) {
-            _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
-            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-            _cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-        } else {
-            _cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
-            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-            _cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-        }
         
-        // Update the total likes count
-        //
-        let _report_likes_count: Int = _report["likes"].count
-        
-        // Check if we have previously liked this photo. If so, we need to take
-        // that into account when adding a new like.
-        //
-        let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
-        
-        var _report_likes_updated_total: Int! = _report_likes_count
-        
-        if (addLike) {
-            if (_previously_liked) {
-                _report_likes_updated_total = _report_likes_count
-            }
-            else {
-                _report_likes_updated_total = _report_likes_count+1
-            }
-        }
-        else {
-            if (_previously_liked) {
-                _report_likes_updated_total = _report_likes_count-1
-            }
-            else {
-                _report_likes_updated_total = _report_likes_count
-            }
-        }
-        
-        var reportLikesCountText: String = ""
-        
-        if _report_likes_updated_total == 1 {
-            reportLikesCountText = "1 like"
-            _cell.reportLikeCount.hidden = false
-        }
-        else if _report_likes_updated_total >= 1 {
-            reportLikesCountText = "\(_report_likes_updated_total) likes"
-            _cell.reportLikeCount.hidden = false
-        }
-        else {
-            reportLikesCountText = "0 likes"
-            _cell.reportLikeCount.hidden = false
-        }
-        
-        _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         
         
     }

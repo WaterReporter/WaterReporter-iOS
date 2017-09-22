@@ -32,6 +32,9 @@ class UserProfileActionsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var buttonOpenGraphLink: UIButton!
 
+    @IBOutlet weak var buttonReportLike: UIButton!
+    @IBOutlet weak var buttonReportLikeCount: UIButton!
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

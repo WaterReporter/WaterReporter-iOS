@@ -1497,8 +1497,27 @@
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5e-hm-mgP">
+                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="q1I-Gw-DYc"/>
+                                                <constraint firstAttribute="width" constant="20" id="w7T-HD-zH1"/>
+                                            </constraints>
+                                            <state key="normal" image="icon--heart"/>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Jq-hw-miS">
+                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="Lbi-OL-l31"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <state key="normal" title="0 likes">
+                                                <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="4Jq-hw-miS" firstAttribute="leading" secondItem="q5e-hm-mgP" secondAttribute="trailing" constant="4" id="003-VA-1Og"/>
                                         <constraint firstItem="2HC-ZQ-IG7" firstAttribute="centerY" secondItem="CxH-Io-hiZ" secondAttribute="centerY" id="00s-vp-2bH"/>
                                         <constraint firstItem="5si-fI-ODT" firstAttribute="top" secondItem="p56-XC-6nS" secondAttribute="bottom" constant="8" id="1m2-L4-rPb"/>
                                         <constraint firstAttribute="topMargin" secondItem="8pU-jG-07m" secondAttribute="top" constant="-3" id="48i-KF-DBq"/>
@@ -1507,9 +1526,11 @@
                                         <constraint firstItem="5si-fI-ODT" firstAttribute="leading" secondItem="AjR-uA-KiV" secondAttribute="leadingMargin" id="5ox-1e-cGX"/>
                                         <constraint firstItem="Thb-sl-wMZ" firstAttribute="leading" secondItem="OGL-3e-W6Q" secondAttribute="trailing" constant="16" id="8Kl-rd-VLq"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="cge-gQ-F5C" secondAttribute="trailing" id="9Xt-rc-Z1o"/>
+                                        <constraint firstItem="q5e-hm-mgP" firstAttribute="centerY" secondItem="p56-XC-6nS" secondAttribute="centerY" id="A6z-Cf-nTV"/>
                                         <constraint firstItem="5si-fI-ODT" firstAttribute="top" secondItem="Thb-sl-wMZ" secondAttribute="bottom" constant="8" id="AQR-Kj-zAi"/>
                                         <constraint firstItem="Thb-sl-wMZ" firstAttribute="top" secondItem="cKk-5S-thH" secondAttribute="bottom" constant="8" id="BY7-39-iCm"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="N9D-gM-8LP" secondAttribute="leading" id="Egr-ie-EG9"/>
+                                        <constraint firstItem="4Jq-hw-miS" firstAttribute="centerY" secondItem="q5e-hm-mgP" secondAttribute="centerY" id="HTJ-36-HRk"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="qxP-m0-nX9" secondAttribute="leading" id="Ipa-eq-4Bm"/>
                                         <constraint firstItem="CM0-Ga-W9e" firstAttribute="top" secondItem="8pU-jG-07m" secondAttribute="bottom" id="Kba-aD-PV8"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="5si-fI-ODT" secondAttribute="trailing" id="N8a-7w-I7m"/>
@@ -1519,6 +1540,7 @@
                                         <constraint firstItem="cKk-5S-thH" firstAttribute="top" secondItem="L8i-gW-k0U" secondAttribute="bottom" constant="8" id="Sok-sM-HIc"/>
                                         <constraint firstItem="p56-XC-6nS" firstAttribute="leading" secondItem="Thb-sl-wMZ" secondAttribute="trailing" constant="16" id="W8Z-qK-nGf"/>
                                         <constraint firstItem="hYr-iS-vRq" firstAttribute="leading" secondItem="CxH-Io-hiZ" secondAttribute="trailing" constant="8" id="Wy0-dk-Yhv"/>
+                                        <constraint firstItem="q5e-hm-mgP" firstAttribute="leading" secondItem="p56-XC-6nS" secondAttribute="trailing" constant="-40" id="XSh-SE-lsg"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="2HC-ZQ-IG7" secondAttribute="trailing" constant="4" id="XuB-5n-LgY"/>
                                         <constraint firstItem="OGL-3e-W6Q" firstAttribute="top" secondItem="cKk-5S-thH" secondAttribute="bottom" constant="8" id="YfT-1o-qYP"/>
                                         <constraint firstItem="L8i-gW-k0U" firstAttribute="leading" secondItem="AjR-uA-KiV" secondAttribute="leadingMargin" id="YpY-dx-bQN"/>
@@ -1547,6 +1569,8 @@
                                     <outlet property="buttonOpenGraphLink" destination="2HC-ZQ-IG7" id="uxw-D5-soc"/>
                                     <outlet property="buttonReportComments" destination="p56-XC-6nS" id="EhA-ZP-Ks8"/>
                                     <outlet property="buttonReportDirections" destination="Thb-sl-wMZ" id="921-lI-TbK"/>
+                                    <outlet property="buttonReportLike" destination="q5e-hm-mgP" id="yxV-xC-Lzf"/>
+                                    <outlet property="buttonReportLikeCount" destination="4Jq-hw-miS" id="4CG-Yx-yZg"/>
                                     <outlet property="buttonReportMap" destination="OGL-3e-W6Q" id="gfu-q7-tEX"/>
                                     <outlet property="buttonReportShare" destination="qxP-m0-nX9" id="ZJq-95-BsL"/>
                                     <outlet property="buttonReportTerritory" destination="hYr-iS-vRq" id="TWG-g0-idP"/>
@@ -1710,6 +1734,24 @@
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfO-Fg-5cU">
+                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="Wis-ic-Hey"/>
+                                                <constraint firstAttribute="height" constant="20" id="hH5-Gf-Iov"/>
+                                            </constraints>
+                                            <state key="normal" image="icon--heart"/>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gPQ-uF-hpK">
+                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="pvg-ib-bQI"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <state key="normal" title="0 likes">
+                                                <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="F9e-yQ-gHK" firstAttribute="leading" secondItem="Skh-uy-rN8" secondAttribute="trailing" constant="16" id="0w3-1H-F7l"/>
@@ -1723,6 +1765,7 @@
                                         <constraint firstItem="wUi-Fp-pgo" firstAttribute="leading" secondItem="VX0-uB-6Si" secondAttribute="leadingMargin" constant="-8" id="GGM-4b-sk9"/>
                                         <constraint firstItem="UPM-FC-5Zx" firstAttribute="leading" secondItem="odr-ix-arB" secondAttribute="trailing" constant="8" id="GgX-P0-ak3"/>
                                         <constraint firstItem="eRX-2O-pwy" firstAttribute="top" secondItem="wUi-Fp-pgo" secondAttribute="bottom" constant="8" id="HIc-oh-vIB"/>
+                                        <constraint firstItem="gfO-Fg-5cU" firstAttribute="centerY" secondItem="uV6-yH-FmS" secondAttribute="centerY" id="JQE-R0-9KR"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="yje-aV-KCl" secondAttribute="trailing" id="Jaq-im-YzR"/>
                                         <constraint firstItem="yje-aV-KCl" firstAttribute="top" secondItem="QEW-yz-4cJ" secondAttribute="bottom" constant="16" id="Ky4-Ks-ywh"/>
                                         <constraint firstItem="QEW-yz-4cJ" firstAttribute="top" secondItem="eRX-2O-pwy" secondAttribute="bottom" constant="8" id="LVa-xz-UYc"/>
@@ -1742,7 +1785,10 @@
                                         <constraint firstItem="QEW-yz-4cJ" firstAttribute="top" secondItem="Skh-uy-rN8" secondAttribute="bottom" constant="8" id="iye-sz-coz"/>
                                         <constraint firstItem="UTK-Ls-1BW" firstAttribute="leading" secondItem="Pr8-zB-JHi" secondAttribute="trailing" constant="8" id="kjh-jV-dsI"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="QEW-yz-4cJ" secondAttribute="leading" id="knT-2A-zWB"/>
+                                        <constraint firstItem="gPQ-uF-hpK" firstAttribute="centerY" secondItem="gfO-Fg-5cU" secondAttribute="centerY" id="lil-Iy-kwX"/>
+                                        <constraint firstItem="gPQ-uF-hpK" firstAttribute="leading" secondItem="gfO-Fg-5cU" secondAttribute="trailing" constant="4" id="mFw-eq-ef8"/>
                                         <constraint firstItem="Skh-uy-rN8" firstAttribute="leading" secondItem="VX0-uB-6Si" secondAttribute="leadingMargin" id="nDk-j3-gsA"/>
+                                        <constraint firstItem="gfO-Fg-5cU" firstAttribute="leading" secondItem="uV6-yH-FmS" secondAttribute="trailing" constant="-40" id="o9c-X9-tJA"/>
                                         <constraint firstItem="odr-ix-arB" firstAttribute="leading" secondItem="VX0-uB-6Si" secondAttribute="leadingMargin" id="onz-6L-zyC"/>
                                         <constraint firstItem="odr-ix-arB" firstAttribute="top" secondItem="VX0-uB-6Si" secondAttribute="topMargin" id="pgk-JV-8qM"/>
                                         <constraint firstItem="3VD-uf-IgA" firstAttribute="leading" secondItem="UTK-Ls-1BW" secondAttribute="trailing" constant="16" id="rj4-7A-mif"/>
@@ -1756,6 +1802,8 @@
                                     <outlet property="buttonOpenGraphLink" destination="iK3-ov-eaX" id="DHd-Fy-WR9"/>
                                     <outlet property="buttonReportComments" destination="uV6-yH-FmS" id="8xm-5p-3KU"/>
                                     <outlet property="buttonReportDirections" destination="eRX-2O-pwy" id="mch-Iv-9Bk"/>
+                                    <outlet property="buttonReportLike" destination="gfO-Fg-5cU" id="EBz-y2-aE1"/>
+                                    <outlet property="buttonReportLikeCount" destination="gPQ-uF-hpK" id="qFV-V6-Ytz"/>
                                     <outlet property="buttonReportMap" destination="F9e-yQ-gHK" id="NzG-ZX-xFR"/>
                                     <outlet property="buttonReportShare" destination="Skh-uy-rN8" id="9R6-Q8-TSN"/>
                                     <outlet property="imageViewReportOwnerImage" destination="Pr8-zB-JHi" id="hgN-N7-osP"/>
@@ -4305,6 +4353,24 @@
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
                                                         </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPG-0N-wWU">
+                                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="ANg-8k-ahp"/>
+                                                                <constraint firstAttribute="width" constant="20" id="ujR-ff-zzQ"/>
+                                                            </constraints>
+                                                            <state key="normal" image="icon--heart"/>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U8u-9y-Z18">
+                                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="24" id="Qd0-21-ipM"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <state key="normal" title="0 likes">
+                                                                <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="Y6Q-xF-QY2" firstAttribute="centerY" secondItem="3kb-1X-PSK" secondAttribute="centerY" id="0wE-Lf-uDY"/>
@@ -4329,7 +4395,10 @@
                                                         <constraint firstAttribute="trailingMargin" secondItem="6mk-Ud-U8c" secondAttribute="trailing" id="fh8-Eq-C1p"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="BFH-kM-cLY" secondAttribute="trailing" id="g0S-zd-CZQ"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Y6Q-xF-QY2" secondAttribute="trailing" constant="4" id="g7h-bz-EbO"/>
+                                                        <constraint firstItem="pPG-0N-wWU" firstAttribute="leading" secondItem="0Xy-YN-PCS" secondAttribute="trailing" constant="-40" id="h3g-HE-qaz"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="dOQ-p8-w9e" secondAttribute="trailing" constant="-8" id="iwg-Yz-kg3"/>
+                                                        <constraint firstItem="U8u-9y-Z18" firstAttribute="leading" secondItem="pPG-0N-wWU" secondAttribute="trailing" constant="4" id="jCJ-Gi-Xqp"/>
+                                                        <constraint firstItem="U8u-9y-Z18" firstAttribute="centerY" secondItem="pPG-0N-wWU" secondAttribute="centerY" id="jyV-DL-qI5"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="kMU-Kf-9xl" secondAttribute="trailing" id="kBU-ZB-zqJ"/>
                                                         <constraint firstItem="0Xy-YN-PCS" firstAttribute="top" secondItem="dOQ-p8-w9e" secondAttribute="bottom" constant="8" id="kh4-da-MRb"/>
                                                         <constraint firstItem="dOQ-p8-w9e" firstAttribute="top" secondItem="Gcu-6A-BtS" secondAttribute="bottom" constant="8" id="lG6-vX-aeG"/>
@@ -4338,6 +4407,7 @@
                                                         <constraint firstItem="6mk-Ud-U8c" firstAttribute="top" secondItem="kMU-Kf-9xl" secondAttribute="bottom" constant="16" id="otR-ru-Cdv"/>
                                                         <constraint firstItem="rIt-cf-Huw" firstAttribute="leading" secondItem="3kb-1X-PSK" secondAttribute="trailing" constant="8" id="psw-AE-bNb"/>
                                                         <constraint firstItem="Gcu-6A-BtS" firstAttribute="leading" secondItem="Lbk-2A-pdU" secondAttribute="leadingMargin" id="rLk-Je-wt3"/>
+                                                        <constraint firstItem="pPG-0N-wWU" firstAttribute="centerY" secondItem="0Xy-YN-PCS" secondAttribute="centerY" id="slS-SY-7qc"/>
                                                         <constraint firstItem="dOQ-p8-w9e" firstAttribute="leading" secondItem="Lbk-2A-pdU" secondAttribute="leadingMargin" constant="-8" id="srG-xB-Xy7"/>
                                                         <constraint firstItem="kMU-Kf-9xl" firstAttribute="top" secondItem="Z1j-YC-ev0" secondAttribute="bottom" constant="8" id="u17-RC-hoP"/>
                                                         <constraint firstItem="BFH-kM-cLY" firstAttribute="leading" secondItem="KeZ-4I-egR" secondAttribute="trailing" constant="16" id="uvy-fD-5mo"/>
@@ -4351,6 +4421,8 @@
                                                     <outlet property="buttonOpenGraphLink" destination="Y6Q-xF-QY2" id="Jfs-Ty-VuC"/>
                                                     <outlet property="buttonReportComments" destination="0Xy-YN-PCS" id="PTb-v3-czD"/>
                                                     <outlet property="buttonReportDirections" destination="kaK-Ux-5mh" id="ixv-JR-Wau"/>
+                                                    <outlet property="buttonReportLike" destination="pPG-0N-wWU" id="Ne8-iL-gAk"/>
+                                                    <outlet property="buttonReportLikeCount" destination="U8u-9y-Z18" id="vnL-dQ-aIS"/>
                                                     <outlet property="buttonReportMap" destination="R4f-M5-n5I" id="aoB-lq-LKd"/>
                                                     <outlet property="buttonReportShare" destination="Z1j-YC-ev0" id="Gfe-wq-c5q"/>
                                                     <outlet property="buttonReportTerritory" destination="KeZ-4I-egR" id="DKs-bL-XoM"/>
@@ -4652,6 +4724,8 @@
                                                     <outlet property="buttonOpenGraphLink" destination="Fql-7E-IGc" id="5BY-MR-eW7"/>
                                                     <outlet property="buttonReportComments" destination="FvB-K7-kCq" id="ZkX-Qb-Vm3"/>
                                                     <outlet property="buttonReportDirections" destination="m3X-35-W9X" id="Se1-De-1gk"/>
+                                                    <outlet property="buttonReportLike" destination="lY9-Vf-kQg" id="VP5-7Q-vfV"/>
+                                                    <outlet property="buttonReportLikeCount" destination="eJj-5k-YfA" id="y6H-r8-F3I"/>
                                                     <outlet property="buttonReportMap" destination="t1k-3o-P9b" id="8jm-3Q-fC0"/>
                                                     <outlet property="buttonReportShare" destination="RCJ-AP-TOL" id="YPr-7A-jK5"/>
                                                     <outlet property="buttonReportTerritory" destination="EOz-46-G2K" id="dGz-Ca-cXl"/>
@@ -5215,6 +5289,24 @@
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
                                                         </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-ke-wRD">
+                                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="20" id="YYC-Ir-9rr"/>
+                                                                <constraint firstAttribute="height" constant="20" id="jtZ-lL-Thh"/>
+                                                            </constraints>
+                                                            <state key="normal" image="icon--heart"/>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IZn-9S-0KU">
+                                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="24" id="plA-zh-9MF"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <state key="normal" title="0 likes">
+                                                                <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="hS7-LT-yJg" firstAttribute="leading" secondItem="2rN-wa-ALO" secondAttribute="leadingMargin" id="04A-be-v3I"/>
@@ -5228,12 +5320,16 @@
                                                         <constraint firstItem="pR1-y8-TQA" firstAttribute="top" secondItem="8Qy-AB-VmD" secondAttribute="bottom" constant="8" id="Cyt-en-hEQ"/>
                                                         <constraint firstItem="8Qy-AB-VmD" firstAttribute="leading" secondItem="2rN-wa-ALO" secondAttribute="leadingMargin" constant="-8" id="GFY-AO-084"/>
                                                         <constraint firstItem="pOW-yx-2Dd" firstAttribute="leading" secondItem="UjV-s8-wMy" secondAttribute="trailing" constant="16" id="JnD-LQ-5e6"/>
+                                                        <constraint firstItem="e7r-ke-wRD" firstAttribute="centerY" secondItem="k6w-Gj-rwn" secondAttribute="centerY" id="KKK-Kc-Bcg"/>
                                                         <constraint firstItem="XDm-1u-I4T" firstAttribute="top" secondItem="B4o-RU-wOW" secondAttribute="bottom" constant="8" id="Kk9-uR-83J"/>
+                                                        <constraint firstItem="IZn-9S-0KU" firstAttribute="leading" secondItem="e7r-ke-wRD" secondAttribute="trailing" constant="4" id="LQc-pk-FES"/>
                                                         <constraint firstAttribute="leadingMargin" secondItem="XDm-1u-I4T" secondAttribute="leading" id="NJn-KH-LtF"/>
+                                                        <constraint firstItem="IZn-9S-0KU" firstAttribute="centerY" secondItem="e7r-ke-wRD" secondAttribute="centerY" id="NOM-F8-SyJ"/>
                                                         <constraint firstItem="8Qy-AB-VmD" firstAttribute="top" secondItem="hS7-LT-yJg" secondAttribute="bottom" constant="8" id="QK2-Ok-UvS"/>
                                                         <constraint firstItem="IF2-gP-vjq" firstAttribute="leading" secondItem="2rN-wa-ALO" secondAttribute="leadingMargin" id="S5l-qY-bZq"/>
                                                         <constraint firstItem="XDm-1u-I4T" firstAttribute="top" secondItem="k6w-Gj-rwn" secondAttribute="bottom" constant="8" id="T9N-iA-2DE"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="hdj-gB-swA" secondAttribute="trailing" constant="4" id="Vz0-AJ-YXn"/>
+                                                        <constraint firstItem="e7r-ke-wRD" firstAttribute="leading" secondItem="k6w-Gj-rwn" secondAttribute="trailing" constant="-40" id="XFw-L9-ZhI"/>
                                                         <constraint firstAttribute="bottomMargin" secondItem="yBa-pf-PAl" secondAttribute="bottom" constant="16" id="XL2-oE-04h"/>
                                                         <constraint firstItem="UjV-s8-wMy" firstAttribute="leading" secondItem="IF2-gP-vjq" secondAttribute="trailing" constant="8" id="YMg-8V-QFC"/>
                                                         <constraint firstItem="XDm-1u-I4T" firstAttribute="top" secondItem="lVy-hn-MnZ" secondAttribute="bottom" constant="8" id="YfF-Al-WvO"/>
@@ -5261,6 +5357,8 @@
                                                     <outlet property="buttonOpenGraphLink" destination="hdj-gB-swA" id="Rdn-Bx-XjN"/>
                                                     <outlet property="buttonReportComments" destination="k6w-Gj-rwn" id="LgK-vT-SeU"/>
                                                     <outlet property="buttonReportDirections" destination="pR1-y8-TQA" id="ICl-zF-8Xp"/>
+                                                    <outlet property="buttonReportLike" destination="e7r-ke-wRD" id="3Tt-vx-yqm"/>
+                                                    <outlet property="buttonReportLikeCount" destination="IZn-9S-0KU" id="n3n-6Z-G23"/>
                                                     <outlet property="buttonReportMap" destination="B4o-RU-wOW" id="bUK-4J-9fI"/>
                                                     <outlet property="buttonReportShare" destination="lVy-hn-MnZ" id="Q9F-wQ-gct"/>
                                                     <outlet property="buttonReportTerritory" destination="7QN-lp-Yn0" id="8rW-Xx-F9m"/>
@@ -5483,6 +5581,24 @@
                                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
                                                         </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lm9-tb-rYV">
+                                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="1Fp-Kb-FEQ"/>
+                                                                <constraint firstAttribute="width" constant="20" id="Q5a-f9-Hdq"/>
+                                                            </constraints>
+                                                            <state key="normal" image="icon--heart"/>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nal-t0-eYH">
+                                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="24" id="1y0-FT-IsH"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                            <state key="normal" title="0 likes">
+                                                                <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="c6C-i3-8xZ" firstAttribute="leading" secondItem="F1r-Gh-MCx" secondAttribute="trailing" constant="16" id="2Ue-Wo-4KM"/>
@@ -5501,12 +5617,15 @@
                                                         <constraint firstItem="EqC-cl-cWj" firstAttribute="leading" secondItem="ANT-iR-Wvg" secondAttribute="leadingMargin" id="Jah-ze-onF"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="9ky-Zq-aO9" secondAttribute="trailing" constant="4" id="JrI-cR-243"/>
                                                         <constraint firstItem="PAc-1j-SpK" firstAttribute="top" secondItem="ykM-tp-KAb" secondAttribute="bottom" constant="8" id="Kfa-gW-ash"/>
+                                                        <constraint firstItem="Nal-t0-eYH" firstAttribute="centerY" secondItem="Lm9-tb-rYV" secondAttribute="centerY" id="MYo-Yf-98i"/>
                                                         <constraint firstItem="ykM-tp-KAb" firstAttribute="leading" secondItem="ANT-iR-Wvg" secondAttribute="leadingMargin" constant="-8" id="PCN-yT-h2O"/>
                                                         <constraint firstItem="6lf-gK-Nza" firstAttribute="top" secondItem="60o-Qa-esf" secondAttribute="bottom" constant="16" id="U25-NN-WMC"/>
                                                         <constraint firstItem="60o-Qa-esf" firstAttribute="top" secondItem="vJx-Sc-7lf" secondAttribute="bottom" constant="8" id="VFC-yp-rxg"/>
                                                         <constraint firstItem="c6C-i3-8xZ" firstAttribute="leading" secondItem="qQ9-20-Bcm" secondAttribute="trailing" constant="16" id="VG7-ws-lyE"/>
                                                         <constraint firstItem="vJx-Sc-7lf" firstAttribute="leading" secondItem="iMU-pe-Szt" secondAttribute="trailing" constant="16" id="Yet-Ew-9h0"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="6lf-gK-Nza" secondAttribute="trailing" id="eWQ-F6-tcW"/>
+                                                        <constraint firstItem="Lm9-tb-rYV" firstAttribute="leading" secondItem="vJx-Sc-7lf" secondAttribute="trailing" constant="-40" id="fON-xC-HRS"/>
+                                                        <constraint firstItem="Lm9-tb-rYV" firstAttribute="centerY" secondItem="vJx-Sc-7lf" secondAttribute="centerY" id="hCJ-BE-f3T"/>
                                                         <constraint firstItem="iMU-pe-Szt" firstAttribute="top" secondItem="ykM-tp-KAb" secondAttribute="bottom" constant="8" id="hud-Ta-xQO"/>
                                                         <constraint firstItem="vJx-Sc-7lf" firstAttribute="top" secondItem="ykM-tp-KAb" secondAttribute="bottom" constant="8" id="izk-wa-tau"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="ykM-tp-KAb" secondAttribute="trailing" constant="-8" id="jkv-FF-oVs"/>
@@ -5521,6 +5640,7 @@
                                                         <constraint firstItem="ykM-tp-KAb" firstAttribute="top" secondItem="EqC-cl-cWj" secondAttribute="bottom" constant="8" id="rYl-nY-wED"/>
                                                         <constraint firstItem="pBq-V4-Jwv" firstAttribute="leading" secondItem="ANT-iR-Wvg" secondAttribute="leadingMargin" id="sQd-yC-fpV"/>
                                                         <constraint firstItem="c6C-i3-8xZ" firstAttribute="leading" secondItem="vKw-HN-mlh" secondAttribute="trailing" constant="16" id="wCg-Ec-M8D"/>
+                                                        <constraint firstItem="Nal-t0-eYH" firstAttribute="leading" secondItem="Lm9-tb-rYV" secondAttribute="trailing" constant="4" id="xUU-q7-tMQ"/>
                                                         <constraint firstItem="LkH-45-CFz" firstAttribute="leading" secondItem="PAc-1j-SpK" secondAttribute="trailing" constant="16" id="y3V-eG-aId"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
@@ -5533,6 +5653,8 @@
                                                     <outlet property="buttonOpenGraphLink" destination="9ky-Zq-aO9" id="puJ-1F-1Pl"/>
                                                     <outlet property="buttonReportComments" destination="vJx-Sc-7lf" id="p97-pU-Bwx"/>
                                                     <outlet property="buttonReportDirections" destination="iMU-pe-Szt" id="Bc2-ky-hTV"/>
+                                                    <outlet property="buttonReportLike" destination="Lm9-tb-rYV" id="865-6H-QsG"/>
+                                                    <outlet property="buttonReportLikeCount" destination="Nal-t0-eYH" id="LLC-Y8-ZOH"/>
                                                     <outlet property="buttonReportMap" destination="LkH-45-CFz" id="EFa-Og-anX"/>
                                                     <outlet property="buttonReportShare" destination="PAc-1j-SpK" id="2g4-KB-10p"/>
                                                     <outlet property="buttonReportTerritory" destination="F1r-Gh-MCx" id="KV9-0F-Nqs"/>
