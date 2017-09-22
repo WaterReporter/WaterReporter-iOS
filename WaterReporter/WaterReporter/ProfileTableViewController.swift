@@ -40,6 +40,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // MARK: @IBActions
     //
+   
     @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
         
         let reportId = sender.tag

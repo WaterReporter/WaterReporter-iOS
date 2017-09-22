@@ -305,6 +305,10 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
     }
 
+    @IBAction func openNewReportForm(sender: UIButton){
+        self.tabBarController?.selectedIndex = 2
+    }
+
     //
     // MARK: Variables
     //

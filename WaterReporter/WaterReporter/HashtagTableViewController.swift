@@ -302,7 +302,10 @@ class HashtagTableViewController: UITableViewController {
         
     }
     
-    
+    @IBAction func openNewReportForm(sender: UIButton){
+        self.tabBarController?.selectedIndex = 2
+    }
+
     //
     //
     //
@@ -594,7 +597,7 @@ class HashtagTableViewController: UITableViewController {
             let _thisSubmission = _submission[indexPath.row]["properties"]
             
             if _thisSubmission == nil {
-                
+                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.openNewReportForm(_:)), forControlEvents: .TouchUpInside)
                 emptyCell.emptyMessageDescription.text = "Looks like this group hasn't posted anything yet.  Join their group and share a report to get them started!"
                 emptyCell.emptyMessageAction.hidden = false
                 
@@ -872,6 +875,7 @@ class HashtagTableViewController: UITableViewController {
             
             if _thisSubmission == nil {
                 
+                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.openNewReportForm(_:)), forControlEvents: .TouchUpInside)
                 emptyCell.emptyMessageDescription.text = "Looks like no actions have been taken yet."
                 emptyCell.emptyMessageAction.hidden = true
                 
