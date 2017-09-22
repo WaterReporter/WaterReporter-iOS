@@ -136,25 +136,25 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
     }
     
-//    @IBAction func toggleUILableNumberOfLines(sender: UITapGestureRecognizer) {
-//        
-//        let field: UILabel = sender.view as! UILabel
-//        
-//        switch field.numberOfLines {
-//        case 0:
-//            if sender.view?.restorationIdentifier == "labelGroupProfileDescription" {
-//                field.numberOfLines = 3
-//            }
-//            else {
-//                field.numberOfLines = 1
-//            }
-//            break
-//        default:
-//            field.numberOfLines = 0
-//            break
-//        }
-//        
-//    }
+    @IBAction func toggleUILableNumberOfLines(sender: UITapGestureRecognizer) {
+        
+        let field: UILabel = sender.view as! UILabel
+        
+        switch field.numberOfLines {
+        case 0:
+            if sender.view?.restorationIdentifier == "labelGroupProfileDescription" {
+                field.numberOfLines = 3
+            }
+            else {
+                field.numberOfLines = 1
+            }
+            break
+        default:
+            field.numberOfLines = 0
+            break
+        }
+        
+    }
     
     @IBAction func openUserSubmissionDirectionsURL(sender: UIButton) {
         
@@ -382,7 +382,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         //
         //
         //
-//        self.labelGroupProfileDescription.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OrganizationTableViewController.toggleUILableNumberOfLines(_:))))
+        self.labelGroupProfileDescription.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(OrganizationTableViewController.toggleUILableNumberOfLines(_:))))
         
         
         //
