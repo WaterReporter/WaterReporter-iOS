@@ -85,7 +85,7 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     var groups: JSON?
 
     var reportImage: UIImage!
-    var reportDescription: String = ""
+    var reportDescription: String = "Write a few words about the photo or paste a link..."
     
     var hashtagAutocomplete: [String] = [String]()
     var hashtagSearchEnabled: Bool = false
@@ -393,7 +393,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 //
                 if self.reportDescription != "" {
                     cell.textviewReportDescription.text = self.reportDescription
-                    cell.textviewReportDescription.becomeFirstResponder()
                 }
                 
                 cell.textviewReportDescription.delegate = self
