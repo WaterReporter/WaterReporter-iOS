@@ -114,6 +114,41 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         self.attemptLoadUserGroups()
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(true)
+        
+        if self.tabBarController?.selectedIndex != 2 {
+
+            //
+            // When navigating away from this tab the Commons team wants this
+            // form to clear out.
+            //
+            
+            // Reset all fields
+            self.imageReportImagePreviewIsSet = false
+            self.reportDescription = "Write a few words about the photo or paste a link..."
+            self.reportImage = nil
+            
+            self.og_paste = ""
+            self.og_active = false
+            self.og_title = ""
+            self.og_description = ""
+            self.og_sitename = ""
+            self.og_type = ""
+            self.og_image = ""
+            self.og_url = ""
+            
+            self.tempGroups = [String]()
+            
+            self.tableView.reloadData()
+            
+            self.userSelectedCoorindates = nil
+
+        }
+        
+    }
+
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
     }
