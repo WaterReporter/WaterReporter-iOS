@@ -36,12 +36,28 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     //
     // MARK: @IBActions
     //
-    @IBAction func openLikesList(sender: UIButton) {
-//        let destViewController = segue.destinationViewController as! LikesTableViewController
-//        let report = self.reports[(sender?.tag)!]
-//        destViewController.report = report
+    @IBAction func openSubmissionsLikesList(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
+        
+        let report = self.groupSubmissionsObjects[(sender.tag)]
+        nextViewController.report = report
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
     }
-    
+
+    @IBAction func openActionsLikesList(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
+        
+        let report = self.groupActionsObjects[(sender.tag)]
+        nextViewController.report = report
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+
     
     @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
         
@@ -1125,6 +1141,9 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                     cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
                 }
                 
+                cell.buttonReportLikeCount.tag = indexPath.row
+                cell.buttonReportLikeCount.addTarget(self, action: #selector(self.openSubmissionsLikesList(_:)), forControlEvents: .TouchUpInside)
+                
             }
 
             if (indexPath.row == self.groupSubmissionsObjects.count - 2 && self.groupSubmissionsObjects.count < self.groupSubmissions!["properties"]["num_results"].int) {
@@ -1439,7 +1458,10 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                     cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
                     cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
                 }
-                
+             
+                cell.buttonReportLikeCount.tag = indexPath.row
+                cell.buttonReportLikeCount.addTarget(self, action: #selector(self.openActionsLikesList(_:)), forControlEvents: .TouchUpInside)
+
             }
 
             

@@ -63,6 +63,28 @@ class HashtagTableViewController: UITableViewController {
     //
     // MARK: @IBAction
     //
+    @IBAction func openSubmissionsLikesList(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
+        
+        let report = self.hashtagSubmissionsObjects[(sender.tag)]
+        nextViewController.report = report
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+    
+    @IBAction func openActionsLikesList(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
+        
+        let report = self.hashtagActionsObjects[(sender.tag)]
+        nextViewController.report = report
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+    
     @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
         
         let reportId = sender.tag
@@ -883,6 +905,9 @@ class HashtagTableViewController: UITableViewController {
                     cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
                 }
                 
+                cell.buttonReportLikeCount.tag = indexPath.row
+                cell.buttonReportLikeCount.addTarget(self, action: #selector(self.openSubmissionsLikesList(_:)), forControlEvents: .TouchUpInside)
+
             }
 
             if (indexPath.row == self.hashtagSubmissionsObjects.count - 2 && self.hashtagSubmissionsObjects.count < self.hashtagSubmissions!["properties"]["num_results"].int) {
@@ -1187,6 +1212,9 @@ class HashtagTableViewController: UITableViewController {
                     cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
                 }
                 
+                cell.buttonReportLikeCount.tag = indexPath.row
+                cell.buttonReportLikeCount.addTarget(self, action: #selector(self.openActionsLikesList(_:)), forControlEvents: .TouchUpInside)
+
             }
 
             
