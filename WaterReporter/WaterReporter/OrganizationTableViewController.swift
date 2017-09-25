@@ -36,6 +36,13 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     //
     // MARK: @IBActions
     //
+    @IBAction func openLikesList(sender: UIButton) {
+//        let destViewController = segue.destinationViewController as! LikesTableViewController
+//        let report = self.reports[(sender?.tag)!]
+//        destViewController.report = report
+    }
+    
+    
     @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
         
         let reportId = sender.tag
