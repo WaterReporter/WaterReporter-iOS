@@ -238,6 +238,30 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
         
     }
     
+    @IBAction func loadReportSubmissionOwnerProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
+        
+        let _thisReport = JSON(self.groupSubmissionsObjects[(sender.tag)])
+        
+        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+        nextViewController.userObject = _thisReport["properties"]["owner"]
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+
+    @IBAction func loadReportActionOwnerProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
+        
+        let _thisReport = JSON(self.groupActionsObjects[(sender.tag)])
+        
+        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+        nextViewController.userObject = _thisReport["properties"]["owner"]
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+
     @IBAction func openUserMemberView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
         
@@ -760,7 +784,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
 
             return (self.groupSubmissionsObjects.count)
 
-        } else if (tableView.restorationIdentifier == "actionTableView") {
+        } else if (tableView.restorationIdentifier == "actionsTableView") {
             
             guard (JSON(self.groupActionsObjects) != nil) else { return 0 }
             
@@ -802,7 +826,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             
             let _submission = JSON(self.groupSubmissionsObjects)
             let _thisSubmission = _submission[indexPath.row]["properties"]
-            print("Show _thisSubmission \(_thisSubmission)")
+            print("Show _thisSubmission SUBMISSION \(_thisSubmission)")
             
             if _thisSubmission == nil {
                 
@@ -815,6 +839,9 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
 
             // Report > Owner > Image
             //
+            cell.reportOwnerImageButton.tag = indexPath.row
+            cell.reportOwnerImageButton.addTarget(self, action: #selector(self.loadReportSubmissionOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+
             if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
                 
                 let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
@@ -1098,7 +1125,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             }
             
             return cell
-        } else if (tableView.restorationIdentifier == "actionTableView") {
+        } else if (tableView.restorationIdentifier == "actionsTableView") {
             
             print("cellForRowAtIndex Actions")
             
@@ -1111,7 +1138,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
 
             let _actions = JSON(self.groupActionsObjects)
             let _thisSubmission = _actions[indexPath.row]["properties"]
-            print("Show _thisSubmission \(_thisSubmission)")
+            print("Show _thisSubmission ACTION \(_thisSubmission)")
             
             if _thisSubmission == nil {
                 
@@ -1123,6 +1150,9 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
 
             // Report > Owner > Image
             //
+            cell.reportOwnerImageButton.tag = indexPath.row
+            cell.reportOwnerImageButton.addTarget(self, action: #selector(self.loadReportActionOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+
             if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
                 
                 let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
@@ -1421,7 +1451,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             
             let _members = JSON(self.groupMembersObjects)
             let _thisSubmission = _members[indexPath.row]["properties"]
-            print("Show _thisSubmission \(_thisSubmission)")
+            print("Show _thisSubmission GROUP \(_thisSubmission)")
 
             if _thisSubmission == nil {
                 
@@ -1466,6 +1496,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             return cell
         }
         
+        print("Not showing anything, returing an empty cell")
         return emptyCell
     }
     
