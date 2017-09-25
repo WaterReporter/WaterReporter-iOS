@@ -700,7 +700,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                 
                 switch response.result {
                 case .Success(let value):
-//                    print("Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+                    print("attemptLoadGroupActions::Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
 
                     if (value.objectForKey("code") != nil) {
                         break
@@ -720,7 +720,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                     // Set visible button count
                     let _action_count = self.groupActions!["properties"]["num_results"]
                     
-                    if (_action_count >= 1) {
+                    if (_action_count != "") {
                         self.buttonGroupProfileActionsCount.setTitle("\(_action_count)", forState: .Normal)
                     }
                     
@@ -789,6 +789,8 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let emptyCell = tableView.dequeueReusableCellWithIdentifier("emptyTableViewCell", forIndexPath: indexPath) as! EmptyTableViewCell
+        
+        print("cellForRowAtIndexPath")
 
         if (tableView.restorationIdentifier == "submissionsTableView") {
             //
@@ -1097,13 +1099,16 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
             
             return cell
         } else if (tableView.restorationIdentifier == "actionTableView") {
+            
+            print("cellForRowAtIndex Actions")
+            
             //
             // Actions
             //
             let cell = tableView.dequeueReusableCellWithIdentifier("userProfileActionCell", forIndexPath: indexPath) as! UserProfileActionsTableViewCell
             
-            guard (JSON(self.groupActionsObjects) != nil) else { return emptyCell }
-            
+            guard (self.groupActions != nil) else { return emptyCell }
+
             let _actions = JSON(self.groupActionsObjects)
             let _thisSubmission = _actions[indexPath.row]["properties"]
             print("Show _thisSubmission \(_thisSubmission)")

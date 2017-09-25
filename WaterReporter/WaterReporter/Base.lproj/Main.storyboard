@@ -1487,7 +1487,7 @@
                                             </connections>
                                         </button>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2HC-ZQ-IG7">
-                                            <rect key="frame" x="324" y="96.5" width="14" height="22"/>
+                                            <rect key="frame" x="331" y="97.5" width="32" height="20"/>
                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="vKt-IL-bsk"/>
@@ -1498,7 +1498,7 @@
                                             </state>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5e-hm-mgP">
-                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                            <rect key="frame" x="216" y="382" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="q1I-Gw-DYc"/>
                                                 <constraint firstAttribute="width" constant="20" id="w7T-HD-zH1"/>
@@ -1506,7 +1506,7 @@
                                             <state key="normal" image="icon--heart"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Jq-hw-miS">
-                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                            <rect key="frame" x="240" y="380" width="32" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="Lbi-OL-l31"/>
                                             </constraints>
@@ -1707,7 +1707,6 @@
                                                 <constraint firstAttribute="width" constant="128" id="Iw5-tU-kgh"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="0 comments" image="Icon--Comment">
                                                 <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
@@ -1724,7 +1723,7 @@
                                             </connections>
                                         </button>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iK3-ov-eaX">
-                                            <rect key="frame" x="324" y="15" width="14" height="22"/>
+                                            <rect key="frame" x="331" y="16" width="32" height="20"/>
                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="3wD-fL-t1i"/>
@@ -1735,7 +1734,7 @@
                                             </state>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfO-Fg-5cU">
-                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                            <rect key="frame" x="216" y="262" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="Wis-ic-Hey"/>
                                                 <constraint firstAttribute="height" constant="20" id="hH5-Gf-Iov"/>
@@ -1743,7 +1742,7 @@
                                             <state key="normal" image="icon--heart"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gPQ-uF-hpK">
-                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                            <rect key="frame" x="240" y="260" width="32" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="pvg-ib-bQI"/>
                                             </constraints>
@@ -1788,7 +1787,7 @@
                                         <constraint firstItem="gPQ-uF-hpK" firstAttribute="centerY" secondItem="gfO-Fg-5cU" secondAttribute="centerY" id="lil-Iy-kwX"/>
                                         <constraint firstItem="gPQ-uF-hpK" firstAttribute="leading" secondItem="gfO-Fg-5cU" secondAttribute="trailing" constant="4" id="mFw-eq-ef8"/>
                                         <constraint firstItem="Skh-uy-rN8" firstAttribute="leading" secondItem="VX0-uB-6Si" secondAttribute="leadingMargin" id="nDk-j3-gsA"/>
-                                        <constraint firstItem="gfO-Fg-5cU" firstAttribute="leading" secondItem="uV6-yH-FmS" secondAttribute="trailing" constant="-40" id="o9c-X9-tJA"/>
+                                        <constraint firstItem="gfO-Fg-5cU" firstAttribute="leading" secondItem="uV6-yH-FmS" secondAttribute="trailing" constant="-32" id="o9c-X9-tJA"/>
                                         <constraint firstItem="odr-ix-arB" firstAttribute="leading" secondItem="VX0-uB-6Si" secondAttribute="leadingMargin" id="onz-6L-zyC"/>
                                         <constraint firstItem="odr-ix-arB" firstAttribute="top" secondItem="VX0-uB-6Si" secondAttribute="topMargin" id="pgk-JV-8qM"/>
                                         <constraint firstItem="3VD-uf-IgA" firstAttribute="leading" secondItem="UTK-Ls-1BW" secondAttribute="trailing" constant="16" id="rj4-7A-mif"/>
@@ -4215,11 +4214,11 @@
                                                     <outlet property="emptyMessageIcon" destination="Obn-gO-pNw" id="aeS-UX-aHk"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileActionsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="userProfileActionCell" rowHeight="370" id="deV-ia-QQb" customClass="UserProfileActionsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileActionsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="userProfileActionCell" id="deV-ia-QQb" customClass="UserProfileActionsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="399" width="375" height="370"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="deV-ia-QQb" id="Lbk-2A-pdU">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="369.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="369"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3kb-1X-PSK">
@@ -4328,7 +4327,6 @@
                                                                 <constraint firstAttribute="height" constant="24" id="ej3-cJ-tZh"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="0 comments" image="Icon--Comment">
                                                                 <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
@@ -4395,7 +4393,7 @@
                                                         <constraint firstAttribute="trailingMargin" secondItem="6mk-Ud-U8c" secondAttribute="trailing" id="fh8-Eq-C1p"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="BFH-kM-cLY" secondAttribute="trailing" id="g0S-zd-CZQ"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Y6Q-xF-QY2" secondAttribute="trailing" constant="4" id="g7h-bz-EbO"/>
-                                                        <constraint firstItem="pPG-0N-wWU" firstAttribute="leading" secondItem="0Xy-YN-PCS" secondAttribute="trailing" constant="-40" id="h3g-HE-qaz"/>
+                                                        <constraint firstItem="pPG-0N-wWU" firstAttribute="leading" secondItem="0Xy-YN-PCS" secondAttribute="trailing" constant="-32" id="h3g-HE-qaz"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="dOQ-p8-w9e" secondAttribute="trailing" constant="-8" id="iwg-Yz-kg3"/>
                                                         <constraint firstItem="U8u-9y-Z18" firstAttribute="leading" secondItem="pPG-0N-wWU" secondAttribute="trailing" constant="4" id="jCJ-Gi-Xqp"/>
                                                         <constraint firstItem="U8u-9y-Z18" firstAttribute="centerY" secondItem="pPG-0N-wWU" secondAttribute="centerY" id="jyV-DL-qI5"/>
@@ -4639,7 +4637,7 @@
                                                             </connections>
                                                         </button>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fql-7E-IGc">
-                                                            <rect key="frame" x="324" y="15" width="14" height="22"/>
+                                                            <rect key="frame" x="331" y="16" width="32" height="20"/>
                                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="8Ti-xf-sDV"/>
@@ -4650,7 +4648,7 @@
                                                             </state>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eJj-5k-YfA">
-                                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                                            <rect key="frame" x="240" y="380" width="32" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="7ao-LP-s4z"/>
                                                             </constraints>
@@ -4660,7 +4658,7 @@
                                                             </state>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lY9-Vf-kQg">
-                                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                                            <rect key="frame" x="216" y="382" width="20" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="fKp-Et-Jr3"/>
                                                                 <constraint firstAttribute="width" constant="20" id="kbu-71-aBC"/>
@@ -5146,11 +5144,11 @@
                                                     <outlet property="emptyMessageIcon" destination="6fG-TC-Rgq" id="SLg-fl-lAL"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileActionsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="userProfileActionCell" rowHeight="370" id="hUe-Q2-5vO" customClass="UserProfileActionsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileActionsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="userProfileActionCell" id="hUe-Q2-5vO" customClass="UserProfileActionsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="399" width="375" height="370"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hUe-Q2-5vO" id="2rN-wa-ALO">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="369.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="369"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IF2-gP-vjq">
@@ -5263,7 +5261,6 @@
                                                                 <constraint firstAttribute="height" constant="24" id="ho8-Ie-yyv"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="0 comments" image="Icon--Comment">
                                                                 <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
                                                             </state>
@@ -5329,7 +5326,7 @@
                                                         <constraint firstItem="IF2-gP-vjq" firstAttribute="leading" secondItem="2rN-wa-ALO" secondAttribute="leadingMargin" id="S5l-qY-bZq"/>
                                                         <constraint firstItem="XDm-1u-I4T" firstAttribute="top" secondItem="k6w-Gj-rwn" secondAttribute="bottom" constant="8" id="T9N-iA-2DE"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="hdj-gB-swA" secondAttribute="trailing" constant="4" id="Vz0-AJ-YXn"/>
-                                                        <constraint firstItem="e7r-ke-wRD" firstAttribute="leading" secondItem="k6w-Gj-rwn" secondAttribute="trailing" constant="-40" id="XFw-L9-ZhI"/>
+                                                        <constraint firstItem="e7r-ke-wRD" firstAttribute="leading" secondItem="k6w-Gj-rwn" secondAttribute="trailing" constant="-32" id="XFw-L9-ZhI"/>
                                                         <constraint firstAttribute="bottomMargin" secondItem="yBa-pf-PAl" secondAttribute="bottom" constant="16" id="XL2-oE-04h"/>
                                                         <constraint firstItem="UjV-s8-wMy" firstAttribute="leading" secondItem="IF2-gP-vjq" secondAttribute="trailing" constant="8" id="YMg-8V-QFC"/>
                                                         <constraint firstItem="XDm-1u-I4T" firstAttribute="top" secondItem="lVy-hn-MnZ" secondAttribute="bottom" constant="8" id="YfF-Al-WvO"/>
@@ -5571,7 +5568,7 @@
                                                             </connections>
                                                         </button>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ky-Zq-aO9">
-                                                            <rect key="frame" x="324" y="99.5" width="14" height="22"/>
+                                                            <rect key="frame" x="331" y="100.5" width="32" height="20"/>
                                                             <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="Cgq-l2-s5b"/>
@@ -5582,7 +5579,7 @@
                                                             </state>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lm9-tb-rYV">
-                                                            <rect key="frame" x="224" y="380" width="24" height="24"/>
+                                                            <rect key="frame" x="216" y="382" width="20" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="1Fp-Kb-FEQ"/>
                                                                 <constraint firstAttribute="width" constant="20" id="Q5a-f9-Hdq"/>
@@ -5590,7 +5587,7 @@
                                                             <state key="normal" image="icon--heart"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nal-t0-eYH">
-                                                            <rect key="frame" x="266" y="380" width="28" height="22"/>
+                                                            <rect key="frame" x="240" y="380" width="32" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="1y0-FT-IsH"/>
                                                             </constraints>

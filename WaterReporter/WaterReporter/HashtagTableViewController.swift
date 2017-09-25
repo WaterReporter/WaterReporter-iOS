@@ -898,9 +898,7 @@ class HashtagTableViewController: UITableViewController {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("hashtagActionCell", forIndexPath: indexPath) as! UserProfileActionsTableViewCell
             
-            guard (JSON(self.hashtagActionsObjects) != nil) else {
-                return emptyCell
-            }
+            guard (self.hashtagActions != nil) else { return emptyCell }
             
             let _actions = JSON(self.hashtagActionsObjects)
             let _thisSubmission = _actions[indexPath.row]["properties"]
