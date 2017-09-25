@@ -204,6 +204,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         self.attemptLoadTerritorySubmissions(true)
         self.attemptLoadTerritoryActions(true)
         self.attemptLoadTerritoryGroups(true)
+        self.attemptLoadTerritoryNews(true)
         
         //
         //
@@ -214,6 +215,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         self.buttonTerritoryPostsContentType.addTarget(self, action: #selector(TerritoryViewController.changeContentType(_:)), forControlEvents: .TouchUpInside)
         self.buttonTerritoryGroupsContentType.addTarget(self, action: #selector(TerritoryViewController.changeContentType(_:)), forControlEvents: .TouchUpInside)
         self.buttonTerritoryActionsContentType.addTarget(self, action: #selector(TerritoryViewController.changeContentType(_:)), forControlEvents: .TouchUpInside)
+        self.buttonTerritoryNewsContentType.addTarget(self, action: #selector(TerritoryViewController.changeContentType(_:)), forControlEvents: .TouchUpInside)
         
         self.buttonTerritoryContentType.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
         
@@ -542,7 +544,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func attemptLoadTerritorySubmissions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"social\",\"op\":\"is_null\",\"val\":\"true\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
             "page": "\(self.territoryContentPage)",
             "results_per_page": "100"
         ]
@@ -699,6 +701,60 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         
     }
 
+    func attemptLoadTerritoryNews(isRefreshingReportsList: Bool = false) {
+        
+        let _parameters = [
+            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"social\",\"op\":\"is_not_null\",\"val\":\"true\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "page": "\(self.territoryContentPage)",
+            "results_per_page": "100"
+        ]
+        
+        print("_parameters \(_parameters)")
+        
+        Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    print("attemptLoadTerritoryNews::Request Success \(Endpoints.GET_MANY_REPORTS) \(value)")
+                    
+                    // Assign response to groups variable
+                    if (isRefreshingReportsList) {
+                        self.territoryNewsContent = JSON(value)
+                        self.territoryNewsContentRaw = value["features"] as! [AnyObject]
+                        self.territoryNewsContentRefreshControl.endRefreshing()
+                    }
+                    else {
+                        self.territoryNewsContent = JSON(value)
+                        self.territoryNewsContentRaw += value["features"] as! [AnyObject]
+                    }
+                    
+                    // Set visible button count
+                    let _news_count = self.territoryNewsContent!["properties"]["num_results"]
+                    
+                    if (_news_count >= 1) {
+                        self.buttonTerritoryNewsContentType.setTitle("\(_news_count) news stories", forState: .Normal)
+                    }
+                    
+                    // Refresh the data in the table so the newest items appear
+                    self.territoryContentCollectionView.reloadData()
+                    
+                    self.territoryNewsContentPage += 1
+                    
+                    break
+                case .Failure(let error):
+                    print("Request Failure: \(error)")
+                    
+                    // Stop showing the loading indicator
+                    //self.status("doneLoadingWithError")
+                    
+                    break
+                }
+                
+        }
+        
+    }
+
     
     //
     // MARK: UICollectionView Overrides
@@ -719,6 +775,9 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         }
         else if (self.territorySelectedContentType == "Groups") {
             numberOfRows = self.territoryGroupContentRaw.count
+        }
+        else if (self.territorySelectedContentType == "News") {
+            numberOfRows = self.territoryNewsContentRaw.count
         }
         else if (self.territorySelectedContentType == "Posts" && self.territoryContentRaw.count != 0) {
             numberOfRows = self.territoryContentRaw.count
@@ -745,6 +804,10 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         }
         else if (self.territorySelectedContentType == "Groups") {
             _report = JSON(self.territoryGroupContentRaw[indexPath.row])
+            _owner = _report!["properties"]["owner"]
+        }
+        else if (self.territorySelectedContentType == "News") {
+            _report = JSON(self.territoryNewsContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }
         else if (self.territorySelectedContentType == "Posts" && self.territoryContentRaw.count != 0) {
