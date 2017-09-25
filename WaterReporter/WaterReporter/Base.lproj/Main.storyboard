@@ -2016,6 +2016,7 @@
                                             <constraint firstAttribute="leadingMargin" secondItem="zQS-NV-nM2" secondAttribute="leading" id="sSz-OL-f58"/>
                                             <constraint firstItem="zQS-NV-nM2" firstAttribute="top" secondItem="gvT-cj-1jX" secondAttribute="topMargin" id="zZa-WX-NGs"/>
                                         </constraints>
+                                        <size key="customSize" width="140" height="200"/>
                                         <connections>
                                             <outlet property="reportDescription" destination="84e-Vc-ddy" id="nVn-ZJ-ZMh"/>
                                             <outlet property="reportImage" destination="zQS-NV-nM2" id="Qh3-AW-zno"/>

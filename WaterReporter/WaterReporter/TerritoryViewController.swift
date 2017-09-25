@@ -22,6 +22,8 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     let mapTesting: Bool = false
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
     
+    var isLoading: Bool = true
+    
     var territory: String = ""
     var territoryId: String = ""
     var territoryHUC8Code: String = ""
@@ -580,6 +582,10 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                         self.buttonTerritoryPostsContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
                     }
                     
+                    if self.territoryContentRaw.count != 0 {
+                        self.isLoading = false
+                    }
+                    
                     // Refresh the data in the table so the newest items appear
                     self.territoryContentCollectionView.reloadData()
                     
@@ -789,6 +795,16 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         return numberOfRows
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        
+        if isLoading {
+            return UIEdgeInsetsMake(0, 100, 0, 0);
+        }
+    
+        return UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    }
+
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
         print("UICollectionView::collectionView::cellForItemAt")
