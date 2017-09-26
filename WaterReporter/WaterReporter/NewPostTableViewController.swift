@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 import UIKit
 
 class NewPostTableViewController: UITableViewController {
@@ -15,6 +16,9 @@ class NewPostTableViewController: UITableViewController {
     //
     // MARK: Variables
     //
+    var groups: JSON?
+    var hashtags: JSON?
+
     
     
     //
@@ -46,6 +50,22 @@ class NewPostTableViewController: UITableViewController {
         return 5
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+
+        var _headerTitle = ""
+        
+        switch section {
+            case 4:
+                _headerTitle = "Share with your groups"
+                break
+            default:
+                _headerTitle = "" // No change
+                break
+        }
+        
+        return _headerTitle
+    }
+    
     override func tableView(tableView:UITableView, numberOfRowsInSection section: Int) -> Int {
         
         var numberOfRows: Int = 1
@@ -73,6 +93,14 @@ class NewPostTableViewController: UITableViewController {
         }
         
         return numberOfRows
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        //
+        // TEMPORARY
+        //
+        return UITableViewCell()
     }
     
 

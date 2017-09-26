@@ -62,6 +62,7 @@
 		CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */; };
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
 		CEB14C821F7A92CD009CF49E /* NewPostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB14C811F7A92CD009CF49E /* NewPostTableViewController.swift */; };
+		CEB14C841F7A9903009CF49E /* NewPostContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB14C831F7A9903009CF49E /* NewPostContentTableViewCell.swift */; };
 		CECCEA831F27D1D300A8AAB4 /* LikesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCEA821F27D1D300A8AAB4 /* LikesTableViewController.swift */; };
 		CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */; };
 		CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1B44D1F3A5B1E0068351E /* LikeController.swift */; };
@@ -166,6 +167,7 @@
 		CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryViewController.swift; sourceTree = "<group>"; };
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		CEB14C811F7A92CD009CF49E /* NewPostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostTableViewController.swift; sourceTree = "<group>"; };
+		CEB14C831F7A9903009CF49E /* NewPostContentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostContentTableViewCell.swift; sourceTree = "<group>"; };
 		CECCEA821F27D1D300A8AAB4 /* LikesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesTableViewController.swift; sourceTree = "<group>"; };
 		CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableViewController.swift; sourceTree = "<group>"; };
 		CEE1B44D1F3A5B1E0068351E /* LikeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeController.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 				CE015EF11F6C42EB00447C34 /* NewReportContentTableViewCell.swift */,
 				CE015EF31F6C430400447C34 /* NewReportLocationTableViewCell.swift */,
 				CE015EF51F6C431600447C34 /* NewReportGroupTableViewCell.swift */,
+				CEB14C831F7A9903009CF49E /* NewPostContentTableViewCell.swift */,
 			);
 			name = "Reusable Cells";
 			sourceTree = "<group>";
@@ -676,6 +679,7 @@
 				C18CA43E1D94448500E4659E /* RegisterTableViewController.swift in Sources */,
 				C1C5FD301DDB3ACD00EF6302 /* UserProfileGroupsTableViewCell.swift in Sources */,
 				C141055A1DC3E3CB00E538FA /* NewReportLocationSelector.swift in Sources */,
+				CEB14C841F7A9903009CF49E /* NewPostContentTableViewCell.swift in Sources */,
 				C197A1DA1DED00CF001958A7 /* UserProfileCompleteViewController.swift in Sources */,
 				CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */,
 				C1B02D2D1DC51B37003566FC /* CommentsTableViewController.swift in Sources */,
