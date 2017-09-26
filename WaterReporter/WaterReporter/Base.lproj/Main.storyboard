@@ -3147,7 +3147,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="bvG-U0-PAy" kind="relationship" relationship="rootViewController" id="QsE-bY-rw9"/>
+                        <segue destination="rbf-EP-79h" kind="relationship" relationship="rootViewController" id="h4v-Iw-bgE"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DPJ-NB-CZq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3520,6 +3520,66 @@
                 </view>
             </objects>
             <point key="canvasLocation" x="2793" y="-616"/>
+        </scene>
+        <!--New Post Table View Controller-->
+        <scene sceneID="yw8-Uu-VHX">
+            <objects>
+                <tableViewController storyboardIdentifier="NewPostTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rbf-EP-79h" customClass="NewPostTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="LLc-V4-7Os">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="2sC-bX-4jk">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="106"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beB-1I-cEA">
+                                    <rect key="frame" x="16" y="32" width="343" height="42"/>
+                                    <attributedString key="attributedText">
+                                        <fragment content="To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share.">
+                                            <attributes>
+                                                <color key="NSColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
+                                                <font key="NSFont" size="11" name=".SFNSText"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="beB-1I-cEA" secondAttribute="trailing" constant="16" id="3Vc-PX-WWB"/>
+                                <constraint firstAttribute="bottom" secondItem="beB-1I-cEA" secondAttribute="bottom" constant="32" id="bXQ-e7-Wuq"/>
+                                <constraint firstItem="beB-1I-cEA" firstAttribute="leading" secondItem="2sC-bX-4jk" secondAttribute="leading" constant="16" id="hQO-Be-uQS"/>
+                                <constraint firstItem="beB-1I-cEA" firstAttribute="centerX" secondItem="2sC-bX-4jk" secondAttribute="centerX" id="oKK-fR-eKa"/>
+                                <constraint firstItem="beB-1I-cEA" firstAttribute="top" secondItem="2sC-bX-4jk" secondAttribute="top" constant="32" id="sBJ-Zr-7os"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="CYC-Yn-5nl">
+                                <rect key="frame" x="0.0" y="134" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CYC-Yn-5nl" id="njI-MQ-yAl">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="rbf-EP-79h" id="9C3-jJ-XKK"/>
+                            <outlet property="delegate" destination="rbf-EP-79h" id="BP3-8z-CKi"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="3ng-af-2W2">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="mgb-VV-IT9"/>
+                    </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="1000"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dI2-0w-5sU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3430" y="-616"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="C1x-if-a0S">

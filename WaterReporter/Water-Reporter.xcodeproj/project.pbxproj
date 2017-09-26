@@ -61,6 +61,7 @@
 		CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */; };
 		CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */; };
 		CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */; };
+		CEB14C821F7A92CD009CF49E /* NewPostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB14C811F7A92CD009CF49E /* NewPostTableViewController.swift */; };
 		CECCEA831F27D1D300A8AAB4 /* LikesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECCEA821F27D1D300A8AAB4 /* LikesTableViewController.swift */; };
 		CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */; };
 		CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE1B44D1F3A5B1E0068351E /* LikeController.swift */; };
@@ -164,6 +165,7 @@
 		CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryViewController.swift; sourceTree = "<group>"; };
 		CE9B91651E9D21F6001EBA66 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		CEB14C811F7A92CD009CF49E /* NewPostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostTableViewController.swift; sourceTree = "<group>"; };
 		CECCEA821F27D1D300A8AAB4 /* LikesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesTableViewController.swift; sourceTree = "<group>"; };
 		CED410791E9F003600C4AFD6 /* HashtagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableViewController.swift; sourceTree = "<group>"; };
 		CEE1B44D1F3A5B1E0068351E /* LikeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeController.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				C1434E541DEF5A67009F6884 /* EditReportTableViewController.swift */,
 				CE01D6091EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift */,
 				CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */,
+				CEB14C811F7A92CD009CF49E /* NewPostTableViewController.swift */,
 			);
 			name = Submit;
 			sourceTree = "<group>";
@@ -659,6 +662,7 @@
 				C1F224E91DAD813A00363A8F /* UIColor.swift in Sources */,
 				CED4107A1E9F003600C4AFD6 /* HashtagTableViewController.swift in Sources */,
 				CE01D60A1EA68261001FA457 /* HashtagAutocompleteTableViewCell.swift in Sources */,
+				CEB14C821F7A92CD009CF49E /* NewPostTableViewController.swift in Sources */,
 				CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */,
 				CE015EF61F6C431600447C34 /* NewReportGroupTableViewCell.swift in Sources */,
 				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
