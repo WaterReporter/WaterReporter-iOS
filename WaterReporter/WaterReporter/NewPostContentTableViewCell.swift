@@ -8,7 +8,8 @@
 
 import UIKit
 
-class NewPostContentTableViewCell: UITableViewCell {
+class NewPostContentTableViewCell: UITableViewCell, UITextViewDelegate {
+    
     
     //
     // MARK: IBOutlets
@@ -16,6 +17,7 @@ class NewPostContentTableViewCell: UITableViewCell {
     @IBOutlet weak var buttonReportImage: UIButton!
     @IBOutlet weak var textViewReportDescription: UITextView!
 
+    
     //
     // MARK: Overrides
     //
