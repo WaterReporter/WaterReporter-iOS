@@ -776,13 +776,13 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         
         var numberOfRows: Int = 0
 
-        if (self.territorySelectedContentType == "Actions") {
+        if (self.territorySelectedContentType == "Actions" && self.territoryActionContentRaw.count != 0) {
             numberOfRows = self.territoryActionContentRaw.count
         }
-        else if (self.territorySelectedContentType == "Groups") {
+        else if (self.territorySelectedContentType == "Groups" && self.territoryGroupContentRaw.count != 0) {
             numberOfRows = self.territoryGroupContentRaw.count
         }
-        else if (self.territorySelectedContentType == "News") {
+        else if (self.territorySelectedContentType == "News" && self.territoryNewsContentRaw.count != 0) {
             numberOfRows = self.territoryNewsContentRaw.count
         }
         else if (self.territorySelectedContentType == "Posts" && self.territoryContentRaw.count != 0) {
@@ -802,7 +802,6 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         }
     
         return UIEdgeInsetsMake(0, 0, 0, 0);
-    
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -814,15 +813,15 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
         var _report: JSON!
         var _owner: JSON!
         
-        if (self.territorySelectedContentType == "Actions") {
+        if (self.territorySelectedContentType == "Actions" && self.territoryActionContentRaw.count != 0) {
             _report = JSON(self.territoryActionContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }
-        else if (self.territorySelectedContentType == "Groups") {
+        else if (self.territorySelectedContentType == "Groups" && self.territoryGroupContentRaw.count != 0) {
             _report = JSON(self.territoryGroupContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }
-        else if (self.territorySelectedContentType == "News") {
+        else if (self.territorySelectedContentType == "News" && self.territoryNewsContentRaw.count != 0) {
             _report = JSON(self.territoryNewsContentRaw[indexPath.row])
             _owner = _report!["properties"]["owner"]
         }

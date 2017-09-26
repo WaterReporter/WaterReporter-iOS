@@ -283,10 +283,10 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
                 }
             }
 
-            
+            return true
         }
         
-        return true
+        return false
     }
 
     func verifyUrl (urlString: String?) -> Bool {
@@ -302,9 +302,11 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
     }
 
     func textViewDidBeginEditing(textView: UITextView) {
+
         if textView.text == "Write a few words about the photo or paste a link..." {
             textView.text = ""
         }
+        
     }
 
     
@@ -319,59 +321,66 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
         //
         self.reportDescription = _text
         
-        if _text != "" && _text.characters.last! == "#" {
-            self.hashtagSearchEnabled = true
-            
-            print("Hashtag Search: Found start of hashtag")
-        }
-        else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
-            self.hashtagSearchEnabled = false
-            self.dataSource.results = [String]()
-            
-//            self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
-            
-            print("Hashtag Search: Disabling search because space was entered")
-            print("Hashtag Search: Timer reset to zero due to search termination (space entered)")
-            self.hashtagSearchTimer.invalidate()
-            
-        }
-        else if _text != "" && self.hashtagSearchEnabled == true {
-            
-            self.dataSource.results = [String]()
-
-//            self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
-            
-            // Identify hashtag search
-            //
-            let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
-            if ((_hashtag_identifier) != nil) {
-                let _hashtag_search: String! = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
-                
-                // Add what the user is typing to the top of the list
-                //
-                print("Hashtag Search: Performing search for \(_hashtag_search)")
-                
-                dataSource.results = ["\(_hashtag_search)"]
-                dataSource.search = "\(_hashtag_search)"
-                
-                dataSource.numberOfRowsInSection(dataSource.results.count)
-                
-//                self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
-                
-                // Execute the serverside search BUT wait a few milliseconds between
-                // each character so we aren't returning inconsistent results to
-                // the user
-                //
-                print("Hashtag Search: Timer reset to zero")
-                self.hashtagSearchTimer.invalidate()
-                
-                print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
-//                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(self.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
-                
-            }
-            
-        }
+//        if _text != "" && _text.characters.last! == "#" {
+//            self.hashtagSearchEnabled = true
+//            
+//            print("Hashtag Search: Found start of hashtag")
+//        }
+//        else if _text != "" && self.hashtagSearchEnabled == true && _text.characters.last! == " " {
+//            self.hashtagSearchEnabled = false
+//            self.dataSource.results = [String]()
+//            
+////            self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
+//            
+//            print("Hashtag Search: Disabling search because space was entered")
+//            print("Hashtag Search: Timer reset to zero due to search termination (space entered)")
+//            self.hashtagSearchTimer.invalidate()
+//            
+//        }
+//        else if _text != "" && self.hashtagSearchEnabled == true {
+//            
+//            self.dataSource.results = [String]()
+//
+////            self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
+//            
+//            // Identify hashtag search
+//            //
+//            let _hashtag_identifier = _text.rangeOfString("#", options:NSStringCompareOptions.BackwardsSearch)
+//            if ((_hashtag_identifier) != nil) {
+//                let _hashtag_search: String! = _text.substringFromIndex((_hashtag_identifier?.endIndex)!)
+//                
+//                // Add what the user is typing to the top of the list
+//                //
+//                print("Hashtag Search: Performing search for \(_hashtag_search)")
+//                
+//                dataSource.results = ["\(_hashtag_search)"]
+//                dataSource.search = "\(_hashtag_search)"
+//                
+//                dataSource.numberOfRowsInSection(dataSource.results.count)
+//                
+////                self.tableView.reloadRowsAtIndexPaths([_index], withRowAnimation: UITableViewRowAnimation.None)
+//                
+//                // Execute the serverside search BUT wait a few milliseconds between
+//                // each character so we aren't returning inconsistent results to
+//                // the user
+//                //
+//                print("Hashtag Search: Timer reset to zero")
+//                self.hashtagSearchTimer.invalidate()
+//                
+//                print("Hashtag Search: Send this to search methods \(_hashtag_search) after delay expires")
+////                self.hashtagSearchTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(self.searchHashtags(_:)), userInfo: _hashtag_search, repeats: false)
+//                
+//            }
+//            
+//        }
         
+    }
+    
+    
+    //
+    // MARK: Custom TextView Functionality
+    //
+    func focusTextView() {
     }
     
     
