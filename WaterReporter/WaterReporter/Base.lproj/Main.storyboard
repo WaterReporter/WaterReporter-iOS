@@ -3573,16 +3573,17 @@
                                             <state key="normal" image="icon--camera"/>
                                         </button>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Write a few words about the photo or paste a link…" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yWI-s3-fBb">
-                                            <rect key="frame" x="56" y="3" width="301" height="128"/>
+                                            <rect key="frame" x="56" y="10" width="301" height="109.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" white="0.23486520349979401" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="yWI-s3-fBb" secondAttribute="bottom" constant="-4" id="9fA-oK-F9u"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="yWI-s3-fBb" secondAttribute="bottom" constant="8" id="9fA-oK-F9u"/>
                                         <constraint firstItem="yWI-s3-fBb" firstAttribute="leading" secondItem="Cp4-X3-uff" secondAttribute="trailing" constant="8" id="SkJ-gb-3cI"/>
-                                        <constraint firstItem="yWI-s3-fBb" firstAttribute="top" secondItem="njI-MQ-yAl" secondAttribute="topMargin" constant="-5" id="iVs-Kq-izR"/>
+                                        <constraint firstItem="yWI-s3-fBb" firstAttribute="top" secondItem="njI-MQ-yAl" secondAttribute="topMargin" constant="2" id="iVs-Kq-izR"/>
                                         <constraint firstItem="Cp4-X3-uff" firstAttribute="top" secondItem="njI-MQ-yAl" secondAttribute="topMargin" id="ieC-Bq-hk0"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="yWI-s3-fBb" secondAttribute="trailing" constant="10" id="vAV-kN-GSd"/>
                                         <constraint firstItem="Cp4-X3-uff" firstAttribute="leading" secondItem="njI-MQ-yAl" secondAttribute="leadingMargin" constant="8" id="wKa-l5-QYK"/>

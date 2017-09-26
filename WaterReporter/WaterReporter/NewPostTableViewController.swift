@@ -95,7 +95,26 @@ class NewPostTableViewController: UITableViewController {
         return numberOfRows
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        if indexPath.section == 0 && indexPath.row == 0 {
+            return 136.0
+        }
+        
+        return 44.0
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let _section: Int = indexPath.section
+        let _row: Int = indexPath.row
+        
+        if _section == 0 && _row == 0 {
+            
+            let _cell = tableView.dequeueReusableCellWithIdentifier("newPostContentTableViewCell", forIndexPath: indexPath)
+
+            return _cell
+        }
         
         //
         // TEMPORARY
