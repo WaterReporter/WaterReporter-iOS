@@ -43,13 +43,6 @@ class NewReportContentTableViewCell: UITableViewCell {
     //
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        // Enable custom "Done" toolbar
-        //
-        self.addDoneButtonOnKeyboard()
-        
-//        dataSource.parent = self
-
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -60,58 +53,4 @@ class NewReportContentTableViewCell: UITableViewCell {
         super.prepareForReuse()
     }
 
-    //
-    // MARK: Custom
-    //
-    func addDoneButtonOnKeyboard() {
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
-        doneToolbar.barStyle = UIBarStyle.Default
-
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(self.doneButtonAction))
-
-        var items: [UIBarButtonItem]? = [UIBarButtonItem]()
-
-        items?.append(flexSpace)
-        items?.append(done)
-
-        doneToolbar.items = items
-
-        doneToolbar.sizeToFit()
-
-        self.textviewReportDescription.inputAccessoryView = doneToolbar
-    }
-
-    func doneButtonAction() {
-        self.textviewReportDescription.resignFirstResponder()
-    }
-
-    func textViewShouldReturn(textField: UITextView) -> Bool {
-        
-        let nextTag = textField.tag + 1;
-        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
-        
-        if (nextResponder != nil){
-            nextResponder?.becomeFirstResponder()
-        } else {
-            textField.resignFirstResponder()
-        }
-        
-        return false
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
-        let nextTag = textField.tag + 1;
-        let nextResponder=textField.superview?.superview?.superview?.viewWithTag(nextTag) as UIResponder!
-        
-        if (nextResponder != nil){
-            nextResponder?.becomeFirstResponder()
-        } else {
-            textField.resignFirstResponder()
-        }
-        
-        return false
-    }
-    
 }

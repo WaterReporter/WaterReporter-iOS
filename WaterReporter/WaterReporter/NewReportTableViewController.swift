@@ -196,9 +196,8 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             
 //        _pasteboard =  _pasteboard!.stringByRemovingPercentEncoding!.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
 
-        if let checkedUrl = NSURL(string: _pasteboard!) {
+            if let checkedUrl = NSURL(string: _pasteboard!) {
 
-//            if self.verifyUrl(_pasteboard) && self.imageReportImagePreviewIsSet == false {
                 //
                 // Step 2: Check to see if the text being pasted is a link
                 //
@@ -286,18 +285,6 @@ class NewReportTableViewController: UITableViewController, UIImagePickerControll
             return true
         }
         
-        return false
-    }
-
-    func verifyUrl (urlString: String?) -> Bool {
-        //Check for nil
-        if let urlString = urlString {
-            // create NSURL instance
-            if let url = NSURL(string: urlString) {
-                // check if your application can open the NSURL instance
-                return UIApplication.sharedApplication().canOpenURL(url)
-            }
-        }
         return false
     }
 
