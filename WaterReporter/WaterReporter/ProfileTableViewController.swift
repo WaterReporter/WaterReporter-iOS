@@ -1812,7 +1812,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         //
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
-        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("EditReportTableViewController") as! EditReportTableViewController
+        let nextViewController = storyBoard.instantiateViewControllerWithIdentifier("NewPostTableViewController") as! NewPostTableViewController
         
         nextViewController.report = report
         nextViewController.reportId = reportId

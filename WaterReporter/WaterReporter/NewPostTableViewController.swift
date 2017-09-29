@@ -42,6 +42,10 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     var imageReportImagePreviewIsSet: Bool = false
     var userSelectedCoordinates: CLLocationCoordinate2D!
 
+    
+    var reportId: String!
+    var report: JSON!
+
 
 
     //
@@ -158,7 +162,82 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         else {
             self.reportImage.imageView!.image = UIImage(named: "icon--camera")
         }
+        
+        //
+        //
+        //
+        if (self.report != nil) {
+            
+            self.navigationItem.title = "Edit Report"
+            
+            // Set existing comment to comment field
+            //
+            self.reportDescription.text = "\(self.report["properties"]["report_description"])"
+            
+            // Set existing image
+            //
+            print("IMAGES \(self.report["properties"]["images"])")
 
+            if self.report["properties"]["images"].count >= 1 {
+
+                let ogImageURL:NSURL = NSURL(string: "\(self.report["properties"]["images"][0]["properties"]["square"])")!
+    
+    
+                self.reportImage.imageView!.kf_indicatorType = .Activity
+                self.reportImage.imageView!.kf_showIndicatorWhenLoading = true
+    
+                self.reportImage.imageView!.kf_setImageWithURL(ogImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    self.reportImageObject = image
+                    self.reportImage.setImage(self.reportImageObject, forState: .Normal)
+                    self.imageReportImagePreviewIsSet = true
+                    
+                    self.tableView.reloadData()
+                })
+
+                
+            }
+            
+            // Set existing groups to group fields
+            //
+            if (self.report["properties"]["groups"].count >= 1) {
+                for _group in self.report["properties"]["groups"] {
+                    let _organization_id_number: String! = "\(_group.1["properties"]["id"])"
+                    self.tempGroups.append(_organization_id_number)
+                }
+            }
+            
+            // Set existing geometry to the geometry field
+            //
+            let _latitude: Double! = self.report["geometry"]["geometries"][0]["coordinates"][1].double
+            let _longitude: Double! = self.report["geometry"]["geometries"][0]["coordinates"][0].double
+            let _coordinates = CLLocationCoordinate2DMake(_latitude, _longitude)
+            
+            print("latitude: \(_latitude), longitude: \(_longitude)")
+            print("_coordinates: \(_coordinates)")
+            
+            self.userSelectedCoordinates = _coordinates
+            
+            if self.report["properties"]["social"] != nil {
+                
+                print("OG \(self.report["properties"]["social"])")
+                
+                self.og_active = true
+                
+                self.og_title = "\(self.report["properties"]["social"][0]["properties"]["og_title"])"
+                self.og_description = "\(self.report["properties"]["social"][0]["properties"]["og_description"])"
+                self.og_image = "\(self.report["properties"]["social"][0]["properties"]["og_image_url"])"
+                self.og_url = "\(self.report["properties"]["social"][0]["properties"]["og_url"])"
+                
+                self.tableView.reloadData()
+                
+            }
+            
+//            self.labelReportLocationLongitude.text = "\(_longitude)"
+//            self.labelReportLocationLatitude.text = "\(_latitude)"
+            
+//            self.hasLocationSet()
+        }
 
     }
     
@@ -1208,6 +1287,8 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.reportDescription.text = "To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share."
         self.reportImageObject = nil
         self.reportImage.imageView?.image = UIImage(named: "icon--camera")
+        self.reportImage.setImage(UIImage(named: "icon-camera"), forState: .Normal)
+
         
         self.og_paste = ""
         self.og_active = false
