@@ -229,6 +229,8 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
                 self.og_image = "\(self.report["properties"]["social"][0]["properties"]["og_image_url"])"
                 self.og_url = "\(self.report["properties"]["social"][0]["properties"]["og_url"])"
                 
+                self.imageReportImagePreviewIsSet = true
+                
                 self.tableView.reloadData()
                 
             }
@@ -1051,7 +1053,36 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         //
         // Make request
         //
-        if (self.reportImageObject != nil) {
+        if (self.report != nil) {
+            
+            print("WE ARE EDITING ... SAVE")
+            
+            Alamofire.request(.POST, Endpoints.POST_REPORT, parameters: parameters, headers: headers, encoding: .JSON)
+                .responseJSON { response in
+
+                    print("Response \(response)")
+
+//                    switch response.result {
+//                    case .Success(let value):
+//                        
+//                        print("Response Sucess \(value)")
+//                        
+//                        // Hide the loading indicator
+//                        self.finishedSaving()
+//                        
+//                        // Send user to the Activty Feed
+//                        self.tabBarController?.selectedIndex = 0
+//                        
+//                    case .Failure(let error):
+//                        
+//                        print("Response Failure \(error)")
+//                        
+//                        break
+//                    }
+//                    
+            }
+
+        } else if (self.reportImageObject != nil) {
             
             Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
                 
