@@ -576,10 +576,16 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     // Set visible button count
                     let _content_count = self.territoryContent!["properties"]["num_results"]
                     
-                    if (_content_count != "") {
+                    if (_content_count >= 1) {
                         self.buttonTerritoryContentType.hidden = false
                         self.buttonTerritoryContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
                         self.buttonTerritoryPostsContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
+                    }
+                    else {
+                        self.buttonTerritoryContentType.hidden = false
+                        self.buttonTerritoryContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
+                        self.buttonTerritoryContentType.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                        self.buttonTerritoryPostsContentType.hidden = true
                     }
                     
                     if self.territoryContentRaw.count != 0 {
@@ -633,8 +639,12 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     // Set visible button count
                     let _action_count = self.territoryActionContent!["properties"]["num_results"]
                     
-                    if (_action_count != "") {
+                    if (_action_count >= 1) {
+                        self.buttonTerritoryActionsContentType.hidden = false
                         self.buttonTerritoryActionsContentType.setTitle("\(_action_count) posts with actions", forState: .Normal)
+                    }
+                    else {
+                        self.buttonTerritoryActionsContentType.hidden = true
                     }
                     
                     // Refresh the data in the table so the newest items appear
@@ -685,7 +695,11 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     let _group_count = self.territoryGroupContent!["properties"]["num_results"]
                     
                     if (_group_count >= 1) {
+                        self.buttonTerritoryGroupsContentType.hidden = false
                         self.buttonTerritoryGroupsContentType.setTitle("\(_group_count) active groups", forState: .Normal)
+                    }
+                    else {
+                        self.buttonTerritoryGroupsContentType.hidden = true
                     }
                     
                     // Refresh the data in the table so the newest items appear
@@ -739,7 +753,11 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     let _news_count = self.territoryNewsContent!["properties"]["num_results"]
                     
                     if (_news_count >= 1) {
+                        self.buttonTerritoryNewsContentType.hidden = false
                         self.buttonTerritoryNewsContentType.setTitle("\(_news_count) news stories", forState: .Normal)
+                    }
+                    else {
+                        self.buttonTerritoryNewsContentType.hidden = true
                     }
                     
                     // Refresh the data in the table so the newest items appear
@@ -830,7 +848,33 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             _owner = _report!["properties"]["owner"]
         }
         else {
-            return collectionView.dequeueReusableCellWithReuseIdentifier("CollectionEmptyCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
+            
+            let emptyCell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionEmptyCollectionViewCell", forIndexPath: indexPath) as! ReusableProfileCollectionViewCell
+                
+//            print("Select an empty message to display for \(self.territorySelectedContentType)")
+//            
+//            // REPORT > DESCRIPTION
+//            //
+//            if self.territorySelectedContentType == "Actions" {
+//                print("Actions <<<< Empty Message")
+//                cell.reportDescription.text = "Looks like there aren't any actions in this watershed."
+//            }
+//            else if self.territorySelectedContentType == "Groups" {
+//                print("Groups <<<< Empty Message")
+//                cell.reportDescription.text = "Looks like there aren't any groups in this watershed."
+//            }
+//            else if self.territorySelectedContentType == "News" {
+//                print("News <<<< Empty Message")
+//                cell.reportDescription.text = "Looks like there isn't any news in this watershed."
+//            }
+//            else {
+//                print("Posts/Default <<<< Empty Message")
+//                cell.reportDescription.text = "Looks like there aren't any reports in this watershed."
+//            }
+            
+//            print("EMPTY MESSAGE \(cell.reportDescription.text)")
+            
+            return emptyCell
         }
         
         if _report != nil && _owner != nil {
@@ -965,6 +1009,8 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
             }
         }
 
+        print("NOT RETURING EMPTY")
+        
         return cell
     }
 

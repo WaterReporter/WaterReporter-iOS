@@ -1540,7 +1540,7 @@
                                         <constraint firstItem="cKk-5S-thH" firstAttribute="top" secondItem="L8i-gW-k0U" secondAttribute="bottom" constant="8" id="Sok-sM-HIc"/>
                                         <constraint firstItem="p56-XC-6nS" firstAttribute="leading" secondItem="Thb-sl-wMZ" secondAttribute="trailing" constant="16" id="W8Z-qK-nGf"/>
                                         <constraint firstItem="hYr-iS-vRq" firstAttribute="leading" secondItem="CxH-Io-hiZ" secondAttribute="trailing" constant="8" id="Wy0-dk-Yhv"/>
-                                        <constraint firstItem="q5e-hm-mgP" firstAttribute="leading" secondItem="p56-XC-6nS" secondAttribute="trailing" constant="-40" id="XSh-SE-lsg"/>
+                                        <constraint firstItem="q5e-hm-mgP" firstAttribute="leading" secondItem="p56-XC-6nS" secondAttribute="trailing" constant="-32" id="XSh-SE-lsg"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="2HC-ZQ-IG7" secondAttribute="trailing" constant="4" id="XuB-5n-LgY"/>
                                         <constraint firstItem="OGL-3e-W6Q" firstAttribute="top" secondItem="cKk-5S-thH" secondAttribute="bottom" constant="8" id="YfT-1o-qYP"/>
                                         <constraint firstItem="L8i-gW-k0U" firstAttribute="leading" secondItem="AjR-uA-KiV" secondAttribute="leadingMargin" id="YpY-dx-bQN"/>
@@ -1966,13 +1966,13 @@
                                     <action selector="openWatershedView:" destination="VP8-sC-muy" eventType="touchUpInside" id="PxD-26-iMd"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="toggleButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xza-8Y-zDt">
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="toggleButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xza-8Y-zDt">
                                 <rect key="frame" x="16" y="355" width="150" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="WuM-0R-YJk"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                <state key="normal" title="0 posts in watershed">
+                                <state key="normal" title="Loading...">
                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -2000,7 +2000,7 @@
                                                         <constraint firstAttribute="width" constant="124" id="ev1-b0-eVL"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looks like there aren't any reports with this watershed." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84e-Vc-ddy">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looks like there aren't any reports in this watershed." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84e-Vc-ddy">
                                                     <rect key="frame" x="8" y="140" width="124" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="8"/>
                                                     <color key="textColor" red="0.31764705879999999" green="0.31764705879999999" blue="0.31764705879999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -2135,28 +2135,28 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wXQ-ds-m6p">
                                 <rect key="frame" x="12" y="378.5" width="251" height="156"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="actionsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvf-9C-UXK">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="actionsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvf-9C-UXK">
                                         <rect key="frame" x="16" y="43" width="219" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                         <state key="normal" title="0 posts with actions">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="groupsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PB4-Ey-Ufr">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="groupsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PB4-Ey-Ufr">
                                         <rect key="frame" x="16" y="78" width="219" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                         <state key="normal" title="0 active groups">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="newsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2z-qw-7FM">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="newsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2z-qw-7FM">
                                         <rect key="frame" x="16" y="113" width="219" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                         <state key="normal" title="0 news stories">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="postsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jd-hz-LsZ">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="postsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jd-hz-LsZ">
                                         <rect key="frame" x="16" y="8" width="219" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                                         <state key="normal" title="0 posts in watershed">
@@ -4465,7 +4465,7 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="C0J-UM-Kq9" firstAttribute="top" secondItem="t1k-3o-P9b" secondAttribute="bottom" constant="8" id="3Xa-z4-dgQ"/>
-                                                        <constraint firstItem="lY9-Vf-kQg" firstAttribute="leading" secondItem="FvB-K7-kCq" secondAttribute="trailing" constant="-40" id="3cS-ly-P0Z"/>
+                                                        <constraint firstItem="lY9-Vf-kQg" firstAttribute="leading" secondItem="FvB-K7-kCq" secondAttribute="trailing" constant="-32" id="3cS-ly-P0Z"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="Fql-7E-IGc" secondAttribute="trailing" constant="4" id="3en-eb-I4e"/>
                                                         <constraint firstItem="C0J-UM-Kq9" firstAttribute="leading" secondItem="dP3-QI-2F0" secondAttribute="leadingMargin" id="4eX-6z-y9f"/>
                                                         <constraint firstAttribute="topMargin" secondItem="OPC-kq-QBe" secondAttribute="top" id="5ZE-gO-KO0"/>
@@ -5418,7 +5418,7 @@
                                                         <constraint firstItem="c6C-i3-8xZ" firstAttribute="leading" secondItem="qQ9-20-Bcm" secondAttribute="trailing" constant="16" id="VG7-ws-lyE"/>
                                                         <constraint firstItem="vJx-Sc-7lf" firstAttribute="leading" secondItem="iMU-pe-Szt" secondAttribute="trailing" constant="16" id="Yet-Ew-9h0"/>
                                                         <constraint firstAttribute="trailingMargin" secondItem="6lf-gK-Nza" secondAttribute="trailing" id="eWQ-F6-tcW"/>
-                                                        <constraint firstItem="Lm9-tb-rYV" firstAttribute="leading" secondItem="vJx-Sc-7lf" secondAttribute="trailing" constant="-40" id="fON-xC-HRS"/>
+                                                        <constraint firstItem="Lm9-tb-rYV" firstAttribute="leading" secondItem="vJx-Sc-7lf" secondAttribute="trailing" constant="-32" id="fON-xC-HRS"/>
                                                         <constraint firstItem="Lm9-tb-rYV" firstAttribute="centerY" secondItem="vJx-Sc-7lf" secondAttribute="centerY" id="hCJ-BE-f3T"/>
                                                         <constraint firstItem="iMU-pe-Szt" firstAttribute="top" secondItem="ykM-tp-KAb" secondAttribute="bottom" constant="8" id="hud-Ta-xQO"/>
                                                         <constraint firstItem="vJx-Sc-7lf" firstAttribute="top" secondItem="ykM-tp-KAb" secondAttribute="bottom" constant="8" id="izk-wa-tau"/>
