@@ -1397,6 +1397,31 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 cell.buttonReportLikeCount.tag = indexPath.row
                 cell.buttonReportLikeCount.addTarget(self, action: #selector(self.openSubmissionsLikesList(_:)), forControlEvents: .TouchUpInside)
 
+                // Update the total likes count
+                //
+                let _report_likes_count: Int = _thisSubmission["likes"].count
+                                
+                // Check if we have previously liked this photo. If so, we need to take
+                // that into account when adding a new like.
+                //
+                let _report_likes_updated_total: Int! = _report_likes_count
+                
+                var reportLikesCountText: String = ""
+                
+                if _report_likes_updated_total == 1 {
+                    reportLikesCountText = "1 like"
+                    cell.buttonReportLikeCount.hidden = false
+                }
+                else if _report_likes_updated_total >= 1 {
+                    reportLikesCountText = "\(_report_likes_updated_total) likes"
+                    cell.buttonReportLikeCount.hidden = false
+                }
+                else {
+                    reportLikesCountText = "0 likes"
+                    cell.buttonReportLikeCount.hidden = false
+                }
+                
+                cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
             }
 
             
@@ -1721,6 +1746,31 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 cell.buttonReportLikeCount.tag = indexPath.row
                 cell.buttonReportLikeCount.addTarget(self, action: #selector(self.openActionsLikesList(_:)), forControlEvents: .TouchUpInside)
 
+                // Update the total likes count
+                //
+                let _report_likes_count: Int = _thisSubmission["likes"].count
+                
+                // Check if we have previously liked this photo. If so, we need to take
+                // that into account when adding a new like.
+                //
+                let _report_likes_updated_total: Int! = _report_likes_count
+                
+                var reportLikesCountText: String = ""
+                
+                if _report_likes_updated_total == 1 {
+                    reportLikesCountText = "1 like"
+                    cell.buttonReportLikeCount.hidden = false
+                }
+                else if _report_likes_updated_total >= 1 {
+                    reportLikesCountText = "\(_report_likes_updated_total) likes"
+                    cell.buttonReportLikeCount.hidden = false
+                }
+                else {
+                    reportLikesCountText = "0 likes"
+                    cell.buttonReportLikeCount.hidden = false
+                }
+                
+                cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
             }
 
             if (indexPath.row == self.userActionsObjects.count - 2 && self.userActionsObjects.count < self.userActions!["properties"]["num_results"].int) {
@@ -1976,6 +2026,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             // Update the total likes count
             //
             let _report_likes_count: Int = _report["likes"].count
+            
+            print("existing likes \(_report["likes"])")
             
             // Check if we have previously liked this photo. If so, we need to take
             // that into account when adding a new like.
