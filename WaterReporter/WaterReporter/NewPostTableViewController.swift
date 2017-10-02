@@ -150,19 +150,6 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.navigationItem.title = "New Report"
         self.navigationController?.delegate = self
         
-        
-        
-        // Report Image
-        //
-        self.reportImage.addTarget(self, action: #selector(self.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
-        
-        if (self.reportImageObject != nil) {
-            self.reportImage.imageView!.image = self.reportImageObject
-        }
-        else {
-            self.reportImage.imageView!.image = UIImage(named: "icon--camera")
-        }
-        
         //
         //
         //
@@ -217,8 +204,8 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
             print("_coordinates: \(_coordinates)")
             
             self.userSelectedCoordinates = _coordinates
-            
-            if self.report["properties"]["social"] != nil {
+
+            if self.report["properties"]["social"].count >= 1 {
                 
                 print("OG \(self.report["properties"]["social"])")
                 
@@ -235,10 +222,18 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
                 
             }
             
-//            self.labelReportLocationLongitude.text = "\(_longitude)"
-//            self.labelReportLocationLatitude.text = "\(_latitude)"
+        }
+        else {
+
+            self.reportImage.addTarget(self, action: #selector(self.attemptOpenPhotoTypeSelector(_:)), forControlEvents: .TouchUpInside)
             
-//            self.hasLocationSet()
+            if (self.reportImageObject != nil) {
+                self.reportImage.imageView!.image = self.reportImageObject
+            }
+            else {
+                self.reportImage.imageView!.image = UIImage(named: "icon--camera")
+            }
+
         }
 
     }
@@ -1055,31 +1050,35 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         //
         if (self.report != nil) {
             
+            let _endpoint = Endpoints.POST_REPORT + "/\(self.reportId)"
+
             print("WE ARE EDITING ... SAVE")
             
-            Alamofire.request(.POST, Endpoints.POST_REPORT, parameters: parameters, headers: headers, encoding: .JSON)
+            //
+            // Make request
+            //
+            Alamofire.request(.PATCH, _endpoint, parameters: parameters, headers: headers, encoding: .JSON)
                 .responseJSON { response in
-
+                    
                     print("Response \(response)")
-
-//                    switch response.result {
-//                    case .Success(let value):
-//                        
-//                        print("Response Sucess \(value)")
-//                        
-//                        // Hide the loading indicator
-//                        self.finishedSaving()
-//                        
-//                        // Send user to the Activty Feed
-//                        self.tabBarController?.selectedIndex = 0
-//                        
-//                    case .Failure(let error):
-//                        
-//                        print("Response Failure \(error)")
-//                        
-//                        break
-//                    }
-//                    
+                    
+                    switch response.result {
+                    case .Success(let value):
+                        
+                        print("Response Sucess \(value)")
+                        
+                        // Hide the loading indicator
+                        self.finishedSaving()
+                        
+                        self.navigationController?.popViewControllerAnimated(true)
+                        
+                    case .Failure(let error):
+                        
+                        print("Response Failure \(error)")
+                        
+                        break
+                    }
+                    
             }
 
         } else if (self.reportImageObject != nil) {
