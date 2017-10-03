@@ -93,6 +93,10 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
 
     @IBAction func attemptOpenPhotoTypeSelector(sender: AnyObject) {
         
+        // Dimiss keyboard before doing anything else
+        //
+        self.buttonNewCommentTextView.resignFirstResponder()
+        
         let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
         let cameraAction = UIAlertAction(title: "Camera", style: .Default, handler:self.cameraActionHandler)
@@ -352,6 +356,7 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
             print("NewPostTableViewController::textView::shouldChangeTextInRange >>>> Hashtag start detected, activating hashtag search mode")
             
             self.hashtagSearchModeEnabled = true
+            self.reportHashtags.backgroundColor = UIColor.whiteColor()
             
             self.reportHashtags.hidden = false
             
@@ -369,7 +374,8 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
                 // reset the hashtag search functionality.
                 //
                 self.hashtagSearchModeEnabled = true
-                
+                self.reportHashtags.backgroundColor = UIColor.whiteColor()
+
                 self.reportHashtags.hidden = true
                 
                 self.hashtagSearchModeActivity.hidden = true
@@ -645,7 +651,7 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         print("reportId \(reportId)")
         
         let parameters: [String: AnyObject] = [
-            "q": "{\"filters\":[{\"name\":\"report_id\",\"op\":\"eq\",\"val\":" + reportId + "}],\"order_by\":[{\"field\":\"created\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"report_id\",\"op\":\"eq\",\"val\":" + reportId + "}],\"order_by\":[{\"field\":\"created\",\"direction\":\"asc\"}]}",
             "page": self.page
         ]
         
@@ -715,6 +721,214 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
     }
     
 
+    @IBAction func attemptOpenSaveCommentTypeSelector(sender: UIButton) {
+        
+        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let saveCommentAction = UIAlertAction(title: "Save Comment", style: .Default, handler: {
+            UIAlertAction in
+            self.attemptNewReportCommentSave()
+        })
+        thisActionSheet.addAction(saveCommentAction)
+        
+        //
+        // Determine if the Close Report or Reopen Report button should be visible
+        //
+        let _report = JSON(self.report)
+        if (_report["properties"]["state"] == "closed") {
+            let saveCommentWithReopenAction = UIAlertAction(title: "Save Comment & Reopen Report", style: .Default, handler: {
+                UIAlertAction in
+                self.attemptNewReportCommentSave("open")
+            })
+            thisActionSheet.addAction(saveCommentWithReopenAction)
+        }
+        else {
+            let saveCommentWithCloseAction = UIAlertAction(title: "Save Comment & Close Report", style: .Default, handler: {
+                UIAlertAction in
+                self.attemptNewReportCommentSave("closed")
+            })
+            thisActionSheet.addAction(saveCommentWithCloseAction)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        thisActionSheet.addAction(cancelAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+        
+    }
+    
+    func attemptNewReportCommentSaveNonAdmin(sender: UIBarButtonItem) {
+        self.attemptNewReportCommentSave()
+    }
+    
+    func attemptNewReportCommentSave(reportStatus: String = "") {
+        
+        //
+        // Hide the form during saving
+        //
+//        self.saving()
+        
+        // Create necessary Authorization header for our request
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        let headers = [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+        
+        //
+        // PARAMETERS
+        //
+        var parameters: [String: AnyObject] = [
+            "body": self.buttonNewCommentTextView.text!,
+            "status": "public",
+            "report_id": reportId
+        ]
+        
+        if (reportStatus != "") {
+            parameters["report_state"] = reportStatus
+        }
+        
+        print("parameters \(parameters)")
+        
+        if (self.reportImageObject != nil) {
+            
+            Alamofire.upload(.POST, Endpoints.POST_IMAGE, headers: headers, multipartFormData: { multipartFormData in
+                
+                // import image to request
+                if let imageData = UIImageJPEGRepresentation(self.reportImageObject, 1) {
+                    multipartFormData.appendBodyPart(data: imageData, name: "image", fileName: "ReportCommentImageFromiPhone.jpg", mimeType: "image/jpeg")
+                }
+                
+                }, encodingCompletion: {
+                    encodingResult in
+                    switch encodingResult {
+                    case .Success(let upload, _, _):
+                        upload.responseJSON { response in
+                            print("Image uploaded \(response)")
+                            
+                            if let value = response.result.value {
+                                let imageResponse = JSON(value)
+                                
+                                let image = [
+                                    "id": String(imageResponse["id"].rawValue)
+                                ]
+                                let images: [AnyObject] = [image]
+                                
+                                parameters["images"] = images
+                                
+                                print("parameters \(parameters)")
+                                
+                                Alamofire.request(.POST, Endpoints.POST_COMMENT, parameters: parameters, headers: headers, encoding: .JSON)
+                                    .responseJSON { response in
+                                        
+                                        print("Response \(response)")
+                                        
+                                        switch response.result {
+                                        case .Success(let value):
+                                            
+                                            print("Response Success \(value)")
+                                            
+                                            
+                                            if (reportStatus != "") {
+                                                print("Preparing to close report")
+                                                
+                                                let _report_parameters = [
+                                                    "state": reportStatus
+                                                ]
+                                                
+                                                Alamofire.request(.PATCH, Endpoints.POST_REPORT + "/\(self.reportId)", parameters: _report_parameters, headers: headers, encoding: .JSON)
+                                                    .responseJSON { response in
+                                                        
+                                                        print("Response \(response)")
+                                                        
+                                                        switch response.result {
+                                                        case .Success(let value):
+                                                            
+                                                            print("Response Sucess \(value)")
+                                                            
+                                                            self.savingComplete()
+                                                            
+                                                        case .Failure(let error):
+                                                            
+                                                            print("Response Failure \(error)")
+                                                            
+                                                            break
+                                                        }
+                                                        
+                                                }
+                                                
+                                            } else {
+                                                self.savingComplete()
+                                            }
+                                            
+                                        case .Failure(let error):
+                                            print("Response Failure \(error)")
+                                            break
+                                        }
+                                        
+                                }
+                            }
+                        }
+                    case .Failure(let encodingError):
+                        print(encodingError)
+                    }
+            })
+            
+        }
+        else {
+            Alamofire.request(.POST, Endpoints.POST_COMMENT, parameters: parameters, headers: headers, encoding: .JSON)
+                .responseJSON { response in
+                    
+                    print("Response \(response)")
+                    
+                    switch response.result {
+                    case .Success(let value):
+                        
+                        print("Response Success \(value)")
+                        
+                        if (reportStatus != "") {
+                            print("Preparing to close report")
+                            
+                            let _report_parameters = [
+                                "state": reportStatus
+                            ]
+                            
+                            Alamofire.request(.PATCH, Endpoints.POST_REPORT + "/\(self.reportId)", parameters: _report_parameters, headers: headers, encoding: .JSON)
+                                .responseJSON { response in
+                                    
+                                    print("Response \(response)")
+                                    
+                                    switch response.result {
+                                    case .Success(let value):
+                                        
+                                        print("Response Sucess \(value)")
+                                        
+                                        self.savingComplete()
+                                        
+                                    case .Failure(let error):
+                                        
+                                        print("Response Failure \(error)")
+                                        
+                                        break
+                                    }
+                                    
+                            }
+                            
+                        } else {
+                            self.savingComplete()
+                        }
+                    case .Failure(let error):
+                        
+                        print("Response Failure \(error)")
+                        
+                        break
+                    }
+                    
+            }
+        }
+        
+    }
+
+    
     //
     // MARK:
     //
@@ -743,6 +957,63 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         if (self.comments?["features"].count >= 2) {
             self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         }
+        
+        // Scroll to bottom of view
+        //
+        self.scrollToBottom()
+
+    }
+    
+    func scrollToBottom(animated: Bool = false) {
+        if self.comments!.count > 0 {
+            let lastIndex = NSIndexPath.init(forRow: self.comments!.count-1, inSection: 0)
+            self.tableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: .Bottom, animated: animated)
+        }
+    }
+    
+    func savingComplete() {
+    
+        //
+        // Make sure that the Done/Save button is disabled
+        //
+        self.navigationItem.rightBarButtonItem?.enabled = true
+        
+        //
+        // Make sure our view is scrolled to the bottom
+        //
+        self.scrollToBottom()
+
+        // Reset all Form Fields
+        self.hashtagSearchModeEnabled = false
+        self.reportHashtags.backgroundColor = UIColor.clearColor()
+        self.buttonNewCommentTextView.text = "Begin typing your comment"
+        self.reportImageObject = nil
+        self.buttonNewCommentImage.imageView?.image = UIImage(named: "icon--camera")
+        self.buttonNewCommentImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
+
+        // Reset Open Graph placeholders
+        //
+        self.og_paste = ""
+        self.og_active = false
+        self.og_title = ""
+        self.og_description = ""
+        self.og_sitename = ""
+        self.og_type = ""
+        self.og_image = ""
+        self.og_url = ""
+        
+        // Reload comments
+        //
+        if reportId != "" {
+            self.page = 1
+            self.attemptGetReportComments(reportId)
+        }
+
+        // Dismiss keyboard
+        //
+        self.buttonNewCommentTextView.resignFirstResponder()
+        
+        self.tableView.reloadData()
         
     }
 
@@ -903,7 +1174,8 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         // Reset the search
         //
         self.hashtagSearchModeEnabled = false
-        
+        self.reportHashtags.backgroundColor = UIColor.clearColor()
+
         self.reportHashtags.hidden = true
         self.hashtagSearchModeTypeDelay.invalidate()
         self.hashtagSearchModeResults = [String]()
