@@ -253,7 +253,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
             self.reportDescription.text = "To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share."
 
             self.reportImageObject = nil
-            self.reportImage.setImage(UIImage(named: "icon-camera"), forState: .Normal)
+            self.reportImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
             
             self.og_paste = ""
             self.og_active = false
@@ -1317,7 +1317,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.reportDescription.text = "To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share."
         self.reportImageObject = nil
         self.reportImage.imageView?.image = UIImage(named: "icon--camera")
-        self.reportImage.setImage(UIImage(named: "icon-camera"), forState: .Normal)
+        self.reportImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
 
         
         self.og_paste = ""
