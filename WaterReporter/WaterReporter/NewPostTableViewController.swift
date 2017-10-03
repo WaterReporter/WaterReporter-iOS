@@ -23,6 +23,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     
     var groups: JSON?
     var tempGroups = [String]()
+    var retainValues: Bool = false
 
     var hashtags: JSON?
     var hashtagSearchModeEnabled: Bool = false
@@ -94,6 +95,9 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     }
 
     @IBAction func launchNewReportLocationSelector(sender: UIButton) {
+        
+        self.retainValues = true;
+        
         self.performSegueWithIdentifier("setLocationForNewReport", sender: sender)
     }
 
@@ -241,7 +245,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
         
-        if self.tabBarController?.selectedIndex != 2 {
+        if self.tabBarController?.selectedIndex != 2 && self.retainValues == false {
             
             //
             // When navigating away from this tab the Commons team wants this
@@ -1222,7 +1226,10 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.tableView.reloadData()
     }
     
-    func onSetCoordinatesComplete(isFinished: Bool) { return }
+    func onSetCoordinatesComplete(isFinished: Bool) {
+        self.retainValues = false
+        return
+    }
 
     
     //
@@ -1328,6 +1335,8 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.og_type = ""
         self.og_image = ""
         self.og_url = ""
+        
+        self.retainValues = false
         
         self.tempGroups = [String]()
         
