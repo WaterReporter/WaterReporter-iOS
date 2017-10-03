@@ -328,7 +328,32 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
     }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.navigationController?.navigationBarHidden = false
+    }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        if (self.isMovingFromParentViewController()) {
+            if (self.navigationController?.viewControllers.last?.restorationIdentifier! == "SearchTableViewController") {
+                self.navigationController?.navigationBarHidden = true
+            } else {
+                self.navigationController?.navigationBarHidden = false
+            }
+        }
+        else {
+            self.navigationController?.navigationBarHidden = false
+        }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "showTerritorySingleViewFromMap" ||
