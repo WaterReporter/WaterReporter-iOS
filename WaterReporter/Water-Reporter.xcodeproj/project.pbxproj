@@ -57,6 +57,7 @@
 		CE01D60C1EA68EE5001FA457 /* HashtagTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */; };
 		CE0886EE1F606AE000F92BA8 /* EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */; };
 		CE1CE5111F69B40300684B3E /* GroupsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CE5101F69B40300684B3E /* GroupsTableView.swift */; };
+		CE1E32E21F82A53600E757D0 /* ReportCommentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E32E11F82A53600E757D0 /* ReportCommentsTableViewController.swift */; };
 		CE3D47171F755FBA00005DA7 /* VI+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D47161F755FBA00005DA7 /* VI+String.swift */; };
 		CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */; };
 		CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */; };
@@ -162,6 +163,7 @@
 		CE01D60B1EA68EE5001FA457 /* HashtagTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagTableView.swift; sourceTree = "<group>"; };
 		CE0886ED1F606AE000F92BA8 /* EmptyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyTableViewCell.swift; sourceTree = "<group>"; };
 		CE1CE5101F69B40300684B3E /* GroupsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsTableView.swift; sourceTree = "<group>"; };
+		CE1E32E11F82A53600E757D0 /* ReportCommentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportCommentsTableViewController.swift; sourceTree = "<group>"; };
 		CE3D47161F755FBA00005DA7 /* VI+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VI+String.swift"; sourceTree = "<group>"; };
 		CE4D9E561F4DB88700006097 /* ReusableProfileCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE98256E1F03FD9D0084A097 /* TerritoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerritoryViewController.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				C1B02D2C1DC51B37003566FC /* CommentsTableViewController.swift */,
 				C1B02D2E1DC51C85003566FC /* CommentsNewTableViewController.swift */,
 				CEEA52741EB27F5200934D18 /* CommentHashtagTypeAhead.swift */,
+				CE1E32E11F82A53600E757D0 /* ReportCommentsTableViewController.swift */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -669,6 +672,7 @@
 				CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */,
 				CE015EF61F6C431600447C34 /* NewReportGroupTableViewCell.swift in Sources */,
 				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
+				CE1E32E21F82A53600E757D0 /* ReportCommentsTableViewController.swift in Sources */,
 				C1434E551DEF5A67009F6884 /* EditReportTableViewController.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
 				CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */,

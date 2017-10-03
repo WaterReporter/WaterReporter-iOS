@@ -829,7 +829,6 @@ class ActivityTableViewController: UITableViewController {
     
                     switch response.result {
                     case .Success(let value):
-//                        print("Response Success \(value)")
                         self.updateReportLikes(_report_id, reportSenderTag: senderTag)
                         
                         break
