@@ -27,6 +27,7 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
     @IBOutlet weak var can_notify_admin_user_submits_report_in_group: UISwitch!
     @IBOutlet weak var can_notify_admin_comment_on_report_in_territory: UISwitch!
     @IBOutlet weak var can_notify_admin_comment_on_report_in_group: UISwitch!
+    @IBOutlet weak var can_notify_owner_like_report: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,7 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
         buttonGroups.enabled = false
         
         self.can_notify_owner_comment_on_owned_report.enabled = false
+        self.can_notify_owner_like_report.enabled = false
         self.can_notify_admin_user_joins_group.enabled = false
         self.can_notify_owner_admin_closes_owned_report.enabled = false
         self.can_notify_admin_user_submits_report_in_territory.enabled = false
@@ -186,6 +188,7 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
         let _parameters: [String: AnyObject] = [
             "can_notify_admin_user_joins_group": self.can_notify_admin_user_joins_group.on,
             "can_notify_admin_comment_on_report_in_group": self.can_notify_admin_comment_on_report_in_group.on,
+            "can_notify_owner_like_report": self.can_notify_owner_like_report.on,
             "can_notify_admin_comment_on_report_in_territory": self.can_notify_admin_comment_on_report_in_territory.on,
             "can_notify_admin_admin_closes_report_in_group": self.can_notify_admin_comment_on_report_in_group.on,
             "can_notify_admin_admin_closes_report_in_territory": self.can_notify_admin_comment_on_report_in_territory.on,
@@ -283,6 +286,12 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
                                     self.can_notify_admin_comment_on_report_in_group.on = _user_profile["properties"]["can_notify_admin_comment_on_report_in_group"].bool! || false
                                 }
                                 self.can_notify_admin_comment_on_report_in_group.enabled = true
+                                
+                                if _user_profile["properties"]["can_notify_owner_like_report"]
+                                {
+                                    self.can_notify_owner_like_report.on = _user_profile["properties"]["can_notify_owner_like_report"].bool! || false
+                                }
+                                self.can_notify_owner_like_report.enabled = true
                                 
                                 // Update the total number of rows to display for administrators
                                 self.notificationCount = 7
