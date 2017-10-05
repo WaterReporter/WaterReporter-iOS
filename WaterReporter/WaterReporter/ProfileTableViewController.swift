@@ -230,7 +230,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     @IBAction func openUserSubmissionCommentsView(sender: UIButton) {
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("CommentsTableViewController") as! CommentsTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
         
         nextViewController.report = self.userSubmissionsObjects[sender.tag]
         

@@ -235,7 +235,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     }
     
     @IBAction func openUserSubmissionCommentsView(sender: UIButton) {
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("CommentsTableViewController") as! CommentsTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
         
         nextViewController.report = self.groupSubmissionsObjects[sender.tag]
         
@@ -253,7 +253,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     }
     
     @IBAction func openUserActionCommentsView(sender: UIButton) {
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("CommentsTableViewController") as! CommentsTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
         
         nextViewController.report = self.groupActionsObjects[sender.tag]
         

@@ -166,7 +166,7 @@ class HashtagTableViewController: UITableViewController {
     }
     
     @IBAction func openUserSubmissionCommentsView(sender: UIButton) {
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("CommentsTableViewController") as! CommentsTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
         
         nextViewController.report = self.hashtagSubmissionsObjects[sender.tag]
         
@@ -184,7 +184,7 @@ class HashtagTableViewController: UITableViewController {
     }
     
     @IBAction func openUserActionCommentsView(sender: UIButton) {
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("CommentsTableViewController") as! CommentsTableViewController
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
         
         nextViewController.report = self.hashtagActionsObjects[sender.tag]
         

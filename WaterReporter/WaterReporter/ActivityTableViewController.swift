@@ -287,7 +287,7 @@ class ActivityTableViewController: UITableViewController {
             let destViewController = segue.destinationViewController as! ActivityMapViewController
             destViewController.reportObject = self.reports[sender!.tag]
         } else if segue.identifier == "reportToReportComments" {
-            let destViewController = segue.destinationViewController as! CommentsTableViewController
+            let destViewController = segue.destinationViewController as! ReportCommentsTableViewController
             let report = self.reports[(sender?.tag)!]
             destViewController.report = report
         } else if segue.identifier == "reportToReportLikes" {

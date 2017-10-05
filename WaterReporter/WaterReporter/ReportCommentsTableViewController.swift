@@ -161,33 +161,22 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         self.tableView.estimatedRowHeight = 640.0;
         
         self.navigationController?.delegate = self
-        
-        //
-        // Setup pull to refresh functionality for our TableView
-        //
-//        self.tableView.refreshControl?.addTarget(self, action: #selector(ReportCommentsTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
-
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        //
-        //
-        //
+        print("Before reportIdNumber self.report \(self.report)")
+        
         if let reportIdNumber = report?.objectForKey("id") as? NSNumber {
-            reportId = "\(reportIdNumber)"
+            self.reportId = "\(reportIdNumber)"
         }
-        
-        //
-        // Display loading indicator
-        //
-        self.loading()
-        
-        //
-        //
-        //
-        if reportId != "" {
+
+        print("After reportIdNumber self.reportId \(self.reportId)")
+
+        if self.reportId != nil {
+            print("Not nil? self.reportId \(self.reportId)")
+
             self.page = 1
             self.attemptGetReportComments(reportId)
         }
@@ -541,7 +530,7 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
             cell.commentOwnerImage.tag = indexPath.row
             cell.commentOwnerImageButton.tag = indexPath.row
             
-            cell.commentOwnerImageButton.addTarget(self, action: #selector(CommentsTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+            cell.commentOwnerImageButton.addTarget(self, action: #selector(self.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
             
             var commentOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
             
@@ -965,10 +954,10 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
     }
     
     func scrollToBottom(animated: Bool = false) {
-        if self.comments!.count > 0 {
-            let lastIndex = NSIndexPath.init(forRow: self.comments!.count-1, inSection: 0)
-            self.tableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: .Bottom, animated: animated)
-        }
+//        if self.comments!.count > 0 {
+//            let lastIndex = NSIndexPath.init(forRow: self.comments!.count-1, inSection: 0)
+//            self.tableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: .Bottom, animated: animated)
+//        }
     }
     
     func savingComplete() {
