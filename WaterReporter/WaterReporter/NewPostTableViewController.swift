@@ -46,6 +46,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     
     var reportId: String!
     var report: JSON!
+    var isEditingReport: Bool = false
 
 
 
@@ -1034,25 +1035,29 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         //
         // OPEN GRAPH
         //
-        var open_graph: [AnyObject] = [AnyObject]()
-        
-        if self.og_active {
-            let _social = [
-                "og_title": self.og_title,
-                "og_type": self.og_type,
-                "og_url": self.og_url,
-                "og_image_url": self.og_image,
-                "og_description": self.og_description
-            ]
-            open_graph.append(_social)
+        if (self.isEditingReport == false) {
+
+            var open_graph: [AnyObject] = [AnyObject]()
+            
+            if self.og_active {
+                let _social = [
+                    "og_title": self.og_title,
+                    "og_type": self.og_type,
+                    "og_url": self.og_url,
+                    "og_image_url": self.og_image,
+                    "og_description": self.og_description
+                ]
+                open_graph.append(_social)
+            }
+            
+            parameters["social"] = open_graph
+            
         }
-        
-        parameters["social"] = open_graph
         
         //
         // Make request
         //
-        if (self.report != nil) {
+        if (self.isEditingReport == true) {
             
             let _endpoint = Endpoints.POST_REPORT + "/\(self.reportId)"
 
