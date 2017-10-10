@@ -472,11 +472,33 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
 
                             self.reportImage.imageView!.kf_setImageWithURL(ogImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                                 (image, error, cacheType, imageUrl) in
-                                self.reportImageObject = image
-                                self.reportImage.setImage(self.reportImageObject, forState: .Normal)
-                                self.imageReportImagePreviewIsSet = true
                                 
-                                self.tableView.reloadData()
+                                if error != nil {
+                                    let _status_code: String = "\(error!.userInfo["statusCode"])"
+                                    
+                                    print("Error Check Negative")
+                                    print("Error Loading Open Graph Image, Error Code: \(_status_code)")
+                                    
+                                    self.reportImage.imageView?.image = UIImage(named: "icon--camera")
+                                    self.reportImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
+                                    
+                                    self.reportImageObject = nil
+                                    self.imageReportImagePreviewIsSet = false
+                                    
+                                    self.og_image = ""
+                                    
+                                    self.tableView.reloadData()
+                                }
+                                else {
+                                    print("Error Check Negative")
+
+                                    self.reportImageObject = image
+                                    self.reportImage.setImage(self.reportImageObject, forState: .Normal)
+                                    self.imageReportImagePreviewIsSet = true
+                                    
+                                    self.tableView.reloadData()
+                                }
+                                
                             })
                             
                         }
@@ -664,6 +686,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
                 // Open Graph > Image
                 //
                 if self.og_image != "" {
+                    print("self.og_image available \(self.og_image)")
                     
                     let ogImageURL:NSURL = NSURL(string: "\(self.og_image)")!
                     
@@ -682,6 +705,12 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
                         }
                     })
                     
+                }
+                else {
+                    print("No open graph image")
+                    
+                    cell.ogImage.image = UIImage(named: "og-placeholder_1024x1024_720")
+
                 }
             }
             else {
@@ -1148,6 +1177,24 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
                         print(encodingError)
                     }
             })
+            
+        }
+        else if (self.reportImageObject == nil) {
+            print("Arrived at end of save function with no conditions")
+            
+            self.displayErrorMessage("No News Story Image", message: "It looks like your news story didn't contain an image, why not add your own?")
+            
+            self.loadingView.removeFromSuperview()
+            
+            self.finishedSavingWithError()
+            
+        }
+        else {
+            self.displayErrorMessage("Unable to Save", message: "We were unable to save your report. Check your entry and try to save again.")
+            
+            self.loadingView.removeFromSuperview()
+            
+            self.finishedSavingWithError()
             
         }
         

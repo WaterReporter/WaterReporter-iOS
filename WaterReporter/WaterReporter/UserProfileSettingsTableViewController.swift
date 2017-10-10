@@ -13,7 +13,7 @@ import UIKit
 
 class UserProfileSettingsTableViewController: UITableViewController, UINavigationControllerDelegate {
     
-    var notificationCount: Int = 2
+    var notificationCount: Int = 3
     var tempGroups: [String] = [String]()
     
     @IBOutlet weak var buttonEditProfile: UIButton!
@@ -21,13 +21,14 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
     @IBOutlet weak var buttonGroups: UIButton!
     
     @IBOutlet weak var can_notify_owner_comment_on_owned_report: UISwitch!
-    @IBOutlet weak var can_notify_admin_user_joins_group: UISwitch!
     @IBOutlet weak var can_notify_owner_admin_closes_owned_report: UISwitch!
+    @IBOutlet weak var can_notify_owner_like_report: UISwitch!
+
+    @IBOutlet weak var can_notify_admin_user_joins_group: UISwitch!
     @IBOutlet weak var can_notify_admin_user_submits_report_in_territory: UISwitch!
     @IBOutlet weak var can_notify_admin_user_submits_report_in_group: UISwitch!
     @IBOutlet weak var can_notify_admin_comment_on_report_in_territory: UISwitch!
     @IBOutlet weak var can_notify_admin_comment_on_report_in_group: UISwitch!
-    @IBOutlet weak var can_notify_owner_like_report: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -287,12 +288,6 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
                                 }
                                 self.can_notify_admin_comment_on_report_in_group.enabled = true
                                 
-                                if _user_profile["properties"]["can_notify_owner_like_report"]
-                                {
-                                    self.can_notify_owner_like_report.on = _user_profile["properties"]["can_notify_owner_like_report"].bool! || false
-                                }
-                                self.can_notify_owner_like_report.enabled = true
-                                
                                 // Update the total number of rows to display for administrators
                                 self.notificationCount = 7
                             }
@@ -307,6 +302,12 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
                             self.can_notify_owner_admin_closes_owned_report.on = _user_profile["properties"]["can_notify_owner_admin_closes_owned_report"].bool! || false
                         }
                         self.can_notify_owner_admin_closes_owned_report.enabled = true
+
+                        if _user_profile["properties"]["can_notify_owner_like_report"]
+                        {
+                            self.can_notify_owner_like_report.on = _user_profile["properties"]["can_notify_owner_like_report"].bool! || false
+                        }
+                        self.can_notify_owner_like_report.enabled = true
 
                         self.tableView.reloadData()
 
