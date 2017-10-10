@@ -1195,7 +1195,8 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
                 
                 emptyCell.emptyMessageDescription.text = "Looks like this group hasn't posted anything yet.  Join their group and share a report to get them started!"
                 emptyCell.emptyMessageAction.hidden = false
-                
+                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageAddReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+
                 return emptyCell
             }
 

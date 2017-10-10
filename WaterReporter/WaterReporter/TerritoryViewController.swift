@@ -69,10 +69,27 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     @IBOutlet weak var activityCollectionView: UICollectionView!
     
     @IBOutlet weak var contentTypeView: UIView!
+    
     @IBOutlet weak var buttonTerritoryActionsContentType: UIButton!
+    @IBOutlet weak var buttonTerritoryActionsContentTypeHeight: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryActionsContentTypeBottom: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryActionsContentTypeTop: NSLayoutConstraint!
+    
     @IBOutlet weak var buttonTerritoryPostsContentType: UIButton!
+    @IBOutlet weak var buttonTerritoryPostsContentTypeHeight: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryPostsContentTypeBottom: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryPostsContentTypeTop: NSLayoutConstraint!
+    
     @IBOutlet weak var buttonTerritoryGroupsContentType: UIButton!
+    @IBOutlet weak var buttonTerritoryGroupsContentTypeHeight: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryGroupsContentTypeBottom: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryGroupsContentTypeTop: NSLayoutConstraint!
+    
     @IBOutlet weak var buttonTerritoryNewsContentType: UIButton!
+    @IBOutlet weak var buttonTerritoryNewsContentTypeHeight: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryNewsContentTypeBottom: NSLayoutConstraint!
+    @IBOutlet weak var buttonTerritoryNewsContentTypeTop: NSLayoutConstraint!
+    
     //
     // MARK: @IBAction
     //
@@ -311,7 +328,32 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
     }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.navigationController?.navigationBarHidden = false
+    }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        if (self.isMovingFromParentViewController()) {
+            if (self.navigationController?.viewControllers.last?.restorationIdentifier! == "SearchTableViewController") {
+                self.navigationController?.navigationBarHidden = true
+            } else {
+                self.navigationController?.navigationBarHidden = false
+            }
+        }
+        else {
+            self.navigationController?.navigationBarHidden = false
+        }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "showTerritorySingleViewFromMap" ||
@@ -580,12 +622,17 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                         self.buttonTerritoryContentType.hidden = false
                         self.buttonTerritoryContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
                         self.buttonTerritoryPostsContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
+                        self.buttonTerritoryPostsContentType.hidden = false
+                        self.buttonTerritoryPostsContentTypeHeight.constant = 27.0
+                        self.buttonTerritoryPostsContentTypeTop.constant = 8.0
                     }
                     else {
-                        self.buttonTerritoryContentType.hidden = false
+                        self.buttonTerritoryContentType.hidden = true
                         self.buttonTerritoryContentType.setTitle("\(_content_count) posts in watershed", forState: .Normal)
                         self.buttonTerritoryContentType.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
                         self.buttonTerritoryPostsContentType.hidden = true
+                        self.buttonTerritoryPostsContentTypeHeight.constant = 0.0
+                        self.buttonTerritoryPostsContentTypeTop.constant = 0.0
                     }
                     
                     if self.territoryContentRaw.count != 0 {
@@ -642,9 +689,13 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     if (_action_count >= 1) {
                         self.buttonTerritoryActionsContentType.hidden = false
                         self.buttonTerritoryActionsContentType.setTitle("\(_action_count) posts with actions", forState: .Normal)
+                        self.buttonTerritoryActionsContentTypeHeight.constant = 27.0
+                        self.buttonTerritoryActionsContentTypeTop.constant = 8.0
                     }
                     else {
                         self.buttonTerritoryActionsContentType.hidden = true
+                        self.buttonTerritoryActionsContentTypeHeight.constant = 0.0
+                        self.buttonTerritoryActionsContentTypeTop.constant = 0.0
                     }
                     
                     // Refresh the data in the table so the newest items appear
@@ -697,9 +748,13 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     if (_group_count >= 1) {
                         self.buttonTerritoryGroupsContentType.hidden = false
                         self.buttonTerritoryGroupsContentType.setTitle("\(_group_count) active groups", forState: .Normal)
+                        self.buttonTerritoryGroupsContentTypeHeight.constant = 27.0
+                        self.buttonTerritoryGroupsContentTypeTop.constant = 8.0
                     }
                     else {
                         self.buttonTerritoryGroupsContentType.hidden = true
+                        self.buttonTerritoryGroupsContentTypeHeight.constant = 0.0
+                        self.buttonTerritoryGroupsContentTypeTop.constant = 0.0
                     }
                     
                     // Refresh the data in the table so the newest items appear
@@ -755,9 +810,15 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
                     if (_news_count >= 1) {
                         self.buttonTerritoryNewsContentType.hidden = false
                         self.buttonTerritoryNewsContentType.setTitle("\(_news_count) news stories", forState: .Normal)
+                        self.buttonTerritoryNewsContentTypeHeight.constant = 27.0
+                        self.buttonTerritoryNewsContentTypeTop.constant = 8.0
+                        self.buttonTerritoryNewsContentTypeBottom.constant = 16.0
                     }
                     else {
                         self.buttonTerritoryNewsContentType.hidden = true
+                        self.buttonTerritoryNewsContentTypeHeight.constant = 0.0
+                        self.buttonTerritoryNewsContentTypeTop.constant = 0.0
+                        self.buttonTerritoryNewsContentTypeBottom.constant = 8.0
                     }
                     
                     // Refresh the data in the table so the newest items appear

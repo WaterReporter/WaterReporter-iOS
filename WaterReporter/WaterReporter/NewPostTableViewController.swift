@@ -23,6 +23,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     
     var groups: JSON?
     var tempGroups = [String]()
+    var retainValues: Bool = false
 
     var hashtags: JSON?
     var hashtagSearchModeEnabled: Bool = false
@@ -45,6 +46,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     
     var reportId: String!
     var report: JSON!
+    var isEditingReport: Bool = false
 
 
 
@@ -94,6 +96,9 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     }
 
     @IBAction func launchNewReportLocationSelector(sender: UIButton) {
+        
+        self.retainValues = true;
+        
         self.performSegueWithIdentifier("setLocationForNewReport", sender: sender)
     }
 
@@ -241,7 +246,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(true)
         
-        if self.tabBarController?.selectedIndex != 2 {
+        if self.tabBarController?.selectedIndex != 2 && self.retainValues == false {
             
             //
             // When navigating away from this tab the Commons team wants this
@@ -253,7 +258,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
             self.reportDescription.text = "To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share."
 
             self.reportImageObject = nil
-            self.reportImage.setImage(UIImage(named: "icon-camera"), forState: .Normal)
+            self.reportImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
             
             self.og_paste = ""
             self.og_active = false
@@ -467,11 +472,33 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
 
                             self.reportImage.imageView!.kf_setImageWithURL(ogImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                                 (image, error, cacheType, imageUrl) in
-                                self.reportImageObject = image
-                                self.reportImage.setImage(self.reportImageObject, forState: .Normal)
-                                self.imageReportImagePreviewIsSet = true
                                 
-                                self.tableView.reloadData()
+                                if error != nil {
+                                    let _status_code: String = "\(error!.userInfo["statusCode"])"
+                                    
+                                    print("Error Check Negative")
+                                    print("Error Loading Open Graph Image, Error Code: \(_status_code)")
+                                    
+                                    self.reportImage.imageView?.image = UIImage(named: "icon--camera")
+                                    self.reportImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
+                                    
+                                    self.reportImageObject = nil
+                                    self.imageReportImagePreviewIsSet = false
+                                    
+                                    self.og_image = ""
+                                    
+                                    self.tableView.reloadData()
+                                }
+                                else {
+                                    print("Error Check Negative")
+
+                                    self.reportImageObject = image
+                                    self.reportImage.setImage(self.reportImageObject, forState: .Normal)
+                                    self.imageReportImagePreviewIsSet = true
+                                    
+                                    self.tableView.reloadData()
+                                }
+                                
                             })
                             
                         }
@@ -659,6 +686,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
                 // Open Graph > Image
                 //
                 if self.og_image != "" {
+                    print("self.og_image available \(self.og_image)")
                     
                     let ogImageURL:NSURL = NSURL(string: "\(self.og_image)")!
                     
@@ -677,6 +705,12 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
                         }
                     })
                     
+                }
+                else {
+                    print("No open graph image")
+                    
+                    cell.ogImage.image = UIImage(named: "og-placeholder_1024x1024_720")
+
                 }
             }
             else {
@@ -1030,25 +1064,29 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         //
         // OPEN GRAPH
         //
-        var open_graph: [AnyObject] = [AnyObject]()
-        
-        if self.og_active {
-            let _social = [
-                "og_title": self.og_title,
-                "og_type": self.og_type,
-                "og_url": self.og_url,
-                "og_image_url": self.og_image,
-                "og_description": self.og_description
-            ]
-            open_graph.append(_social)
+        if (self.isEditingReport == false) {
+
+            var open_graph: [AnyObject] = [AnyObject]()
+            
+            if self.og_active {
+                let _social = [
+                    "og_title": self.og_title,
+                    "og_type": self.og_type,
+                    "og_url": self.og_url,
+                    "og_image_url": self.og_image,
+                    "og_description": self.og_description
+                ]
+                open_graph.append(_social)
+            }
+            
+            parameters["social"] = open_graph
+            
         }
-        
-        parameters["social"] = open_graph
         
         //
         // Make request
         //
-        if (self.report != nil) {
+        if (self.isEditingReport == true) {
             
             let _endpoint = Endpoints.POST_REPORT + "/\(self.reportId)"
 
@@ -1141,6 +1179,24 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
             })
             
         }
+        else if (self.reportImageObject == nil) {
+            print("Arrived at end of save function with no conditions")
+            
+            self.displayErrorMessage("No News Story Image", message: "It looks like your news story didn't contain an image, why not add your own?")
+            
+            self.loadingView.removeFromSuperview()
+            
+            self.finishedSavingWithError()
+            
+        }
+        else {
+            self.displayErrorMessage("Unable to Save", message: "We were unable to save your report. Check your entry and try to save again.")
+            
+            self.loadingView.removeFromSuperview()
+            
+            self.finishedSavingWithError()
+            
+        }
         
     }
     
@@ -1222,7 +1278,10 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.tableView.reloadData()
     }
     
-    func onSetCoordinatesComplete(isFinished: Bool) { return }
+    func onSetCoordinatesComplete(isFinished: Bool) {
+        self.retainValues = false
+        return
+    }
 
     
     //
@@ -1317,7 +1376,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.reportDescription.text = "To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share."
         self.reportImageObject = nil
         self.reportImage.imageView?.image = UIImage(named: "icon--camera")
-        self.reportImage.setImage(UIImage(named: "icon-camera"), forState: .Normal)
+        self.reportImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
 
         
         self.og_paste = ""
@@ -1328,6 +1387,8 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         self.og_type = ""
         self.og_image = ""
         self.og_url = ""
+        
+        self.retainValues = false
         
         self.tempGroups = [String]()
         

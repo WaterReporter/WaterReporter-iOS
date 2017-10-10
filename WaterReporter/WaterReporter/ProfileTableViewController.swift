@@ -1866,6 +1866,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         nextViewController.report = report
         nextViewController.reportId = reportId
+        nextViewController.isEditingReport = true
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
 

@@ -21,7 +21,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>2</string>
+=======
+	<string>17</string>
+>>>>>>> master
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>http</string>
