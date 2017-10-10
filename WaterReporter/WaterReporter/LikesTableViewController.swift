@@ -33,7 +33,10 @@ class LikesTableViewController : UITableViewController, UINavigationControllerDe
         
         let _owner = self.likes["features"][sender.tag]["properties"]["owner"]
         
-        nextViewController.userId = "\(self.likes[sender.tag]["properties"]["owner"]["id"])"
+        print("Loading profile for \(_owner)")
+        
+        nextViewController.userId = "\(_owner["id"])"
+        nextViewController.userObject = _owner
         
         nextViewController.navigationItem.title = "\(_owner["properties"]["first_name"]) \(_owner["properties"]["last_name"])"
         

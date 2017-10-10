@@ -40,6 +40,10 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
     var og_image: String!
     var og_url: String!
 
+    var userId: String!
+    var userObject: JSON?
+    var userProfile: JSON?
+
     
     //
     // MARK: @IBOutlets
@@ -136,6 +140,20 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
     override func viewDidLoad() {
         print("NewCommentTableViewController::viewDidLoad")
         
+        // Check to see if a user id was passed to this view from
+        // another view. If no user id was passed, then we know that
+        // we should be displaying the acting user's profile
+        
+        if (self.userId == nil) {
+            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                self.userId = "\(userIdNumber)"
+                self.attemptLoadUserProfile()
+            } else {
+                self.attemptRetrieveUserID()
+            }
+        }
+
+        
         //
         // Display loading indicator
         //
@@ -161,6 +179,9 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         self.tableView.estimatedRowHeight = 640.0;
         
         self.navigationController?.delegate = self
+        
+        
+        self.buttonNewCommentSubmit.enabled = false
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -711,6 +732,7 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
     
 
     @IBAction func attemptOpenSaveCommentTypeSelector(sender: UIButton) {
+        print("attemptOpenSaveCommentTypeSelector")
         
         let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
@@ -746,12 +768,15 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         
     }
     
-    func attemptNewReportCommentSaveNonAdmin(sender: UIBarButtonItem) {
+    @IBAction func attemptNewReportCommentSaveNonAdmin(sender: UIButton) {
+        print("attemptNewReportCommentSaveNonAdmin")
         self.attemptNewReportCommentSave()
     }
     
     func attemptNewReportCommentSave(reportStatus: String = "") {
         
+        print("attemptNewReportCommentSave")
+
         //
         // Hide the form during saving
         //
@@ -919,6 +944,103 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
 
     
     //
+    // MARK: HTTP Request/Response functionality
+    //
+    func buildRequestHeaders() -> [String: String] {
+        
+        let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
+        
+        return [
+            "Authorization": "Bearer " + (accessToken! as! String)
+        ]
+    }
+    
+    func attemptLoadUserProfile() {
+        
+        let _headers = buildRequestHeaders()
+        
+        let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(userId)"
+        
+        print("revisedEndpoint \(revisedEndpoint)")
+        
+        Alamofire.request(.GET, revisedEndpoint, headers: _headers, encoding: .JSON).responseJSON { response in
+            
+            print("response.result \(response.result)")
+            
+            switch response.result {
+            case .Success(let value):
+                let json = JSON(value)
+                
+                self.buttonNewCommentSubmit.enabled = true
+                
+                if (json != nil) {
+                    
+                    // Retain the returned data
+                    self.userProfile = json
+                    
+                    print("self.userProfile \(self.userProfile)")
+                    
+                    if (self.userProfile!["properties"]["roles"].count >= 1) {
+                        print("Roles loaded")
+                        if (self.userProfile!["properties"]["roles"][0]["properties"]["name"] == "admin") {
+                            print("User is an admin")
+                            
+                            self.buttonNewCommentSubmit.addTarget(self, action: #selector(self.attemptOpenSaveCommentTypeSelector(_:)), forControlEvents: .TouchUpInside)
+                            
+                        }
+                        else {
+                            print("User is a citizen")
+
+                            self.buttonNewCommentSubmit.addTarget(self, action: #selector(self.attemptNewReportCommentSaveNonAdmin(_:)), forControlEvents: .TouchUpInside)
+
+                        }
+                    }
+                    
+                }
+                
+            case .Failure(let error):
+                print("Response Failure \(error)")
+            }
+        }
+        
+    }
+    
+    func attemptRetrieveUserID() {
+        
+        let _headers = buildRequestHeaders()
+        
+        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: _headers, encoding: .JSON)
+            .responseJSON { response in
+                
+                switch response.result {
+                case .Success(let value):
+                    let json = JSON(value)
+                    
+                    if let data: AnyObject = json.rawValue {
+                        
+                        // Set the user id as a number and save it to the application cache
+                        //
+                        let _user_id = data["id"] as! NSNumber
+                        NSUserDefaults.standardUserDefaults().setValue(_user_id, forKeyPath: "currentUserAccountUID")
+                        
+                        // Set user id to view variable
+                        //
+                        self.userId = "\(_user_id)"
+                        
+                        // Continue loading the user profile
+                        //
+                        self.attemptLoadUserProfile()
+                        
+                    }
+                    
+                case .Failure(let error):
+                    print(error)
+                }
+        }
+    }
+    
+
+    //
     // MARK:
     //
     func loading() {
@@ -949,12 +1071,13 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         
         // Scroll to bottom of view
         //
-        self.scrollToBottom()
-
+        dispatch_async(dispatch_get_main_queue(), {
+            self.scrollToBottom(true)
+        })
     }
     
     func scrollToBottom(animated: Bool = false) {
-//        if self.comments!.count > 0 {
+//        if self.comments!.count != 0 {
 //            let lastIndex = NSIndexPath.init(forRow: self.comments!.count-1, inSection: 0)
 //            self.tableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: .Bottom, animated: animated)
 //        }
@@ -970,12 +1093,19 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         //
         // Make sure our view is scrolled to the bottom
         //
-        self.scrollToBottom()
+        dispatch_async(dispatch_get_main_queue(), {
+            self.scrollToBottom(true)
+        })
 
         // Reset all Form Fields
+        self.hashtags = nil
+        self.hashtagSearchModeResults = [String]()
         self.hashtagSearchModeEnabled = false
+        self.hashtagSearchModeSearch = ""
+
         self.reportHashtags.backgroundColor = UIColor.clearColor()
         self.buttonNewCommentTextView.text = "Begin typing your comment"
+        
         self.reportImageObject = nil
         self.buttonNewCommentImage.imageView?.image = UIImage(named: "icon--camera")
         self.buttonNewCommentImage.setImage(UIImage(named: "icon--camera"), forState: .Normal)
@@ -990,6 +1120,19 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         self.og_type = ""
         self.og_image = ""
         self.og_url = ""
+        
+        self.reportHashtags.setContentOffset(CGPointZero, animated: false)
+        
+        self.hashtagSearchModeResult_1.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_2.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_3.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_4.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_5.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_6.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_7.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_8.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_9.setTitle("", forState: .Normal)
+        self.hashtagSearchModeResult_10.setTitle("", forState: .Normal)
         
         // Reload comments
         //
@@ -1162,7 +1305,11 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         
         // Reset the search
         //
+        self.hashtags = nil
+        self.hashtagSearchModeResults = [String]()
         self.hashtagSearchModeEnabled = false
+        self.hashtagSearchModeSearch = ""
+
         self.reportHashtags.backgroundColor = UIColor.clearColor()
 
         self.reportHashtags.hidden = true
