@@ -782,7 +782,7 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         Alamofire.request(.GET, endpoint, headers: headers, parameters: parameters)
             .responseJSON { response in
                 
-                print("response \(response)")
+                print("performSearch \(response)")
                 
                 let statusCode = (response.response?.statusCode)!
                 
@@ -1002,6 +1002,8 @@ class SearchTableViewController: UITableViewController, UISearchControllerDelega
         ]
         
         let endpoint = Endpoints.GET_MANY_USER
+        
+        print("performSearch \(searchText) \(endpoint) \(headers) \(parameters) \(_isRefreshingUserList)")
         
         self.performSearch(endpoint, type: "People", headers: headers, parameters: parameters, isRefreshingUserList: _isRefreshingUserList)
         

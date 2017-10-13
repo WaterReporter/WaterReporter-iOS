@@ -79,9 +79,24 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
     @IBOutlet weak var hashtagSearchModeResult_9: UIButton!
     @IBOutlet weak var hashtagSearchModeResult_10: UIButton!
 
+    @IBOutlet weak var commentSavingIndicator: UIActivityIndicatorView!
+    
     //
     // MARK: @IBActions
     //
+    @IBAction func openOpenGraphURL(sender: UIButton) {
+        
+        let commentId = sender.tag
+        let comment = self.comments!["features"][commentId]
+        
+        let commentURL = "\(comment["properties"]["social"][0]["properties"]["og_url"])"
+        
+        print("openOpenGraphURL \(commentURL)")
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "\(commentURL)")!)
+    }
+    
+
     @IBAction func loadCommentOwnerProfile(sender: UIButton) {
         
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
@@ -429,31 +444,20 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
     func keyboardWillShow(notification:NSNotification) {
         print("NewCommentTableViewController::keyboardWillShow")
         
-        self.adjustingHeight(true, notification: notification)
+        if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue()) != nil {
+            self.view.frame.origin.y = 0
+            self.view.frame.origin.y -= 212
+        }
+        
     }
     
     func keyboardWillHide(notification:NSNotification) {
         print("NewCommentTableViewController::keyboardWillHide")
         
-        self.adjustingHeight(false, notification: notification)
-    }
-    
-    func adjustingHeight(show:Bool, notification:NSNotification) {
-        
-        print("NewCommentTableViewController::adjustingHeight")
-        
-        var userInfo = notification.userInfo!
-        
-        let keyboardFrame: CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue()
-        
-        let animationDurarion = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSTimeInterval
-        
-        let changeInHeight = (keyboardFrame.height-48) * (show ? 1 : -1)
-        
-        UIView.animateWithDuration(animationDurarion, animations: { () -> Void in
-            self.viewBottomConstraint.constant += changeInHeight
-        })
-        
+        if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue()) != nil {
+            self.view.frame.origin.y = 0
+        }
+
     }
     
     
@@ -632,6 +636,18 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
             
         }
         
+        if _comment["properties"]["social"] != nil && _comment["properties"]["social"].count != 0 {
+            cell.buttonOpenGraphLink.hidden = false
+            cell.buttonOpenGraphLink.tag = indexPath.row
+            cell.buttonOpenGraphLink.addTarget(self, action: #selector(self.openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+            cell.buttonOpenGraphLink.layer.cornerRadius = 10.0
+            cell.buttonOpenGraphLink.clipsToBounds = true
+            
+        }
+        else {
+            cell.buttonOpenGraphLink.hidden = true
+        }
+
         return cell
     }
 
@@ -780,7 +796,7 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         //
         // Hide the form during saving
         //
-//        self.saving()
+        self.saving()
         
         // Create necessary Authorization header for our request
         let accessToken = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountAccessToken")
@@ -800,7 +816,26 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
         if (reportStatus != "") {
             parameters["report_state"] = reportStatus
         }
+
+        //
+        // OPEN GRAPH
+        //
         
+        var open_graph: [AnyObject] = [AnyObject]()
+        
+        if self.og_active {
+            let _social = [
+                "og_title": self.og_title,
+                "og_type": self.og_type,
+                "og_url": self.og_url,
+                "og_image_url": self.og_image,
+                "og_description": self.og_description
+            ]
+            open_graph.append(_social)
+        }
+        
+        parameters["social"] = open_graph
+
         print("parameters \(parameters)")
         
         if (self.reportImageObject != nil) {
@@ -1083,13 +1118,26 @@ class ReportCommentsTableViewController: UIViewController, UITableViewDelegate, 
 //        }
     }
     
-    func savingComplete() {
-    
-        //
-        // Make sure that the Done/Save button is disabled
-        //
-        self.navigationItem.rightBarButtonItem?.enabled = true
+    func saving() {
         
+        self.buttonNewCommentTextView.resignFirstResponder()
+        
+        self.buttonNewCommentSubmit.hidden = true
+        self.buttonNewCommentImage.hidden = true
+        self.buttonNewCommentTextView.hidden = true
+        
+        self.commentSavingIndicator.hidden = false
+        
+    }
+    
+    func savingComplete() {
+        
+        self.buttonNewCommentSubmit.hidden = false
+        self.buttonNewCommentImage.hidden = false
+        self.buttonNewCommentTextView.hidden = false
+        
+        self.commentSavingIndicator.hidden = true
+
         //
         // Make sure our view is scrolled to the bottom
         //

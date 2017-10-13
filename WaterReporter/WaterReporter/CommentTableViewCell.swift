@@ -15,6 +15,7 @@ class CommentTableViewCell: UITableViewCell {
     //
     // MARK: @IBOutlets
     //
+    @IBOutlet weak var buttonOpenGraphLink: UIButton!
     @IBOutlet weak var commentOwnerImageButton: UIButton!
     @IBOutlet weak var commentOwnerImage: UIImageView!
     @IBOutlet weak var commentOwnerName: UILabel!
