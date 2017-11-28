@@ -34,7 +34,7 @@ class UserProfileTableView: UITableView {
         // Send a request to the defined endpoint with the given parameters
         //
         let parameters = [
-            "q": "{\"filters\": [{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":274}], \"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\": [{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":274}], \"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": self.page
         ]
         

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6A09F4173390FEAABFC93265 /* Pods_Water_Reporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */; };
+		BAAE25531FCDD8B400644483 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = BAAE25521FCDD8B400644483 /* Resources */; };
 		C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */; };
 		C116EC881DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */; };
 		C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12CAF981D464F42002881A6 /* Endpoints.swift */; };
@@ -105,6 +106,7 @@
 		3063EF5C637507961A3010FC /* Pods-Water-Reporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Water-Reporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Water-Reporter/Pods-Water-Reporter.debug.xcconfig"; sourceTree = "<group>"; };
 		9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaterReporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Water_Reporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAAE25521FCDD8B400644483 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../Resources; sourceTree = "<group>"; };
 		C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileMembersTableViewCell.swift; sourceTree = "<group>"; };
 		C12CAF981D464F42002881A6 /* Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 		C1C8266E1D4562FF00516871 = {
 			isa = PBXGroup;
 			children = (
+				BAAE25521FCDD8B400644483 /* Resources */,
 				C17243D61D4FD3C2007ADD0E /* Mapbox.framework */,
 				C1C826791D4562FF00516871 /* WaterReporter */,
 				C1C826901D4562FF00516871 /* WaterReporterTests */,
@@ -506,7 +509,7 @@
 				TargetAttributes = {
 					C1C826761D4562FF00516871 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = T8H47R7JRG;
+						DevelopmentTeam = 6WG7TBVDAF;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -549,6 +552,7 @@
 			files = (
 				CE015EEE1F6C419D00447C34 /* Assets.xcassets in Resources */,
 				C1F230121DAE83CB00DA2854 /* Main.storyboard in Resources */,
+				BAAE25531FCDD8B400644483 /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,7 +835,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = T8H47R7JRG;
+				DEVELOPMENT_TEAM = 6WG7TBVDAF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -857,7 +861,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = T8H47R7JRG;
+				DEVELOPMENT_TEAM = 6WG7TBVDAF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

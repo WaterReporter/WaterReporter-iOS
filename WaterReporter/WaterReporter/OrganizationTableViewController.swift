@@ -747,7 +747,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     func attemptLoadGroupSubmissions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"groups__id\",\"op\":\"any\",\"val\":\"\(self.groupId)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"groups__id\",\"op\":\"any\",\"val\":\"\(self.groupId)\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.groupSubmissionsPage)"
         ]
         
@@ -805,7 +805,7 @@ class OrganizationTableViewController: UIViewController, UITableViewDelegate, UI
     func attemptLoadGroupActions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"groups__id\",\"op\":\"any\",\"val\":\"\(self.groupId)\"},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"groups__id\",\"op\":\"any\",\"val\":\"\(self.groupId)\"},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.groupActionsPage)"
         ]
         

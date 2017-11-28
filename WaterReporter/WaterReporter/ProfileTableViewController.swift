@@ -917,7 +917,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     func attemptLoadUserSubmissions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(self.userId)\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(self.userId)\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.userSubmissionsPage)"
         ]
         
@@ -1004,14 +1004,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 self.userProfile = json
 
                 var _parameters = [
-                    "q": "{\"filters\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}, {\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+                    "q": "{\"filters\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}, {\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
                     "page": "\(self.userActionsPage)"
                 ]
                 
                 if (self.userProfile!["properties"]["roles"].count >= 1) {
                     if (self.userProfile!["properties"]["roles"][0]["properties"]["name"] == "admin") {
                         _parameters = [
-                            "q": "{\"filters\":[{\"or\":[{\"and\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}]},{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}]}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+                            "q": "{\"filters\":[{\"or\":[{\"and\":[{\"name\":\"owner_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}]},{\"name\":\"closed_id\", \"op\":\"eq\", \"val\":\"\(self.userId!)\"}]}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
                             "page": "\(self.userActionsPage)"
                         ]
                         

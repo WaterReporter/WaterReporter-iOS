@@ -588,7 +588,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func attemptLoadTerritorySubmissions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"social\",\"op\":\"is_null\",\"val\":\"true\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"social\",\"op\":\"is_null\",\"val\":\"true\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.territoryContentPage)",
             "results_per_page": "100"
         ]
@@ -661,7 +661,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func attemptLoadTerritoryActions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.territoryGroupContentPage)"
         ]
         
@@ -779,7 +779,7 @@ class TerritoryViewController: UIViewController, MGLMapViewDelegate, UICollectio
     func attemptLoadTerritoryNews(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"social\",\"op\":\"is_not_null\",\"val\":\"true\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"territory\",\"op\":\"has\",\"val\": {\"name\":\"huc_8_code\",\"op\":\"eq\",\"val\":\"\(self.territoryHUC8Code)\"}},{\"name\":\"social\",\"op\":\"is_not_null\",\"val\":\"true\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.territoryContentPage)",
             "results_per_page": "100"
         ]

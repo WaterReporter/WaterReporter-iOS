@@ -1029,7 +1029,7 @@ class NewPostTableViewController: UITableViewController, UITextViewDelegate, UII
         //
         // PARAMETERS
         //
-        if self.reportDescription == "To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share." {
+        if self.reportDescription.text == "To get started, tap on the camera to add a photo, add comments, or link to content you'd like to share." {
             self.reportDescription.text = ""
         }
         

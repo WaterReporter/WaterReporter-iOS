@@ -110,7 +110,7 @@ class ActivityMapViewController: UIViewController, MGLMapViewDelegate {
         let region = getViewportBoundaryString(mapView.visibleCoordinateBounds)
         let polygon = "SRID=4326;POLYGON((" + region + "))"
         let parameters = [
-            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}"
+            "q": "{\"filters\":[{\"name\":\"geometry\",\"op\":\"intersects\",\"val\":\"" + polygon + "\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}"
         ]
         
         print("polygon \(polygon)")

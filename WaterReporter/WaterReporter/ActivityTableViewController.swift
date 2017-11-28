@@ -231,7 +231,7 @@ class ActivityTableViewController: UITableViewController {
         // Send a request to the defined endpoint with the given parameters
         //
         let parameters = [
-            "q": "{\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": self.page
         ]
         

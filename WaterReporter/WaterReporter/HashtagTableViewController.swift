@@ -474,7 +474,7 @@ class HashtagTableViewController: UITableViewController {
     func attemptLoadHashtagSubmissions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"tags\",\"op\":\"any\",\"val\": {\"name\":\"tag\",\"op\":\"eq\",\"val\":\"\(self.hashtag)\"}}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"tags\",\"op\":\"any\",\"val\": {\"name\":\"tag\",\"op\":\"eq\",\"val\":\"\(self.hashtag)\"}}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.hashtagSubmissionsPage)"
         ]
         
@@ -528,7 +528,7 @@ class HashtagTableViewController: UITableViewController {
     func attemptLoadHashtagActions(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
-            "q": "{\"filters\":[{\"name\":\"tags\",\"op\":\"any\",\"val\": {\"name\":\"tag\",\"op\":\"eq\",\"val\":\"\(self.hashtag)\"}},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"report_date\",\"direction\":\"desc\"},{\"field\":\"id\",\"direction\":\"desc\"}]}",
+            "q": "{\"filters\":[{\"name\":\"tags\",\"op\":\"any\",\"val\": {\"name\":\"tag\",\"op\":\"eq\",\"val\":\"\(self.hashtag)\"}},{\"name\":\"state\", \"op\":\"eq\", \"val\":\"closed\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
             "page": "\(self.hashtagActionsPage)"
         ]
         
