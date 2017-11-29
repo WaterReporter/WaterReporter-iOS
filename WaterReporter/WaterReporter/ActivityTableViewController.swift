@@ -114,6 +114,15 @@ class ActivityTableViewController: UITableViewController {
     var singleReport: Bool = false
     var page: Int = 1
     
+    // Open Graph
+    
+    var og_title: String!
+    var og_description: String!
+    var og_sitename: String!
+    var og_type: String!
+    var og_image: String!
+    var og_url: String!
+    
     var likeDelay: NSTimer = NSTimer()
     var unlikeDelay: NSTimer = NSTimer()
     
@@ -568,8 +577,9 @@ class ActivityTableViewController: UITableViewController {
             // REPORT > IMAGE
             //
             let reportImages = report?.objectForKey("images")!
+            let reportSocial = report?.objectForKey("social")!
             
-            if (reportImages != nil && reportImages!.count != 0) {
+            if ((reportImages != nil && reportImages!.count != 0) && (reportSocial == nil || reportSocial!.count == 0)) {
                 print("Show report image \(reportImages)")
 
                 var reportImageURL:NSURL!
@@ -588,29 +598,99 @@ class ActivityTableViewController: UITableViewController {
                         cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
                     }
                 })
+                
+                cell.reportImage.hidden = false
 
             }
-            else if (reportJson["social"] != nil && reportJson["social"].count != 0) {
-                print("Show open graph image \(reportJson["social"])")
-
-                if let reportImageURL = NSURL(string: String(reportJson["social"][0]["properties"]["og_image_url"])) {
+//            else if (reportJson["social"] != nil && reportJson["social"].count != 0) {
+//                print("Show open graph image \(reportJson["social"])")
+//
+//                if let reportImageURL = NSURL(string: String(reportJson["social"][0]["properties"]["og_image_url"])) {
+//                    
+//                    cell.reportImage.kf_indicatorType = .Activity
+//                    cell.reportImage.kf_showIndicatorWhenLoading = true
+//                    
+//                    cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+//                        (image, error, cacheType, imageUrl) in
+//                        
+//                        if (image != nil) {
+//                            cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+//                        }
+//                    })
+//                    
+//                }
+//            }
+            else {
+                print("No image to show")
+                cell.reportImage.hidden = true
+                cell.reportImage.image = nil
+            }
+            
+            //
+            // Report > Open Graph
+            //
+            
+            if (reportSocial != nil && reportSocial!.count != 0) {
+                
+                cell.reportOpenGraphView.hidden = false
+                cell.reportOpenGraphViewHeightConstraint.constant = 256.0
+                
+                // Open Graph Data
+                
+                if let openGraphTitle = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_title"),
+                    let openGraphDescription = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_description") {
                     
-                    cell.reportImage.kf_indicatorType = .Activity
-                    cell.reportImage.kf_showIndicatorWhenLoading = true
+                    //
+                    // Open Graph > Title
+                    //
+                    cell.reportOpenGraphTitle.text = (openGraphTitle as! String)
                     
-                    cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    //
+                    // Open Graph > Title
+                    //
+                    cell.reportOpenGraphDescription.text = (openGraphDescription as! String)
+                    
+                }
+                
+                // Open Graph > Image
+                //
+//                if self.og_image != "" {
+                if let openGraphImageUrl = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_image_url") {
+                    
+                    print("Open Graph image available \(openGraphImageUrl)")
+                    
+                    let ogImageURL:NSURL = NSURL(string: "\(openGraphImageUrl)")!
+                    
+//                    let ogImageURL:NSURL = NSURL(string: "\(self.og_image)")!
+                    
+                    cell.reportOpenGraphImage.kf_indicatorType = .Activity
+                    cell.reportOpenGraphImage.kf_showIndicatorWhenLoading = true
+                    
+                    cell.reportOpenGraphImage.kf_setImageWithURL(ogImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                         (image, error, cacheType, imageUrl) in
                         
-                        if (image != nil) {
-                            cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                        }
+                        cell.reportOpenGraphImage.image = image
+
                     })
                     
                 }
+                else {
+                    
+                    print("No open graph image")
+                    
+                    cell.reportOpenGraphImage.image = UIImage(named: "og-placeholder_1024x1024_720")
+                    
+                }
+                
             }
             else {
-                print("No image to show")
-                cell.reportImage.image = nil
+                
+                print("No open graph object")
+                
+                cell.reportOpenGraphView.hidden = true
+                
+                cell.reportOpenGraphImage.image = nil
+                
             }
             
             //

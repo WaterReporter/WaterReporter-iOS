@@ -29,7 +29,20 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportShareButton: UIButton!
     @IBOutlet weak var reportLikeButton: UIButton!
     @IBOutlet weak var reportLikeCount: UIButton!
+    
+    //
+    // Open Graph
+    //
+    
     @IBOutlet weak var reportOpenGraphStoryLink: UIButton!
+    @IBOutlet weak var reportOpenGraphView: UIStackView!
+    
+    @IBOutlet weak var reportOpenGraphViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var reportOpenGraphImage: UIImageView!
+    @IBOutlet weak var reportOpenGraphTitle: UILabel!
+    @IBOutlet weak var reportOpenGraphDescription: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
