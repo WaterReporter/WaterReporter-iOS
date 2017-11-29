@@ -480,7 +480,13 @@ class ActivityTableViewController: UITableViewController {
             //
             if let firstName = reportOwner?.objectForKey("first_name"),
                 let lastName = reportOwner?.objectForKey("last_name") {
+                
                 cell.reportUserName.text = (firstName as! String) + " " + (lastName as! String)
+                
+                cell.reportUserName.tag = indexPath.row
+//                cell.reportUserName.addTarget(self, action: #selector(ActivityTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+                
+                
             } else {
                 cell.reportUserName.text = "Unknown Reporter"
             }
