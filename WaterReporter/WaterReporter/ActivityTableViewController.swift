@@ -353,22 +353,35 @@ class ActivityTableViewController: UITableViewController {
             let reportComments = report?.objectForKey("comments") as! NSArray
             
             
-            var reportCommentsCountText: String = "0 comments"
+            var reportCommentsCountText: String = ""
             
-            if reportComments.count == 1 {
-                reportCommentsCountText = "1 comment"
-            }
-            else if reportComments.count >= 1 {
-                reportCommentsCountText = String(reportComments.count) + " comments"
+//            if reportComments.count == 1 {
+//                reportCommentsCountText = "1 comment"
+//            }
+//            else if reportComments.count >= 1 {
+//                reportCommentsCountText = String(reportComments.count) + " comments"
+//            }
+//            else {
+//                reportCommentsCountText = "0 comments"
+//            }
+//            if reportComments.count == 1 {
+//                reportCommentsCountText = "1"
+//            }
+            if reportComments.count >= 1 {
+                reportCommentsCountText = String(reportComments.count)
+                cell.reportCommentCount.hidden = false
             }
             else {
-                reportCommentsCountText = "0 comments"
+                reportCommentsCountText = ""
+                cell.reportCommentCount.hidden = true
             }
+            
+            cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
             
             cell.reportCommentCount.tag = indexPath.row
             cell.reportCommentButton.tag = indexPath.row
             
-            cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
+//            cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
             
             if (reportJson["closed_by"] != nil) {
                 let badgeImage: UIImage = UIImage(named: "icon--Badge")!
@@ -383,18 +396,26 @@ class ActivityTableViewController: UITableViewController {
             //
             let reportLikes = report?.objectForKey("likes") as! NSArray
             
-            var reportLikesCountText: String = "0 likes"
+            var reportLikesCountText: String = ""
             
-            if reportLikes.count == 1 {
-                reportLikesCountText = "1 like"
-                cell.reportLikeCount.hidden = false
-            }
-            else if reportLikes.count >= 1 {
-                reportLikesCountText = String(reportLikes.count) + " likes"
+//            if reportLikes.count == 1 {
+//                reportLikesCountText = "1 like"
+//                cell.reportLikeCount.hidden = false
+//            }
+//            else if reportLikes.count >= 1 {
+//                reportLikesCountText = String(reportLikes.count) + " likes"
+//                cell.reportLikeCount.hidden = false
+//            }
+//            else {
+//                reportLikesCountText = "0 likes"
+//                cell.reportLikeCount.hidden = true
+//            }
+            if reportLikes.count >= 1 {
+                reportLikesCountText = String(reportLikes.count)
                 cell.reportLikeCount.hidden = false
             }
             else {
-                reportLikesCountText = "0 likes"
+//                reportLikesCountText = "0 likes"
                 cell.reportLikeCount.hidden = true
             }
             
@@ -627,7 +648,7 @@ class ActivityTableViewController: UITableViewController {
             
             
             //
-            // CONTIUOUS SCROLL
+            // CONTINUOUS SCROLL
             //
             if (indexPath.row == self.reports.count - 5 && !singleReport) {
                 self.loadReports()
@@ -747,17 +768,29 @@ class ActivityTableViewController: UITableViewController {
         
         var reportLikesCountText: String = ""
         
+//        if _report_likes_updated_total == 1 {
+//            reportLikesCountText = "1 like"
+//            _cell.reportLikeCount.hidden = false
+//        }
+//        else if _report_likes_updated_total >= 1 {
+//            reportLikesCountText = "\(_report_likes_updated_total) likes"
+//            _cell.reportLikeCount.hidden = false
+//        }
+//        else {
+//            reportLikesCountText = "0 likes"
+//            _cell.reportLikeCount.hidden = false
+//        }
         if _report_likes_updated_total == 1 {
-            reportLikesCountText = "1 like"
+            reportLikesCountText = "1"
             _cell.reportLikeCount.hidden = false
         }
         else if _report_likes_updated_total >= 1 {
-            reportLikesCountText = "\(_report_likes_updated_total) likes"
+            reportLikesCountText = "\(_report_likes_updated_total)"
             _cell.reportLikeCount.hidden = false
         }
         else {
-            reportLikesCountText = "0 likes"
-            _cell.reportLikeCount.hidden = false
+            reportLikesCountText = "0"
+            _cell.reportLikeCount.hidden = true
         }
         
         _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
