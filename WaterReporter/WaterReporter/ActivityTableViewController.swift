@@ -699,15 +699,31 @@ class ActivityTableViewController: UITableViewController {
             //
             // DATE
             //
-            let reportDate = reportJson["report_date"].string
+            let reportDate = reportJson["created"].string
+            
+            print("The post timestamp is \(reportDate)")
             
             if (reportDate != nil) {
+                
                 let dateString: String = reportDate!
                 
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                print("The value of dateString is \(dateString)")
                 
-                let stringToFormat = dateFormatter.dateFromString(dateString)
+                let start = dateString.startIndex
+//                let end = dateString.index(dateString.endIndex, offsetBy: 10)
+                let end = dateString.endIndex.advancedBy(-16)
+                let dateSubstring = dateString[start..<end] // www.stackoverflow
+                
+                print("The value of dateSubstring is \(dateSubstring)")
+                
+                let dateFormatter = NSDateFormatter()
+//                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                
+                let stringToFormat = dateFormatter.dateFromString(dateSubstring)
+                
+                print("The post date object is \(stringToFormat)")
+                
                 dateFormatter.dateFormat = "MMM d, yyyy"
                 
                 let displayDate = dateFormatter.stringFromDate(stringToFormat!)
