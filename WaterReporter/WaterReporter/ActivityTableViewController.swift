@@ -630,11 +630,11 @@ class ActivityTableViewController: UITableViewController {
             // Report > Open Graph
             //
             
-            cell.reportOpenGraphView.layer.cornerRadius = 6
+            cell.reportOpenGraphViewGroup.layer.cornerRadius = 6
             
             if (reportSocial != nil && reportSocial!.count != 0) {
                 
-                cell.reportOpenGraphView.hidden = false
+                cell.reportOpenGraphViewGroup.hidden = false
 //                cell.reportOpenGraphViewHeightConstraint.constant = 256.0
                 
                 // Open Graph Data
@@ -689,7 +689,7 @@ class ActivityTableViewController: UITableViewController {
                 
                 print("No open graph object")
                 
-                cell.reportOpenGraphView.hidden = true
+                cell.reportOpenGraphViewGroup.hidden = true
                 
                 cell.reportOpenGraphImage.image = nil
                 

@@ -37,6 +37,9 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportOpenGraphStoryLink: UIButton!
     @IBOutlet weak var reportOpenGraphView: UIStackView!
     
+    @IBOutlet weak var reportOpenGraphViewGroup: UIView!
+    
+    
 //    @IBOutlet weak var reportOpenGraphViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var reportOpenGraphImage: UIImageView!

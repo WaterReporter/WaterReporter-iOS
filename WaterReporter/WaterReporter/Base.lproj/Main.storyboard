@@ -29,7 +29,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="346"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="NBS-Om-9lw" userLabel="Post Content Stack View">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NBS-Om-9lw" userLabel="Post Content Stack View">
                                             <rect key="frame" x="0.0" y="52" width="415" height="441.5"/>
                                             <subviews>
                                                 <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-iA-4dw">
@@ -65,30 +65,37 @@
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stackView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zqV-Ml-TXJ" userLabel="Report Open Graph Stack View">
-                                                    <rect key="frame" x="16" y="92" width="383" height="256"/>
+                                                <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CwM-QW-wwu" userLabel="Report Open Graph Object">
+                                                    <rect key="frame" x="87" y="156" width="240" height="128"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="og-placeholder_1024x1024_720" translatesAutoresizingMaskIntoConstraints="NO" id="htN-8j-KBY" userLabel="Report Open Graph Image">
-                                                            <rect key="frame" x="20" y="20" width="343" height="160"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="200" id="w2H-F3-y4B"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNQ-SH-SzT" userLabel="Report Open Graph Title">
-                                                            <rect key="frame" x="28" y="188" width="327" height="18"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut7-fw-2zD" userLabel="Report Open Graph Description">
-                                                            <rect key="frame" x="28" y="222" width="327" height="14"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                            <color key="textColor" red="0.3688895089" green="0.3688895089" blue="0.3688895089" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <stackView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="zqV-Ml-TXJ" userLabel="Report Open Graph Stack View">
+                                                            <rect key="frame" x="-72" y="-64" width="383" height="256"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <subviews>
+                                                                <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="og-placeholder_1024x1024_720" translatesAutoresizingMaskIntoConstraints="NO" id="htN-8j-KBY" userLabel="Report Open Graph Image">
+                                                                    <rect key="frame" x="20" y="20" width="343" height="160"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="200" id="w2H-F3-y4B"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNQ-SH-SzT" userLabel="Report Open Graph Title">
+                                                                    <rect key="frame" x="28" y="188" width="327" height="18"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut7-fw-2zD" userLabel="Report Open Graph Description">
+                                                                    <rect key="frame" x="28" y="222" width="327" height="14"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                                    <color key="textColor" red="0.3688895089" green="0.3688895089" blue="0.3688895089" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </stackView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </stackView>
+                                                </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="NPR-zF-dRm" userLabel="Post Actions Stack View">
                                                     <rect key="frame" x="28" y="349" width="359" height="24"/>
                                                     <subviews>
@@ -184,6 +191,12 @@
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="uzf-nX-7zv" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leadingMargin" constant="8" id="3m1-rs-upA"/>
+                                                <constraint firstItem="4Sg-oM-EMq" firstAttribute="top" secondItem="uzf-nX-7zv" secondAttribute="bottom" constant="8" id="8sj-wR-Fyj"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="uzf-nX-7zv" secondAttribute="trailing" constant="8" id="rfj-Ab-7aS"/>
+                                                <constraint firstItem="uzf-nX-7zv" firstAttribute="bottom" secondItem="4Sg-oM-EMq" secondAttribute="top" constant="8" id="tYr-Zn-3L8"/>
+                                            </constraints>
                                         </stackView>
                                         <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4hV-IB-V95">
                                             <rect key="frame" x="8" y="8" width="36" height="36"/>
@@ -291,6 +304,7 @@
                                     <outlet property="reportOpenGraphStoryLink" destination="xm1-9E-ifh" id="hIC-fz-1Zt"/>
                                     <outlet property="reportOpenGraphTitle" destination="tNQ-SH-SzT" id="dEf-fl-Q1G"/>
                                     <outlet property="reportOpenGraphView" destination="zqV-Ml-TXJ" id="hZf-Ag-SNQ"/>
+                                    <outlet property="reportOpenGraphViewGroup" destination="CwM-QW-wwu" id="Cih-6j-Led"/>
                                     <outlet property="reportOwnerImage" destination="4hV-IB-V95" id="WWH-zQ-gTx"/>
                                     <outlet property="reportOwnerImageButton" destination="1F4-QA-bwJ" id="bVv-wo-9H6"/>
                                     <outlet property="reportShareButton" destination="Hqo-EG-TlL" id="bDL-Aj-RFP"/>
