@@ -68,44 +68,61 @@
                                                 <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CwM-QW-wwu" userLabel="Report Open Graph Object">
                                                     <rect key="frame" x="0.0" y="352.5" width="375" height="50"/>
                                                     <subviews>
-                                                        <stackView contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zqV-Ml-TXJ" userLabel="Report Open Graph Stack View">
-                                                            <rect key="frame" x="-72" y="-64" width="360" height="218"/>
+                                                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mO-Qw-2Jk" userLabel="Open Graph Image Wrapper">
+                                                            <rect key="frame" x="67" y="-39.5" width="240" height="128"/>
                                                             <subviews>
-                                                                <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="og-placeholder_1024x1024_720" translatesAutoresizingMaskIntoConstraints="NO" id="htN-8j-KBY" userLabel="Report Open Graph Image">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="200"/>
+                                                                <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="og-placeholder_1024x1024_720" translatesAutoresizingMaskIntoConstraints="NO" id="htN-8j-KBY" userLabel="Report Open Graph Image">
+                                                                    <rect key="frame" x="-60" y="-36" width="360" height="200"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="200" id="RJE-Bn-QEd"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNQ-SH-SzT" userLabel="Report Open Graph Title">
-                                                                    <rect key="frame" x="0.0" y="200" width="360" height="10"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut7-fw-2zD" userLabel="Report Open Graph Description">
-                                                                    <rect key="frame" x="0.0" y="210" width="360" height="7.5"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                                    <color key="textColor" red="0.3688895089" green="0.3688895089" blue="0.3688895089" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstItem="ut7-fw-2zD" firstAttribute="leading" secondItem="zqV-Ml-TXJ" secondAttribute="leading" constant="8" id="5bh-Yc-Ch1"/>
-                                                                <constraint firstAttribute="height" constant="240" id="Qv2-WD-UrG"/>
-                                                                <constraint firstItem="htN-8j-KBY" firstAttribute="leading" secondItem="zqV-Ml-TXJ" secondAttribute="leading" id="d4t-3J-9AM"/>
-                                                                <constraint firstAttribute="trailing" secondItem="tNQ-SH-SzT" secondAttribute="trailing" constant="8" id="d7L-E1-fls"/>
-                                                                <constraint firstAttribute="trailing" secondItem="htN-8j-KBY" secondAttribute="trailing" id="fbb-tp-OIN"/>
-                                                                <constraint firstAttribute="trailing" secondItem="ut7-fw-2zD" secondAttribute="trailing" constant="8" id="qPa-bZ-1he"/>
-                                                                <constraint firstItem="tNQ-SH-SzT" firstAttribute="leading" secondItem="zqV-Ml-TXJ" secondAttribute="leading" constant="8" id="uTF-BZ-e86"/>
+                                                                <constraint firstItem="htN-8j-KBY" firstAttribute="leading" secondItem="9mO-Qw-2Jk" secondAttribute="leading" id="1nS-sL-gqB"/>
+                                                                <constraint firstAttribute="trailing" secondItem="htN-8j-KBY" secondAttribute="trailing" id="7hi-a5-H1a"/>
+                                                                <constraint firstItem="htN-8j-KBY" firstAttribute="top" secondItem="9mO-Qw-2Jk" secondAttribute="top" id="XbA-8h-2NA"/>
+                                                                <constraint firstItem="htN-8j-KBY" firstAttribute="leading" secondItem="9mO-Qw-2Jk" secondAttribute="leading" id="cH7-nv-2Ta"/>
+                                                                <constraint firstAttribute="height" constant="200" id="irp-Xt-uxu"/>
+                                                                <constraint firstAttribute="bottom" secondItem="htN-8j-KBY" secondAttribute="bottom" id="uRX-al-0CD"/>
+                                                                <constraint firstAttribute="trailing" secondItem="htN-8j-KBY" secondAttribute="trailing" id="uvZ-Ot-R6i"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNQ-SH-SzT" userLabel="Report Open Graph Title">
+                                                            <rect key="frame" x="7" y="19.5" width="360" height="10"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut7-fw-2zD" userLabel="Report Open Graph Description">
+                                                            <rect key="frame" x="7" y="20.5" width="360" height="7.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                            <color key="textColor" red="0.3688895089" green="0.3688895089" blue="0.3688895089" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <stackView hidden="YES" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zqV-Ml-TXJ" userLabel="Report Open Graph Stack View">
+                                                            <rect key="frame" x="-72" y="-64" width="360" height="218"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="256" id="zMg-yo-5S1"/>
                                                             </constraints>
                                                         </stackView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="tNQ-SH-SzT" secondAttribute="trailing" constant="8" id="1r2-kg-92r"/>
+                                                        <constraint firstItem="9mO-Qw-2Jk" firstAttribute="leading" secondItem="CwM-QW-wwu" secondAttribute="leading" id="9mC-0d-qw5"/>
                                                         <constraint firstAttribute="trailing" secondItem="zqV-Ml-TXJ" secondAttribute="trailing" id="GbF-Ih-1hC"/>
-                                                        <constraint firstAttribute="height" constant="240" id="KEz-yV-ZUV"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ut7-fw-2zD" secondAttribute="bottom" constant="8" id="J7b-8l-fKh"/>
                                                         <constraint firstItem="zqV-Ml-TXJ" firstAttribute="leading" secondItem="CwM-QW-wwu" secondAttribute="leading" id="RZt-Jn-gCP"/>
+                                                        <constraint firstItem="tNQ-SH-SzT" firstAttribute="leading" secondItem="CwM-QW-wwu" secondAttribute="leading" constant="8" id="eqb-FZ-Iex"/>
+                                                        <constraint firstItem="tNQ-SH-SzT" firstAttribute="top" secondItem="9mO-Qw-2Jk" secondAttribute="bottom" constant="8" id="fyf-Lo-Oqp"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="256" id="hBr-zb-BJO"/>
+                                                        <constraint firstAttribute="trailing" secondItem="9mO-Qw-2Jk" secondAttribute="trailing" id="hc5-Br-HLM"/>
+                                                        <constraint firstItem="ut7-fw-2zD" firstAttribute="leading" secondItem="CwM-QW-wwu" secondAttribute="leading" constant="8" id="lPA-xG-7ur"/>
+                                                        <constraint firstItem="9mO-Qw-2Jk" firstAttribute="leading" secondItem="CwM-QW-wwu" secondAttribute="leading" id="noe-wF-LXt"/>
+                                                        <constraint firstItem="9mO-Qw-2Jk" firstAttribute="top" secondItem="CwM-QW-wwu" secondAttribute="top" id="nrS-cp-vlO"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ut7-fw-2zD" secondAttribute="trailing" constant="8" id="r5v-DC-xcX"/>
+                                                        <constraint firstItem="tNQ-SH-SzT" firstAttribute="bottom" secondItem="ut7-fw-2zD" secondAttribute="top" constant="8" id="tgr-R8-o6v"/>
                                                     </constraints>
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="NPR-zF-dRm" userLabel="Post Actions Stack View">
@@ -287,7 +304,6 @@
                                         <constraint firstAttribute="bottom" secondItem="NBS-Om-9lw" secondAttribute="bottom" constant="8" id="gRN-ny-zBP"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="T40-KM-JjO" secondAttribute="trailing" constant="8" id="gSw-vD-wOf"/>
                                         <constraint firstItem="xm1-9E-ifh" firstAttribute="centerY" secondItem="1F4-QA-bwJ" secondAttribute="centerY" id="kiU-Ls-l6f"/>
-                                        <constraint firstItem="NBS-Om-9lw" firstAttribute="top" secondItem="Gdi-7Z-AJY" secondAttribute="bottom" id="lSk-KT-cZR"/>
                                         <constraint firstItem="1F4-QA-bwJ" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="leading" id="lhi-WZ-xcX"/>
                                         <constraint firstItem="4hV-IB-V95" firstAttribute="leading" secondItem="iIs-hU-ppC" secondAttribute="leadingMargin" constant="8" id="nTf-71-eNE"/>
                                         <constraint firstAttribute="trailing" secondItem="NBS-Om-9lw" secondAttribute="trailing" id="nsV-Bl-EOK"/>
