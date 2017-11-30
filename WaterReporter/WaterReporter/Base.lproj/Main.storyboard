@@ -29,7 +29,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="346"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="NBS-Om-9lw" userLabel="Post Content Stack View">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NBS-Om-9lw" userLabel="Post Content Stack View">
                                             <rect key="frame" x="0.0" y="52" width="375" height="427"/>
                                             <subviews>
                                                 <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-iA-4dw">
@@ -68,16 +68,16 @@
                                                 <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CwM-QW-wwu" userLabel="Report Open Graph Object">
                                                     <rect key="frame" x="0.0" y="352.5" width="375" height="50"/>
                                                     <subviews>
-                                                        <stackView contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zqV-Ml-TXJ" userLabel="Report Open Graph Stack View">
+                                                        <stackView contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zqV-Ml-TXJ" userLabel="Report Open Graph Stack View">
                                                             <rect key="frame" x="-72" y="-64" width="360" height="218"/>
                                                             <subviews>
                                                                 <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="og-placeholder_1024x1024_720" translatesAutoresizingMaskIntoConstraints="NO" id="htN-8j-KBY" userLabel="Report Open Graph Image">
                                                                     <rect key="frame" x="0.0" y="0.0" width="360" height="200"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" constant="200" id="w2H-F3-y4B"/>
+                                                                        <constraint firstAttribute="height" constant="200" id="RJE-Bn-QEd"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNQ-SH-SzT" userLabel="Report Open Graph Title">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNQ-SH-SzT" userLabel="Report Open Graph Title">
                                                                     <rect key="frame" x="0.0" y="200" width="360" height="10"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <nil key="textColor"/>
@@ -92,7 +92,10 @@
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="ut7-fw-2zD" firstAttribute="leading" secondItem="zqV-Ml-TXJ" secondAttribute="leading" constant="8" id="5bh-Yc-Ch1"/>
+                                                                <constraint firstAttribute="height" constant="240" id="Qv2-WD-UrG"/>
+                                                                <constraint firstItem="htN-8j-KBY" firstAttribute="leading" secondItem="zqV-Ml-TXJ" secondAttribute="leading" id="d4t-3J-9AM"/>
                                                                 <constraint firstAttribute="trailing" secondItem="tNQ-SH-SzT" secondAttribute="trailing" constant="8" id="d7L-E1-fls"/>
+                                                                <constraint firstAttribute="trailing" secondItem="htN-8j-KBY" secondAttribute="trailing" id="fbb-tp-OIN"/>
                                                                 <constraint firstAttribute="trailing" secondItem="ut7-fw-2zD" secondAttribute="trailing" constant="8" id="qPa-bZ-1he"/>
                                                                 <constraint firstItem="tNQ-SH-SzT" firstAttribute="leading" secondItem="zqV-Ml-TXJ" secondAttribute="leading" constant="8" id="uTF-BZ-e86"/>
                                                             </constraints>
@@ -101,7 +104,7 @@
                                                     <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="zqV-Ml-TXJ" secondAttribute="trailing" id="GbF-Ih-1hC"/>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="Q9J-oh-vOz"/>
+                                                        <constraint firstAttribute="height" constant="240" id="KEz-yV-ZUV"/>
                                                         <constraint firstItem="zqV-Ml-TXJ" firstAttribute="leading" secondItem="CwM-QW-wwu" secondAttribute="leading" id="RZt-Jn-gCP"/>
                                                     </constraints>
                                                 </view>
