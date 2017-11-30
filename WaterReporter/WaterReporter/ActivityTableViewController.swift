@@ -630,10 +630,12 @@ class ActivityTableViewController: UITableViewController {
             // Report > Open Graph
             //
             
+            cell.reportOpenGraphView.layer.cornerRadius = 6
+            
             if (reportSocial != nil && reportSocial!.count != 0) {
                 
                 cell.reportOpenGraphView.hidden = false
-                cell.reportOpenGraphViewHeightConstraint.constant = 256.0
+//                cell.reportOpenGraphViewHeightConstraint.constant = 256.0
                 
                 // Open Graph Data
                 
