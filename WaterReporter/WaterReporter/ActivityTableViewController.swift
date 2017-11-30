@@ -522,6 +522,7 @@ class ActivityTableViewController: UITableViewController {
             }
             
             if "\(reportDescription!)" != "null" || "\(reportDescription!)" != "" {
+//                cell.reportDescription.layoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
                 cell.reportDescription.text = "\(reportDescription!)"
                 cell.reportDescription.enabledTypes = [.Hashtag, .URL]
                 cell.reportDescription.hashtagColor = UIColor.colorBrand()
