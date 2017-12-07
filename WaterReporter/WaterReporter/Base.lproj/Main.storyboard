@@ -32,33 +32,6 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NBS-Om-9lw" userLabel="Post Content Stack View">
                                             <rect key="frame" x="0.0" y="52" width="375" height="566.5"/>
                                             <subviews>
-                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-iA-4dw">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="320"/>
-                                                    <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="320" id="1zq-nd-nTC"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REPORT_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uzf-nX-7zv" customClass="ActiveLabel" customModule="ActiveLabel">
-                                                    <rect key="frame" x="0.0" y="330" width="375" height="18"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <color key="textColor" red="0.062745098039215685" green="0.062745098039215685" blue="0.062745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="URLSelectedColor">
-                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="URLColor">
-                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="hashtagSelectedColor">
-                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="hashtagColor">
-                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="riN-Au-gfr" userLabel="Post Territory">
                                                     <rect key="frame" x="0.0" y="358" width="375" height="128"/>
                                                     <subviews>
@@ -93,6 +66,33 @@
                                                         <constraint firstItem="Gdi-7Z-AJY" firstAttribute="leading" secondItem="riN-Au-gfr" secondAttribute="leading" id="vdb-FQ-aN7"/>
                                                     </constraints>
                                                 </view>
+                                                <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-iA-4dw">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="320"/>
+                                                    <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="320" id="1zq-nd-nTC"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REPORT_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uzf-nX-7zv" customClass="ActiveLabel" customModule="ActiveLabel">
+                                                    <rect key="frame" x="0.0" y="330" width="375" height="18"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" red="0.062745098039215685" green="0.062745098039215685" blue="0.062745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="URLSelectedColor">
+                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="URLColor">
+                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="hashtagSelectedColor">
+                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="hashtagColor">
+                                                            <color key="value" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="GROUP_NAMES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Sg-oM-EMq">
                                                     <rect key="frame" x="0.0" y="496" width="375" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -164,7 +164,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="NPR-zF-dRm" userLabel="Post Actions Stack View">
                                                     <rect key="frame" x="0.0" y="520.5" width="375" height="24"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-EG-TlL">
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-EG-TlL">
                                                             <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="3eI-rW-F4k"/>
@@ -179,7 +179,7 @@
                                                                 <action selector="shareButtonClicked:" destination="Uai-zl-fOX" eventType="touchUpInside" id="T7d-oB-ewa"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jzA-J4-UR2" userLabel="Post Location Button">
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jzA-J4-UR2" userLabel="Post Location Button">
                                                             <rect key="frame" x="94" y="0.0" width="24" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="okE-AJ-w2v"/>
@@ -233,8 +233,8 @@
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTy-nl-eSP">
                                                                     <rect key="frame" x="0.0" y="0.0" width="20" height="24"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="20" id="hsl-2y-Av6"/>
-                                                                        <constraint firstAttribute="height" constant="20" id="spo-rG-gfC"/>
+                                                                        <constraint firstAttribute="width" constant="24" id="hsl-2y-Av6"/>
+                                                                        <constraint firstAttribute="height" constant="24" id="spo-rG-gfC"/>
                                                                     </constraints>
                                                                     <state key="normal" image="icon--heart"/>
                                                                 </button>
@@ -6976,7 +6976,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Icon--Comment" width="18" height="18"/>
+        <image name="Icon--Comment" width="30" height="30"/>
         <image name="Icon--Directions" width="18" height="18"/>
         <image name="Icon--MapPin" width="18" height="18"/>
         <image name="Icon--Settings" width="18" height="18"/>
@@ -6994,7 +6994,7 @@
         <image name="icon--camera" width="32" height="32"/>
         <image name="icon--caret" width="9" height="4"/>
         <image name="icon--emptyMessage" width="190" height="103"/>
-        <image name="icon--heart" width="17" height="16"/>
+        <image name="icon--heart" width="30" height="30"/>
         <image name="icon--location" width="32" height="32"/>
         <image name="icon--search" width="18" height="18"/>
         <image name="logo--WaterReporter--Horizontal" width="91" height="32"/>
