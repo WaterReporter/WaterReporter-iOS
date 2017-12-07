@@ -387,9 +387,11 @@ class ActivityTableViewController: UITableViewController {
 //            }
             if reportComments.count >= 1 {
                 reportCommentsCountText = String(reportComments.count)
+                cell.reportCommentButton.alpha = 1
                 cell.reportCommentCount.hidden = false
             }
             else {
+                cell.reportCommentButton.alpha = 0.4
                 reportCommentsCountText = ""
                 cell.reportCommentCount.hidden = true
             }
@@ -430,10 +432,12 @@ class ActivityTableViewController: UITableViewController {
 //            }
             if reportLikes.count >= 1 {
                 reportLikesCountText = String(reportLikes.count)
+                cell.reportLikeButton.alpha = 1
                 cell.reportLikeCount.hidden = false
             }
             else {
 //                reportLikesCountText = "0 likes"
+                cell.reportLikeButton.alpha = 0.4
                 cell.reportLikeCount.hidden = true
             }
             
