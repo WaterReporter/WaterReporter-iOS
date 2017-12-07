@@ -709,24 +709,40 @@ class ActivityTableViewController: UITableViewController {
                 
                 print("The value of dateString is \(dateString)")
                 
-                let start = dateString.startIndex
-//                let end = dateString.index(dateString.endIndex, offsetBy: 10)
-                let end = dateString.endIndex.advancedBy(-16)
-                let dateSubstring = dateString[start..<end] // www.stackoverflow
-                
-                print("The value of dateSubstring is \(dateSubstring)")
+//                let start = dateString.startIndex
+////                let end = dateString.index(dateString.endIndex, offsetBy: 10)
+//                let end = dateString.endIndex.advancedBy(-16)
+//                let dateSubstring = dateString[start..<end] // www.stackoverflow
+//                
+//                print("The value of dateSubstring is \(dateSubstring)")
                 
                 let dateFormatter = NSDateFormatter()
-//                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-                dateFormatter.dateFormat = "yyyy-MM-dd"
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+//                dateFormatter.dateFormat = "yyyy-MM-dd"
                 
-                let stringToFormat = dateFormatter.dateFromString(dateSubstring)
+                let stringToFormat = dateFormatter.dateFromString(dateString)
                 
                 print("The post date object is \(stringToFormat)")
                 
-                dateFormatter.dateFormat = "MMM d, yyyy"
+//                dateFormatter.dateFormat = "MMM d, yyyy"
+//                
+//                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+//                
+//                dateFormatter.dateFormat = "h:mm a"
+//                
+//                let displayTime = dateFormatter.stringFromDate(stringToFormat!)
+//                
+//                if let thisDisplayDate: String? = displayDate,
+//                    let thisDisplayTime: String? = displayTime {
+//                    cell.reportDate.text = thisDisplayDate! + " at " + thisDisplayTime!
+//                }
+                dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
                 
                 let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                
+//                dateFormatter.dateFormat = "h:mm a"
+//                
+//                let displayTime = dateFormatter.stringFromDate(stringToFormat!)
                 
                 if let thisDisplayDate: String? = displayDate {
                     cell.reportDate.text = thisDisplayDate
