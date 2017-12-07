@@ -15,6 +15,7 @@ class TableViewCell: UITableViewCell {
 
     @IBOutlet weak var reportUserName: UILabel!
     @IBOutlet weak var reportTerritoryName: UILabel!
+    @IBOutlet weak var dropletIcon: UIImageView!
     @IBOutlet weak var reportTerritoryButton: UIButton!
     @IBOutlet weak var reportDescription: ActiveLabel!
     @IBOutlet weak var reportOwnerImage: UIImageView!

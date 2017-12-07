@@ -88,7 +88,7 @@ class ActivityTableViewController: UITableViewController {
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 
-    @IBAction func loadTerritoryProfile(sender: UIButton) {
+    @IBAction func loadTerritoryProfile(sender: UILabel) {
         
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
         
@@ -347,7 +347,16 @@ class ActivityTableViewController: UITableViewController {
             var reportTerritoryName: String? = "Unknown Watershed"
             if let thisReportTerritory = reportTerritory?.objectForKey("properties")?.objectForKey("huc_8_name") as? String {
                 reportTerritoryName = (thisReportTerritory) + " Watershed"
+                
+//                cell.reportTerritoryName.tag = indexPath.row
+//                cell.reportTerritoryName.userInteractionEnabled = true
+//                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ActivityTableViewController.loadTerritoryProfile(_:)))
+//                cell.reportTerritoryName.addGestureRecognizer(tapGesture)
+                
             }
+            
+            let dropletIcon: UIImage = UIImage(named: "icon--droplet")!
+            cell.dropletIcon.image = dropletIcon
             
             cell.reportTerritoryName.text = reportTerritoryName
             
