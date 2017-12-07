@@ -161,45 +161,45 @@
                                                         <constraint firstAttribute="trailing" secondItem="ZnL-lQ-5Kb" secondAttribute="trailing" constant="8" id="sKm-Ud-FeD"/>
                                                     </constraints>
                                                 </view>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="NPR-zF-dRm" userLabel="Post Actions Stack View">
-                                                    <rect key="frame" x="0.0" y="520.5" width="375" height="24"/>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-EG-TlL">
+                                                    <rect key="frame" x="0.0" y="520.5" width="24" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="3eI-rW-F4k"/>
+                                                        <constraint firstAttribute="height" constant="24" id="Za9-E6-GxL"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
+                                                    <state key="normal" image="icon--Share">
+                                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="shareButtonClicked:" destination="Uai-zl-fOX" eventType="touchUpInside" id="T7d-oB-ewa"/>
+                                                    </connections>
+                                                </button>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jzA-J4-UR2" userLabel="Post Location Button">
+                                                    <rect key="frame" x="94" y="520.5" width="24" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="okE-AJ-w2v"/>
+                                                        <constraint firstAttribute="height" constant="24" id="pHm-bW-KzK"/>
+                                                    </constraints>
+                                                    <state key="normal" image="Icon--MapPin"/>
+                                                    <connections>
+                                                        <segue destination="0uJ-jt-H35" kind="show" identifier="reportToActivityMap" id="VtS-u3-zqh"/>
+                                                    </connections>
+                                                </button>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWJ-bg-niv">
+                                                    <rect key="frame" x="118" y="520.5" width="0.0" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="3vK-z6-gjt"/>
+                                                        <constraint firstAttribute="width" constant="24" id="Y7a-CU-Txs"/>
+                                                    </constraints>
+                                                    <state key="normal" image="Icon--Directions"/>
+                                                </button>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-4f-U7h" userLabel="Post Transactions View">
+                                                    <rect key="frame" x="67" y="219" width="240" height="128"/>
                                                     <subviews>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-EG-TlL">
-                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="24" id="3eI-rW-F4k"/>
-                                                                <constraint firstAttribute="height" constant="24" id="Za9-E6-GxL"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                            <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
-                                                            <state key="normal" image="icon--Share">
-                                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                            </state>
-                                                            <connections>
-                                                                <action selector="shareButtonClicked:" destination="Uai-zl-fOX" eventType="touchUpInside" id="T7d-oB-ewa"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jzA-J4-UR2" userLabel="Post Location Button">
-                                                            <rect key="frame" x="94" y="0.0" width="24" height="24"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="24" id="okE-AJ-w2v"/>
-                                                                <constraint firstAttribute="height" constant="24" id="pHm-bW-KzK"/>
-                                                            </constraints>
-                                                            <state key="normal" image="Icon--MapPin"/>
-                                                            <connections>
-                                                                <segue destination="0uJ-jt-H35" kind="show" identifier="reportToActivityMap" id="VtS-u3-zqh"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWJ-bg-niv">
-                                                            <rect key="frame" x="118" y="0.0" width="0.0" height="24"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="24" id="3vK-z6-gjt"/>
-                                                                <constraint firstAttribute="width" constant="24" id="Y7a-CU-Txs"/>
-                                                            </constraints>
-                                                            <state key="normal" image="Icon--Directions"/>
-                                                        </button>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="JLr-Bb-XXr" userLabel="Comment Stack View">
-                                                            <rect key="frame" x="188.5" y="0.0" width="54" height="24"/>
+                                                            <rect key="frame" x="93" y="52" width="54" height="24"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vAv-oZ-7LT">
                                                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -228,7 +228,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="3B8-CQ-SEt" userLabel="Like Stack View">
-                                                            <rect key="frame" x="312.5" y="0.0" width="62.5" height="24"/>
+                                                            <rect key="frame" x="88" y="52" width="62.5" height="24"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTy-nl-eSP">
                                                                     <rect key="frame" x="0.0" y="0.0" width="20" height="24"/>
@@ -254,7 +254,14 @@
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
-                                                </stackView>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="3B8-CQ-SEt" firstAttribute="top" secondItem="gjj-4f-U7h" secondAttribute="top" id="CAN-dA-xtF"/>
+                                                        <constraint firstAttribute="trailing" secondItem="3B8-CQ-SEt" secondAttribute="trailing" constant="8" id="Whq-ov-hdI"/>
+                                                        <constraint firstItem="JLr-Bb-XXr" firstAttribute="top" secondItem="3B8-CQ-SEt" secondAttribute="top" id="msH-8c-k8V"/>
+                                                        <constraint firstAttribute="bottom" secondItem="3B8-CQ-SEt" secondAttribute="bottom" id="psH-gj-NNh"/>
+                                                    </constraints>
+                                                </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHO-GK-b7u" userLabel="Spacer View">
                                                     <rect key="frame" x="0.0" y="554.5" width="375" height="12"/>
                                                     <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -266,15 +273,15 @@
                                             <constraints>
                                                 <constraint firstItem="qHO-GK-b7u" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" id="4t4-rx-YsV"/>
                                                 <constraint firstAttribute="trailing" secondItem="riN-Au-gfr" secondAttribute="trailing" constant="8" id="7c6-vg-bEG"/>
-                                                <constraint firstItem="NPR-zF-dRm" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="9hL-PS-uA6"/>
                                                 <constraint firstAttribute="trailing" secondItem="CwM-QW-wwu" secondAttribute="trailing" constant="8" id="F5h-ac-TbJ"/>
                                                 <constraint firstAttribute="trailing" secondItem="4Sg-oM-EMq" secondAttribute="trailing" constant="8" id="ITM-JH-mmW"/>
                                                 <constraint firstItem="CwM-QW-wwu" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="RnF-aS-ShB"/>
                                                 <constraint firstAttribute="trailing" secondItem="qHO-GK-b7u" secondAttribute="trailing" id="Rnr-UJ-c07"/>
-                                                <constraint firstAttribute="trailing" secondItem="NPR-zF-dRm" secondAttribute="trailing" constant="8" id="XS9-I1-Abz"/>
                                                 <constraint firstAttribute="bottom" secondItem="qHO-GK-b7u" secondAttribute="bottom" id="lxa-gW-hkf"/>
                                                 <constraint firstItem="4Sg-oM-EMq" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="qtl-pY-sIO"/>
+                                                <constraint firstAttribute="trailing" secondItem="gjj-4f-U7h" secondAttribute="trailing" id="tOY-om-xMd"/>
                                                 <constraint firstItem="uzf-nX-7zv" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="vmB-Xf-YZw"/>
+                                                <constraint firstItem="gjj-4f-U7h" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" id="wAt-Zb-gaA"/>
                                                 <constraint firstAttribute="trailing" secondItem="uzf-nX-7zv" secondAttribute="trailing" constant="8" id="wgL-E5-Wbb"/>
                                                 <constraint firstItem="riN-Au-gfr" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="yMV-hR-ZlP"/>
                                             </constraints>
