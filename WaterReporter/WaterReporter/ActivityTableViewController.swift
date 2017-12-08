@@ -325,6 +325,17 @@ class ActivityTableViewController: UITableViewController {
         // additional reports are loaded
         //
         if (self.reports.count >= 1) {
+            
+            //
+            // User Id
+            //
+            
+            var _user_id_integer: Int = 0
+            
+            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                _user_id_integer = _user_id_number.integerValue
+            }
+            
             //
             // REPORT OBJECT
             //
@@ -387,13 +398,13 @@ class ActivityTableViewController: UITableViewController {
 //            }
             if reportComments.count >= 1 {
                 reportCommentsCountText = String(reportComments.count)
-                cell.reportCommentButton.alpha = 1
-                cell.reportCommentCount.hidden = false
+//                cell.reportCommentButton.alpha = 1
+//                cell.reportCommentCount.hidden = false
             }
             else {
-                cell.reportCommentButton.alpha = 0.4
+//                cell.reportCommentButton.alpha = 0.4
                 reportCommentsCountText = ""
-                cell.reportCommentCount.hidden = true
+//                cell.reportCommentCount.hidden = true
             }
             
             cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
@@ -401,7 +412,36 @@ class ActivityTableViewController: UITableViewController {
             cell.reportCommentCount.tag = indexPath.row
             cell.reportCommentButton.tag = indexPath.row
             
-//            cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
+            //
+            // MARK: Determine comment status
+            
+            if _user_id_integer != 0 {
+                
+                print("Setup the comment stuff")
+                
+                let _hasCommented = self.userHasCommentedOnReport(reportJson, _current_user_id: _user_id_integer)
+                
+                cell.reportCommentButton.setImage(UIImage(named: "icon--comment"), forState: .Normal)
+                
+                if (_hasCommented) {
+                    cell.reportCommentButton.setImage(UIImage(named: "icon--comment_blue"), forState: .Normal)
+                    cell.reportCommentCount.setTitleColor(UIColor(
+                        red: 6.0/255.0,
+                        green: 170.0/255.0,
+                        blue: 240.0/255.0,
+                        alpha: 1.0
+                        ), forState: .Normal)
+                }
+                else {
+                    cell.reportCommentCount.setTitleColor(UIColor(
+                        red: 0.0/255.0,
+                        green: 0.0/255.0,
+                        blue: 0.0/255.0,
+                        alpha: 0.5
+                        ), forState: .Normal)
+                }
+                
+            }
             
             if (reportJson["closed_by"] != nil) {
                 let badgeImage: UIImage = UIImage(named: "icon--Badge")!
@@ -448,11 +488,11 @@ class ActivityTableViewController: UITableViewController {
             //
             cell.reportLikeButton.tag = indexPath.row
             
-            var _user_id_integer: Int = 0
-            
-            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-                _user_id_integer = _user_id_number.integerValue
-            }
+//            var _user_id_integer: Int = 0
+//            
+//            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+//                _user_id_integer = _user_id_number.integerValue
+//            }
             
             print("_user_id_integer \(_user_id_integer)")
 
@@ -468,10 +508,22 @@ class ActivityTableViewController: UITableViewController {
                     cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
                     cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
                     cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+                    cell.reportLikeCount.setTitleColor(UIColor(
+                        red: 240.0/255.0,
+                        green: 6.0/255.0,
+                        blue: 53.0/255.0,
+                        alpha: 1.0
+                        ), forState: .Normal)
                 }
                 else {
                     cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
                     cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                    cell.reportLikeCount.setTitleColor(UIColor(
+                        red: 0.0/255.0,
+                        green: 0.0/255.0,
+                        blue: 0.0/255.0,
+                        alpha: 0.5
+                        ), forState: .Normal)
                 }
                 
             }
@@ -826,6 +878,22 @@ class ActivityTableViewController: UITableViewController {
             self.refreshControl?.endRefreshing()
         }
         
+    }
+    
+    //
+    // MARK: Comment Functionality
+    //
+    func userHasCommentedOnReport(_report: JSON, _current_user_id: Int) -> Bool {
+        
+        if (_report["comments"].count != 0) {
+            for _comment in _report["comments"] {
+                if (_comment.1["properties"]["owner_id"].intValue == _current_user_id) {
+                    return true
+                }
+            }
+        }
+        
+        return false
     }
 
     
