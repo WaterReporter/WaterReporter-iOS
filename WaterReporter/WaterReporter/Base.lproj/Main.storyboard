@@ -335,9 +335,9 @@
                                         <constraint firstItem="1F4-QA-bwJ" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="leading" id="lhi-WZ-xcX"/>
                                         <constraint firstItem="4hV-IB-V95" firstAttribute="leading" secondItem="iIs-hU-ppC" secondAttribute="leadingMargin" constant="12" id="nTf-71-eNE"/>
                                         <constraint firstAttribute="trailing" secondItem="NBS-Om-9lw" secondAttribute="trailing" id="nsV-Bl-EOK"/>
-                                        <constraint firstItem="aKB-H4-8aI" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" constant="8" id="qPa-KJ-uki"/>
+                                        <constraint firstItem="aKB-H4-8aI" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" constant="12" id="qPa-KJ-uki"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="NBS-Om-9lw" secondAttribute="bottom" id="ryS-Vi-4U1"/>
-                                        <constraint firstItem="T40-KM-JjO" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" constant="8" id="u3X-j6-tje"/>
+                                        <constraint firstItem="T40-KM-JjO" firstAttribute="leading" secondItem="4hV-IB-V95" secondAttribute="trailing" constant="12" id="u3X-j6-tje"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="12" left="0.0" bottom="0.0" right="0.0"/>
                                     <variation key="default">
