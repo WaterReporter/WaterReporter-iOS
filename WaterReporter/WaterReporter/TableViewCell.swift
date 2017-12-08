@@ -22,6 +22,13 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportOwnerImageButton: UIButton!
     @IBOutlet weak var reportImage: UIImageView!
     @IBOutlet weak var reportGroups: UILabel!
+
+    //
+    // Groups
+    //
+    
+    @IBOutlet weak var reportGroupStack: UIStackView!
+    
     @IBOutlet weak var reportGetDirectionsButton: UIButton!
     @IBOutlet weak var reportDate: UILabel!
     @IBOutlet weak var reportCommentCount: UIButton!

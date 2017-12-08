@@ -533,27 +533,58 @@ class ActivityTableViewController: UITableViewController {
             // GROUPS
             //
             let reportGroups = report?.objectForKey("groups") as? NSArray
-            var reportGroupsNames: String? = ""
+//            var reportGroupsNames: String? = ""
+//            
+//            let reportGroupsTotal = reportGroups!.count
+//            var reportGroupsIncrementer = 1;
             
-            let reportGroupsTotal = reportGroups!.count
-            var reportGroupsIncrementer = 1;
+//            for _group in reportGroups! as NSArray {
+//                if let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
+//                    if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
+//                        reportGroupsNames = thisGroupName
+//                    }
+//                    else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
+//                        reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
+//                    }
+//                    
+//                    reportGroupsIncrementer += 1
+//                }
+//                
+//            }
+            
+//            cell.reportGroups.text = reportGroupsNames
+            
+            //
+            // Clear subviews from group stack view
+            //
+            
+            cell.reportGroupStack.subviews.forEach({ $0.removeFromSuperview() })
             
             for _group in reportGroups! as NSArray {
-                if let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
-                    if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
-                        reportGroupsNames = thisGroupName
-                    }
-                    else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
-                        reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
-                    }
+                if let groupLogoUrl = _group.objectForKey("properties")!.objectForKey("picture") as? String {
                     
-                    reportGroupsIncrementer += 1
+                    let imageURL:NSURL = NSURL(string: "\(groupLogoUrl)")!
+                    
+                    let imageView = UIImageView()
+                    
+                    imageView.heightAnchor.constraintEqualToConstant(40.0).active = true
+                    imageView.widthAnchor.constraintEqualToConstant(40.0).active = true
+                    
+//                    cell.reportOpenGraphImage.kf_indicatorType = .Activity
+//                    cell.reportOpenGraphImage.kf_showIndicatorWhenLoading = true
+                    
+                    imageView.kf_setImageWithURL(imageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                        (image, error, cacheType, imageUrl) in
+                        
+                        imageView.image = image
+                        
+                    })
+                    
+                    cell.reportGroupStack.addArrangedSubview(imageView)
+                    
                 }
                 
-                
             }
-            
-            cell.reportGroups.text = reportGroupsNames
             
             //
             // USER NAME
