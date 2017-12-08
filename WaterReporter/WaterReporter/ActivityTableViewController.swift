@@ -560,23 +560,46 @@ class ActivityTableViewController: UITableViewController {
             
             cell.reportGroupStack.subviews.forEach({ $0.removeFromSuperview() })
             
+//            cell.reportGroupStack.frame.size.width = CGFloat(44 * (reportGroups?.count)!)
+            
+            let groupStackWidth:CGFloat = CGFloat(44 * (reportGroups?.count)!)
+            
+            print("Group stack width \(groupStackWidth)")
+            
+            cell.reportGroupStack.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
+            
             for _group in reportGroups! as NSArray {
                 if let groupLogoUrl = _group.objectForKey("properties")!.objectForKey("picture") as? String {
                     
                     let imageURL:NSURL = NSURL(string: "\(groupLogoUrl)")!
                     
+                    print("Group logo URL \(imageURL)")
+                    
                     let imageView = UIImageView()
+                    
+                    imageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+                    
+                    imageView.contentMode = .ScaleAspectFit
                     
                     imageView.heightAnchor.constraintEqualToConstant(40.0).active = true
                     imageView.widthAnchor.constraintEqualToConstant(40.0).active = true
                     
+//                    imageView.layer.cornerRadius = imageView.frame.size.width / 2
+//                    imageView.clipsToBounds = true
+//                    
 //                    cell.reportOpenGraphImage.kf_indicatorType = .Activity
 //                    cell.reportOpenGraphImage.kf_showIndicatorWhenLoading = true
                     
                     imageView.kf_setImageWithURL(imageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
                         (image, error, cacheType, imageUrl) in
                         
-                        imageView.image = image
+//                        imageView.image = image
+                        
+                        if (image != nil) {
+                            imageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                            imageView.layer.cornerRadius = imageView.frame.size.width / 2
+                            imageView.clipsToBounds = true
+                        }
                         
                     })
                     
