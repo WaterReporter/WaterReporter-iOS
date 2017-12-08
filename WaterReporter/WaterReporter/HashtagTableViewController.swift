@@ -932,7 +932,7 @@ class HashtagTableViewController: UITableViewController {
                 cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             } else {
-                let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
+                let badgeImage: UIImage = UIImage(named: "icon--comment")!
                 cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             }
@@ -1267,7 +1267,7 @@ class HashtagTableViewController: UITableViewController {
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
                 
             } else {
-                let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
+                let badgeImage: UIImage = UIImage(named: "icon--comment")!
                 cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
                 cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
             }

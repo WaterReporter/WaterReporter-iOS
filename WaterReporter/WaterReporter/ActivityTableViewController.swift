@@ -453,7 +453,7 @@ class ActivityTableViewController: UITableViewController {
 //                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
 //                
 //            } else {
-//                let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
+//                let badgeImage: UIImage = UIImage(named: "icon--comment")!
 //                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
 //            }
             
@@ -555,7 +555,6 @@ class ActivityTableViewController: UITableViewController {
             
             cell.reportGroups.text = reportGroupsNames
             
-            
             //
             // USER NAME
             //
@@ -565,15 +564,12 @@ class ActivityTableViewController: UITableViewController {
                 cell.reportUserName.text = (firstName as! String) + " " + (lastName as! String)
                 
                 cell.reportUserName.tag = indexPath.row
-//                cell.reportUserName.addTarget(self, action: #selector(ActivityTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
-                
                 
             } else {
                 cell.reportUserName.text = "Unknown Reporter"
             }
             
             if "\(reportDescription!)" != "null" || "\(reportDescription!)" != "" {
-//                cell.reportDescription.layoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
                 cell.reportDescription.text = "\(reportDescription!)"
                 cell.reportDescription.enabledTypes = [.Hashtag, .URL]
                 cell.reportDescription.hashtagColor = UIColor.colorBrand()
@@ -654,24 +650,6 @@ class ActivityTableViewController: UITableViewController {
                 cell.reportImage.hidden = false
 
             }
-//            else if (reportJson["social"] != nil && reportJson["social"].count != 0) {
-//                print("Show open graph image \(reportJson["social"])")
-//
-//                if let reportImageURL = NSURL(string: String(reportJson["social"][0]["properties"]["og_image_url"])) {
-//                    
-//                    cell.reportImage.kf_indicatorType = .Activity
-//                    cell.reportImage.kf_showIndicatorWhenLoading = true
-//                    
-//                    cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-//                        (image, error, cacheType, imageUrl) in
-//                        
-//                        if (image != nil) {
-//                            cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-//                        }
-//                    })
-//                    
-//                }
-//            }
             else {
                 print("No image to show")
                 cell.reportImage.hidden = true
@@ -687,7 +665,6 @@ class ActivityTableViewController: UITableViewController {
             if (reportSocial != nil && reportSocial!.count != 0) {
                 
                 cell.reportOpenGraphViewGroup.hidden = false
-//                cell.reportOpenGraphViewHeightConstraint.constant = 256.0
                 
                 // Open Graph Data
                 
@@ -708,14 +685,12 @@ class ActivityTableViewController: UITableViewController {
                 
                 // Open Graph > Image
                 //
-//                if self.og_image != "" {
+
                 if let openGraphImageUrl = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_image_url") {
                     
                     print("Open Graph image available \(openGraphImageUrl)")
                     
                     let ogImageURL:NSURL = NSURL(string: "\(openGraphImageUrl)")!
-                    
-//                    let ogImageURL:NSURL = NSURL(string: "\(self.og_image)")!
                     
                     cell.reportOpenGraphImage.kf_indicatorType = .Activity
                     cell.reportOpenGraphImage.kf_showIndicatorWhenLoading = true
@@ -760,40 +735,16 @@ class ActivityTableViewController: UITableViewController {
                 
                 print("The value of dateString is \(dateString)")
                 
-//                let start = dateString.startIndex
-////                let end = dateString.index(dateString.endIndex, offsetBy: 10)
-//                let end = dateString.endIndex.advancedBy(-16)
-//                let dateSubstring = dateString[start..<end] // www.stackoverflow
-//                
-//                print("The value of dateSubstring is \(dateSubstring)")
-                
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-//                dateFormatter.dateFormat = "yyyy-MM-dd"
                 
                 let stringToFormat = dateFormatter.dateFromString(dateString)
                 
                 print("The post date object is \(stringToFormat)")
-                
-//                dateFormatter.dateFormat = "MMM d, yyyy"
-//                
-//                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
-//                
-//                dateFormatter.dateFormat = "h:mm a"
-//                
-//                let displayTime = dateFormatter.stringFromDate(stringToFormat!)
-//                
-//                if let thisDisplayDate: String? = displayDate,
-//                    let thisDisplayTime: String? = displayTime {
-//                    cell.reportDate.text = thisDisplayDate! + " at " + thisDisplayTime!
-//                }
+
                 dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
                 
                 let displayDate = dateFormatter.stringFromDate(stringToFormat!)
-                
-//                dateFormatter.dateFormat = "h:mm a"
-//                
-//                let displayTime = dateFormatter.stringFromDate(stringToFormat!)
                 
                 if let thisDisplayDate: String? = displayDate {
                     cell.reportDate.text = thisDisplayDate
@@ -811,7 +762,6 @@ class ActivityTableViewController: UITableViewController {
             cell.reportDirectionsButton.addTarget(self, action: #selector(openDirectionsURL(_:)), forControlEvents: .TouchUpInside)
             
             cell.reportShareButton.tag = indexPath.row
-            
             
             //
             // CONTINUOUS SCROLL
@@ -907,7 +857,7 @@ class ActivityTableViewController: UITableViewController {
         
         let _cell: TableViewCell = self.tableView.cellForRowAtIndexPath(_indexPath) as! TableViewCell
         
-        // Change the Heart icon to red
+        // Change the heart icon to red
         //
         if (addLike) {
             _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
@@ -949,19 +899,7 @@ class ActivityTableViewController: UITableViewController {
         }
         
         var reportLikesCountText: String = ""
-        
-//        if _report_likes_updated_total == 1 {
-//            reportLikesCountText = "1 like"
-//            _cell.reportLikeCount.hidden = false
-//        }
-//        else if _report_likes_updated_total >= 1 {
-//            reportLikesCountText = "\(_report_likes_updated_total) likes"
-//            _cell.reportLikeCount.hidden = false
-//        }
-//        else {
-//            reportLikesCountText = "0 likes"
-//            _cell.reportLikeCount.hidden = false
-//        }
+
         if _report_likes_updated_total == 1 {
             reportLikesCountText = "1"
             _cell.reportLikeCount.hidden = false
@@ -1074,11 +1012,11 @@ class ActivityTableViewController: UITableViewController {
         
         let infoDict : [String : AnyObject] = ["sender": sender.tag]
         
-        self.unlikeDelay = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(self.attemptUnikeCurrentReport(_:)), userInfo: infoDict, repeats: false)
+        self.unlikeDelay = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(self.attemptUnlikeCurrentReport(_:)), userInfo: infoDict, repeats: false)
 
     }
 
-    func attemptUnikeCurrentReport(timer: NSTimer) {
+    func attemptUnlikeCurrentReport(timer: NSTimer) {
         print("userInfo \(timer.userInfo!)")
         
         let _arguments = timer.userInfo as! [String : AnyObject]
