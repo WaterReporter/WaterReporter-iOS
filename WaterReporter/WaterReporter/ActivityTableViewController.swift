@@ -373,38 +373,22 @@ class ActivityTableViewController: UITableViewController {
             
             cell.reportTerritoryButton.tag = indexPath.row
             cell.reportTerritoryButton.addTarget(self, action: #selector(ActivityTableViewController.loadTerritoryProfile(_:)), forControlEvents: .TouchUpInside)
-
-            
             
             //
             // Comment Count
             //
             let reportComments = report?.objectForKey("comments") as! NSArray
             
-            
             var reportCommentsCountText: String = ""
             
-//            if reportComments.count == 1 {
-//                reportCommentsCountText = "1 comment"
-//            }
-//            else if reportComments.count >= 1 {
-//                reportCommentsCountText = String(reportComments.count) + " comments"
-//            }
-//            else {
-//                reportCommentsCountText = "0 comments"
-//            }
-//            if reportComments.count == 1 {
-//                reportCommentsCountText = "1"
-//            }
             if reportComments.count >= 1 {
                 reportCommentsCountText = String(reportComments.count)
-//                cell.reportCommentButton.alpha = 1
-//                cell.reportCommentCount.hidden = false
+                cell.reportCommentButton.alpha = 1
+                cell.reportCommentCount.hidden = false
             }
             else {
-//                cell.reportCommentButton.alpha = 0.4
-                reportCommentsCountText = ""
-//                cell.reportCommentCount.hidden = true
+                cell.reportCommentButton.alpha = 0.4
+                cell.reportCommentCount.hidden = true
             }
             
             cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
@@ -421,7 +405,16 @@ class ActivityTableViewController: UITableViewController {
                 
                 let _hasCommented = self.userHasCommentedOnReport(reportJson, _current_user_id: _user_id_integer)
                 
-                cell.reportCommentButton.setImage(UIImage(named: "icon--comment"), forState: .Normal)
+                if (reportJson["closed_by"] != nil) {
+                    let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+                    cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+                    
+                }
+                else {
+                    cell.reportCommentButton.setImage(UIImage(named: "icon--comment"), forState: .Normal)
+                }
+                
+//                cell.reportCommentButton.setImage(UIImage(named: "icon--Comment"), forState: .Normal)
                 
                 if (_hasCommented) {
                     cell.reportCommentButton.setImage(UIImage(named: "icon--comment_blue"), forState: .Normal)
@@ -441,16 +434,28 @@ class ActivityTableViewController: UITableViewController {
                         ), forState: .Normal)
                 }
                 
+//                if (reportJson["closed_by"] != nil) {
+//                    let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+//                    cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+//                    
+//                }
+                
             }
             
-            if (reportJson["closed_by"] != nil) {
-                let badgeImage: UIImage = UIImage(named: "icon--Badge")!
-                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
-                
-            } else {
-                let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
-                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
-            }
+//            if (reportJson["closed_by"] != nil) {
+//                let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+//                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+//                
+//            }
+            
+//            if (reportJson["closed_by"] != nil) {
+//                let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+//                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+//                
+//            } else {
+//                let badgeImage: UIImage = UIImage(named: "Icon--Comment")!
+//                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+//            }
             
             // Likes Count
             //
@@ -458,25 +463,12 @@ class ActivityTableViewController: UITableViewController {
             
             var reportLikesCountText: String = ""
             
-//            if reportLikes.count == 1 {
-//                reportLikesCountText = "1 like"
-//                cell.reportLikeCount.hidden = false
-//            }
-//            else if reportLikes.count >= 1 {
-//                reportLikesCountText = String(reportLikes.count) + " likes"
-//                cell.reportLikeCount.hidden = false
-//            }
-//            else {
-//                reportLikesCountText = "0 likes"
-//                cell.reportLikeCount.hidden = true
-//            }
             if reportLikes.count >= 1 {
                 reportLikesCountText = String(reportLikes.count)
                 cell.reportLikeButton.alpha = 1
                 cell.reportLikeCount.hidden = false
             }
             else {
-//                reportLikesCountText = "0 likes"
                 cell.reportLikeButton.alpha = 0.4
                 cell.reportLikeCount.hidden = true
             }
@@ -487,12 +479,6 @@ class ActivityTableViewController: UITableViewController {
             // Report Like Button
             //
             cell.reportLikeButton.tag = indexPath.row
-            
-//            var _user_id_integer: Int = 0
-//            
-//            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-//                _user_id_integer = _user_id_number.integerValue
-//            }
             
             print("_user_id_integer \(_user_id_integer)")
 

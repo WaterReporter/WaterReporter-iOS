@@ -198,6 +198,20 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-4f-U7h" userLabel="Post Transactions View">
                                                     <rect key="frame" x="0.0" y="6848.5" width="24" height="24"/>
                                                     <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AX0-V4-2Nb" userLabel="Comment Section">
+                                                            <rect key="frame" x="-108" y="-52.5" width="240" height="128"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="160" id="ack-pc-mOw"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6G-LH-sTt" userLabel="Like Section">
+                                                            <rect key="frame" x="-108" y="-52.5" width="240" height="128"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="160" id="AG9-va-2vG"/>
+                                                            </constraints>
+                                                        </view>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vAv-oZ-7LT">
                                                             <rect key="frame" x="93" y="52" width="24" height="24"/>
                                                             <state key="normal" image="Icon--Comment"/>
@@ -232,15 +246,18 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
+                                                        <constraint firstItem="bTy-nl-eSP" firstAttribute="centerX" secondItem="R6G-LH-sTt" secondAttribute="centerX" id="2Me-UQ-QIW"/>
                                                         <constraint firstItem="bTy-nl-eSP" firstAttribute="centerY" secondItem="vAv-oZ-7LT" secondAttribute="centerY" id="4da-jy-clM"/>
                                                         <constraint firstItem="rna-Ip-3qO" firstAttribute="centerY" secondItem="vAv-oZ-7LT" secondAttribute="centerY" id="HVQ-lp-avf"/>
                                                         <constraint firstItem="vAv-oZ-7LT" firstAttribute="top" secondItem="gjj-4f-U7h" secondAttribute="top" id="Hos-uQ-PgD"/>
                                                         <constraint firstItem="tnf-6Y-yAX" firstAttribute="leading" secondItem="vAv-oZ-7LT" secondAttribute="trailing" constant="4" id="IZk-3q-zuQ"/>
-                                                        <constraint firstItem="vAv-oZ-7LT" firstAttribute="leading" secondItem="gjj-4f-U7h" secondAttribute="leading" constant="8" id="PMa-kQ-eRA"/>
-                                                        <constraint firstItem="tnf-6Y-yAX" firstAttribute="trailing" secondItem="bTy-nl-eSP" secondAttribute="leading" constant="32" id="QUn-q2-AWH"/>
+                                                        <constraint firstItem="vAv-oZ-7LT" firstAttribute="centerX" secondItem="AX0-V4-2Nb" secondAttribute="centerX" id="NF4-hd-gwG"/>
+                                                        <constraint firstAttribute="trailing" secondItem="R6G-LH-sTt" secondAttribute="trailing" id="atU-TI-0Pr"/>
+                                                        <constraint firstItem="AX0-V4-2Nb" firstAttribute="leading" secondItem="gjj-4f-U7h" secondAttribute="leading" id="e9I-vF-2ae"/>
                                                         <constraint firstItem="rna-Ip-3qO" firstAttribute="leading" secondItem="bTy-nl-eSP" secondAttribute="trailing" constant="4" id="fC0-NW-aXJ"/>
                                                         <constraint firstItem="tnf-6Y-yAX" firstAttribute="centerY" secondItem="vAv-oZ-7LT" secondAttribute="centerY" id="lTl-KG-5AT"/>
-                                                        <constraint firstAttribute="bottom" secondItem="vAv-oZ-7LT" secondAttribute="bottom" id="rge-W5-e9P"/>
+                                                        <constraint firstAttribute="bottom" secondItem="vAv-oZ-7LT" secondAttribute="bottom" constant="8" id="rge-W5-e9P"/>
+                                                        <constraint firstItem="AX0-V4-2Nb" firstAttribute="trailing" secondItem="R6G-LH-sTt" secondAttribute="leading" id="soS-yY-bcd"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHO-GK-b7u" userLabel="Spacer View">
