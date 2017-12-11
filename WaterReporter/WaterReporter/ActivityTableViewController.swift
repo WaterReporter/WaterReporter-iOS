@@ -80,19 +80,49 @@ class ActivityTableViewController: UITableViewController {
         
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
         
-        let _thisReport = JSON(self.reports[(sender.tag)])
+        let _thisReport = self.reports[(sender.tag)].objectForKey("properties")
         
-        let _group = _thisReport["properties"]["groups"][0]
+        let _groupName = sender.titleLabel!.text
         
-//        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
-//        nextViewController.userObject = _thisReport["properties"]["owner"]
+        let reportGroups = _thisReport?.objectForKey("groups") as? NSArray
+        
+        for _group in reportGroups! as NSArray {
+            
+//            let _selectedGroupName = _group["properties"]["name"] as? String
+            
+            if let _selectedGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
+                
+                if _selectedGroupName == _groupName {
+                    
+                    let _selectedGroup = _group
+                    
+                    //        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+                    //        nextViewController.userObject = _thisReport["properties"]["owner"]
+                    //
+                    //        self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                    nextViewController.groupId = "\(_selectedGroup["id"])"
+                    nextViewController.groupObject = JSON(_selectedGroup)
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+            }
+            
+        }
+        
+//        let _group = _thisReport["properties"]["groups"][0]
+//        
+////        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+////        nextViewController.userObject = _thisReport["properties"]["owner"]
+////        
+////        self.navigationController?.pushViewController(nextViewController, animated: true)
+//        
+//        nextViewController.groupId = "\(_group["id"])"
+//        nextViewController.groupObject = _group
 //        
 //        self.navigationController?.pushViewController(nextViewController, animated: true)
-        
-        nextViewController.groupId = "\(_group["id"])"
-        nextViewController.groupObject = _group
-        
-        self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 
     @IBAction func loadCommentOwnerProfile(sender: UIButton) {
@@ -606,7 +636,8 @@ class ActivityTableViewController: UITableViewController {
             cell.reportGroupStack.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
             
             for _group in reportGroups! as NSArray {
-                if let groupLogoUrl = _group.objectForKey("properties")!.objectForKey("picture") as? String {
+                if let groupLogoUrl = _group.objectForKey("properties")!.objectForKey("picture") as? String,
+                let groupName = _group.objectForKey("properties")!.objectForKey("name") as? String{
                     
                     let imageURL:NSURL = NSURL(string: "\(groupLogoUrl)")!
                     
@@ -650,7 +681,16 @@ class ActivityTableViewController: UITableViewController {
                     
                     let groupBtn = UIButton()
                     
+//                    let _groupName = _group["properties"]!!["name"] as? String
+                    
                     groupBtn.tag = indexPath.row
+                    groupBtn.setTitle(groupName, forState: .Normal)
+                    groupBtn.setTitleColor(UIColor(
+                        red: 240.0/255.0,
+                        green: 6.0/255.0,
+                        blue: 53.0/255.0,
+                        alpha: 0.0
+                        ), forState: .Normal)
                     groupBtn.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                     
                     groupBtn.addSubview(imageView)
