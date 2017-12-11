@@ -530,7 +530,7 @@ class ActivityTableViewController: UITableViewController {
 //            }
             
             if reportJson["social"] != nil && reportJson["social"].count != 0 {
-//                cell.reportOpenGraphStoryLink.hidden = false
+                cell.reportOpenGraphStoryLink.hidden = false
                 cell.reportOpenGraphStoryLink.tag = indexPath.row
                 cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
 //                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
@@ -539,10 +539,10 @@ class ActivityTableViewController: UITableViewController {
 //                cell.reportDate.hidden = true
                 
             }
-//            else {
-//                cell.reportOpenGraphStoryLink.hidden = true
+            else {
+                cell.reportOpenGraphStoryLink.hidden = true
 //                cell.reportDate.hidden = false
-//            }
+            }
             
             //
             // GROUPS
@@ -741,13 +741,13 @@ class ActivityTableViewController: UITableViewController {
                 
                 cell.reportOpenGraphViewGroup.hidden = false
                 
-                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openOpenGraphURL(_:)))
+//                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openOpenGraphURL(_:)))
+//                
+//                cell.reportOpenGraphViewGroup.userInteractionEnabled = true
+//                cell.reportOpenGraphViewGroup.tag = indexPath.row
+//                cell.reportOpenGraphViewGroup.addGestureRecognizer(tapGestureRecognizer)
                 
-                cell.reportOpenGraphViewGroup.userInteractionEnabled = true
-                cell.reportOpenGraphViewGroup.tag = indexPath.row
-                cell.reportOpenGraphViewGroup.addGestureRecognizer(tapGestureRecognizer)
-                
-                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+//                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
                 
 //                cell.reportOpenGraphViewGroup.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
                 
