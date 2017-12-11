@@ -514,20 +514,35 @@ class ActivityTableViewController: UITableViewController {
                 
             }
             
+//            if reportJson["social"] != nil && reportJson["social"].count != 0 {
+//                cell.reportOpenGraphStoryLink.hidden = false
+//                cell.reportOpenGraphStoryLink.tag = indexPath.row
+//                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+//                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
+//                cell.reportOpenGraphStoryLink.clipsToBounds = true
+//                
+//                cell.reportDate.hidden = true
+//
+//            }
+//            else {
+//                cell.reportOpenGraphStoryLink.hidden = true
+//                cell.reportDate.hidden = false
+//            }
+            
             if reportJson["social"] != nil && reportJson["social"].count != 0 {
-                cell.reportOpenGraphStoryLink.hidden = false
+//                cell.reportOpenGraphStoryLink.hidden = false
                 cell.reportOpenGraphStoryLink.tag = indexPath.row
                 cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
-                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
-                cell.reportOpenGraphStoryLink.clipsToBounds = true
+//                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
+//                cell.reportOpenGraphStoryLink.clipsToBounds = true
                 
-                cell.reportDate.hidden = true
-
+//                cell.reportDate.hidden = true
+                
             }
-            else {
-                cell.reportOpenGraphStoryLink.hidden = true
-                cell.reportDate.hidden = false
-            }
+//            else {
+//                cell.reportOpenGraphStoryLink.hidden = true
+//                cell.reportDate.hidden = false
+//            }
             
             //
             // GROUPS
@@ -579,10 +594,15 @@ class ActivityTableViewController: UITableViewController {
                     
                     imageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
                     
-                    imageView.contentMode = .ScaleAspectFit
+//                    imageView.contentMode = .ScaleAspectFit
                     
                     imageView.heightAnchor.constraintEqualToConstant(40.0).active = true
                     imageView.widthAnchor.constraintEqualToConstant(40.0).active = true
+                    
+                    imageView.setContentHuggingPriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+                    imageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+                    
+//                    .setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.horizontal)
                     
 //                    imageView.layer.cornerRadius = imageView.frame.size.width / 2
 //                    imageView.clipsToBounds = true
@@ -598,6 +618,7 @@ class ActivityTableViewController: UITableViewController {
                         if (image != nil) {
                             imageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
                             imageView.layer.cornerRadius = imageView.frame.size.width / 2
+//                            imageView.layer.cornerRadius = 20
                             imageView.clipsToBounds = true
                         }
                         
@@ -720,6 +741,16 @@ class ActivityTableViewController: UITableViewController {
                 
                 cell.reportOpenGraphViewGroup.hidden = false
                 
+                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openOpenGraphURL(_:)))
+                
+                cell.reportOpenGraphViewGroup.userInteractionEnabled = true
+                cell.reportOpenGraphViewGroup.tag = indexPath.row
+                cell.reportOpenGraphViewGroup.addGestureRecognizer(tapGestureRecognizer)
+                
+                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                
+//                cell.reportOpenGraphViewGroup.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                
                 // Open Graph Data
                 
                 if let openGraphTitle = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_title"),
@@ -841,9 +872,14 @@ class ActivityTableViewController: UITableViewController {
         UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportCoordinates[1]) + "," + String(reportCoordinates[0]))!)
     }
 
-    func openOpenGraphURL(sender: UIButton) {
+    func openOpenGraphURL(sender: AnyObject) {
         
         let reportId = sender.tag
+        
+//        print("The value of `sender` is \(sender)")
+//        
+//        print("The value of `sender` > `view` is \(sender.view)")
+        
         let report = JSON(self.reports[reportId])
         
         let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
