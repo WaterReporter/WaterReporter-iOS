@@ -94,7 +94,7 @@ class ActivityTableViewController: UITableViewController {
                 
                 if _selectedGroupName == _groupName {
                     
-                    let _selectedGroup = _group
+                    let _selectedGroup = JSON(_group)
                     
                     //        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
                     //        nextViewController.userObject = _thisReport["properties"]["owner"]
@@ -102,7 +102,10 @@ class ActivityTableViewController: UITableViewController {
                     //        self.navigationController?.pushViewController(nextViewController, animated: true)
                     
                     nextViewController.groupId = "\(_selectedGroup["id"])"
-                    nextViewController.groupObject = JSON(_selectedGroup)
+                    
+                    print("Selected group id \(nextViewController.groupId)")
+                    
+                    nextViewController.groupObject = _selectedGroup
                     
                     self.navigationController?.pushViewController(nextViewController, animated: true)
                     
