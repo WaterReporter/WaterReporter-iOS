@@ -75,6 +75,25 @@ class ActivityTableViewController: UITableViewController {
         })
         
     }
+    
+    @IBAction func loadGroupProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
+        
+        let _thisReport = JSON(self.reports[(sender.tag)])
+        
+        let _group = _thisReport["properties"]["groups"][0]
+        
+//        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+//        nextViewController.userObject = _thisReport["properties"]["owner"]
+//        
+//        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+        nextViewController.groupId = "\(_group["id"])"
+        nextViewController.groupObject = _group
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
 
     @IBAction func loadCommentOwnerProfile(sender: UIButton) {
         
@@ -595,6 +614,8 @@ class ActivityTableViewController: UITableViewController {
                     
                     let imageView = UIImageView()
                     
+//                    let groupBtn = UIButton()
+                    
                     imageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
                     
 //                    imageView.contentMode = .ScaleAspectFit
@@ -627,7 +648,16 @@ class ActivityTableViewController: UITableViewController {
                         
                     })
                     
-                    cell.reportGroupStack.addArrangedSubview(imageView)
+                    let groupBtn = UIButton()
+                    
+                    groupBtn.tag = indexPath.row
+                    groupBtn.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                    
+                    groupBtn.addSubview(imageView)
+                    
+//                    groupBtn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+                    
+                    cell.reportGroupStack.addArrangedSubview(groupBtn)
                     
                 }
                 
