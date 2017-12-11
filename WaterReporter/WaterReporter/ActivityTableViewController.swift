@@ -529,6 +529,9 @@ class ActivityTableViewController: UITableViewController {
 //                cell.reportDate.hidden = false
 //            }
             
+//            cell.reportOpenGraphStoryLink.setImage(nil, forState: UIControlState.Normal)
+//            cell.reportOpenGraphStoryLink.setImage(nil, forState: UIControlState.N)
+            
             if reportJson["social"] != nil && reportJson["social"].count != 0 {
                 cell.reportOpenGraphStoryLink.hidden = false
                 cell.reportOpenGraphStoryLink.tag = indexPath.row

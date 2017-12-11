@@ -168,9 +168,8 @@
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="256" id="zMg-yo-5S1"/>
                                                             </constraints>
                                                         </stackView>
-                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm1-9E-ifh">
+                                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm1-9E-ifh">
                                                             <rect key="frame" x="-4" y="127" width="32" height="20"/>
-                                                            <state key="normal" image="icon--arrowwhite"/>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
