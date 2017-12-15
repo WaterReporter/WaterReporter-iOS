@@ -636,7 +636,17 @@ class ActivityTableViewController: UITableViewController {
             
             print("Group stack width \(groupStackWidth)")
             
-            cell.reportGroupStack.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
+//            cell.reportGroupStack.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
+            
+//            cell.reportGroupStackLimiter.frame = CGRect(x: 0, y: 0, width: groupStackWidth, height: 1)
+//            
+//            cell.reportGroupStack.frame = CGRect(x: 0, y: 0, width: groupStackWidth, height: 40)
+//            
+//            cell.reportGroupStackLimiter.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
+            
+//            cell.reportGroupStackLimiter.frame.width = groupStackWidth
+            
+//            cell.reportGroupStack.addConstraint(NSLayoutConstraint(item: cell.reportGroupStackLimiter, attribute: .Trailing, relatedBy: .Equal, toItem: cell.reportGroupStack, attribute: .Trailing, multiplier: 1, constant: 0))
             
             for _group in reportGroups! as NSArray {
                 if let groupLogoUrl = _group.objectForKey("properties")!.objectForKey("picture") as? String,

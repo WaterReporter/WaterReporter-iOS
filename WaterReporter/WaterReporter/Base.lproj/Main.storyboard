@@ -30,7 +30,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NBS-Om-9lw" userLabel="Post Content Stack View">
-                                            <rect key="frame" x="0.0" y="60" width="24" height="1419.5"/>
+                                            <rect key="frame" x="0.0" y="60" width="24" height="1281.5"/>
                                             <subviews>
                                                 <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-iA-4dw">
                                                     <rect key="frame" x="0.0" y="0.0" width="24" height="320.5"/>
@@ -93,17 +93,25 @@
                                                         <constraint firstItem="Gdi-7Z-AJY" firstAttribute="leading" secondItem="riN-Au-gfr" secondAttribute="leading" id="vdb-FQ-aN7"/>
                                                     </constraints>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMI-7a-yZa" userLabel="Post Group Stack Limiter">
+                                                    <rect key="frame" x="-108" y="576" width="240" height="128"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="w8S-rG-1af"/>
+                                                        <constraint firstAttribute="width" constant="44" id="wzN-mt-E6a"/>
+                                                    </constraints>
+                                                </view>
                                                 <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" distribution="equalSpacing" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Lws-e1-KXD" userLabel="Post Group Stack">
                                                     <rect key="frame" x="0.0" y="621" width="24" height="110"/>
                                                 </stackView>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="GROUP_NAMES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Sg-oM-EMq">
-                                                    <rect key="frame" x="0.0" y="879" width="24" height="72"/>
+                                                    <rect key="frame" x="0.0" y="741" width="24" height="72"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CwM-QW-wwu" userLabel="Report Open Graph Object">
-                                                    <rect key="frame" x="0.0" y="961" width="24" height="274.5"/>
+                                                    <rect key="frame" x="0.0" y="823" width="24" height="274.5"/>
                                                     <subviews>
                                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mO-Qw-2Jk" userLabel="Open Graph Image Wrapper">
                                                             <rect key="frame" x="0.0" y="0.0" width="24" height="200"/>
@@ -149,7 +157,7 @@
                                                             </constraints>
                                                         </stackView>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm1-9E-ifh">
-                                                            <rect key="frame" x="-4" y="127" width="32" height="20"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="274.5"/>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -172,7 +180,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-EG-TlL">
-                                                    <rect key="frame" x="0.0" y="1245.5" width="24" height="24"/>
+                                                    <rect key="frame" x="0.0" y="1107.5" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="3eI-rW-F4k"/>
                                                         <constraint firstAttribute="height" constant="24" id="Za9-E6-GxL"/>
@@ -187,7 +195,7 @@
                                                     </connections>
                                                 </button>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jzA-J4-UR2" userLabel="Post Location Button">
-                                                    <rect key="frame" x="0.0" y="1279.5" width="24" height="24"/>
+                                                    <rect key="frame" x="0.0" y="1141.5" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="okE-AJ-w2v"/>
                                                         <constraint firstAttribute="height" constant="24" id="pHm-bW-KzK"/>
@@ -198,7 +206,7 @@
                                                     </connections>
                                                 </button>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWJ-bg-niv">
-                                                    <rect key="frame" x="0.0" y="1313.5" width="24" height="24"/>
+                                                    <rect key="frame" x="0.0" y="1175.5" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="24" id="3vK-z6-gjt"/>
                                                         <constraint firstAttribute="width" constant="24" id="Y7a-CU-Txs"/>
@@ -206,7 +214,7 @@
                                                     <state key="normal" image="Icon--Directions"/>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-4f-U7h" userLabel="Post Transactions View">
-                                                    <rect key="frame" x="0.0" y="1347.5" width="24" height="50"/>
+                                                    <rect key="frame" x="0.0" y="1209.5" width="24" height="50"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AX0-V4-2Nb" userLabel="Comment Section">
                                                             <rect key="frame" x="-108" y="-52.5" width="240" height="128"/>
@@ -271,7 +279,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHO-GK-b7u" userLabel="Spacer View">
-                                                    <rect key="frame" x="0.0" y="1407.5" width="24" height="12"/>
+                                                    <rect key="frame" x="0.0" y="1269.5" width="24" height="12"/>
                                                     <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="12" id="ia2-9u-xmf"/>
@@ -281,13 +289,16 @@
                                             <constraints>
                                                 <constraint firstItem="qHO-GK-b7u" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" id="4t4-rx-YsV"/>
                                                 <constraint firstAttribute="trailing" secondItem="riN-Au-gfr" secondAttribute="trailing" constant="8" id="7c6-vg-bEG"/>
+                                                <constraint firstItem="vMI-7a-yZa" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" id="CE2-ri-l6c"/>
                                                 <constraint firstAttribute="trailing" secondItem="CwM-QW-wwu" secondAttribute="trailing" constant="8" id="F5h-ac-TbJ"/>
                                                 <constraint firstAttribute="trailing" secondItem="4Sg-oM-EMq" secondAttribute="trailing" constant="8" id="ITM-JH-mmW"/>
                                                 <constraint firstItem="CwM-QW-wwu" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="RnF-aS-ShB"/>
                                                 <constraint firstAttribute="trailing" secondItem="qHO-GK-b7u" secondAttribute="trailing" id="Rnr-UJ-c07"/>
                                                 <constraint firstItem="Lws-e1-KXD" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="Sqp-cw-BSE"/>
+                                                <constraint firstItem="Lws-e1-KXD" firstAttribute="trailing" secondItem="vMI-7a-yZa" secondAttribute="trailing" id="evc-pi-9gJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="qHO-GK-b7u" secondAttribute="bottom" id="lxa-gW-hkf"/>
                                                 <constraint firstItem="4Sg-oM-EMq" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="qtl-pY-sIO"/>
+                                                <constraint firstItem="Lws-e1-KXD" firstAttribute="width" secondItem="vMI-7a-yZa" secondAttribute="width" id="rHj-Hq-Q8Y"/>
                                                 <constraint firstAttribute="trailing" secondItem="gjj-4f-U7h" secondAttribute="trailing" id="tOY-om-xMd"/>
                                                 <constraint firstItem="uzf-nX-7zv" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="vmB-Xf-YZw"/>
                                                 <constraint firstItem="gjj-4f-U7h" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" id="wAt-Zb-gaA"/>
@@ -358,6 +369,7 @@
                                     <outlet property="reportDirectionsButton" destination="mWJ-bg-niv" id="9mU-nY-1bw"/>
                                     <outlet property="reportGetDirectionsButton" destination="jzA-J4-UR2" id="fbV-Ih-EC1"/>
                                     <outlet property="reportGroupStack" destination="Lws-e1-KXD" id="EAr-Rr-EHO"/>
+                                    <outlet property="reportGroupStackLimiter" destination="vMI-7a-yZa" id="AV1-3F-M1c"/>
                                     <outlet property="reportGroups" destination="4Sg-oM-EMq" id="uX6-lG-hHM"/>
                                     <outlet property="reportImage" destination="Fxw-iA-4dw" id="ykS-n1-s4a"/>
                                     <outlet property="reportLikeButton" destination="bTy-nl-eSP" id="MGA-71-ckp"/>
