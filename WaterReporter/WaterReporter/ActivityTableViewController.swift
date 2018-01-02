@@ -26,6 +26,43 @@ class ActivityTableViewController: UITableViewController {
     //
     // MARK: @IBActions
     //
+
+    @IBAction func presentExtraPostActions(sender: UIButton) {
+        
+        // Dimiss keyboard before doing anything else
+        //
+        // self.buttonNewCommentTextView.resignFirstResponder()
+        
+        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let shareAction = UIAlertAction(title: "Share post", style: .Default, handler: nil)
+
+        thisActionSheet.addAction(shareAction)
+        
+        let locationAction = UIAlertAction(title: "View location", style: .Default, handler: nil)
+
+        thisActionSheet.addAction(locationAction)
+        
+        let directionAction = UIAlertAction(title: "Get directions", style: .Default, handler: nil)
+        
+//        let directionAction = UIAlertAction(
+//            title: "Get directions",
+//            style: .Default,
+//            handler: { action in
+//                // whatever else you need to do here
+//                print(listINeed)
+//            })
+
+        thisActionSheet.addAction(directionAction)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+
+        thisActionSheet.addAction(cancelAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+        
+    }
+
     @IBAction func shareButtonClicked(sender: UIButton) {
         
         print("sender.tag \(sender.tag)")
@@ -400,7 +437,12 @@ class ActivityTableViewController: UITableViewController {
             
             let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
             
-            
+            //
+            // Extra actions
+            //
+
+            cell.extraActionsButton.tag = indexPath.row
+            cell.extraActionsButton.addTarget(self, action: #selector(ActivityTableViewController.presentExtraPostActions(_:)), forControlEvents: .TouchUpInside)
             
             //
             // Territory
@@ -585,7 +627,7 @@ class ActivityTableViewController: UITableViewController {
 //            cell.reportOpenGraphStoryLink.setImage(nil, forState: UIControlState.N)
             
             if reportJson["social"] != nil && reportJson["social"].count != 0 {
-                cell.reportOpenGraphStoryLink.hidden = false
+                cell.reportOpenGraphStoryLink.hidden = true
                 cell.reportOpenGraphStoryLink.tag = indexPath.row
                 cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
 //                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0

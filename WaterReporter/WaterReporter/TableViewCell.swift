@@ -22,6 +22,12 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportOwnerImageButton: UIButton!
     @IBOutlet weak var reportImage: UIImageView!
     @IBOutlet weak var reportGroups: UILabel!
+    
+    //
+    // Extra actions
+    //
+    
+    @IBOutlet weak var extraActionsButton: UIButton!
 
     //
     // Groups
