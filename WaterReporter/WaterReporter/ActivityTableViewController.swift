@@ -29,13 +29,23 @@ class ActivityTableViewController: UITableViewController {
 
     @IBAction func presentExtraPostActions(sender: UIButton) {
         
-        // Dimiss keyboard before doing anything else
         //
-        // self.buttonNewCommentTextView.resignFirstResponder()
+        // Set up an action sheet and add our extra actions using
+        // the UIButton tag and UIButton itself as function params.
+        //
+        
+        let postIndex = sender.tag
         
         let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
-        let shareAction = UIAlertAction(title: "Share post", style: .Default, handler: nil)
+//        let shareAction = UIAlertAction(title: "Share post", style: .Default, handler: nil)
+        let shareAction = UIAlertAction(
+            title: "Share post",
+            style: .Default,
+            handler: { action in
+                self.shareButtonClicked(postIndex, button: sender)
+            }
+        )
 
         thisActionSheet.addAction(shareAction)
         
@@ -43,15 +53,15 @@ class ActivityTableViewController: UITableViewController {
 
         thisActionSheet.addAction(locationAction)
         
-        let directionAction = UIAlertAction(title: "Get directions", style: .Default, handler: nil)
+//        let directionAction = UIAlertAction(title: "Get directions", style: .Default, handler: nil)
         
-//        let directionAction = UIAlertAction(
-//            title: "Get directions",
-//            style: .Default,
-//            handler: { action in
-//                // whatever else you need to do here
-//                print(listINeed)
-//            })
+        let directionAction = UIAlertAction(
+            title: "Get directions",
+            style: .Default,
+            handler: { action in
+                self.openDirectionsURL(postIndex)
+            }
+        )
 
         thisActionSheet.addAction(directionAction)
 
@@ -63,11 +73,14 @@ class ActivityTableViewController: UITableViewController {
         
     }
 
-    @IBAction func shareButtonClicked(sender: UIButton) {
+    //@IBAction func shareButtonClicked(sender: UIButton) {
+    func shareButtonClicked(postId: Int, button: UIButton) {
         
-        print("sender.tag \(sender.tag)")
+//        print("sender.tag \(sender.tag)")
+        print("sender.tag \(postId)")
         
-        let _thisReport = JSON(self.reports[(sender.tag)])
+        // let _thisReport = JSON(self.reports[(sender.tag)])
+        let _thisReport = JSON(self.reports[(postId)])
         let reportId: String = "\(_thisReport["id"])"
         var objectsToShare: [AnyObject] = [AnyObject]()
         let reportURL = NSURL(string: "https://www.waterreporter.org/community/reports/" + reportId)
@@ -98,14 +111,14 @@ class ActivityTableViewController: UITableViewController {
                 
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 
-                activityVC.popoverPresentationController?.sourceView = sender
+                activityVC.popoverPresentationController?.sourceView = button
 
                 self.presentViewController(activityVC, animated: true, completion: nil)
             }
             else {
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 
-                activityVC.popoverPresentationController?.sourceView = sender
+                activityVC.popoverPresentationController?.sourceView = button
 
                 self.presentViewController(activityVC, animated: true, completion: nil)
             }
@@ -988,10 +1001,11 @@ class ActivityTableViewController: UITableViewController {
         return cell
     }
     
-    func openDirectionsURL(sender: UIBarButtonItem) {
-        
-        let reportId = sender.tag
-        let report = self.reports[reportId]
+//    func openDirectionsURL(sender: UIBarButtonItem) {
+    func openDirectionsURL(postId: Int) {
+    
+//        let reportId = sender.tag
+        let report = self.reports[postId]
         
         let reportGeometry = report.objectForKey("geometry")
         let reportGeometries = reportGeometry!.objectForKey("geometries")
