@@ -49,7 +49,14 @@ class ActivityTableViewController: UITableViewController {
 
         thisActionSheet.addAction(shareAction)
         
-        let locationAction = UIAlertAction(title: "View location", style: .Default, handler: nil)
+//        let locationAction = UIAlertAction(title: "View location", style: .Default, handler: nil)
+        let locationAction = UIAlertAction(
+            title: "View location",
+            style: .Default,
+            handler: { action in
+                self.performSegueWithIdentifier("reportToActivityMap", sender: sender)
+            }
+        )
 
         thisActionSheet.addAction(locationAction)
         
