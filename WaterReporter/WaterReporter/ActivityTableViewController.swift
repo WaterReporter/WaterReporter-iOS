@@ -628,69 +628,37 @@ class ActivityTableViewController: UITableViewController {
                 
             }
             
-//            if reportJson["social"] != nil && reportJson["social"].count != 0 {
-//                cell.reportOpenGraphStoryLink.hidden = false
-//                cell.reportOpenGraphStoryLink.tag = indexPath.row
-//                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
-//                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
-//                cell.reportOpenGraphStoryLink.clipsToBounds = true
-//                
-//                cell.reportDate.hidden = true
-//
-//            }
-//            else {
-//                cell.reportOpenGraphStoryLink.hidden = true
-//                cell.reportDate.hidden = false
-//            }
-            
-//            cell.reportOpenGraphStoryLink.setImage(nil, forState: UIControlState.Normal)
-//            cell.reportOpenGraphStoryLink.setImage(nil, forState: UIControlState.N)
+            //
+            // Set state of post Open Graph component
+            //
             
             if reportJson["social"] != nil && reportJson["social"].count != 0 {
-                cell.reportOpenGraphStoryLink.hidden = true
+                cell.reportOpenGraphStoryLink.hidden = false
                 cell.reportOpenGraphStoryLink.tag = indexPath.row
                 cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
-//                cell.reportOpenGraphStoryLink.layer.cornerRadius = 10.0
-//                cell.reportOpenGraphStoryLink.clipsToBounds = true
-                
-//                cell.reportDate.hidden = true
                 
             }
             else {
                 cell.reportOpenGraphStoryLink.hidden = true
-//                cell.reportDate.hidden = false
             }
             
             //
             // GROUPS
             //
             let reportGroups = report?.objectForKey("groups") as? NSArray
-//            var reportGroupsNames: String? = ""
-//            
-//            let reportGroupsTotal = reportGroups!.count
-//            var reportGroupsIncrementer = 1;
             
-//            for _group in reportGroups! as NSArray {
-//                if let thisGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
-//                    if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
-//                        reportGroupsNames = thisGroupName
-//                    }
-//                    else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
-//                        reportGroupsNames = reportGroupsNames! + ", " + thisGroupName
-//                    }
-//                    
-//                    reportGroupsIncrementer += 1
-//                }
-//                
-//            }
-            
-//            cell.reportGroups.text = reportGroupsNames
+            if reportGroups?.count > 0 {
+                cell.reportGroupStack.hidden = false
+            }
+            else {
+                cell.reportGroupStack.hidden = true
+            }
             
             //
             // Clear subviews from group stack view
             //
             
-            cell.reportGroupStack.subviews.forEach({ $0.removeFromSuperview() })
+//            cell.reportGroupStack.subviews.forEach({ $0.removeFromSuperview() })
             
 //            cell.reportGroupStack.frame.size.width = CGFloat(44 * (reportGroups?.count)!)
             
@@ -710,7 +678,9 @@ class ActivityTableViewController: UITableViewController {
             
 //            cell.reportGroupStack.addConstraint(NSLayoutConstraint(item: cell.reportGroupStackLimiter, attribute: .Trailing, relatedBy: .Equal, toItem: cell.reportGroupStack, attribute: .Trailing, multiplier: 1, constant: 0))
             
-            for _group in reportGroups! as NSArray {
+//            for _group in reportGroups! as NSArray {
+            for (index, _group) in reportGroups!.enumerate() {
+            
                 if let groupLogoUrl = _group.objectForKey("properties")!.objectForKey("picture") as? String,
                 let groupName = _group.objectForKey("properties")!.objectForKey("name") as? String{
                     
@@ -772,7 +742,29 @@ class ActivityTableViewController: UITableViewController {
                     
 //                    groupBtn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
                     
-                    cell.reportGroupStack.addArrangedSubview(groupBtn)
+//                    cell.reportGroupStack.addArrangedSubview(groupBtn)
+                    
+                    switch (index) {
+                        
+                        case 0:
+                            cell.postGroupOne.addSubview(groupBtn)
+                        
+                        case 1:
+                            cell.postGroupTwo.addSubview(groupBtn)
+                        
+                        case 2:
+                            cell.postGroupThree.addSubview(groupBtn)
+                        
+                        case 3:
+                            cell.postGroupFour.addSubview(groupBtn)
+                        
+                        case 4:
+                            cell.postGroupFive.addSubview(groupBtn)
+                        
+                        default:
+                            print(index)
+                        
+                    }
                     
                 }
                 
@@ -817,7 +809,7 @@ class ActivityTableViewController: UITableViewController {
 
             }
             else {
-                    cell.reportDescription.text = ""
+                cell.reportDescription.text = ""
             }
 
             //

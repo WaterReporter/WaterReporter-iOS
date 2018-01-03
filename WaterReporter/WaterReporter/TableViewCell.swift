@@ -36,6 +36,14 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportGroupStackLimiter: UIView!
     @IBOutlet weak var reportGroupStack: UIStackView!
     
+    @IBOutlet weak var postGroupOne: UIView!
+    @IBOutlet weak var postGroupTwo: UIView!
+    @IBOutlet weak var postGroupThree: UIView!
+    @IBOutlet weak var postGroupFour: UIView!
+    @IBOutlet weak var postGroupFive: UIView!
+    
+    //
+    
     @IBOutlet weak var reportGetDirectionsButton: UIButton!
     @IBOutlet weak var reportDate: UILabel!
     @IBOutlet weak var reportCommentCount: UIButton!

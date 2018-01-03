@@ -93,20 +93,53 @@
                                                         <constraint firstItem="Gdi-7Z-AJY" firstAttribute="leading" secondItem="riN-Au-gfr" secondAttribute="leading" id="vdb-FQ-aN7"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMI-7a-yZa" userLabel="Post Group Stack Limiter">
-                                                    <rect key="frame" x="0.0" y="479" width="44" height="40"/>
+                                                <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" distribution="equalSpacing" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Lws-e1-KXD" userLabel="Post Group Stack">
+                                                    <rect key="frame" x="0.0" y="478" width="44" height="40"/>
                                                     <subviews>
-                                                        <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" distribution="equalSpacing" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Lws-e1-KXD" userLabel="Post Group Stack">
-                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="40"/>
-                                                        </stackView>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7rZ-AZ-tBL" userLabel="Post Group One">
+                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="44" id="eFF-Ag-x1X"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z5E-5X-Szc" userLabel="Post Group Two">
+                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="44" id="DuN-D4-nfV"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZF-Fv-MHu" userLabel="Post Group Three">
+                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="44" id="be0-gb-YPp"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IfG-Rx-oD2" userLabel="Post Group Four">
+                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="44" id="wPH-D6-fTr"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Er9-oq-qVW" userLabel="Post Group Five">
+                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="44" id="Sac-9y-Vak"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Zhg-dv-wHu"/>
+                                                    </constraints>
+                                                </stackView>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMI-7a-yZa" userLabel="Post Group Stack Limiter">
+                                                    <rect key="frame" x="0.0" y="479" width="44" height="40"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="Lws-e1-KXD" secondAttribute="bottom" id="OAz-vI-HcY"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Lws-e1-KXD" secondAttribute="trailing" id="YQe-QX-MsV"/>
-                                                        <constraint firstItem="Lws-e1-KXD" firstAttribute="top" secondItem="vMI-7a-yZa" secondAttribute="top" id="dpt-dn-nf7"/>
-                                                        <constraint firstItem="Lws-e1-KXD" firstAttribute="leading" secondItem="vMI-7a-yZa" secondAttribute="leading" id="lee-mP-NZ0"/>
-                                                        <constraint firstAttribute="height" constant="40" id="w8S-rG-1af"/>
                                                         <constraint firstAttribute="width" constant="44" id="wzN-mt-E6a"/>
                                                     </constraints>
                                                 </view>
@@ -297,7 +330,9 @@
                                                 <constraint firstAttribute="trailing" secondItem="riN-Au-gfr" secondAttribute="trailing" constant="8" id="7c6-vg-bEG"/>
                                                 <constraint firstItem="vMI-7a-yZa" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="CE2-ri-l6c"/>
                                                 <constraint firstAttribute="trailing" secondItem="CwM-QW-wwu" secondAttribute="trailing" constant="8" id="F5h-ac-TbJ"/>
+                                                <constraint firstAttribute="trailing" secondItem="Lws-e1-KXD" secondAttribute="trailing" constant="8" id="H4H-za-b2d"/>
                                                 <constraint firstAttribute="trailing" secondItem="4Sg-oM-EMq" secondAttribute="trailing" constant="8" id="ITM-JH-mmW"/>
+                                                <constraint firstItem="Lws-e1-KXD" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="N13-fO-9t5"/>
                                                 <constraint firstItem="CwM-QW-wwu" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="RnF-aS-ShB"/>
                                                 <constraint firstAttribute="trailing" secondItem="qHO-GK-b7u" secondAttribute="trailing" id="Rnr-UJ-c07"/>
                                                 <constraint firstAttribute="bottom" secondItem="qHO-GK-b7u" secondAttribute="bottom" id="lxa-gW-hkf"/>
@@ -376,6 +411,11 @@
                                 <connections>
                                     <outlet property="dropletIcon" destination="x3h-xd-1Yq" id="ddD-8w-cHz"/>
                                     <outlet property="extraActionsButton" destination="YyF-bm-XD9" id="hzS-sL-qBt"/>
+                                    <outlet property="postGroupFive" destination="Er9-oq-qVW" id="00R-Kq-lcM"/>
+                                    <outlet property="postGroupFour" destination="IfG-Rx-oD2" id="HK9-2D-6MS"/>
+                                    <outlet property="postGroupOne" destination="7rZ-AZ-tBL" id="dxU-DD-Dwo"/>
+                                    <outlet property="postGroupThree" destination="aZF-Fv-MHu" id="Dbi-sJ-DHS"/>
+                                    <outlet property="postGroupTwo" destination="z5E-5X-Szc" id="n5H-qe-erF"/>
                                     <outlet property="reportCommentButton" destination="vAv-oZ-7LT" id="EgO-A3-aem"/>
                                     <outlet property="reportCommentCount" destination="tnf-6Y-yAX" id="beb-mD-e2U"/>
                                     <outlet property="reportDate" destination="T40-KM-JjO" id="lt2-Bq-4JH"/>
