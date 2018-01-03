@@ -647,6 +647,30 @@ class ActivityTableViewController: UITableViewController {
             //
             let reportGroups = report?.objectForKey("groups") as? NSArray
             
+            cell.postGroupOne.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupTwo.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupThree.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupFour.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupFive.subviews.forEach({ $0.removeFromSuperview() })
+            
+            cell.postGroupOne.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupTwo.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupThree.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupFour.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupFive.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            
+            cell.postGroupOne.setTitle(nil, forState: .Normal)
+            cell.postGroupTwo.setTitle(nil, forState: .Normal)
+            cell.postGroupThree.setTitle(nil, forState: .Normal)
+            cell.postGroupFour.setTitle(nil, forState: .Normal)
+            cell.postGroupFive.setTitle(nil, forState: .Normal)
+            
+//            cell.postGroupOne.hidden = true
+//            cell.postGroupTwo.hidden = true
+//            cell.postGroupThree.hidden = true
+//            cell.postGroupFour.hidden = true
+//            cell.postGroupFive.hidden = true
+            
             if reportGroups?.count > 0 {
                 cell.reportGroupStack.hidden = false
             }
@@ -662,9 +686,9 @@ class ActivityTableViewController: UITableViewController {
             
 //            cell.reportGroupStack.frame.size.width = CGFloat(44 * (reportGroups?.count)!)
             
-            let groupStackWidth:CGFloat = CGFloat(44 * (reportGroups?.count)!)
-            
-            print("Group stack width \(groupStackWidth)")
+//            let groupStackWidth:CGFloat = CGFloat(44 * (reportGroups?.count)!)
+//            
+//            print("Group stack width \(groupStackWidth)")
             
 //            cell.reportGroupStack.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
             
@@ -724,21 +748,21 @@ class ActivityTableViewController: UITableViewController {
                         
                     })
                     
-                    let groupBtn = UIButton()
+//                    let groupBtn = UIButton()
                     
 //                    let _groupName = _group["properties"]!!["name"] as? String
                     
-                    groupBtn.tag = indexPath.row
-                    groupBtn.setTitle(groupName, forState: .Normal)
-                    groupBtn.setTitleColor(UIColor(
-                        red: 240.0/255.0,
-                        green: 6.0/255.0,
-                        blue: 53.0/255.0,
-                        alpha: 0.0
-                        ), forState: .Normal)
-                    groupBtn.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+//                    groupBtn.tag = indexPath.row
+//                    groupBtn.setTitle(groupName, forState: .Normal)
+//                    groupBtn.setTitleColor(UIColor(
+//                        red: 240.0/255.0,
+//                        green: 6.0/255.0,
+//                        blue: 53.0/255.0,
+//                        alpha: 0.0
+//                        ), forState: .Normal)
+//                    groupBtn.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                     
-                    groupBtn.addSubview(imageView)
+//                    groupBtn.addSubview(imageView)
                     
 //                    groupBtn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
                     
@@ -747,29 +771,74 @@ class ActivityTableViewController: UITableViewController {
                     switch (index) {
                         
                         case 0:
+                            cell.postGroupOne.tag = indexPath.row
+                            cell.postGroupOne.setTitle(groupName, forState: .Normal)
+                            cell.postGroupOne.setTitleColor(UIColor(
+                                red: 240.0/255.0,
+                                green: 6.0/255.0,
+                                blue: 53.0/255.0,
+                                alpha: 0.0
+                                ), forState: .Normal)
+                            cell.postGroupOne.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                             cell.postGroupOne.layer.cornerRadius = cell.postGroupOne.frame.size.width / 2
                             cell.postGroupOne.clipsToBounds = true
-                            cell.postGroupOne.addSubview(groupBtn)
+                            cell.postGroupOne.addSubview(imageView)
                         
                         case 1:
+                            cell.postGroupTwo.tag = indexPath.row
+                            cell.postGroupTwo.setTitle(groupName, forState: .Normal)
+                            cell.postGroupTwo.setTitleColor(UIColor(
+                                red: 240.0/255.0,
+                                green: 6.0/255.0,
+                                blue: 53.0/255.0,
+                                alpha: 0.0
+                                ), forState: .Normal)
+                            cell.postGroupTwo.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                             cell.postGroupTwo.layer.cornerRadius = cell.postGroupTwo.frame.size.width / 2
                             cell.postGroupTwo.clipsToBounds = true
-                            cell.postGroupTwo.addSubview(groupBtn)
+                            cell.postGroupTwo.addSubview(imageView)
                         
                         case 2:
+                            cell.postGroupThree.tag = indexPath.row
+                            cell.postGroupThree.setTitle(groupName, forState: .Normal)
+                            cell.postGroupThree.setTitleColor(UIColor(
+                                red: 240.0/255.0,
+                                green: 6.0/255.0,
+                                blue: 53.0/255.0,
+                                alpha: 0.0
+                                ), forState: .Normal)
+                            cell.postGroupThree.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                             cell.postGroupThree.layer.cornerRadius = cell.postGroupThree.frame.size.width / 2
                             cell.postGroupThree.clipsToBounds = true
-                            cell.postGroupThree.addSubview(groupBtn)
+                            cell.postGroupThree.addSubview(imageView)
                         
                         case 3:
+                            cell.postGroupFour.tag = indexPath.row
+                            cell.postGroupFour.setTitle(groupName, forState: .Normal)
+                            cell.postGroupFour.setTitleColor(UIColor(
+                                red: 240.0/255.0,
+                                green: 6.0/255.0,
+                                blue: 53.0/255.0,
+                                alpha: 0.0
+                                ), forState: .Normal)
+                            cell.postGroupFour.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                             cell.postGroupFour.layer.cornerRadius = cell.postGroupFour.frame.size.width / 2
                             cell.postGroupFour.clipsToBounds = true
-                            cell.postGroupFour.addSubview(groupBtn)
+                            cell.postGroupFour.addSubview(imageView)
                         
                         case 4:
+                            cell.postGroupFive.tag = indexPath.row
+                            cell.postGroupFive.setTitle(groupName, forState: .Normal)
+                            cell.postGroupFive.setTitleColor(UIColor(
+                                red: 240.0/255.0,
+                                green: 6.0/255.0,
+                                blue: 53.0/255.0,
+                                alpha: 0.0
+                                ), forState: .Normal)
+                            cell.postGroupFive.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                             cell.postGroupFive.layer.cornerRadius = cell.postGroupFive.frame.size.width / 2
                             cell.postGroupFive.clipsToBounds = true
-                            cell.postGroupFive.addSubview(groupBtn)
+                            cell.postGroupFive.addSubview(imageView)
                         
                         default:
                             print(index)

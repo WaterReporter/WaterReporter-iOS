@@ -685,22 +685,22 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             return
         }
         
-        if self.userProfile!["properties"]["first_name"].string != "" && self.userProfile!["properties"]["last_name"].string != "" {
-            // Display user's first and last name
-
-            self.labelUserProfileName.text = self.userProfile!["properties"]["first_name"].string! + " " + self.userProfile!["properties"]["last_name"].string!
-            
-            print("Display User's Name \(self.labelUserProfileName.text)")
-        }
-        else {
-            self.labelUserProfileName.text = ""
-            
-            //
-            // Activate the "Finish Profile" prompt
-            //
-            print("Display Finish Profile Prompt")
-
-        }
+//        if self.userProfile!["properties"]["first_name"].string != "" && self.userProfile!["properties"]["last_name"].string != "" {
+//            // Display user's first and last name
+//
+//            self.labelUserProfileName.text = self.userProfile!["properties"]["first_name"].string! + " " + self.userProfile!["properties"]["last_name"].string!
+//            
+//            print("Display User's Name \(self.labelUserProfileName.text)")
+//        }
+//        else {
+//            self.labelUserProfileName.text = ""
+//            
+//            //
+//            // Activate the "Finish Profile" prompt
+//            //
+//            print("Display Finish Profile Prompt")
+//
+//        }
         
         // Display user's title
         if self.userProfile!["properties"]["title"].string != "" {
@@ -727,23 +727,103 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
 
         // Display user's profile picture
+//        var userProfileImageURL: NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+//
+//        if let thisUserProfileImageURLString = self.userProfile!["properties"]["picture"].string {
+//            userProfileImageURL = NSURL(string: String(thisUserProfileImageURLString))
+//        }
+//        
+//        self.imageViewUserProfileImage.kf_indicatorType = .Activity
+//        self.imageViewUserProfileImage.kf_showIndicatorWhenLoading = true
+//        
+//        self.imageViewUserProfileImage.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+//            (image, error, cacheType, imageUrl) in
+//            if (image != nil) {
+//                self.imageViewUserProfileImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+//            }
+//            self.imageViewUserProfileImage.clipsToBounds = true
+//        })
+        
+        let headerView = UIView()
+        
+        headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 144)
+        
+        headerView.backgroundColor = UIColor(
+            red: 240.0/255.0,
+            green: 6.0/255.0,
+            blue: 53.0/255.0,
+            alpha: 0.0
+        )
+        
+        let margins = self.view.layoutMarginsGuide
+        
+        headerView.leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor, constant: 0.0)
+        
+        headerView.trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor, constant: 0.0)
+        
+        let userImageView = UIImageView()
+        
+        userImageView.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
+        
+        userImageView.center = CGPoint(x: 160, y: 48)
+        
         var userProfileImageURL: NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
-
+        
         if let thisUserProfileImageURLString = self.userProfile!["properties"]["picture"].string {
             userProfileImageURL = NSURL(string: String(thisUserProfileImageURLString))
         }
         
-        self.imageViewUserProfileImage.kf_indicatorType = .Activity
-        self.imageViewUserProfileImage.kf_showIndicatorWhenLoading = true
+//        self.imageViewUserProfileImage.kf_indicatorType = .Activity
+//        self.imageViewUserProfileImage.kf_showIndicatorWhenLoading = true
         
-        self.imageViewUserProfileImage.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+        userImageView.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
             (image, error, cacheType, imageUrl) in
             if (image != nil) {
-                self.imageViewUserProfileImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                userImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
             }
-            self.imageViewUserProfileImage.clipsToBounds = true
+            userImageView.layer.cornerRadius = userImageView.frame.size.width / 2
+            userImageView.clipsToBounds = true
         })
         
+        //
+        // Center the user avatar horizontally in its container
+        //
+        
+//        userImageView.centerXAnchor.constraintEqualToAnchor(headerView.centerXAnchor)
+        
+//        userImageView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor).isActive = true
+        
+        headerView.addSubview(userImageView)
+        
+        if self.userProfile!["properties"]["first_name"].string != "" && self.userProfile!["properties"]["last_name"].string != "" {
+            
+            // Display user's first and last name
+            
+            let userNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+            
+            userNameLabel.center = CGPoint(x: 160, y: 96)
+            userNameLabel.textAlignment = .Center
+            userNameLabel.font = UIFont.systemFontOfSize(17, weight: UIFontWeightRegular)
+            
+            userNameLabel.text = self.userProfile!["properties"]["first_name"].string! + " " + self.userProfile!["properties"]["last_name"].string!
+            
+            headerView.addSubview(userNameLabel)
+            
+            print("Display User's Name \(userNameLabel.text)")
+            
+        }
+        else {
+            
+//            self.labelUserProfileName.text = ""
+            
+            //
+            // Activate the "Finish Profile" prompt
+            //
+            print("Display Finish Profile Prompt")
+            
+        }
+        
+        self.submissionTableView.tableHeaderView = headerView
         
         //
         // Load and display other user information
@@ -927,7 +1007,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 switch response.result {
                 case .Success(let value):
                     
-                    print("Response Success: value")
+                    print("Response Success: \(value)")
                     
                     // Before anything else, check to make sure we are
                     // processing a valid request. Sometimes we get error
