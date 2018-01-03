@@ -33,7 +33,7 @@ class TableViewCell: UITableViewCell {
     // Groups
     //
     
-    @IBOutlet weak var reportGroupStackLimiter: UIView!
+//    @IBOutlet weak var reportGroupStackLimiter: UIView!
     @IBOutlet weak var reportGroupStack: UIStackView!
     
     @IBOutlet weak var postGroupOne: UIView!

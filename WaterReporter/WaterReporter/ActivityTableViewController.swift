@@ -747,18 +747,28 @@ class ActivityTableViewController: UITableViewController {
                     switch (index) {
                         
                         case 0:
+                            cell.postGroupOne.layer.cornerRadius = cell.postGroupOne.frame.size.width / 2
+                            cell.postGroupOne.clipsToBounds = true
                             cell.postGroupOne.addSubview(groupBtn)
                         
                         case 1:
+                            cell.postGroupTwo.layer.cornerRadius = cell.postGroupTwo.frame.size.width / 2
+                            cell.postGroupTwo.clipsToBounds = true
                             cell.postGroupTwo.addSubview(groupBtn)
                         
                         case 2:
+                            cell.postGroupThree.layer.cornerRadius = cell.postGroupThree.frame.size.width / 2
+                            cell.postGroupThree.clipsToBounds = true
                             cell.postGroupThree.addSubview(groupBtn)
                         
                         case 3:
+                            cell.postGroupFour.layer.cornerRadius = cell.postGroupFour.frame.size.width / 2
+                            cell.postGroupFour.clipsToBounds = true
                             cell.postGroupFour.addSubview(groupBtn)
                         
                         case 4:
+                            cell.postGroupFive.layer.cornerRadius = cell.postGroupFive.frame.size.width / 2
+                            cell.postGroupFive.clipsToBounds = true
                             cell.postGroupFive.addSubview(groupBtn)
                         
                         default:

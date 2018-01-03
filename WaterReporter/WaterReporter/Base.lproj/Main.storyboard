@@ -30,7 +30,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NBS-Om-9lw" userLabel="Post Content Stack View">
-                                            <rect key="frame" x="0.0" y="60" width="44" height="997.5"/>
+                                            <rect key="frame" x="0.0" y="60" width="44" height="1258.5"/>
                                             <subviews>
                                                 <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-iA-4dw">
                                                     <rect key="frame" x="0.0" y="0.0" width="44" height="320.5"/>
@@ -40,7 +40,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REPORT_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uzf-nX-7zv" customClass="ActiveLabel" customModule="ActiveLabel">
-                                                    <rect key="frame" x="0.0" y="330.5" width="44" height="0.0"/>
+                                                    <rect key="frame" x="0.0" y="330.5" width="44" height="70"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" red="0.062745098039215685" green="0.062745098039215685" blue="0.062745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -60,7 +60,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="riN-Au-gfr" userLabel="Post Territory">
-                                                    <rect key="frame" x="0.0" y="340.5" width="44" height="128.5"/>
+                                                    <rect key="frame" x="0.0" y="410.5" width="44" height="128.5"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--comment" translatesAutoresizingMaskIntoConstraints="NO" id="x3h-xd-1Yq" userLabel="Droplet Icon View">
                                                             <rect key="frame" x="0.0" y="56.5" width="16" height="16"/>
@@ -93,39 +93,39 @@
                                                         <constraint firstItem="Gdi-7Z-AJY" firstAttribute="leading" secondItem="riN-Au-gfr" secondAttribute="leading" id="vdb-FQ-aN7"/>
                                                     </constraints>
                                                 </view>
-                                                <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" distribution="equalSpacing" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Lws-e1-KXD" userLabel="Post Group Stack">
-                                                    <rect key="frame" x="0.0" y="478" width="44" height="40"/>
+                                                <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="Lws-e1-KXD" userLabel="Post Group Stack">
+                                                    <rect key="frame" x="0.0" y="549" width="44" height="128"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7rZ-AZ-tBL" userLabel="Post Group One">
-                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="128"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="eFF-Ag-x1X"/>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z5E-5X-Szc" userLabel="Post Group Two">
-                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="128"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="DuN-D4-nfV"/>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZF-Fv-MHu" userLabel="Post Group Three">
-                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="128"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="be0-gb-YPp"/>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IfG-Rx-oD2" userLabel="Post Group Four">
-                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="128"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="wPH-D6-fTr"/>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Er9-oq-qVW" userLabel="Post Group Five">
-                                                            <rect key="frame" x="-98" y="-44" width="240" height="128"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="44" height="128"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="44" id="Sac-9y-Vak"/>
@@ -133,24 +133,21 @@
                                                         </view>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Zhg-dv-wHu"/>
+                                                        <constraint firstItem="IfG-Rx-oD2" firstAttribute="leading" secondItem="aZF-Fv-MHu" secondAttribute="trailing" constant="-8" id="2FM-Pe-Ufb"/>
+                                                        <constraint firstItem="aZF-Fv-MHu" firstAttribute="leading" secondItem="z5E-5X-Szc" secondAttribute="trailing" constant="-8" id="Jmq-ff-gki"/>
+                                                        <constraint firstAttribute="height" constant="44" id="Zhg-dv-wHu"/>
+                                                        <constraint firstItem="Er9-oq-qVW" firstAttribute="leading" secondItem="IfG-Rx-oD2" secondAttribute="trailing" constant="-8" id="c3o-aA-fHx"/>
+                                                        <constraint firstItem="z5E-5X-Szc" firstAttribute="leading" secondItem="7rZ-AZ-tBL" secondAttribute="trailing" constant="-8" id="ptm-yZ-lJj"/>
                                                     </constraints>
                                                 </stackView>
-                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vMI-7a-yZa" userLabel="Post Group Stack Limiter">
-                                                    <rect key="frame" x="0.0" y="479" width="44" height="40"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="44" id="wzN-mt-E6a"/>
-                                                    </constraints>
-                                                </view>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="GROUP_NAMES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Sg-oM-EMq">
-                                                    <rect key="frame" x="0.0" y="529" width="44" height="0.0"/>
+                                                    <rect key="frame" x="0.0" y="747" width="44" height="43"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CwM-QW-wwu" userLabel="Report Open Graph Object">
-                                                    <rect key="frame" x="0.0" y="539" width="44" height="274.5"/>
+                                                    <rect key="frame" x="0.0" y="800" width="44" height="274.5"/>
                                                     <subviews>
                                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mO-Qw-2Jk" userLabel="Open Graph Image Wrapper">
                                                             <rect key="frame" x="0.0" y="0.0" width="44" height="200"/>
@@ -219,7 +216,7 @@
                                                     </constraints>
                                                 </view>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-EG-TlL">
-                                                    <rect key="frame" x="0.0" y="823.5" width="44" height="24"/>
+                                                    <rect key="frame" x="0.0" y="1084.5" width="44" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="3eI-rW-F4k"/>
                                                         <constraint firstAttribute="height" constant="24" id="Za9-E6-GxL"/>
@@ -234,7 +231,7 @@
                                                     </connections>
                                                 </button>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jzA-J4-UR2" userLabel="Post Location Button">
-                                                    <rect key="frame" x="0.0" y="857.5" width="44" height="24"/>
+                                                    <rect key="frame" x="0.0" y="1118.5" width="44" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="okE-AJ-w2v"/>
                                                         <constraint firstAttribute="height" constant="24" id="pHm-bW-KzK"/>
@@ -245,7 +242,7 @@
                                                     </connections>
                                                 </button>
                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mWJ-bg-niv">
-                                                    <rect key="frame" x="0.0" y="891.5" width="44" height="24"/>
+                                                    <rect key="frame" x="0.0" y="1152.5" width="44" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="24" id="3vK-z6-gjt"/>
                                                         <constraint firstAttribute="width" constant="24" id="Y7a-CU-Txs"/>
@@ -253,7 +250,7 @@
                                                     <state key="normal" image="Icon--Directions"/>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-4f-U7h" userLabel="Post Transactions View">
-                                                    <rect key="frame" x="0.0" y="925.5" width="44" height="50"/>
+                                                    <rect key="frame" x="0.0" y="1186.5" width="44" height="50"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AX0-V4-2Nb" userLabel="Comment Section">
                                                             <rect key="frame" x="-108" y="-52.5" width="240" height="128"/>
@@ -318,7 +315,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qHO-GK-b7u" userLabel="Spacer View">
-                                                    <rect key="frame" x="0.0" y="985.5" width="44" height="12"/>
+                                                    <rect key="frame" x="0.0" y="1246.5" width="44" height="12"/>
                                                     <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="12" id="ia2-9u-xmf"/>
@@ -328,7 +325,6 @@
                                             <constraints>
                                                 <constraint firstItem="qHO-GK-b7u" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" id="4t4-rx-YsV"/>
                                                 <constraint firstAttribute="trailing" secondItem="riN-Au-gfr" secondAttribute="trailing" constant="8" id="7c6-vg-bEG"/>
-                                                <constraint firstItem="vMI-7a-yZa" firstAttribute="leading" secondItem="NBS-Om-9lw" secondAttribute="leading" constant="8" id="CE2-ri-l6c"/>
                                                 <constraint firstAttribute="trailing" secondItem="CwM-QW-wwu" secondAttribute="trailing" constant="8" id="F5h-ac-TbJ"/>
                                                 <constraint firstAttribute="trailing" secondItem="Lws-e1-KXD" secondAttribute="trailing" constant="8" id="H4H-za-b2d"/>
                                                 <constraint firstAttribute="trailing" secondItem="4Sg-oM-EMq" secondAttribute="trailing" constant="8" id="ITM-JH-mmW"/>
@@ -366,7 +362,7 @@
                                             <rect key="frame" x="12" y="12" width="40" height="30"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YyF-bm-XD9" userLabel="Extra Actions Button">
-                                            <rect key="frame" x="145" y="158" width="84" height="30"/>
+                                            <rect key="frame" x="6" y="15" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="0HN-9L-reT"/>
                                                 <constraint firstAttribute="width" constant="30" id="Udg-JS-Wwi"/>
@@ -423,7 +419,6 @@
                                     <outlet property="reportDirectionsButton" destination="mWJ-bg-niv" id="9mU-nY-1bw"/>
                                     <outlet property="reportGetDirectionsButton" destination="jzA-J4-UR2" id="fbV-Ih-EC1"/>
                                     <outlet property="reportGroupStack" destination="Lws-e1-KXD" id="EAr-Rr-EHO"/>
-                                    <outlet property="reportGroupStackLimiter" destination="vMI-7a-yZa" id="AV1-3F-M1c"/>
                                     <outlet property="reportGroups" destination="4Sg-oM-EMq" id="uX6-lG-hHM"/>
                                     <outlet property="reportImage" destination="Fxw-iA-4dw" id="ykS-n1-s4a"/>
                                     <outlet property="reportLikeButton" destination="bTy-nl-eSP" id="MGA-71-ckp"/>
