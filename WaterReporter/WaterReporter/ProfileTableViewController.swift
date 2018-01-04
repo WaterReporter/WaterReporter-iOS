@@ -812,68 +812,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         //
         // Summary stats group view
         //
-        
-//        let statGroupView: UIView = {
-//            let view = UIView()
-//            view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 32)
-//            view.center = CGPoint(x: 160, y: 200)
-//            view.backgroundColor = UIColor(
-//                red: 200.0/255.0,
-//                green: 208.0/255.0,
-//                blue: 216.0/255.0,
-//                alpha: 1.0
-//            )
-//            return view
-//        }()
-        
-//        statGroupView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 32)
-//        
-//        statGroupView.center = CGPoint(x: 160, y: 200)
-//        
-//        statGroupView.backgroundColor = UIColor(
-//            red: 200.0/255.0,
-//            green: 208.0/255.0,
-//            blue: 216.0/255.0,
-//            alpha: 1.0
-//        )
-        
-//        let statStackView = UIStackView()
-//        
-//        statStackView.axis = .Horizontal;
-//        statStackView.distribution = .FillEqually;
-//        statStackView.alignment = .Center;
-//        statStackView.spacing = 0;
 
         self.profileTableHeader.addSubview(statGroupView)
-        
-//        statGroupView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor).active = true
-//        statGroupView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor).active = true
-//        statGroupView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor).active = true
-        
-        //
-        // Summary stats stack view
-        //
-        
-//        let statStackView = UIStackView()
-//        
-//        statStackView.axis = .Horizontal;
-//        statStackView.distribution = .Fill;
-//        statStackView.alignment = .Fill;
-//        statStackView.spacing = 0;
-//        statStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-//        statGroupView.addSubview(statStackView)
-//
-//        statStackView.leadingAnchor.constraintEqualToAnchor(statGroupView.leadingAnchor).active = true
-//        statStackView.trailingAnchor.constraintEqualToAnchor(statGroupView.trailingAnchor).active = true
-//        statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
-//        statStackView.heightAnchor.constraintEqualToConstant(24.0).active = true
-//        statStackView.widthAnchor.constraintEqualToAnchor(statGroupView.widthAnchor, multiplier: 1.0)
-//        statStackView.topAnchor.constraintEqualToAnchor(headerView.topAnchor).active = true
-//        statStackView.bottomAnchor.constraintEqualToAnchor(headerView.bottomAnchor).active = true
-        
-//        let margins = statGroupView.layoutMarginsGuide
-//        .leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 20).isActive = true
         
         //
         // Post count
@@ -888,6 +828,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             return label
         }()
         
+        //
+        // Action count
+        //
+        
         let actionCountLabel: UILabel = {
             let label = UILabel()
             label.textAlignment = .Center
@@ -896,6 +840,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
+        
+        //
+        // Group count
+        //
         
         let groupCountLabel: UILabel = {
             let label = UILabel()
@@ -906,10 +854,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             return label
         }()
         
+        //
+        // Stat stack view
+        //
+        
         let statStackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [postCountLabel, actionCountLabel, groupCountLabel])
             stackView.alignment = .Fill
-            stackView.distribution = .Fill
+            stackView.distribution = .FillEqually
             stackView.axis = .Horizontal
             stackView.translatesAutoresizingMaskIntoConstraints = false
             return stackView
@@ -922,24 +874,19 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
         statStackView.heightAnchor.constraintEqualToConstant(24.0).active = true
         
-//        do {
-//            let postCountLabel = try UILabel()
-//        } catch {
-//            print(error)
-//        }
-        
-//        let postCountLabel = UILabel()
-//        
-//        postCountLabel.textAlignment = .Center
-//        postCountLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightMedium)
-//        postCountLabel.heightAnchor.constraintEqualToConstant(24.0).active = true
-//        postCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        //
+        // Populate values
+        //
         
         if let postCount = self.userSnapshot!["posts"].int {
             
             postCountLabel.text = "\(postCount) posts"
             
-//            statStackView.addArrangedSubview(postCountLabel)
+            if postCount == 1 {
+                
+                postCountLabel.text = "\(postCount) post"
+                
+            }
             
         } else {
             
@@ -947,49 +894,32 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
         }
         
-//        postCountLabel.text = self.userSnapshot!["posts"].string! + " posts"
-//        
-//        statStackView.addArrangedSubview(postCountLabel)
-        
-        //
-        // Actions count
-        //
-        
-//        let actionCountLabel = UILabel()
-//        
-//        actionCountLabel.textAlignment = .Center
-//        actionCountLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightMedium)
-//        actionCountLabel.heightAnchor.constraintEqualToConstant(24.0).active = true
-//        actionCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         if let actionCount = self.userSnapshot!["actions"].int {
             
-            postCountLabel.text = "\(actionCount) actions"
+            actionCountLabel.text = "\(actionCount) actions"
             
-//            statStackView.addArrangedSubview(actionCountLabel)
+            if actionCount == 1 {
+                
+                actionCountLabel.text = "\(actionCount) post"
+                
+            }
             
         } else {
             
             print("No action count")
             
         }
-        
-        //
-        // Groups count
-        //
-        
-//        let groupCountLabel = UILabel()
-//        
-//        groupCountLabel.textAlignment = .Center
-//        groupCountLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightMedium)
-//        groupCountLabel.heightAnchor.constraintEqualToConstant(24.0).active = true
-//        groupCountLabel.translatesAutoresizingMaskIntoConstraints = false
+
         
         if let groupCount = self.userSnapshot!["groups"].int {
             
-            postCountLabel.text = "\(groupCount) groups"
+            groupCountLabel.text = "\(groupCount) groups"
             
-//            statStackView.addArrangedSubview(groupCountLabel)
+            if groupCount == 1 {
+                
+                groupCountLabel.text = "\(groupCount) post"
+                
+            }
             
         } else {
             
