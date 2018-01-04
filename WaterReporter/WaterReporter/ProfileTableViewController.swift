@@ -702,29 +702,29 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 //
 //        }
         
-        // Display user's title
-        if self.userProfile!["properties"]["title"].string != "" {
-            self.labelUserProfileTitle.text = self.userProfile!["properties"]["title"].string
-        }
-        else {
-            self.labelUserProfileTitle.text = ""
-        }
-
-        // Display user's organization name
-        if self.userProfile!["properties"]["organization_name"].string != "" {
-            self.labelUserProfileOrganizationName.text = self.userProfile!["properties"]["organization_name"].string
-        }
-        else {
-            self.labelUserProfileOrganizationName.text = ""
-        }
-
-        // Display user's description/bio
-        if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
-            self.labelUserProfileDescription.text = self.userProfile!["properties"]["description"].string
-        }
-        else {
-            self.labelUserProfileDescription.text = ""
-        }
+//        // Display user's title
+//        if self.userProfile!["properties"]["title"].string != "" {
+//            self.labelUserProfileTitle.text = self.userProfile!["properties"]["title"].string
+//        }
+//        else {
+//            self.labelUserProfileTitle.text = ""
+//        }
+//
+//        // Display user's organization name
+//        if self.userProfile!["properties"]["organization_name"].string != "" {
+//            self.labelUserProfileOrganizationName.text = self.userProfile!["properties"]["organization_name"].string
+//        }
+//        else {
+//            self.labelUserProfileOrganizationName.text = ""
+//        }
+//
+//        // Display user's description/bio
+//        if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
+//            self.labelUserProfileDescription.text = self.userProfile!["properties"]["description"].string
+//        }
+//        else {
+//            self.labelUserProfileDescription.text = ""
+//        }
 
         // Display user's profile picture
 //        var userProfileImageURL: NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
@@ -746,13 +746,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         let headerView = UIView()
         
-        headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 144)
+        headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
         
         headerView.backgroundColor = UIColor(
-            red: 240.0/255.0,
-            green: 6.0/255.0,
-            blue: 53.0/255.0,
-            alpha: 0.0
+            red: 245.0/255.0,
+            green: 247.0/255.0,
+            blue: 249.0/255.0,
+            alpha: 1.0
         )
         
         let margins = self.view.layoutMarginsGuide
@@ -801,7 +801,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             let userNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
             
-            userNameLabel.center = CGPoint(x: 160, y: 96)
+            userNameLabel.center = CGPoint(x: 160, y: 100)
             userNameLabel.textAlignment = .Center
             userNameLabel.font = UIFont.systemFontOfSize(17, weight: UIFontWeightRegular)
             
@@ -822,6 +822,57 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             print("Display Finish Profile Prompt")
             
         }
+        
+        // Display user's title
+        if self.userProfile!["properties"]["title"].string != "" {
+            
+            let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+            
+            userTitleLabel.center = CGPoint(x: 160, y: 112)
+            userTitleLabel.textAlignment = .Center
+            userTitleLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
+            
+            userTitleLabel.text = self.userProfile!["properties"]["title"].string
+            
+            headerView.addSubview(userTitleLabel)
+            
+        }
+        
+        // Display user's organization name
+        if self.userProfile!["properties"]["organization_name"].string != "" {
+            
+            let userOrganizationNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+            
+            userOrganizationNameLabel.center = CGPoint(x: 160, y: 124)
+            userOrganizationNameLabel.textAlignment = .Center
+            userOrganizationNameLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
+            
+            userOrganizationNameLabel.text = self.userProfile!["properties"]["organization_name"].string
+            
+            headerView.addSubview(userOrganizationNameLabel)
+            
+        }
+        
+        // Display user's description/bio
+        if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
+            
+            let userBioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 272, height: 32))
+            
+            userBioLabel.center = CGPoint(x: 160, y: 160)
+            userBioLabel.textAlignment = .Left
+            userBioLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
+            userBioLabel.numberOfLines = 3
+            userBioLabel.lineBreakMode = .ByTruncatingTail
+            
+            userBioLabel.text = self.userProfile!["properties"]["description"].string
+            
+//            userBioLabel.sizeToFit()
+            
+            headerView.addSubview(userBioLabel)
+            
+        }
+        
+//        headerView.sizeToFit()
         
         self.submissionTableView.tableHeaderView = headerView
         
