@@ -770,13 +770,17 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         if let userTitleString = self.userProfile!["properties"]["title"].string {
             
-            titleArray.append(userTitleString)
+            if userTitleString != "" {
+                titleArray.append(userTitleString)
+            }
             
         }
         
         if let userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string {
             
-            titleArray.append(userOrganizationNameString)
+            if userOrganizationNameString != "" {
+                titleArray.append(userOrganizationNameString)
+            }
             
         }
         
@@ -1154,7 +1158,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
             userTitleLabel.center = CGPoint(x: 160, y: userTitleYOffset)
             userTitleLabel.textAlignment = .Center
-            userTitleLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
+            userTitleLabel.font = UIFont.systemFontOfSize(12, weight: UIFontWeightRegular)
 
             userTitleLabel.text = userTitleString
 
@@ -1183,7 +1187,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             let userBioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 272, height: 32))
             
             userBioLabel.center = CGPoint(x: 160, y: userBioYOffset)
-            userBioLabel.textAlignment = .Left
+            userBioLabel.textAlignment = .Center
             userBioLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
             userBioLabel.numberOfLines = 2
             userBioLabel.lineBreakMode = .ByTruncatingTail
