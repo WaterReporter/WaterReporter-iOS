@@ -429,6 +429,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     var userId: String!
     var userObject: JSON?
     var userProfile: JSON?
+    var userSnapshot: JSON?
     var isActingUsersProfile: Bool = false
 
     var userGroups: JSON?
@@ -452,6 +453,12 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     var likeDelay: NSTimer = NSTimer()
     var unlikeDelay: NSTimer = NSTimer()
+    
+    //
+    // Table header view
+    //
+    
+    var profileTableHeader = UIView()
 
     //
     // MARK: UIKit Overrides
@@ -734,9 +741,139 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
+    func displayUserSnapshotInformation() {
+        
+        print("displayUserSnapshotInformation")
+        
+        print("User snapshot value is: \(self.userSnapshot)")
+        
+        //
+        // Summary stats group view
+        //
+        
+        let statGroupView = UIView()
+        
+        statGroupView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 32)
+        
+        statGroupView.center = CGPoint(x: 160, y: 200)
+        
+        statGroupView.backgroundColor = UIColor(
+            red: 200.0/255.0,
+            green: 208.0/255.0,
+            blue: 216.0/255.0,
+            alpha: 1.0
+        )
+        
+//        let statStackView = UIStackView()
+//        
+//        statStackView.axis = .Horizontal;
+//        statStackView.distribution = .FillEqually;
+//        statStackView.alignment = .Center;
+//        statStackView.spacing = 0;
+
+        self.profileTableHeader.addSubview(statGroupView)
+        
+//        statGroupView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor).active = true
+//        statGroupView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor).active = true
+//        statGroupView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor).active = true
+        
+        //
+        // Summary stats stack view
+        //
+        
+        let statStackView = UIStackView()
+        
+        statStackView.axis = .Horizontal;
+        statStackView.distribution = .FillEqually;
+        statStackView.alignment = .Center;
+        statStackView.spacing = 0;
+        
+        statGroupView.addSubview(statStackView)
+
+        statStackView.leadingAnchor.constraintEqualToAnchor(statGroupView.leadingAnchor).active = true
+        statStackView.trailingAnchor.constraintEqualToAnchor(statGroupView.trailingAnchor).active = true
+        statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
+        statStackView.heightAnchor.constraintEqualToConstant(24.0).active = true
+//        statStackView.topAnchor.constraintEqualToAnchor(headerView.topAnchor).active = true
+//        statStackView.bottomAnchor.constraintEqualToAnchor(headerView.bottomAnchor).active = true
+        
+        //
+        // Post count
+        //
+        
+        let postCountLabel = UILabel()
+        
+        postCountLabel.textAlignment = .Center
+        postCountLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
+        postCountLabel.heightAnchor.constraintEqualToConstant(24.0).active = true
+        
+        if let postCount = self.userSnapshot!["posts"].int {
+            
+            postCountLabel.text = "\(postCount) posts"
+            
+            statStackView.addArrangedSubview(postCountLabel)
+            
+        } else {
+            
+            print("No post count")
+            
+        }
+        
+//        postCountLabel.text = self.userSnapshot!["posts"].string! + " posts"
+//        
+//        statStackView.addArrangedSubview(postCountLabel)
+        
+        //
+        // Actions count
+        //
+        
+        let actionCountLabel = UILabel()
+        
+        actionCountLabel.textAlignment = .Center
+        actionCountLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
+        actionCountLabel.heightAnchor.constraintEqualToConstant(24.0).active = true
+        
+        if let actionCount = self.userSnapshot!["actions"].int {
+            
+            postCountLabel.text = "\(actionCount) actions"
+            
+            statStackView.addArrangedSubview(actionCountLabel)
+            
+        } else {
+            
+            print("No action count")
+            
+        }
+        
+        //
+        // Groups count
+        //
+        
+        let groupCountLabel = UILabel()
+        
+        groupCountLabel.textAlignment = .Center
+        groupCountLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
+        groupCountLabel.heightAnchor.constraintEqualToConstant(24.0).active = true
+        
+        if let groupCount = self.userSnapshot!["groups"].int {
+            
+            postCountLabel.text = "\(groupCount) groups"
+            
+            statStackView.addArrangedSubview(groupCountLabel)
+            
+        } else {
+            
+            print("No group count")
+            
+        }
+        
+    }
+    
     func displayUserProfileInformation(withoutReportReload: Bool = false) {
         
         print("displayUserProfileInformation")
+        
+        print("User profile value is: \(self.userProfile)")
         
         // Ensure we have loaded the user profile
         guard (self.userProfile != nil) else {
@@ -803,11 +940,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 //            self.imageViewUserProfileImage.clipsToBounds = true
 //        })
         
-        let headerView = UIView()
+//        let headerView = UIView()
         
-        headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
+        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
         
-        headerView.backgroundColor = UIColor(
+        profileTableHeader.backgroundColor = UIColor(
             red: 245.0/255.0,
             green: 247.0/255.0,
             blue: 249.0/255.0,
@@ -824,7 +961,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Default vertical offsets for header components
         //
         
-        let userTitleYOffset = 122
+        let userTitleYOffset = 124
 //        let organizationNameYOffset = 124
         let userBioYOffset = 160
         
@@ -877,7 +1014,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
 //        userImageView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor).isActive = true
         
-        headerView.addSubview(userImageView)
+        profileTableHeader.addSubview(userImageView)
         
         if self.userProfile!["properties"]["first_name"].string != "" && self.userProfile!["properties"]["last_name"].string != "" {
             
@@ -891,7 +1028,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             userNameLabel.text = self.userProfile!["properties"]["first_name"].string! + " " + self.userProfile!["properties"]["last_name"].string!
             
-            headerView.addSubview(userNameLabel)
+            profileTableHeader.addSubview(userNameLabel)
             
             print("Display User's Name \(userNameLabel.text)")
             
@@ -947,7 +1084,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         if userTitleString != "" &&
             userTitleString != "at" {
             
-            let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+            let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 276, height: 24))
 
             userTitleLabel.center = CGPoint(x: 160, y: userTitleYOffset)
             userTitleLabel.textAlignment = .Center
@@ -955,7 +1092,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
             userTitleLabel.text = userTitleString
 
-            headerView.addSubview(userTitleLabel)
+            profileTableHeader.addSubview(userTitleLabel)
             
         }
         
@@ -989,7 +1126,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
 //            userBioLabel.sizeToFit()
             
-            headerView.addSubview(userBioLabel)
+            profileTableHeader.addSubview(userBioLabel)
             
         }
         
@@ -997,7 +1134,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
 //        headerView.sizeToFit()
         
-        self.submissionTableView.tableHeaderView = headerView
+        self.submissionTableView.tableHeaderView = profileTableHeader
         
         //
         // Load and display other user information
@@ -1010,6 +1147,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.attemptLoadUserActions()
         }
 
+        self.attemptLoadUserSnapshot()
 
     }
     
@@ -1096,6 +1234,54 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     print(error)
                 }
         }
+    }
+    
+    //
+    // Load user snapshot
+    //
+    
+    func attemptLoadUserSnapshot() {
+        
+//        if userId == "" {
+//            return
+//        }
+        
+        let _headers = buildRequestHeaders()
+        
+        let revisedEndpoint = Endpoints.GET_USER_SNAPSHOT + "\(self.userId)"
+        
+        print("revisedEndpoint \(revisedEndpoint)")
+        
+        Alamofire.request(.GET, revisedEndpoint, headers: _headers, encoding: .JSON).responseJSON { response in
+            
+            print("response.result \(response.result)")
+            
+            switch response.result {
+                
+                case .Success(let value):
+                    
+                    let json = JSON(value)
+                    
+                    print("Response Success \(value)")
+                    
+                    if (json != nil) {
+                        
+                        // Retain the returned data
+                        self.userSnapshot = json
+                        
+                        // Show the data on screen
+                        self.displayUserSnapshotInformation()
+                        
+                    }
+                    
+                case .Failure(let error):
+                    
+                    print("Response Failure \(error)")
+                
+            }
+            
+        }
+        
     }
     
     func attemptLoadUserGroups(isRefreshingReportsList: Bool = false) {
