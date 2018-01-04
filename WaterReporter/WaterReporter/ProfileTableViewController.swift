@@ -675,6 +675,65 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     }
     
+    func retrieveUserTitle(userObject: JSON?) -> String {
+        
+        var userTitleString = ""
+        
+        var titleArray = [String]()
+        
+//        if let userTitleString = self.userProfile!["properties"]["title"].string,
+//            userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string {
+//        
+//            let completeTitleString = userTitleString + " at " + userOrganizationNameString as String
+//            
+//            return completeTitleString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+//            
+//        } else if let userTitleString = self.userProfile!["properties"]["title"].string {
+//            
+//            return userTitleString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+//            
+//        } else {
+//            
+//            return ""
+//            
+//        }
+        
+        if let userTitleString = self.userProfile!["properties"]["title"].string {
+            
+            titleArray.append(userTitleString)
+            
+        }
+        
+        if let userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string {
+            
+            titleArray.append(userOrganizationNameString)
+            
+        }
+        
+        if titleArray.count > 1 {
+            
+            userTitleString = titleArray.joinWithSeparator(" at ").stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            
+        } else if titleArray.count == 1 {
+            
+            userTitleString = titleArray.joinWithSeparator("").stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            
+        }
+        
+        return userTitleString
+        
+//        let trimmedTitle = completeTitleString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+//        
+//        if trimmedTitle == "at" {
+//            
+//            return ""
+//            
+//        }
+//        
+//        return trimmedTitle
+        
+    }
+    
     func displayUserProfileInformation(withoutReportReload: Bool = false) {
         
         print("displayUserProfileInformation")
@@ -755,15 +814,40 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             alpha: 1.0
         )
         
-        let margins = self.view.layoutMarginsGuide
+//        let margins = self.view.layoutMarginsGuide
         
-        headerView.leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor, constant: 0.0)
+//        headerView.leadingAnchor.constraintEqualToAnchor(self.submissionTableView.leadingAnchor, constant: 0.0).active = true
+//        
+//        headerView.trailingAnchor.constraintEqualToAnchor(self.submissionTableView.trailingAnchor, constant: 0.0).active = true
         
-        headerView.trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor, constant: 0.0)
+        //
+        // Default vertical offsets for header components
+        //
+        
+        let userTitleYOffset = 122
+//        let organizationNameYOffset = 124
+        let userBioYOffset = 160
+        
+//        let headerStackView = UIStackView()
+//        
+//        headerStackView.axis = .Vertical;
+//        headerStackView.distribution = .EqualSpacing;
+//        headerStackView.alignment = .Center;
+//        headerStackView.spacing = 10;
+        
+//        headerView.addSubview(headerStackView)
+//        
+//        headerStackView.leadingAnchor.constraintEqualToAnchor(headerView.leadingAnchor).active = true
+//        headerStackView.trailingAnchor.constraintEqualToAnchor(headerView.trailingAnchor).active = true
+//        headerStackView.topAnchor.constraintEqualToAnchor(headerView.topAnchor).active = true
+//        headerStackView.bottomAnchor.constraintEqualToAnchor(headerView.bottomAnchor).active = true
         
         let userImageView = UIImageView()
         
         userImageView.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
+        
+//        userImageView.heightAnchor.constraintEqualToConstant(64.0).active = true
+//        userImageView.widthAnchor.constraintEqualToConstant(64.0).active = true
         
         userImageView.center = CGPoint(x: 160, y: 48)
         
@@ -824,44 +908,81 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         // Display user's title
-        if self.userProfile!["properties"]["title"].string != "" {
+//        if self.userProfile!["properties"]["title"].string != "" &&
+//            self.userProfile!["properties"]["organization_name"].string != "" {
+//            
+//            var userTitleString = self.userProfile!["properties"]["title"].string
+//            
+//            var userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string
+//            
+//            let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+//            
+//            userTitleLabel.center = CGPoint(x: 160, y: userTitleYOffset)
+//            userTitleLabel.textAlignment = .Center
+//            userTitleLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
+//            
+//            if self.userProfile!["properties"]["organization_name"].string != "" {
+//                
+//                let userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string
+//                
+//                userTitleString! += " at \(userOrganizationNameString)"
+//    
+//                
+//            }
+//            
+//            userTitleLabel.text = userTitleString
+//            
+//            headerView.addSubview(userTitleLabel)
+//            
+//        }
+//        else if self.userProfile!["properties"]["title"].string != "" &&
+//            self.userProfile!["properties"]["organization_name"].string == "" {
+//            
+//            
+//            
+//        }
+        
+        let userTitleString = retrieveUserTitle(self.userProfile)
+        
+        if userTitleString != "" &&
+            userTitleString != "at" {
             
             let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
-            
-            userTitleLabel.center = CGPoint(x: 160, y: 112)
+
+            userTitleLabel.center = CGPoint(x: 160, y: userTitleYOffset)
             userTitleLabel.textAlignment = .Center
-            userTitleLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
-            
-            userTitleLabel.text = self.userProfile!["properties"]["title"].string
-            
+            userTitleLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
+
+            userTitleLabel.text = userTitleString
+
             headerView.addSubview(userTitleLabel)
             
         }
         
         // Display user's organization name
-        if self.userProfile!["properties"]["organization_name"].string != "" {
-            
-            let userOrganizationNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
-            
-            userOrganizationNameLabel.center = CGPoint(x: 160, y: 124)
-            userOrganizationNameLabel.textAlignment = .Center
-            userOrganizationNameLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
-            
-            userOrganizationNameLabel.text = self.userProfile!["properties"]["organization_name"].string
-            
-            headerView.addSubview(userOrganizationNameLabel)
-            
-        }
+//        if self.userProfile!["properties"]["organization_name"].string != "" {
+//            
+//            let userOrganizationNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+//            
+//            userOrganizationNameLabel.center = CGPoint(x: 160, y: organizationNameYOffset)
+//            userOrganizationNameLabel.textAlignment = .Center
+//            userOrganizationNameLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
+//            
+//            userOrganizationNameLabel.text = self.userProfile!["properties"]["organization_name"].string
+//            
+//            headerView.addSubview(userOrganizationNameLabel)
+//            
+//        }
         
         // Display user's description/bio
         if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
             
             let userBioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 272, height: 32))
             
-            userBioLabel.center = CGPoint(x: 160, y: 160)
+            userBioLabel.center = CGPoint(x: 160, y: userBioYOffset)
             userBioLabel.textAlignment = .Left
             userBioLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
-            userBioLabel.numberOfLines = 3
+            userBioLabel.numberOfLines = 2
             userBioLabel.lineBreakMode = .ByTruncatingTail
             
             userBioLabel.text = self.userProfile!["properties"]["description"].string
@@ -871,6 +992,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             headerView.addSubview(userBioLabel)
             
         }
+        
+//        headerView.addSubview(headerStackView)
         
 //        headerView.sizeToFit()
         
