@@ -468,11 +468,12 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 32)
         view.center = CGPoint(x: 160, y: 200)
+        view.alpha = 0.0
         view.backgroundColor = UIColor(
             red: 200.0/255.0,
             green: 208.0/255.0,
             blue: 216.0/255.0,
-            alpha: 1.0
+            alpha: 0.0
         )
         return view
     }()
@@ -815,6 +816,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
         self.profileTableHeader.addSubview(statGroupView)
         
+        UIView.animateWithDuration(0.25) { () -> Void in
+            self.statGroupView.alpha = 1.0
+        }
+        
         //
         // Post count
         //
@@ -822,8 +827,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let postCountLabel: UILabel = {
             let label = UILabel()
             label.textAlignment = .Center
-            label.font = UIFont.systemFontOfSize(15, weight: UIFontWeightMedium)
-            label.heightAnchor.constraintEqualToConstant(24.0).active = true
+            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+//            label.heightAnchor.constraintEqualToConstant(16.0).active = true
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -835,8 +840,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let actionCountLabel: UILabel = {
             let label = UILabel()
             label.textAlignment = .Center
-            label.font = UIFont.systemFontOfSize(15, weight: UIFontWeightMedium)
-            label.heightAnchor.constraintEqualToConstant(24.0).active = true
+            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+//            label.heightAnchor.constraintEqualToConstant(16.0).active = true
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -848,8 +853,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let groupCountLabel: UILabel = {
             let label = UILabel()
             label.textAlignment = .Center
-            label.font = UIFont.systemFontOfSize(15, weight: UIFontWeightMedium)
-            label.heightAnchor.constraintEqualToConstant(24.0).active = true
+            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+//            label.heightAnchor.constraintEqualToConstant(16.0).active = true
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -860,7 +865,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         let statStackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [postCountLabel, actionCountLabel, groupCountLabel])
-            stackView.alignment = .Fill
+            stackView.alignment = .Center
             stackView.distribution = .FillEqually
             stackView.axis = .Horizontal
             stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -872,7 +877,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         statStackView.leadingAnchor.constraintEqualToAnchor(statGroupView.leadingAnchor).active = true
         statStackView.trailingAnchor.constraintEqualToAnchor(statGroupView.trailingAnchor).active = true
         statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
-        statStackView.heightAnchor.constraintEqualToConstant(24.0).active = true
+        statStackView.topAnchor.constraintEqualToAnchor(statGroupView.topAnchor).active = true
+//        statStackView.heightAnchor.constraintEqualToConstant(24.0).active = true
         
         //
         // Populate values
@@ -917,7 +923,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             if groupCount == 1 {
                 
-                groupCountLabel.text = "\(groupCount) post"
+                groupCountLabel.text = "\(groupCount) group"
                 
             }
             
@@ -1002,7 +1008,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
 //        let headerView = UIView()
         
-        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200)
+        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 216)
         
         profileTableHeader.backgroundColor = UIColor(
             red: 245.0/255.0,
@@ -1196,10 +1202,15 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         self.submissionTableView.tableHeaderView = profileTableHeader
         
+//        self.actionsTableView.tableHeaderView = profileTableHeader
+//        
+//        self.groupsTableView.tableHeaderView = profileTableHeader
+        
         //
         // Load and display other user information
         //
         if !withoutReportReload {
+            
             self.attemptLoadUserGroups()
             
             self.attemptLoadUserSubmissions()
