@@ -751,23 +751,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         var titleArray = [String]()
         
-//        if let userTitleString = self.userProfile!["properties"]["title"].string,
-//            userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string {
-//        
-//            let completeTitleString = userTitleString + " at " + userOrganizationNameString as String
-//            
-//            return completeTitleString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-//            
-//        } else if let userTitleString = self.userProfile!["properties"]["title"].string {
-//            
-//            return userTitleString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-//            
-//        } else {
-//            
-//            return ""
-//            
-//        }
-        
         if let userTitleString = self.userProfile!["properties"]["title"].string {
             
             if userTitleString != "" {
@@ -796,16 +779,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         return userTitleString
         
-//        let trimmedTitle = completeTitleString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-//        
-//        if trimmedTitle == "at" {
-//            
-//            return ""
-//            
-//        }
-//        
-//        return trimmedTitle
-        
     }
     
     func displayUserSnapshotInformation() {
@@ -832,7 +805,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             let label = UILabel()
             label.textAlignment = .Center
             label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
-//            label.heightAnchor.constraintEqualToConstant(16.0).active = true
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -845,7 +817,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             let label = UILabel()
             label.textAlignment = .Center
             label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
-//            label.heightAnchor.constraintEqualToConstant(16.0).active = true
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -858,7 +829,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             let label = UILabel()
             label.textAlignment = .Center
             label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
-//            label.heightAnchor.constraintEqualToConstant(16.0).active = true
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -951,68 +921,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             return
         }
         
-//        if self.userProfile!["properties"]["first_name"].string != "" && self.userProfile!["properties"]["last_name"].string != "" {
-//            // Display user's first and last name
-//
-//            self.labelUserProfileName.text = self.userProfile!["properties"]["first_name"].string! + " " + self.userProfile!["properties"]["last_name"].string!
-//            
-//            print("Display User's Name \(self.labelUserProfileName.text)")
-//        }
-//        else {
-//            self.labelUserProfileName.text = ""
-//            
-//            //
-//            // Activate the "Finish Profile" prompt
-//            //
-//            print("Display Finish Profile Prompt")
-//
-//        }
-        
-//        // Display user's title
-//        if self.userProfile!["properties"]["title"].string != "" {
-//            self.labelUserProfileTitle.text = self.userProfile!["properties"]["title"].string
-//        }
-//        else {
-//            self.labelUserProfileTitle.text = ""
-//        }
-//
-//        // Display user's organization name
-//        if self.userProfile!["properties"]["organization_name"].string != "" {
-//            self.labelUserProfileOrganizationName.text = self.userProfile!["properties"]["organization_name"].string
-//        }
-//        else {
-//            self.labelUserProfileOrganizationName.text = ""
-//        }
-//
-//        // Display user's description/bio
-//        if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
-//            self.labelUserProfileDescription.text = self.userProfile!["properties"]["description"].string
-//        }
-//        else {
-//            self.labelUserProfileDescription.text = ""
-//        }
-
-        // Display user's profile picture
-//        var userProfileImageURL: NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
-//
-//        if let thisUserProfileImageURLString = self.userProfile!["properties"]["picture"].string {
-//            userProfileImageURL = NSURL(string: String(thisUserProfileImageURLString))
-//        }
-//        
-//        self.imageViewUserProfileImage.kf_indicatorType = .Activity
-//        self.imageViewUserProfileImage.kf_showIndicatorWhenLoading = true
-//        
-//        self.imageViewUserProfileImage.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-//            (image, error, cacheType, imageUrl) in
-//            if (image != nil) {
-//                self.imageViewUserProfileImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-//            }
-//            self.imageViewUserProfileImage.clipsToBounds = true
-//        })
-        
-//        let headerView = UIView()
-        
-        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 216)
+        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 224)
         
         profileTableHeader.backgroundColor = UIColor(
             red: 245.0/255.0,
@@ -1021,18 +930,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             alpha: 1.0
         )
         
-//        let margins = self.view.layoutMarginsGuide
-        
-//        headerView.leadingAnchor.constraintEqualToAnchor(self.submissionTableView.leadingAnchor, constant: 0.0).active = true
-//        
-//        headerView.trailingAnchor.constraintEqualToAnchor(self.submissionTableView.trailingAnchor, constant: 0.0).active = true
-        
         //
         // Default vertical offsets for header components
         //
         
         let userTitleYOffset = 124
-//        let organizationNameYOffset = 124
         let userBioYOffset = 160
         
 //        let headerStackView = UIStackView()
@@ -1105,8 +1007,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
         else {
             
-//            self.labelUserProfileName.text = ""
-            
             //
             // Activate the "Finish Profile" prompt
             //
@@ -1114,40 +1014,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
         }
         
-        // Display user's title
-//        if self.userProfile!["properties"]["title"].string != "" &&
-//            self.userProfile!["properties"]["organization_name"].string != "" {
-//            
-//            var userTitleString = self.userProfile!["properties"]["title"].string
-//            
-//            var userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string
-//            
-//            let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
-//            
-//            userTitleLabel.center = CGPoint(x: 160, y: userTitleYOffset)
-//            userTitleLabel.textAlignment = .Center
-//            userTitleLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
-//            
-//            if self.userProfile!["properties"]["organization_name"].string != "" {
-//                
-//                let userOrganizationNameString = self.userProfile!["properties"]["organization_name"].string
-//                
-//                userTitleString! += " at \(userOrganizationNameString)"
-//    
-//                
-//            }
-//            
-//            userTitleLabel.text = userTitleString
-//            
-//            headerView.addSubview(userTitleLabel)
-//            
-//        }
-//        else if self.userProfile!["properties"]["title"].string != "" &&
-//            self.userProfile!["properties"]["organization_name"].string == "" {
-//            
-//            
-//            
-//        }
+        //
+        // Display user title
+        //
         
         let userTitleString = retrieveUserTitle(self.userProfile)
         
@@ -1166,22 +1035,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
         }
         
-        // Display user's organization name
-//        if self.userProfile!["properties"]["organization_name"].string != "" {
-//            
-//            let userOrganizationNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
-//            
-//            userOrganizationNameLabel.center = CGPoint(x: 160, y: organizationNameYOffset)
-//            userOrganizationNameLabel.textAlignment = .Center
-//            userOrganizationNameLabel.font = UIFont.systemFontOfSize(15, weight: UIFontWeightRegular)
-//            
-//            userOrganizationNameLabel.text = self.userProfile!["properties"]["organization_name"].string
-//            
-//            headerView.addSubview(userOrganizationNameLabel)
-//            
-//        }
+        //
+        // Display user bio
+        //
         
-        // Display user's description/bio
         if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
             
             let userBioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 272, height: 32))
@@ -1205,10 +1062,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 //        headerView.sizeToFit()
         
         self.submissionTableView.tableHeaderView = profileTableHeader
-        
-//        self.actionsTableView.tableHeaderView = profileTableHeader
-//        
-//        self.groupsTableView.tableHeaderView = profileTableHeader
         
         //
         // Load and display other user information
