@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6A09F4173390FEAABFC93265 /* Pods_Water_Reporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */; };
+		BA36BB1F200007430023F098 /* UserGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */; };
 		BAAE25531FCDD8B400644483 /* Res in Resources */ = {isa = PBXBuildFile; fileRef = BAAE25521FCDD8B400644483 /* Res */; };
 		C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */; };
 		C116EC881DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */; };
@@ -106,6 +107,7 @@
 		3063EF5C637507961A3010FC /* Pods-Water-Reporter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Water-Reporter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Water-Reporter/Pods-Water-Reporter.debug.xcconfig"; sourceTree = "<group>"; };
 		9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaterReporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Water_Reporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGroupsTableViewController.swift; sourceTree = "<group>"; };
 		BAAE25521FCDD8B400644483 /* Res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Res; path = ../Res; sourceTree = "<group>"; };
 		C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileMembersTableViewCell.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				C19F67791DD637D7004D2676 /* UserProfileCreateGroupsTableViewController.swift */,
 				C197A1D91DED00CF001958A7 /* UserProfileCompleteViewController.swift */,
 				C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */,
+				BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */,
 			);
 			name = "User Profile";
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 				CE015EF21F6C42EB00447C34 /* NewReportContentTableViewCell.swift in Sources */,
 				C1A4AA931D94326900C6EF66 /* LoginTableViewController.swift in Sources */,
 				C12CAFA11D466659002881A6 /* TableViewCell.swift in Sources */,
+				BA36BB1F200007430023F098 /* UserGroupsTableViewController.swift in Sources */,
 				C12CAF991D464F42002881A6 /* Endpoints.swift in Sources */,
 				CE1CE5111F69B40300684B3E /* GroupsTableView.swift in Sources */,
 				CEF1D8711F15648D00113D97 /* TerritorySingleViewController.swift in Sources */,

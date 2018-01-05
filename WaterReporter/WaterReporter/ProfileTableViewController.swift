@@ -41,6 +41,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // MARK: @IBActions
     //
+    
     @IBAction func openSubmissionsLikesList(sender: UIButton) {
         
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
@@ -87,81 +88,81 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
     }
 
-    @IBAction func changeUserProfileTab(sender: UIButton) {
-        
-        if (sender.restorationIdentifier == "buttonTabActionNumber" || sender.restorationIdentifier == "buttonTabActionLabel") {
-            
-            print("Show the Actions tab")
-            self.actionsTableView.hidden = false
-            self.submissionTableView.hidden = true
-            self.groupsTableView.hidden = true
-            
-            //
-            // Restyle the form Log In Navigation button to appear with an underline
-            //
-            let buttonWidth = self.buttonUserProfileActionLabel.frame.width*0.6
-            let borderWidth = buttonWidth
-            
-            self.userActionsUnderline.borderColor = CGColor.colorBrand()
-            self.userActionsUnderline.borderWidth = 3.0
-            self.userActionsUnderline.frame = CGRectMake(self.buttonUserProfileActionLabel.frame.width*0.2, self.buttonUserProfileActionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileActionLabel.frame.size.height)
-            
-            self.buttonUserProfileActionLabel.layer.addSublayer(self.userActionsUnderline)
-            self.buttonUserProfileActionLabel.layer.masksToBounds = true
-            
-            self.userGroupsUnderline.removeFromSuperlayer()
-            self.userSubmissionsUnderline.removeFromSuperlayer()
-            
-        } else if (sender.restorationIdentifier == "buttonTabGroupNumber" || sender.restorationIdentifier == "buttonTabGroupLabel") {
-            
-            print("Show the Groups tab")
-            self.actionsTableView.hidden = true
-            self.submissionTableView.hidden = true
-            self.groupsTableView.hidden = false
-            
-            //
-            // Restyle the form Log In Navigation button to appear with an underline
-            //
-            let buttonWidth = self.buttonUserProfileGroupLabel.frame.width*0.6
-            let borderWidth = buttonWidth
-            
-            self.userGroupsUnderline.borderColor = CGColor.colorBrand()
-            self.userGroupsUnderline.borderWidth = 3.0
-            self.userGroupsUnderline.frame = CGRectMake(self.buttonUserProfileGroupLabel.frame.width*0.2, self.buttonUserProfileGroupLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileGroupLabel.frame.size.height)
-            
-            self.buttonUserProfileGroupLabel.layer.addSublayer(self.userGroupsUnderline)
-            self.buttonUserProfileGroupLabel.layer.masksToBounds = true
-
-            self.userActionsUnderline.removeFromSuperlayer()
-            self.userSubmissionsUnderline.removeFromSuperlayer()
-
-        } else if (sender.restorationIdentifier == "buttonTabSubmissionNumber" || sender.restorationIdentifier == "buttonTabSubmissionLabel") {
-            
-            print("Show the Subsmissions tab")
-            self.actionsTableView.hidden = true
-            self.submissionTableView.hidden = false
-            self.groupsTableView.hidden = true
-            
-            //
-            // Restyle the form Log In Navigation button to appear with an underline
-            //
-            let buttonWidth = self.buttonUserProfileSubmissionLabel.frame.width*0.8
-            let borderWidth = buttonWidth
-            
-            self.userSubmissionsUnderline.borderColor = CGColor.colorBrand()
-            self.userSubmissionsUnderline.borderWidth = 3.0
-            self.userSubmissionsUnderline.frame = CGRectMake(self.buttonUserProfileSubmissionLabel.frame.width*0.1, self.buttonUserProfileSubmissionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileSubmissionLabel.frame.size.height)
-            
-            self.buttonUserProfileSubmissionLabel.layer.addSublayer(self.userSubmissionsUnderline)
-            self.buttonUserProfileSubmissionLabel.layer.masksToBounds = true
-
-            self.userGroupsUnderline.removeFromSuperlayer()
-            self.userActionsUnderline.removeFromSuperlayer()
-
-            
-        }
-        
-    }
+//    @IBAction func changeUserProfileTab(sender: UIButton) {
+//        
+//        if (sender.restorationIdentifier == "buttonTabActionNumber" || sender.restorationIdentifier == "buttonTabActionLabel") {
+//            
+//            print("Show the Actions tab")
+//            self.actionsTableView.hidden = false
+//            self.submissionTableView.hidden = true
+//            self.groupsTableView.hidden = true
+//            
+//            //
+//            // Restyle the form Log In Navigation button to appear with an underline
+//            //
+//            let buttonWidth = self.buttonUserProfileActionLabel.frame.width*0.6
+//            let borderWidth = buttonWidth
+//            
+//            self.userActionsUnderline.borderColor = CGColor.colorBrand()
+//            self.userActionsUnderline.borderWidth = 3.0
+//            self.userActionsUnderline.frame = CGRectMake(self.buttonUserProfileActionLabel.frame.width*0.2, self.buttonUserProfileActionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileActionLabel.frame.size.height)
+//            
+//            self.buttonUserProfileActionLabel.layer.addSublayer(self.userActionsUnderline)
+//            self.buttonUserProfileActionLabel.layer.masksToBounds = true
+//            
+//            self.userGroupsUnderline.removeFromSuperlayer()
+//            self.userSubmissionsUnderline.removeFromSuperlayer()
+//            
+//        } else if (sender.restorationIdentifier == "buttonTabGroupNumber" || sender.restorationIdentifier == "buttonTabGroupLabel") {
+//            
+//            print("Show the Groups tab")
+//            self.actionsTableView.hidden = true
+//            self.submissionTableView.hidden = true
+//            self.groupsTableView.hidden = false
+//            
+//            //
+//            // Restyle the form Log In Navigation button to appear with an underline
+//            //
+//            let buttonWidth = self.buttonUserProfileGroupLabel.frame.width*0.6
+//            let borderWidth = buttonWidth
+//            
+//            self.userGroupsUnderline.borderColor = CGColor.colorBrand()
+//            self.userGroupsUnderline.borderWidth = 3.0
+//            self.userGroupsUnderline.frame = CGRectMake(self.buttonUserProfileGroupLabel.frame.width*0.2, self.buttonUserProfileGroupLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileGroupLabel.frame.size.height)
+//            
+//            self.buttonUserProfileGroupLabel.layer.addSublayer(self.userGroupsUnderline)
+//            self.buttonUserProfileGroupLabel.layer.masksToBounds = true
+//
+//            self.userActionsUnderline.removeFromSuperlayer()
+//            self.userSubmissionsUnderline.removeFromSuperlayer()
+//
+//        } else if (sender.restorationIdentifier == "buttonTabSubmissionNumber" || sender.restorationIdentifier == "buttonTabSubmissionLabel") {
+//            
+//            print("Show the Subsmissions tab")
+//            self.actionsTableView.hidden = true
+//            self.submissionTableView.hidden = false
+//            self.groupsTableView.hidden = true
+//            
+//            //
+//            // Restyle the form Log In Navigation button to appear with an underline
+//            //
+//            let buttonWidth = self.buttonUserProfileSubmissionLabel.frame.width*0.8
+//            let borderWidth = buttonWidth
+//            
+//            self.userSubmissionsUnderline.borderColor = CGColor.colorBrand()
+//            self.userSubmissionsUnderline.borderWidth = 3.0
+//            self.userSubmissionsUnderline.frame = CGRectMake(self.buttonUserProfileSubmissionLabel.frame.width*0.1, self.buttonUserProfileSubmissionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileSubmissionLabel.frame.size.height)
+//            
+//            self.buttonUserProfileSubmissionLabel.layer.addSublayer(self.userSubmissionsUnderline)
+//            self.buttonUserProfileSubmissionLabel.layer.masksToBounds = true
+//
+//            self.userGroupsUnderline.removeFromSuperlayer()
+//            self.userActionsUnderline.removeFromSuperlayer()
+//
+//            
+//        }
+//        
+//    }
     
     @IBAction func toggleUILableNumberOfLines(sender: UITapGestureRecognizer) {
         
@@ -483,7 +484,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             red: 200.0/255.0,
             green: 208.0/255.0,
             blue: 216.0/255.0,
-            alpha: 1.0
+            alpha: 0.0
         )
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -597,10 +598,12 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             self.isActingUsersProfile = false
             
-            if let _first_name = self.userProfile!["properties"]["first_name"].string,
-                let _last_name = self.userProfile!["properties"]["last_name"].string {
-                self.navigationItem.title = _first_name + " " + _last_name
-            }
+            self.navigationItem.title = ""
+            
+//            if let _first_name = self.userProfile!["properties"]["first_name"].string,
+//                let _last_name = self.userProfile!["properties"]["last_name"].string {
+//                self.navigationItem.title = _first_name + " " + _last_name
+//            }
             
             self.navigationItem.rightBarButtonItem?.enabled = false
             
@@ -722,10 +725,150 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         super.didReceiveMemoryWarning()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let backItem = UIBarButtonItem()
+        
+        if let firstName = self.userProfile!["properties"]["first_name"].string,
+            lastName = self.userProfile!["properties"]["last_name"].string {
+            
+            backItem.title = firstName + " " + lastName
+            
+        }
+        
+        navigationItem.backBarButtonItem = backItem // This will show in the next view controller being pushed
+        
+    }
     
     //
     // MARK: Custom Functionality
     //
+    
+    func openUserGroupsList(gesture: UITapGestureRecognizer) {
+        
+        print("Open user groups list")
+        
+        let backItem = UIBarButtonItem()
+        
+        if let firstName = self.userProfile!["properties"]["first_name"].string,
+            lastName = self.userProfile!["properties"]["last_name"].string {
+            
+            backItem.title = firstName + " " + lastName
+            
+        }
+        
+        navigationItem.backBarButtonItem = backItem // This will show in the next view controller being pushed
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserGroupsTableViewController") as! UserGroupsTableViewController
+        
+        nextViewController.userId = self.userId
+        nextViewController.userObject = self.userProfile
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+    
+    func switchUserProfileTab(tapGesture: UITapGestureRecognizer) {
+        
+        let tabIdentifier = tapGesture.view!.tag
+        
+        print("Tab identifier value is: \(tabIdentifier)")
+        
+        if (tabIdentifier == 1) {
+            
+            print("Show the Actions tab")
+            
+            print("Show the \(self.profileTableHeader)")
+            
+//            self.submissionTableView.tableHeaderView = nil
+//            self.actionsTableView.tableHeaderView = self.profileTableHeader
+//            self.groupsTableView.tableHeaderView = nil
+            
+            self.actionsTableView.hidden = false
+            self.submissionTableView.hidden = true
+            self.groupsTableView.hidden = true
+            
+            //
+            // Restyle the form Log In Navigation button to appear with an underline
+            //
+//            let buttonWidth = self.buttonUserProfileActionLabel.frame.width*0.6
+//            let borderWidth = buttonWidth
+//            
+//            self.userActionsUnderline.borderColor = CGColor.colorBrand()
+//            self.userActionsUnderline.borderWidth = 3.0
+//            self.userActionsUnderline.frame = CGRectMake(self.buttonUserProfileActionLabel.frame.width*0.2, self.buttonUserProfileActionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileActionLabel.frame.size.height)
+//            
+//            self.buttonUserProfileActionLabel.layer.addSublayer(self.userActionsUnderline)
+//            self.buttonUserProfileActionLabel.layer.masksToBounds = true
+//            
+//            self.userGroupsUnderline.removeFromSuperlayer()
+//            self.userSubmissionsUnderline.removeFromSuperlayer()
+            
+        } else if (tabIdentifier == 2) {
+            
+            print("Show the Groups tab")
+            
+            print("Show the \(self.profileTableHeader)")
+            
+//            self.submissionTableView.tableHeaderView = nil
+//            self.actionsTableView.tableHeaderView = nil
+//            self.groupsTableView.tableHeaderView = self.profileTableHeader
+            
+            self.actionsTableView.hidden = true
+            self.submissionTableView.hidden = true
+            self.groupsTableView.hidden = false
+            
+            //
+            // Restyle the form Log In Navigation button to appear with an underline
+            //
+//            let buttonWidth = self.buttonUserProfileGroupLabel.frame.width*0.6
+//            let borderWidth = buttonWidth
+//            
+//            self.userGroupsUnderline.borderColor = CGColor.colorBrand()
+//            self.userGroupsUnderline.borderWidth = 3.0
+//            self.userGroupsUnderline.frame = CGRectMake(self.buttonUserProfileGroupLabel.frame.width*0.2, self.buttonUserProfileGroupLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileGroupLabel.frame.size.height)
+//            
+//            self.buttonUserProfileGroupLabel.layer.addSublayer(self.userGroupsUnderline)
+//            self.buttonUserProfileGroupLabel.layer.masksToBounds = true
+//            
+//            self.userActionsUnderline.removeFromSuperlayer()
+//            self.userSubmissionsUnderline.removeFromSuperlayer()
+            
+        } else if (tabIdentifier == 0) {
+            
+            print("Show the Subsmissions tab")
+            
+            print("Show the \(self.profileTableHeader)")
+            
+//            self.submissionTableView.tableHeaderView = self.profileTableHeader
+//            self.actionsTableView.tableHeaderView = nil
+//            self.groupsTableView.tableHeaderView = nil
+            
+            self.actionsTableView.hidden = true
+            self.submissionTableView.hidden = false
+            self.groupsTableView.hidden = true
+            
+            //
+            // Restyle the form Log In Navigation button to appear with an underline
+            //
+//            let buttonWidth = self.buttonUserProfileSubmissionLabel.frame.width*0.8
+//            let borderWidth = buttonWidth
+//            
+//            self.userSubmissionsUnderline.borderColor = CGColor.colorBrand()
+//            self.userSubmissionsUnderline.borderWidth = 3.0
+//            self.userSubmissionsUnderline.frame = CGRectMake(self.buttonUserProfileSubmissionLabel.frame.width*0.1, self.buttonUserProfileSubmissionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileSubmissionLabel.frame.size.height)
+//            
+//            self.buttonUserProfileSubmissionLabel.layer.addSublayer(self.userSubmissionsUnderline)
+//            self.buttonUserProfileSubmissionLabel.layer.masksToBounds = true
+//            
+//            self.userGroupsUnderline.removeFromSuperlayer()
+//            self.userActionsUnderline.removeFromSuperlayer()
+            
+            
+        }
+        
+    }
+    
     func refreshSubsmissionsTableView(sender: UIRefreshControl) {
         
         self.userSubmissionsPage = 1
@@ -822,8 +965,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             label.textAlignment = .Center
             label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
             label.translatesAutoresizingMaskIntoConstraints = false
+            label.userInteractionEnabled = true
+            label.tag = 0
             return label
         }()
+        
+        let postCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.switchUserProfileTab))
+        postCountTapGesture.numberOfTapsRequired = 1
         
         //
         // Action count
@@ -834,8 +982,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             label.textAlignment = .Center
             label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
             label.translatesAutoresizingMaskIntoConstraints = false
+            label.userInteractionEnabled = true
+            label.tag = 1
             return label
         }()
+        
+        let actionCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.switchUserProfileTab))
+        actionCountTapGesture.numberOfTapsRequired = 1
         
         //
         // Group count
@@ -846,8 +999,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             label.textAlignment = .Center
             label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
             label.translatesAutoresizingMaskIntoConstraints = false
+            label.userInteractionEnabled = true
+            label.tag = 2
             return label
         }()
+        
+        let groupCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserGroupsList(_:)))
+        groupCountTapGesture.numberOfTapsRequired = 1
         
         //
         // Stat stack view
@@ -883,6 +1041,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 
             }
             
+            postCountLabel.addGestureRecognizer(postCountTapGesture)
+            
         } else {
             
             print("No post count")
@@ -898,6 +1058,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 actionCountLabel.text = "\(actionCount) post"
                 
             }
+            
+            actionCountLabel.addGestureRecognizer(actionCountTapGesture)
             
         } else {
             
@@ -915,6 +1077,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 groupCountLabel.text = "\(groupCount) group"
                 
             }
+            
+            groupCountLabel.addGestureRecognizer(groupCountTapGesture)
             
         } else {
             
@@ -1133,7 +1297,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         headerStackView.topAnchor.constraintEqualToAnchor(profileTableHeader.topAnchor, constant: 16.0).active = true
 //        headerStackView.bottomAnchor.constraintEqualToAnchor(profileTableHeader.bottomAnchor).active = true
         
-        self.submissionTableView.tableHeaderView = profileTableHeader
+        self.submissionTableView.tableHeaderView = self.profileTableHeader
+//        self.actionsTableView.tableHeaderView = self.profileTableHeader.copy() as! UIView
+//        self.groupsTableView.tableHeaderView = self.profileTableHeader.copy() as! UIView
         
         //
         // Load and display other user information
@@ -1574,6 +1740,12 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
 
         return 0
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection  section: Int) -> UIView? {
+        
+        return self.profileTableHeader;
+        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
