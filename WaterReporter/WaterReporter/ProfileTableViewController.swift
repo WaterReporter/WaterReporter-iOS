@@ -483,7 +483,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             red: 200.0/255.0,
             green: 208.0/255.0,
             blue: 216.0/255.0,
-            alpha: 0.0
+            alpha: 1.0
         )
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -811,6 +811,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         statGroupView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor, constant: 0.0).active = true
         statGroupView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor, constant: 0.0).active = true
         statGroupView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor, constant: 0.0).active = true
+        statGroupView.heightAnchor.constraintEqualToConstant(40.0).active = true
         
         //
         // Post count
@@ -1115,7 +1116,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         if let bioText = userBioLabel.text where !bioText.isEmpty {
             
-            baseHeaderHeight += 34.0
+            baseHeaderHeight += 50.0
             
         }
         
