@@ -13,13 +13,7 @@ import Kingfisher
 import SwiftyJSON
 import UIKit
 
-class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
-    
-    //
-    // @IBOUTLETS
-    //
-    
-    @IBOutlet weak var groupsTableView: UITableView!
+class UserGroupsTableViewController: UITableViewController, UINavigationControllerDelegate {
     
     //
     // MARK: @IBActions
@@ -149,22 +143,22 @@ class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITa
         // Set dynamic row height
         //
         
-        self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
-        self.groupsTableView.estimatedRowHeight = 56.0;
+//        self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
+//        self.groupsTableView.estimatedRowHeight = 56.0;
+//        
+//        //
+//        // Set up groups table
+//        //
+//        
+//        self.groupsTableView.delegate = self
+//        self.groupsTableView.dataSource = self
         
-        //
-        // Set up groups table
-        //
+//        groupsRefreshControl = UIRefreshControl()
+//        groupsRefreshControl.restorationIdentifier = "groupRefreshControl"
+//        
+//        groupsRefreshControl.addTarget(self, action: #selector(UserGroupsTableViewController.refreshGroupsTableView(_:)), forControlEvents: .ValueChanged)
         
-        self.groupsTableView.delegate = self
-        self.groupsTableView.dataSource = self
-        
-        groupsRefreshControl = UIRefreshControl()
-        groupsRefreshControl.restorationIdentifier = "groupRefreshControl"
-        
-        groupsRefreshControl.addTarget(self, action: #selector(UserGroupsTableViewController.refreshGroupsTableView(_:)), forControlEvents: .ValueChanged)
-        
-        groupsTableView.addSubview(groupsRefreshControl)
+//        groupsTableView.addSubview(groupsRefreshControl)
         
         // Make sure we are getting 'auto layout' specific sizes
         // otherwise any math we do will be messed up
@@ -355,7 +349,7 @@ class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITa
 //                    }
                     
                     // Refresh the data in the table so the newest items appear
-                    self.groupsTableView.reloadData()
+//                    self.groupsTableView.reloadData()
                     
                     self.userGroupsPage += 1
                     
@@ -381,7 +375,15 @@ class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITa
     // PROTOCOL REQUIREMENT: UITableViewDelegate
     //
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 56.0
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             
         guard (JSON(self.userGroupsObjects) != nil) else { return 0 }
         
@@ -396,7 +398,7 @@ class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITa
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let emptyCell = tableView.dequeueReusableCellWithIdentifier("emptyTableViewCell", forIndexPath: indexPath) as! EmptyTableViewCell
         
@@ -466,7 +468,7 @@ class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITa
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("row tapped \(indexPath)")
     }
     
