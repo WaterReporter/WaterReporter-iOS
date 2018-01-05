@@ -460,7 +460,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     lazy var profileTableHeader: UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 224)
+//        view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 224)
         view.backgroundColor = UIColor(
             red: 245.0/255.0,
             green: 247.0/255.0,
@@ -477,7 +477,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     lazy var statGroupView: UIView = {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 32)
-        view.center = CGPoint(x: 160, y: 200)
+//        view.center = CGPoint(x: 160, y: 200)
         view.alpha = 0.0
         view.backgroundColor = UIColor(
             red: 200.0/255.0,
@@ -485,6 +485,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             blue: 216.0/255.0,
             alpha: 0.0
         )
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -807,6 +808,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             self.statGroupView.alpha = 1.0
         }
         
+        statGroupView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor, constant: 0.0).active = true
+        statGroupView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor, constant: 0.0).active = true
+        statGroupView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor, constant: 0.0).active = true
+        
         //
         // Post count
         //
@@ -934,8 +939,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Default vertical offsets for header components
         //
         
-        let userTitleYOffset = 124
-        let userBioYOffset = 160
+//        let userTitleYOffset = 124
+//        let userBioYOffset = 160
         
         //
         // User image view
@@ -1074,6 +1079,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
 //        headerView.sizeToFit()
         
+        //
+        // Profile header master stack view
+        //
+        
         let headerStackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [userImageView, userNameLabel, userTitleLabel, userBioLabel])
             stackView.alignment = .Center
@@ -1083,6 +1092,38 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             stackView.translatesAutoresizingMaskIntoConstraints = false
             return stackView
         }()
+        
+//        profileTableHeader.addSubview(headerStackView)
+        
+        //
+        // Adjust header container view height
+        //
+        
+//        let headerHeight = userImageView.bounds.size.height + userTitleLabel.bounds.size.height + userBioLabel.bounds.size.height + 32
+        
+//        let headerHeight = headerStackView.bounds.size.height + 32
+//        
+//        print("Adjusted header height is: \(headerHeight)")
+        
+        var baseHeaderHeight = 105.0
+        
+        if let titleText = userTitleLabel.text where !titleText.isEmpty {
+            
+            baseHeaderHeight += 20.0
+            
+        }
+        
+        if let bioText = userBioLabel.text where !bioText.isEmpty {
+            
+            baseHeaderHeight += 34.0
+            
+        }
+        
+//        profileTableHeader.frame.size.height = headerHeight
+        
+        let headerHeight = CGFloat(baseHeaderHeight + 40.0)
+        
+        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: headerHeight)
         
         profileTableHeader.addSubview(headerStackView)
         
