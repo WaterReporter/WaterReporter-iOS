@@ -213,38 +213,45 @@ class LikesTableViewController : UITableViewController, UINavigationControllerDe
             .responseJSON { response in
                 
                 switch response.result {
-                case .Success(let value):
-                    print("Success: \(value)")
                     
-                    //
-                    // Choose whether or not the reports should refresh or
-                    // whether loaded reports should be appended to the existing
-                    // list of reports
-                    //
-                    if (isRefreshingReportsList) {
-                        self.likes = JSON(value)
-                        self.refreshControl?.endRefreshing()
-                    }
-                    else {
-                        self.likes = JSON(value)
-                    }
+                    case .Success(let value):
+                        
+                        print("Success: \(value)")
+                        
+                        //
+                        // Choose whether or not the reports should refresh or
+                        // whether loaded reports should be appended to the existing
+                        // list of reports
+                        //
+                        if (isRefreshingReportsList) {
+                            self.likes = JSON(value)
+                            self.refreshControl?.endRefreshing()
+                        }
+                        else {
+                            self.likes = JSON(value)
+                        }
+                        
+                        print("self.comments \(self.likes)")
+                        
+                        self.tableView.reloadData()
+                        
+                        self.page += 1
+                        
+                        //
+                        // Dismiss the loading indicator
+                        //
+                        //self.loadingComplete()
+                        
+                        break;
                     
-                    print("self.comments \(self.likes)")
+                    case .Failure(let error):
+                        
+                        print("Failure: \(error)")
+                        
+                        break;
                     
-                    self.tableView.reloadData()
-                    
-                    self.page += 1
-                    
-                    //
-                    // Dismiss the loading indicator
-                    //
-                    //self.loadingComplete()
-                    
-                    break;
-                case .Failure(let error):
-                    print("Failure: \(error)")
-                    break;
                 }
+                
         }
         
     }

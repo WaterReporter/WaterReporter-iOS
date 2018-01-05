@@ -2761,164 +2761,6 @@
             </objects>
             <point key="canvasLocation" x="7216" y="721"/>
         </scene>
-        <!--User Groups-->
-        <scene sceneID="bwZ-g7-267">
-            <objects>
-                <viewController title="User Groups" id="JyC-WZ-1Ig" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="VCB-dx-U6w"/>
-                        <viewControllerLayoutGuide type="bottom" id="ECp-2G-SV0"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="e0T-eL-lYW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FYV-E8-52N">
-                                <rect key="frame" x="0.0" y="20" width="375" height="1180"/>
-                                <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="groupsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="56" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IqL-Dw-RCQ" userLabel="User Groups Table View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1087"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="separatorColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="calibratedRGB"/>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <prototypes>
-                                            <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="EmptyGroupTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="emptyTableViewCell" rowHeight="371" id="01n-SH-HQY" customClass="EmptyTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="375" height="371"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="01n-SH-HQY" id="0W6-Mz-X7G">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="370"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon--emptyMessage" translatesAutoresizingMaskIntoConstraints="NO" id="7Ag-aX-0pt">
-                                                            <rect key="frame" x="91" y="12" width="192" height="114"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="114" id="rSU-po-lz5"/>
-                                                                <constraint firstAttribute="width" constant="192" id="sC4-Ml-i7w"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No reports yet!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfV-bM-Yhv">
-                                                            <rect key="frame" x="40" y="142" width="295" height="117"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <color key="textColor" red="0.0" green="0.53725490200000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hyw-du-36J">
-                                                            <rect key="frame" x="92" y="275" width="192" height="32"/>
-                                                            <color key="backgroundColor" red="0.0" green="0.66666666669999997" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="192" id="ENf-9a-JRo"/>
-                                                                <constraint firstAttribute="height" constant="32" id="uQG-Wp-s70"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                                            <state key="normal" title="Add a report">
-                                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                            </state>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="16"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </button>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="7Ag-aX-0pt" firstAttribute="top" secondItem="0W6-Mz-X7G" secondAttribute="topMargin" constant="4" id="HYn-jC-Hrm"/>
-                                                        <constraint firstItem="hyw-du-36J" firstAttribute="centerX" secondItem="0W6-Mz-X7G" secondAttribute="centerX" id="Tw1-yD-T90"/>
-                                                        <constraint firstAttribute="bottomMargin" secondItem="hyw-du-36J" secondAttribute="bottom" constant="55" id="Web-cF-f0k"/>
-                                                        <constraint firstAttribute="trailingMargin" secondItem="dfV-bM-Yhv" secondAttribute="trailing" constant="32" id="gB4-9n-WNE"/>
-                                                        <constraint firstItem="hyw-du-36J" firstAttribute="top" secondItem="dfV-bM-Yhv" secondAttribute="bottom" constant="16" id="kL3-oB-YyF"/>
-                                                        <constraint firstItem="7Ag-aX-0pt" firstAttribute="centerX" secondItem="0W6-Mz-X7G" secondAttribute="centerX" id="sFi-Ze-PzP"/>
-                                                        <constraint firstItem="dfV-bM-Yhv" firstAttribute="leading" secondItem="0W6-Mz-X7G" secondAttribute="leadingMargin" constant="32" id="uoy-cP-adj"/>
-                                                        <constraint firstItem="dfV-bM-Yhv" firstAttribute="top" secondItem="7Ag-aX-0pt" secondAttribute="bottom" constant="16" id="ypK-ut-Gzb"/>
-                                                    </constraints>
-                                                </tableViewCellContentView>
-                                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                                                <connections>
-                                                    <outlet property="emptyMessageAction" destination="hyw-du-36J" id="V5j-i4-p6x"/>
-                                                    <outlet property="emptyMessageDescription" destination="dfV-bM-Yhv" id="vex-vJ-kMi"/>
-                                                    <outlet property="emptyMessageIcon" destination="7Ag-aX-0pt" id="313-Jp-QXJ"/>
-                                                </connections>
-                                            </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileGroupsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="userProfileGroupCell" id="3ki-S2-801" customClass="UserProfileGroupsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="399" width="375" height="56"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="3ki-S2-801" id="i2q-4P-dkX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aXS-mX-XAi">
-                                                            <rect key="frame" x="16" y="16" width="40" height="16"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="40" id="VQ3-jM-lXF"/>
-                                                                <constraint firstAttribute="width" constant="40" id="w52-2h-GP7"/>
-                                                            </constraints>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="36"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbv-k4-XBE">
-                                                            <rect key="frame" x="64" y="15.5" width="295" height="16"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zyW-pf-jhY">
-                                                            <rect key="frame" x="8" y="8" width="359" height="30"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="56" id="8H4-Q0-1Xv"/>
-                                                            </constraints>
-                                                            <connections>
-                                                                <action selector="openUserGroupView:" destination="JyC-WZ-1Ig" eventType="touchUpInside" id="3Ja-8c-8yJ"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="aXS-mX-XAi" firstAttribute="leading" secondItem="i2q-4P-dkX" secondAttribute="leadingMargin" constant="8" id="2eP-Gx-PFW"/>
-                                                        <constraint firstItem="Wbv-k4-XBE" firstAttribute="trailing" secondItem="zyW-pf-jhY" secondAttribute="trailing" constant="-8" id="7hX-u9-ISJ"/>
-                                                        <constraint firstItem="aXS-mX-XAi" firstAttribute="centerY" secondItem="Wbv-k4-XBE" secondAttribute="centerY" id="YW7-jw-p7w"/>
-                                                        <constraint firstAttribute="trailingMargin" secondItem="zyW-pf-jhY" secondAttribute="trailing" id="gn1-NS-vZR"/>
-                                                        <constraint firstItem="Wbv-k4-XBE" firstAttribute="centerY" secondItem="zyW-pf-jhY" secondAttribute="centerY" id="nIx-2c-kbl"/>
-                                                        <constraint firstItem="zyW-pf-jhY" firstAttribute="top" secondItem="i2q-4P-dkX" secondAttribute="topMargin" id="o3i-fX-o8b"/>
-                                                        <constraint firstItem="aXS-mX-XAi" firstAttribute="top" secondItem="i2q-4P-dkX" secondAttribute="topMargin" constant="8" id="qTs-iX-dEg"/>
-                                                        <constraint firstItem="zyW-pf-jhY" firstAttribute="leading" secondItem="i2q-4P-dkX" secondAttribute="leadingMargin" id="sIP-OS-hNE"/>
-                                                        <constraint firstItem="Wbv-k4-XBE" firstAttribute="leading" secondItem="aXS-mX-XAi" secondAttribute="trailing" constant="8" symbolic="YES" id="vlA-WL-7s8"/>
-                                                        <constraint firstAttribute="bottomMargin" secondItem="zyW-pf-jhY" secondAttribute="bottom" id="xhv-3x-GFg"/>
-                                                    </constraints>
-                                                </tableViewCellContentView>
-                                                <connections>
-                                                    <outlet property="buttonGroupSelection" destination="zyW-pf-jhY" id="cnN-mi-t6W"/>
-                                                    <outlet property="imageViewUserProfileGroup" destination="aXS-mX-XAi" id="Z2g-3U-ZIa"/>
-                                                    <outlet property="labelUserProfileGroupName" destination="Wbv-k4-XBE" id="Zcx-3O-A4i"/>
-                                                </connections>
-                                            </tableViewCell>
-                                        </prototypes>
-                                        <sections/>
-                                    </tableView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="FYV-E8-52N" firstAttribute="leading" secondItem="e0T-eL-lYW" secondAttribute="leading" id="2Uq-bS-ILR"/>
-                            <constraint firstItem="FYV-E8-52N" firstAttribute="top" secondItem="VCB-dx-U6w" secondAttribute="bottom" id="Fez-Q4-llO"/>
-                            <constraint firstItem="ECp-2G-SV0" firstAttribute="top" secondItem="FYV-E8-52N" secondAttribute="bottom" id="N8s-u7-ddE"/>
-                            <constraint firstAttribute="trailing" secondItem="FYV-E8-52N" secondAttribute="trailing" id="Ve9-gL-tnM"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Title" id="iSp-AF-5Kc" userLabel="Profile"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="1200"/>
-                    <connections>
-                        <outlet property="groupsTableView" destination="IqL-Dw-RCQ" id="ijl-qy-95Y"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0VY-Ga-uci" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3444" y="1878.2608695652175"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="A7H-iE-cW3">
             <objects>
@@ -7198,11 +7040,13 @@
         <!--User Groups Table View Controller-->
         <scene sceneID="6rp-nX-9B5">
             <objects>
-                <tableViewController storyboardIdentifier="UserGroupsTableViewController" title="User Groups Table View Controller" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HOW-jS-jVt" customClass="UserProfileCreateGroupsTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Bjh-MC-GcU" userLabel="User Groups Table View">
+                <tableViewController storyboardIdentifier="UserGroupsTableViewController" title="User Groups Table View Controller" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HOW-jS-jVt" customClass="UserGroupsTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Bjh-MC-GcU" userLabel="User Groups Table View">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1087"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yZz-ow-YDT">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -7212,18 +7056,18 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileGroupsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="userProfileGroupCell" id="Lde-H5-h36" customClass="UserProfileGroupsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="UserProfileGroupsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="userProfileGroupCell" rowHeight="56" id="Lde-H5-h36" customClass="UserProfileGroupsTableViewCell" customModule="Water_Reporter" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="72" width="375" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="Lde-H5-h36" id="P1N-ib-6uI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lde-H5-h36" id="P1N-ib-6uI">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bPj-2v-K42">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bPj-2v-K42">
                                             <rect key="frame" x="16" y="16" width="40" height="16"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="Okk-Ta-DzB"/>
                                                 <constraint firstAttribute="height" constant="40" id="aDf-fx-EaI"/>
+                                                <constraint firstAttribute="width" constant="40" id="nrM-0h-CaA"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -7231,20 +7075,14 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGB-qX-Nwr">
-                                            <rect key="frame" x="64" y="15.5" width="295" height="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGB-qX-Nwr">
+                                            <rect key="frame" x="64" y="20.5" width="295" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xda-aI-OwT">
-                                            <rect key="frame" x="8" y="8" width="359" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="56" id="Ky4-aS-8e7"/>
-                                            </constraints>
-                                            <connections>
-                                                <action selector="openUserGroupView:" destination="JyC-WZ-1Ig" eventType="touchUpInside" id="JXf-0I-gqP"/>
-                                            </connections>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xda-aI-OwT">
+                                            <rect key="frame" x="8" y="8" width="359" height="39.5"/>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -7252,14 +7090,14 @@
                                         <constraint firstItem="xda-aI-OwT" firstAttribute="leading" secondItem="P1N-ib-6uI" secondAttribute="leadingMargin" id="UoD-PL-WbD"/>
                                         <constraint firstItem="qGB-qX-Nwr" firstAttribute="trailing" secondItem="xda-aI-OwT" secondAttribute="trailing" constant="-8" id="eGM-Nl-ncd"/>
                                         <constraint firstItem="bPj-2v-K42" firstAttribute="leading" secondItem="P1N-ib-6uI" secondAttribute="leadingMargin" constant="8" id="gFT-I6-h1a"/>
-                                        <constraint firstItem="bPj-2v-K42" firstAttribute="top" secondItem="P1N-ib-6uI" secondAttribute="topMargin" constant="8" id="oGd-YB-WGr"/>
+                                        <constraint firstItem="bPj-2v-K42" firstAttribute="centerY" secondItem="P1N-ib-6uI" secondAttribute="centerY" id="jT3-UM-JmA"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="xda-aI-OwT" secondAttribute="bottom" id="oiG-vb-5TB"/>
                                         <constraint firstItem="qGB-qX-Nwr" firstAttribute="centerY" secondItem="xda-aI-OwT" secondAttribute="centerY" id="qOb-BU-1Rf"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="xda-aI-OwT" secondAttribute="trailing" id="uSW-MW-BTW"/>
                                         <constraint firstItem="xda-aI-OwT" firstAttribute="top" secondItem="P1N-ib-6uI" secondAttribute="topMargin" id="wWc-x9-vNk"/>
-                                        <constraint firstItem="bPj-2v-K42" firstAttribute="centerY" secondItem="qGB-qX-Nwr" secondAttribute="centerY" id="zlc-7y-aRW"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="buttonGroupSelection" destination="xda-aI-OwT" id="YGg-bZ-cZm"/>
                                     <outlet property="imageViewUserProfileGroup" destination="bPj-2v-K42" id="jCJ-P4-Hbb"/>

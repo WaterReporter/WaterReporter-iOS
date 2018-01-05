@@ -39,18 +39,16 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     var userId: String!
     var userObject: JSON?
     var userProfile: JSON?
-    var userSnapshot: JSON?
-    var isActingUsersProfile: Bool = false
     
-    var userGroups: JSON?
+    var groups: JSON?
     var userGroupsObjects = [AnyObject]()
-    var userGroupsPage: Int = 1
-    var groupsRefreshControl: UIRefreshControl = UIRefreshControl()
+    var page: Int = 1
     
     //
     // MARK: UIKit Overrides
     //
     override func viewWillAppear(animated: Bool) {
+
         super.viewWillAppear(true)
         
         // Check for profile updates
@@ -69,6 +67,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         }
         
         self.navigationController?.navigationBarHidden = false
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -90,6 +89,10 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         
         super.viewDidLoad()
         
+        print("View did load")
+
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
         // Check to see if a user id was passed to this view from
         // another view. If no user id was passed, then we know that
         // we should be displaying the acting user's profile
@@ -109,8 +112,6 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
             
             print("Loading another user's profile \(self.userProfile)")
             
-            self.isActingUsersProfile = false
-            
             self.navigationItem.title = ""
             
 //            if let _first_name = self.userProfile!["properties"]["first_name"].string,
@@ -128,8 +129,6 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
             
             print("Loading current user's profile")
             
-            self.isActingUsersProfile = true
-            
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
                 self.attemptLoadUserProfile(self.userId)
@@ -138,32 +137,6 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
             }
             
         }
-        
-        //
-        // Set dynamic row height
-        //
-        
-//        self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
-//        self.groupsTableView.estimatedRowHeight = 56.0;
-//        
-//        //
-//        // Set up groups table
-//        //
-//        
-//        self.groupsTableView.delegate = self
-//        self.groupsTableView.dataSource = self
-        
-//        groupsRefreshControl = UIRefreshControl()
-//        groupsRefreshControl.restorationIdentifier = "groupRefreshControl"
-//        
-//        groupsRefreshControl.addTarget(self, action: #selector(UserGroupsTableViewController.refreshGroupsTableView(_:)), forControlEvents: .ValueChanged)
-        
-//        groupsTableView.addSubview(groupsRefreshControl)
-        
-        // Make sure we are getting 'auto layout' specific sizes
-        // otherwise any math we do will be messed up
-        self.view.setNeedsLayout()
-        self.view.layoutIfNeeded()
         
     }
     
@@ -176,15 +149,15 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     // MARK: Custom Functionality
     //
     
-    func refreshGroupsTableView(sender: UIRefreshControl) {
-        
-        self.userGroupsPage = 1
-        self.userGroups = nil
-        self.userGroupsObjects = []
-        
-        self.attemptLoadUserGroups(true)
-        
-    }
+//    func refreshGroupsTableView(sender: UIRefreshControl) {
+//        
+//        self.userGroupsPage = 1
+//        self.userGroups = nil
+//        self.userGroupsObjects = []
+//        
+//        self.attemptLoadUserGroups(true)
+//        
+//    }
     
     func displayUserProfileInformation(withoutReportReload: Bool = false) {
         
@@ -204,6 +177,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         if !withoutReportReload {
             
             self.attemptLoadUserGroups()
+            
         }
         
     }
@@ -306,13 +280,15 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         let GET_GROUPS_ENDPOINT = Endpoints.GET_USER_PROFILE + "\(userId)/groups"
         
         let _parameters = [
-            "page": "\(self.userGroupsPage)"
+            "page": "\(self.page)"
         ]
         
         Alamofire.request(.GET, GET_GROUPS_ENDPOINT, headers: _headers, parameters: _parameters).responseJSON { response in
             
             switch response.result {
+                
             case .Success(let value):
+                
                 print("Request Success: \(value)")
                 
                 // Before anything else, check to make sure we are
@@ -322,36 +298,52 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
                 let responseCode = value["code"]
                 
                 if responseCode == nil {
+                    
                     print("Unable to continue processing error encountered \(responseCode)")
+                    
                 } else {
+                    
                     // No response code found, so go ahead and
                     // continue processing the response.
                     //
+                    
+                    print("Success: \(value)")
+                    
+                    //
+                    // Choose whether or not the reports should refresh or
+                    // whether loaded reports should be appended to the existing
+                    // list of reports
+                    //
                     if (isRefreshingReportsList) {
-                        self.userGroups = JSON(value)
-                        self.userGroupsObjects = value["features"] as! [AnyObject]
-                        self.groupsRefreshControl.endRefreshing()
-                    } else {
-                        if let features = value["features"] {
-                            if features != nil {
-                                self.userGroups = JSON(value)
-                                self.userGroupsObjects += features as! [AnyObject]
-                            }
-                        }
-                        
+                        self.groups = JSON(value)
+                        self.refreshControl?.endRefreshing()
+                    }
+                    else {
+                        self.groups = JSON(value)
                     }
                     
-                    // Set the number on the profile page
-//                    let _group_count = self.userGroups!["properties"]["num_results"]
+                    print("self.groups \(self.groups)")
                     
-//                    if (_group_count != "") {
-//                        self.buttonUserProfileGroupCount.setTitle("\(_group_count)", forState: .Normal)
+                    self.tableView.reloadData()
+                    
+                    self.page += 1
+                    
+//                    if (isRefreshingReportsList) {
+//                        self.userGroups = JSON(value)
+//                        self.userGroupsObjects = value["features"] as! [AnyObject]
+//                        self.refreshControl?.endRefreshing()
+//                        self.tableView.reloadData()
+//                    } else {
+//                        if let features = value["features"] {
+//                            if features != nil {
+//                                self.userGroups = JSON(value)
+//                                self.userGroupsObjects += features as! [AnyObject]
+//                            }
+//                        }
+//                        
 //                    }
-                    
-                    // Refresh the data in the table so the newest items appear
-//                    self.groupsTableView.reloadData()
-                    
-                    self.userGroupsPage += 1
+//                    
+//                    self.userGroupsPage += 1
                     
                 }
                 
@@ -375,9 +367,9 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     // PROTOCOL REQUIREMENT: UITableViewDelegate
     //
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
+//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        return 1
+//    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 56.0
@@ -385,22 +377,28 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             
-        guard (JSON(self.userGroupsObjects) != nil) else { return 0 }
+        guard (JSON(self.groups) != nil) else { return 0 }
+//
+////        if self.userGroupsObjects.count == 0 {
+////            print("Groups showing 0, make sure at least 1 row is visible.")
+////            return 1
+////        }
+////
+//        print("Groups showing count \(self.userGroupsObjects.count)")
+//        
+//        return (self.userGroupsObjects.count)
         
-        if self.userGroupsObjects.count == 0 {
-            print("Groups showing 0, make sure at least 1 row is visible.")
-            return 1
+        var _count: Int = 0
+        
+        if (self.groups!.count >= 1) {
+            _count = self.groups!["features"].count
         }
         
-        print("Groups showing count \(self.userGroupsObjects.count)")
-        
-        return (self.userGroupsObjects.count)
+        return _count
         
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let emptyCell = tableView.dequeueReusableCellWithIdentifier("emptyTableViewCell", forIndexPath: indexPath) as! EmptyTableViewCell
         
         //
         // Groups
@@ -409,29 +407,8 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         
         print("Groups cell")
         
-        guard (self.userGroups != nil) else { return emptyCell }
-        
         // Display Group Name
         let _groups = JSON(self.userGroupsObjects)
-        
-        let _thisSubmission = _groups[indexPath.row]["properties"]
-        print("Show (group) _thisSubmission \(_thisSubmission)")
-        
-//        if _thisSubmission == nil {
-//            
-//            if self.isActingUsersProfile == false {
-//                emptyCell.emptyMessageDescription.text = "Looks like this user hasn't joined any groups."
-//                emptyCell.emptyMessageAction.hidden = true
-//            }
-//            else {
-//                emptyCell.emptyMessageDescription.text = "There’s power in numbers, join a group"
-//                emptyCell.emptyMessageAction.hidden = false
-//                emptyCell.emptyMessageAction.setTitle("Join a group", forState: .Normal)
-//                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageJoinGroup(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-//            }
-//            
-//            return emptyCell
-//        }
         
         if let _group_name = _groups[indexPath.row]["properties"]["organization"]["properties"]["name"].string {
             cell.labelUserProfileGroupName.text = _group_name
@@ -460,7 +437,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
             cell.imageViewUserProfileGroup.image = nil
         }
         
-        if (indexPath.row == self.userGroupsObjects.count - 2 && self.userGroupsObjects.count < self.userGroups!["properties"]["num_results"].int) {
+        if (indexPath.row == self.userGroupsObjects.count - 2 && self.userGroupsObjects.count < self.groups!["properties"]["num_results"].int) {
             self.attemptLoadUserGroups()
         }
         
