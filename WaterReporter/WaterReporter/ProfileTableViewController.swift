@@ -458,7 +458,17 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     // Table header view
     //
     
-    var profileTableHeader = UIView()
+    lazy var profileTableHeader: UIView = {
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 224)
+        view.backgroundColor = UIColor(
+            red: 245.0/255.0,
+            green: 247.0/255.0,
+            blue: 249.0/255.0,
+            alpha: 1.0
+        )
+        return view
+    }()
     
     //
     // Stat group view
@@ -852,7 +862,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         statStackView.trailingAnchor.constraintEqualToAnchor(statGroupView.trailingAnchor).active = true
         statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
         statStackView.topAnchor.constraintEqualToAnchor(statGroupView.topAnchor).active = true
-//        statStackView.heightAnchor.constraintEqualToConstant(24.0).active = true
         
         //
         // Populate values
@@ -921,15 +930,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             return
         }
         
-        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 224)
-        
-        profileTableHeader.backgroundColor = UIColor(
-            red: 245.0/255.0,
-            green: 247.0/255.0,
-            blue: 249.0/255.0,
-            alpha: 1.0
-        )
-        
         //
         // Default vertical offsets for header components
         //
@@ -937,37 +937,25 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let userTitleYOffset = 124
         let userBioYOffset = 160
         
-//        let headerStackView = UIStackView()
-//        
-//        headerStackView.axis = .Vertical;
-//        headerStackView.distribution = .EqualSpacing;
-//        headerStackView.alignment = .Center;
-//        headerStackView.spacing = 10;
+        //
+        // User image view
+        //
         
-//        headerView.addSubview(headerStackView)
-//        
-//        headerStackView.leadingAnchor.constraintEqualToAnchor(headerView.leadingAnchor).active = true
-//        headerStackView.trailingAnchor.constraintEqualToAnchor(headerView.trailingAnchor).active = true
-//        headerStackView.topAnchor.constraintEqualToAnchor(headerView.topAnchor).active = true
-//        headerStackView.bottomAnchor.constraintEqualToAnchor(headerView.bottomAnchor).active = true
-        
-        let userImageView = UIImageView()
-        
-        userImageView.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
-        
-//        userImageView.heightAnchor.constraintEqualToConstant(64.0).active = true
-//        userImageView.widthAnchor.constraintEqualToConstant(64.0).active = true
-        
-        userImageView.center = CGPoint(x: 160, y: 48)
+        let userImageView: UIImageView = {
+            let imageView = UIImageView()
+//            imageView.center = CGPoint(x: 160, y: 48)
+            imageView.frame = CGRect(x: 0, y: 0, width: 64, height: 64)
+            imageView.heightAnchor.constraintEqualToConstant(64.0).active = true
+            imageView.widthAnchor.constraintEqualToConstant(64.0).active = true
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            return imageView
+        }()
         
         var userProfileImageURL: NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
         
         if let thisUserProfileImageURLString = self.userProfile!["properties"]["picture"].string {
             userProfileImageURL = NSURL(string: String(thisUserProfileImageURLString))
         }
-        
-//        self.imageViewUserProfileImage.kf_indicatorType = .Activity
-//        self.imageViewUserProfileImage.kf_showIndicatorWhenLoading = true
         
         userImageView.kf_setImageWithURL(userProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
             (image, error, cacheType, imageUrl) in
@@ -978,29 +966,34 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             userImageView.clipsToBounds = true
         })
         
+//        profileTableHeader.addSubview(userImageView)
+        
         //
-        // Center the user avatar horizontally in its container
+        // User name label
         //
         
-//        userImageView.centerXAnchor.constraintEqualToAnchor(headerView.centerXAnchor)
-        
-//        userImageView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor).isActive = true
-        
-        profileTableHeader.addSubview(userImageView)
+        let userNameLabel: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .Center
+            label.font = UIFont.systemFontOfSize(17, weight: UIFontWeightRegular)
+            label.widthAnchor.constraintEqualToConstant(272.0).active = true
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
         
         if self.userProfile!["properties"]["first_name"].string != "" && self.userProfile!["properties"]["last_name"].string != "" {
             
             // Display user's first and last name
             
-            let userNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
-            
-            userNameLabel.center = CGPoint(x: 160, y: 100)
-            userNameLabel.textAlignment = .Center
-            userNameLabel.font = UIFont.systemFontOfSize(17, weight: UIFontWeightRegular)
+//            let userNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 24))
+//            
+//            userNameLabel.center = CGPoint(x: 160, y: 100)
+//            userNameLabel.textAlignment = .Center
+//            userNameLabel.font = UIFont.systemFontOfSize(17, weight: UIFontWeightRegular)
             
             userNameLabel.text = self.userProfile!["properties"]["first_name"].string! + " " + self.userProfile!["properties"]["last_name"].string!
             
-            profileTableHeader.addSubview(userNameLabel)
+//            profileTableHeader.addSubview(userNameLabel)
             
             print("Display User's Name \(userNameLabel.text)")
             
@@ -1018,20 +1011,29 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Display user title
         //
         
+        let userTitleLabel: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .Center
+            label.font = UIFont.systemFontOfSize(12, weight: UIFontWeightRegular)
+            label.widthAnchor.constraintEqualToConstant(272.0).active = true
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
         let userTitleString = retrieveUserTitle(self.userProfile)
         
         if userTitleString != "" &&
             userTitleString != "at" {
             
-            let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 276, height: 24))
-
-            userTitleLabel.center = CGPoint(x: 160, y: userTitleYOffset)
-            userTitleLabel.textAlignment = .Center
-            userTitleLabel.font = UIFont.systemFontOfSize(12, weight: UIFontWeightRegular)
+//            let userTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 276, height: 24))
+//
+//            userTitleLabel.center = CGPoint(x: 160, y: userTitleYOffset)
+//            userTitleLabel.textAlignment = .Center
+//            userTitleLabel.font = UIFont.systemFontOfSize(12, weight: UIFontWeightRegular)
 
             userTitleLabel.text = userTitleString
 
-            profileTableHeader.addSubview(userTitleLabel)
+//            profileTableHeader.addSubview(userTitleLabel)
             
         }
         
@@ -1039,27 +1041,55 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Display user bio
         //
         
+        let userBioLabel: UILabel = {
+            let label = UILabel()
+            label.textAlignment = .Center
+            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
+            label.widthAnchor.constraintEqualToConstant(272.0).active = true
+            label.numberOfLines = 2
+            label.lineBreakMode = .ByTruncatingTail
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
         if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
             
-            let userBioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 272, height: 32))
-            
-            userBioLabel.center = CGPoint(x: 160, y: userBioYOffset)
-            userBioLabel.textAlignment = .Center
-            userBioLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
-            userBioLabel.numberOfLines = 2
-            userBioLabel.lineBreakMode = .ByTruncatingTail
+//            let userBioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 272, height: 32))
+//            
+//            userBioLabel.center = CGPoint(x: 160, y: userBioYOffset)
+//            userBioLabel.textAlignment = .Center
+//            userBioLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
+//            userBioLabel.numberOfLines = 2
+//            userBioLabel.lineBreakMode = .ByTruncatingTail
             
             userBioLabel.text = self.userProfile!["properties"]["description"].string
             
 //            userBioLabel.sizeToFit()
             
-            profileTableHeader.addSubview(userBioLabel)
+//            profileTableHeader.addSubview(userBioLabel)
             
         }
         
 //        headerView.addSubview(headerStackView)
         
 //        headerView.sizeToFit()
+        
+        let headerStackView: UIStackView = {
+            let stackView = UIStackView(arrangedSubviews: [userImageView, userNameLabel, userTitleLabel, userBioLabel])
+            stackView.alignment = .Center
+            stackView.distribution = .Fill
+            stackView.spacing = 8
+            stackView.axis = .Vertical
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            return stackView
+        }()
+        
+        profileTableHeader.addSubview(headerStackView)
+        
+        headerStackView.leadingAnchor.constraintEqualToAnchor(profileTableHeader.leadingAnchor).active = true
+        headerStackView.trailingAnchor.constraintEqualToAnchor(profileTableHeader.trailingAnchor).active = true
+        headerStackView.topAnchor.constraintEqualToAnchor(profileTableHeader.topAnchor, constant: 16.0).active = true
+//        headerStackView.bottomAnchor.constraintEqualToAnchor(profileTableHeader.bottomAnchor).active = true
         
         self.submissionTableView.tableHeaderView = profileTableHeader
         
