@@ -150,7 +150,7 @@ class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITa
         //
         
         self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
-        self.groupsTableView.estimatedRowHeight = 368.0;
+        self.groupsTableView.estimatedRowHeight = 56.0;
         
         //
         // Set up groups table
@@ -162,7 +162,7 @@ class UserGroupsTableViewController: UIViewController, UITableViewDelegate, UITa
         groupsRefreshControl = UIRefreshControl()
         groupsRefreshControl.restorationIdentifier = "groupRefreshControl"
         
-        groupsRefreshControl.addTarget(self, action: #selector(ProfileTableViewController.refreshGroupsTableView(_:)), forControlEvents: .ValueChanged)
+        groupsRefreshControl.addTarget(self, action: #selector(UserGroupsTableViewController.refreshGroupsTableView(_:)), forControlEvents: .ValueChanged)
         
         groupsTableView.addSubview(groupsRefreshControl)
         
