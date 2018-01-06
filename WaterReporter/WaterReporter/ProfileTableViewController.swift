@@ -1222,27 +1222,15 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             return label
         }()
         
-        if self.userProfile!["properties"]["description"].string != "" && self.userProfile!["properties"]["description"].string != "Bio" {
+        if let userBio = self.userProfile!["properties"]["description"].string {
+        
+            if userBio != "Bio" && userBio.characters.count > 1 {
+                
+                userBioLabel.text = userBio
             
-//            let userBioLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 272, height: 32))
-//            
-//            userBioLabel.center = CGPoint(x: 160, y: userBioYOffset)
-//            userBioLabel.textAlignment = .Center
-//            userBioLabel.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
-//            userBioLabel.numberOfLines = 2
-//            userBioLabel.lineBreakMode = .ByTruncatingTail
-            
-            userBioLabel.text = self.userProfile!["properties"]["description"].string
-            
-//            userBioLabel.sizeToFit()
-            
-//            profileTableHeader.addSubview(userBioLabel)
+            }
             
         }
-        
-//        headerView.addSubview(headerStackView)
-        
-//        headerView.sizeToFit()
         
         //
         // Profile header master stack view
@@ -1270,7 +1258,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 //        
 //        print("Adjusted header height is: \(headerHeight)")
         
-        var baseHeaderHeight = 105.0
+        var baseHeaderHeight = 113.0
         
         if let titleText = userTitleLabel.text where !titleText.isEmpty {
             
