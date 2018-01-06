@@ -105,7 +105,7 @@
                                                             <state key="normal" title="Button"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92W-hY-yzY" userLabel="Post Group Two">
-                                                            <rect key="frame" x="4" y="0.0" width="8" height="44"/>
+                                                            <rect key="frame" x="4" y="0.0" width="0.0" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="FT0-Nr-0cB"/>
                                                                 <constraint firstAttribute="width" constant="40" id="y7j-V1-USS"/>
@@ -113,7 +113,7 @@
                                                             <state key="normal" title="Button"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j0N-2f-nf9" userLabel="Post Group Three">
-                                                            <rect key="frame" x="16" y="0.0" width="0.0" height="44"/>
+                                                            <rect key="frame" x="8" y="0.0" width="0.0" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="Qas-6v-ZeR"/>
                                                                 <constraint firstAttribute="width" constant="40" id="vGe-ba-raP"/>
@@ -121,7 +121,7 @@
                                                             <state key="normal" title="Button"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h9F-WV-2Qd" userLabel="Post Group Four">
-                                                            <rect key="frame" x="20" y="0.0" width="0.0" height="44"/>
+                                                            <rect key="frame" x="12" y="0.0" width="8" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="Nm8-4f-wYf"/>
                                                                 <constraint firstAttribute="height" constant="40" id="eV8-8h-xLL"/>
@@ -7083,6 +7083,9 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xda-aI-OwT">
                                             <rect key="frame" x="8" y="8" width="359" height="39.5"/>
+                                            <connections>
+                                                <action selector="openUserGroupView:" destination="HOW-jS-jVt" eventType="touchUpInside" id="yeJ-gr-I5r"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -7097,7 +7100,6 @@
                                         <constraint firstItem="xda-aI-OwT" firstAttribute="top" secondItem="P1N-ib-6uI" secondAttribute="topMargin" id="wWc-x9-vNk"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="buttonGroupSelection" destination="xda-aI-OwT" id="YGg-bZ-cZm"/>
                                     <outlet property="imageViewUserProfileGroup" destination="bPj-2v-K42" id="jCJ-P4-Hbb"/>

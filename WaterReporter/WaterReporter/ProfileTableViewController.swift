@@ -762,7 +762,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserGroupsTableViewController") as! UserGroupsTableViewController
         
         nextViewController.userId = self.userId
-        nextViewController.userObject = self.userProfile
+//        nextViewController.userObject = self.userProfile
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
         

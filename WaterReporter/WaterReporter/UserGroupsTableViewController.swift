@@ -22,7 +22,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     @IBAction func openUserGroupView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
         
-        let _groups = JSON(self.userGroupsObjects)
+        let _groups = self.groups
         let _group_id = _groups[sender.tag]["properties"]["organization"]["id"]
         
         nextViewController.groupId = "\(_group_id)"
@@ -37,12 +37,20 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
     
     var userId: String!
-    var userObject: JSON?
-    var userProfile: JSON?
+//    var userObject: JSON?
+//    var userProfile: JSON?
     
-    var groups: JSON?
-    var userGroupsObjects = [AnyObject]()
+//    var groups: JSON?
+    
+    var groupResponse: JSON?
+    var groups: JSON = []
+//    var userGroupsObjects = [AnyObject]()
     var page: Int = 1
+    
+//    var report:AnyObject!
+//    var reportId:String!
+//    var likes: JSON = []
+//    var page: Int = 1
     
     //
     // MARK: UIKit Overrides
@@ -53,18 +61,18 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         
         // Check for profile updates
         //
-        if self.userObject == nil {
-            
-            print("Check for updated user information")
-            
-            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-                self.userId = "\(userIdNumber)"
-                self.attemptLoadUserProfile(self.userId, withoutReportReload: false)
-            } else {
-                self.attemptRetrieveUserID()
-            }
-            
-        }
+//        if self.userObject == nil {
+//            
+//            print("Check for updated user information")
+//            
+//            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+//                self.userId = "\(userIdNumber)"
+//                self.attemptLoadUserProfile(self.userId, withoutReportReload: false)
+//            } else {
+//                self.attemptRetrieveUserID()
+//            }
+//            
+//        }
         
         self.navigationController?.navigationBarHidden = false
         
@@ -97,46 +105,17 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         // another view. If no user id was passed, then we know that
         // we should be displaying the acting user's profile
         if (self.userId == nil) {
-            
-            
+            return
         }
+            
+        self.navigationItem.title = ""
         
-        // Show User Profile Information in Header View
-        if self.userObject != nil && self.userId != nil {
-            
-            // We should never load from NSUserDefaults for this area
-            //
-            
-            // Retain the returned data
-            self.userProfile = self.userObject
-            
-            print("Loading another user's profile \(self.userProfile)")
-            
-            self.navigationItem.title = ""
-            
-//            if let _first_name = self.userProfile!["properties"]["first_name"].string,
-//                let _last_name = self.userProfile!["properties"]["last_name"].string {
-//                self.navigationItem.title = _first_name + " " + _last_name
-//            }
-            
-            self.navigationItem.rightBarButtonItem?.enabled = false
-            
-            // Show the data on screen
-            self.displayUserProfileInformation()
-            
-        }
-        else if self.userId == nil {
-            
-            print("Loading current user's profile")
-            
-            if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-                self.userId = "\(userIdNumber)"
-                self.attemptLoadUserProfile(self.userId)
-            } else {
-                self.attemptRetrieveUserID()
-            }
-            
-        }
+        self.navigationItem.rightBarButtonItem?.enabled = false
+        
+        self.tableView.tableFooterView = UIView()
+        
+        // Show the data on screen
+        self.displayUserProfileInformation()
         
     }
     
@@ -149,27 +128,11 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     // MARK: Custom Functionality
     //
     
-//    func refreshGroupsTableView(sender: UIRefreshControl) {
-//        
-//        self.userGroupsPage = 1
-//        self.userGroups = nil
-//        self.userGroupsObjects = []
-//        
-//        self.attemptLoadUserGroups(true)
-//        
-//    }
-    
     func displayUserProfileInformation(withoutReportReload: Bool = false) {
         
         print("displayUserProfileInformation")
         
-        print("User profile value is: \(self.userProfile)")
-        
-        // Ensure we have loaded the user profile
-        guard (self.userProfile != nil) else {
-            print("RETURNING NIL")
-            return
-        }
+        print("User profile value is: \(self.userId)")
         
         //
         // Load and display other user information
@@ -193,79 +156,6 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         return [
             "Authorization": "Bearer " + (accessToken! as! String)
         ]
-    }
-    
-    func attemptLoadUserProfile(_user_id: String, withoutReportReload: Bool = false) {
-        
-        if userId == "" {
-            return
-        }
-        
-        let _headers = buildRequestHeaders()
-        
-        let revisedEndpoint = Endpoints.GET_USER_PROFILE + "\(_user_id)"
-        
-        print("revisedEndpoint \(revisedEndpoint)")
-        
-        Alamofire.request(.GET, revisedEndpoint, headers: _headers, encoding: .JSON).responseJSON { response in
-            
-            print("response.result \(response.result)")
-            
-            switch response.result {
-            case .Success(let value):
-                let json = JSON(value)
-                
-                //                print("Response Success \(value)")
-                
-                if (json != nil) {
-                    
-                    // Retain the returned data
-                    self.userProfile = json
-                    
-                    // Show the data on screen
-                    self.displayUserProfileInformation(withoutReportReload)
-                    
-                }
-                
-            case .Failure(let error):
-                print("Response Failure \(error)")
-            }
-        }
-        
-    }
-    
-    func attemptRetrieveUserID() {
-        
-        let _headers = buildRequestHeaders()
-        
-        Alamofire.request(.GET, Endpoints.GET_USER_ME, headers: _headers, encoding: .JSON)
-            .responseJSON { response in
-                
-                switch response.result {
-                case .Success(let value):
-                    let json = JSON(value)
-                    
-                    if let data: AnyObject = json.rawValue {
-                        
-                        // Set the user id as a number and save it to the application cache
-                        //
-                        let _user_id = data["id"] as! NSNumber
-                        NSUserDefaults.standardUserDefaults().setValue(_user_id, forKeyPath: "currentUserAccountUID")
-                        
-                        // Set user id to view variable
-                        //
-                        self.userId = "\(_user_id)"
-                        
-                        // Continue loading the user profile
-                        //
-                        self.attemptLoadUserProfile(self.userId)
-                        
-                    }
-                    
-                case .Failure(let error):
-                    print(error)
-                }
-        }
     }
     
     //
@@ -315,11 +205,13 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
                     // list of reports
                     //
                     if (isRefreshingReportsList) {
-                        self.groups = JSON(value)
+                        self.groupResponse = JSON(value)
+                        self.groups = (self.groupResponse?["features"])!
                         self.refreshControl?.endRefreshing()
                     }
                     else {
-                        self.groups = JSON(value)
+                        self.groupResponse = JSON(value)
+                        self.groups = (self.groupResponse?["features"])!
                     }
                     
                     print("self.groups \(self.groups)")
@@ -327,23 +219,6 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
                     self.tableView.reloadData()
                     
                     self.page += 1
-                    
-//                    if (isRefreshingReportsList) {
-//                        self.userGroups = JSON(value)
-//                        self.userGroupsObjects = value["features"] as! [AnyObject]
-//                        self.refreshControl?.endRefreshing()
-//                        self.tableView.reloadData()
-//                    } else {
-//                        if let features = value["features"] {
-//                            if features != nil {
-//                                self.userGroups = JSON(value)
-//                                self.userGroupsObjects += features as! [AnyObject]
-//                            }
-//                        }
-//                        
-//                    }
-//                    
-//                    self.userGroupsPage += 1
                     
                 }
                 
@@ -367,31 +242,16 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
     // PROTOCOL REQUIREMENT: UITableViewDelegate
     //
     
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        return 1
-//    }
-    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 56.0
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            
-        guard (JSON(self.groups) != nil) else { return 0 }
-//
-////        if self.userGroupsObjects.count == 0 {
-////            print("Groups showing 0, make sure at least 1 row is visible.")
-////            return 1
-////        }
-////
-//        print("Groups showing count \(self.userGroupsObjects.count)")
-//        
-//        return (self.userGroupsObjects.count)
         
         var _count: Int = 0
         
-        if (self.groups!.count >= 1) {
-            _count = self.groups!["features"].count
+        if (self.groups.count >= 1) {
+            _count = self.groups.count
         }
         
         return _count
@@ -408,7 +268,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         print("Groups cell")
         
         // Display Group Name
-        let _groups = JSON(self.userGroupsObjects)
+        let _groups = self.groups
         
         if let _group_name = _groups[indexPath.row]["properties"]["organization"]["properties"]["name"].string {
             cell.labelUserProfileGroupName.text = _group_name
@@ -437,7 +297,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
             cell.imageViewUserProfileGroup.image = nil
         }
         
-        if (indexPath.row == self.userGroupsObjects.count - 2 && self.userGroupsObjects.count < self.groups!["properties"]["num_results"].int) {
+        if (indexPath.row == self.groups.count - 2 && self.groups.count < self.groupResponse!["properties"]["num_results"].int) {
             self.attemptLoadUserGroups()
         }
         
