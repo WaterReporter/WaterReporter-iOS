@@ -730,7 +730,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let backItem = UIBarButtonItem()
         
         if let firstName = self.userProfile!["properties"]["first_name"].string,
-            lastName = self.userProfile!["properties"]["last_name"].string {
+            let lastName = self.userProfile!["properties"]["last_name"].string {
             
             backItem.title = firstName + " " + lastName
             
@@ -751,7 +751,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         let backItem = UIBarButtonItem()
         
         if let firstName = self.userProfile!["properties"]["first_name"].string,
-            lastName = self.userProfile!["properties"]["last_name"].string {
+            let lastName = self.userProfile!["properties"]["last_name"].string {
             
             backItem.title = firstName + " " + lastName
             
