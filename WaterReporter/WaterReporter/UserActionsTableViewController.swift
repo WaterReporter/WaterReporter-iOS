@@ -19,16 +19,27 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
     // MARK: @IBActions
     //
     
-    @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
+//    @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
+//        
+//        let reportId = sender.tag
+//        let report = JSON(self.actions[reportId])
+//        
+//        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+//        
+//        print("openOpenGraphURL \(reportURL)")
+//        
+//        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+//        
+//    }
+    
+    @IBAction func openSubmissionsLikesList(sender: UIButton) {
         
-        let reportId = sender.tag
-        let report = JSON(self.actions[reportId])
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
         
-        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+        let report = self.actions[(sender.tag)]
+        nextViewController.report = report
         
-        print("openOpenGraphURL \(reportURL)")
-        
-        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+        self.navigationController?.pushViewController(nextViewController, animated: true)
         
     }
     
@@ -106,6 +117,49 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
     //
     // MARK: Custom Functionality
     //
+    
+    func userHasCommentedOnReport(_report: JSON, _current_user_id: Int) -> Bool {
+        
+        if (_report["comments"].count != 0) {
+            for _comment in _report["comments"] {
+                if (_comment.1["properties"]["owner_id"].intValue == _current_user_id) {
+                    return true
+                }
+            }
+        }
+        
+        return false
+        
+    }
+    
+    func openDirectionsURL(postId: Int) {
+        
+        //        let reportId = sender.tag
+        let report = self.actions[postId]
+        
+        let reportGeometry = report.objectForKey("geometry")
+        let reportGeometries = reportGeometry!.objectForKey("geometries")
+        let reportCoordinates = reportGeometries![0].objectForKey("coordinates") as! Array<Double>
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//" + String(reportCoordinates[1]) + "," + String(reportCoordinates[0]))!)
+    }
+    
+    func openOpenGraphURL(sender: AnyObject) {
+        
+        let reportId = sender.tag
+        
+        //        print("The value of `sender` is \(sender)")
+        //
+        //        print("The value of `sender` > `view` is \(sender.view)")
+        
+        let report = JSON(self.actions[reportId])
+        
+        let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
+        
+        print("openOpenGraphURL \(reportURL)")
+        
+        UIApplication.sharedApplication().openURL(NSURL(string: "\(reportURL)")!)
+    }
     
     func displayUserProfileInformation(withoutReportReload: Bool = false) {
         
@@ -228,342 +282,653 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("userProfileSubmissionCell", forIndexPath: indexPath) as! UserProfileSubmissionTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("basePostTableCell", forIndexPath: indexPath) as! BasePostTableCell
         
-//        guard (self.userSubmissions != nil) else { return emptyCell }
-        
-        let _submissions = self.actions
-        
-        let _thisSubmission = JSON(_submissions[indexPath.row]["properties"])
-        
-        print("Show (submissions) _thisSubmission \(_thisSubmission)")
-        
-//        if _thisSubmission == nil {
-//            
-//            //
-//            // If the User Profile being viewed is no the Acting User's Profile
-//            // we need to change the empty message sentence to make sense in
-//            // this context.
-//            //
-//            if self.isActingUsersProfile == false {
-//                emptyCell.emptyMessageDescription.text = "Looks like this user hasn't submitted any reports."
-//                emptyCell.emptyMessageAction.hidden = true
-//            }
-//            else {
-//                emptyCell.emptyMessageDescription.text = "No reports yet, post your first one now!"
-//                emptyCell.emptyMessageAction.hidden = false
-//                emptyCell.emptyMessageAction.addTarget(self, action: #selector(self.emptyMessageAddReport(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-//            }
-//            
-//            return emptyCell
-//        }
-        
-        // Report > Owner > Image
         //
-        if let _report_owner_url = _thisSubmission["owner"]["properties"]["picture"].string {
-            
-            let reportOwnerProfileImageURL: NSURL! = NSURL(string: _report_owner_url)
-            
-            cell.imageViewReportOwnerImage.kf_indicatorType = .Activity
-            cell.imageViewReportOwnerImage.kf_showIndicatorWhenLoading = true
-            
-            cell.imageViewReportOwnerImage.kf_setImageWithURL(reportOwnerProfileImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                (image, error, cacheType, imageUrl) in
-                if (image != nil) {
-                    cell.imageViewReportOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                }
-            })
-        }
-        else {
-            cell.imageViewReportOwnerImage.image = nil
-        }
-        
-        // Report > Owner > Name
+        // Make sure we aren't loading old images into the new cells as
+        // additional reports are loaded
         //
-        if let _first_name = _thisSubmission["owner"]["properties"]["first_name"].string,
-            let _last_name = _thisSubmission["owner"]["properties"]["last_name"].string {
-            cell.reportOwnerName.text = "\(_first_name) \(_last_name)"
-        } else {
-            cell.reportOwnerName.text = "Unknown Reporter"
-        }
-        
-        
-        // Report > Territory > Name
-        //
-        if let _territory_name = _thisSubmission["territory"]["properties"]["huc_8_name"].string {
-            cell.reportTerritoryName.text = "\(_territory_name) Watershed"
-        }
-        else {
-            cell.reportTerritoryName.text = "Unknown Watershed"
-        }
-        
-        // Report > Date
-        //
-        let reportDate = _thisSubmission["report_date"].string
-        
-        if (reportDate != nil) {
-            let dateString: String = reportDate!
+        if (self.actions.count >= 1) {
             
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            //
+            // User Id
+            //
             
-            let stringToFormat = dateFormatter.dateFromString(dateString)
-            dateFormatter.dateFormat = "MMM d, yyyy"
+            var _user_id_integer: Int = 0
             
-            let displayDate = dateFormatter.stringFromDate(stringToFormat!)
-            
-            if let thisDisplayDate: String? = displayDate {
-                cell.reportDate.text = thisDisplayDate
-            }
-        }
-        else {
-            cell.reportDate.text = ""
-        }
-        
-        // Report > Description
-        //
-        let reportDescription = "\(_thisSubmission["report_description"])"
-        
-        if "\(reportDescription)" != "null" || "\(reportDescription)" != "" {
-            cell.labelReportDescription.text = "\(reportDescription)"
-            cell.labelReportDescription.enabledTypes = [.Hashtag, .URL]
-            
-            
-            cell.labelReportDescription.handleHashtagTap { hashtag in
-                print("Success. You just tapped the \(hashtag) hashtag")
-                
-                let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
-                
-                nextViewController.hashtag = hashtag
-                
-                self.navigationController?.pushViewController(nextViewController, animated: true)
-                
-            }
-            cell.labelReportDescription.handleURLTap { url in
-                print("Success. You just tapped the \(url) url")
-                
-                UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
-            }
-        }
-        else {
-            cell.labelReportDescription.text = ""
-        }
-        
-        
-        if _thisSubmission["social"] != nil && _thisSubmission["social"].count != 0 {
-            cell.buttonOpenGraphLink.hidden = false
-            cell.buttonOpenGraphLink.tag = indexPath.row
-            cell.buttonOpenGraphLink.addTarget(self, action: #selector(self.openSubmissionOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
-            cell.buttonOpenGraphLink.layer.cornerRadius = 10.0
-            cell.buttonOpenGraphLink.clipsToBounds = true
-            
-            cell.reportDate.hidden = true
-            
-        }
-        else {
-            cell.buttonOpenGraphLink.hidden = true
-            cell.reportDate.hidden = false
-        }
-        
-        // Report > Groups
-        //
-        cell.labelReportGroups.text = "Report Group Names"
-        
-        // Report > Image
-        //
-        let reportImages = _thisSubmission["images"]
-        if (reportImages != nil && reportImages.count != 0) {
-            print("Show report image \(reportImages)")
-            
-            var reportImageURL:NSURL!
-            
-            if let thisReportImageURL = _thisSubmission["images"][0]["properties"]["square"].string {
-                reportImageURL = NSURL(string: String(thisReportImageURL))
+            if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
+                _user_id_integer = _user_id_number.integerValue
             }
             
-            cell.reportImageView.kf_indicatorType = .Activity
-            cell.reportImageView.kf_showIndicatorWhenLoading = true
+            //
+            // REPORT OBJECT
+            //
+            let report = self.actions[indexPath.row].objectForKey("properties")
+            let reportJson = JSON(report!)
+            cell.reportObject = report
             
-            cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                (image, error, cacheType, imageUrl) in
-                
-                if (image != nil) {
-                    cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                }
-            })
+            let reportDescription = report?.objectForKey("report_description")
+            //        let reportClosed = report?.objectForKey("closed_by")
             
-        }
-        else if (_thisSubmission["social"] != nil && _thisSubmission["social"].count != 0) {
-            print("Show open graph image \(_thisSubmission["social"])")
+            let reportOwner = report?.objectForKey("owner")?.objectForKey("properties")
             
-            if let reportImageURL = NSURL(string: String(_thisSubmission["social"][0]["properties"]["og_image_url"])) {
+            //
+            // Extra actions
+            //
+            
+            cell.extraActionsButton.tag = indexPath.row
+            cell.extraActionsButton.addTarget(self, action: #selector(ActivityTableViewController.presentExtraPostActions(_:)), forControlEvents: .TouchUpInside)
+            
+            //
+            // Territory
+            //
+            let reportTerritory = report?.objectForKey("territory") as? NSDictionary
+            
+            var reportTerritoryName: String? = "Unknown Watershed"
+            if let thisReportTerritory = reportTerritory?.objectForKey("properties")?.objectForKey("huc_8_name") as? String {
+                reportTerritoryName = (thisReportTerritory) + " Watershed"
                 
-                cell.reportImageView.kf_indicatorType = .Activity
-                cell.reportImageView.kf_showIndicatorWhenLoading = true
-                
-                cell.reportImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
-                    (image, error, cacheType, imageUrl) in
-                    
-                    if (image != nil) {
-                        cell.reportImageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
-                    }
-                })
+                //                cell.reportTerritoryName.tag = indexPath.row
+                //                cell.reportTerritoryName.userInteractionEnabled = true
+                //                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ActivityTableViewController.loadTerritoryProfile(_:)))
+                //                cell.reportTerritoryName.addGestureRecognizer(tapGesture)
                 
             }
-        }
-        else {
-            print("No image to show")
-            cell.reportImageView.image = nil
-        }
-        
-        // Report > Group > Name
-        //
-        let reportGroups = _thisSubmission["groups"]
-        var reportGroupsNames: String? = ""
-        
-        let reportGroupsTotal = reportGroups.count
-        var reportGroupsIncrementer = 1
-        
-        for _group in reportGroups {
-            let thisGroupName = _group.1["properties"]["name"]
             
-            if reportGroupsTotal == 1 || reportGroupsIncrementer == 1 {
-                reportGroupsNames = "\(thisGroupName)"
-            }
-            else if (reportGroupsTotal > 1 && reportGroupsIncrementer > 1)  {
-                reportGroupsNames = reportGroupsNames! + ", " + "\(thisGroupName)"
-            }
+            let dropletIcon: UIImage = UIImage(named: "icon--droplet")!
+            cell.dropletIcon.image = dropletIcon
             
-            reportGroupsIncrementer += 1
-        }
-        
-        cell.labelReportGroups.text = reportGroupsNames
-        
-        
-        // Buttons > Share
-        //
-        
-        // Buttons > Map
-        //
-        cell.buttonReportMap.tag = indexPath.row
-        
-        // Buttons > Directions
-        //
-        cell.buttonReportDirections.addTarget(self, action: #selector(ProfileTableViewController.openUserSubmissionDirectionsURL(_:)), forControlEvents: .TouchUpInside)
-        
-        // Buttons > Comments
-        //
-        let reportComments = _thisSubmission["comments"]
-        
-        var reportCommentsCountText: String = "0 comments"
-        
-        if reportComments.count == 1 {
-            reportCommentsCountText = "1 comment"
-        }
-        else if reportComments.count >= 1 {
-            reportCommentsCountText = String(reportComments.count) + " comments"
-        }
-        else {
-            reportCommentsCountText = "0 comments"
-        }
-        
-        cell.buttonReportComments.tag = indexPath.row
-        
-        cell.buttonReportComments.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
-        
-        if (_thisSubmission["closed_by"] != nil) {
-            let badgeImage: UIImage = UIImage(named: "icon--Badge")!
-            cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
-            cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
-        } else {
-            let badgeImage: UIImage = UIImage(named: "icon--comment")!
-            cell.buttonReportComments.setImage(badgeImage, forState: .Normal)
-            cell.buttonReportComments.imageView?.contentMode = .ScaleAspectFit
-        }
-        
-        //
-        //
-        //
-        cell.buttonModifyReport.enabled = false
-        cell.buttonModifyReport.hidden = true
-        
-        if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-            if ("\(_thisSubmission["owner"]["id"])" == "\(_user_id_number)") {
-                cell.buttonModifyReport.tag = indexPath.row
-                cell.buttonModifyReport.enabled = true
-                cell.buttonModifyReport.hidden = false
-            }
-        }
-        
-        cell.buttonReportTerritory.tag = indexPath.row
-        
-        
-        // Report Like Button
-        //
-        cell.buttonReportLike.tag = indexPath.row
-        
-        var _user_id_integer: Int = 0
-        
-        if let _user_id_number = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
-            _user_id_integer = _user_id_number.integerValue
-        }
-        
-        print("_user_id_integer \(_user_id_integer)")
-        
-        if _user_id_integer != 0 {
+            cell.reportTerritoryName.text = reportTerritoryName
             
-            print("Setup the like stuff")
+            cell.reportTerritoryButton.tag = indexPath.row
+            cell.reportTerritoryButton.addTarget(self, action: #selector(ActivityTableViewController.loadTerritoryProfile(_:)), forControlEvents: .TouchUpInside)
             
-            let _hasLiked = self.userHasLikedReport(_thisSubmission, _current_user_id: _user_id_integer)
+            //
+            // Comment Count
+            //
+            let reportComments = report?.objectForKey("comments") as! NSArray
             
-            cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+            var reportCommentsCountText: String = ""
             
-            if (_hasLiked) {
-                cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-                cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-                cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            if reportComments.count >= 1 {
+                reportCommentsCountText = String(reportComments.count)
+                cell.reportCommentButton.alpha = 1
+                cell.reportCommentCount.hidden = false
             }
             else {
-                cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-                cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                cell.reportCommentButton.alpha = 0.4
+                cell.reportCommentCount.hidden = true
             }
             
-            cell.buttonReportLikeCount.tag = indexPath.row
-            cell.buttonReportLikeCount.addTarget(self, action: #selector(self.openSubmissionsLikesList(_:)), forControlEvents: .TouchUpInside)
+            cell.reportCommentCount.setTitle(reportCommentsCountText, forState: UIControlState.Normal)
             
-            // Update the total likes count
-            //
-            let _report_likes_count: Int = _thisSubmission["likes"].count
+            cell.reportCommentCount.tag = indexPath.row
+            cell.reportCommentButton.tag = indexPath.row
             
-            // Check if we have previously liked this photo. If so, we need to take
-            // that into account when adding a new like.
             //
-            let _report_likes_updated_total: Int! = _report_likes_count
+            // MARK: Determine comment status
+            
+            if _user_id_integer != 0 {
+                
+                print("Setup the comment stuff")
+                
+                let _hasCommented = self.userHasCommentedOnReport(reportJson, _current_user_id: _user_id_integer)
+                
+                if (reportJson["closed_by"] != nil) {
+                    let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+                    cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+                    
+                }
+                else {
+                    cell.reportCommentButton.setImage(UIImage(named: "icon--comment"), forState: .Normal)
+                }
+                
+                //                cell.reportCommentButton.setImage(UIImage(named: "icon--Comment"), forState: .Normal)
+                
+                if (_hasCommented) {
+                    cell.reportCommentButton.setImage(UIImage(named: "icon--comment_blue"), forState: .Normal)
+                    cell.reportCommentCount.setTitleColor(UIColor(
+                        red: 6.0/255.0,
+                        green: 170.0/255.0,
+                        blue: 240.0/255.0,
+                        alpha: 1.0
+                        ), forState: .Normal)
+                }
+                else {
+                    cell.reportCommentCount.setTitleColor(UIColor(
+                        red: 0.0/255.0,
+                        green: 0.0/255.0,
+                        blue: 0.0/255.0,
+                        alpha: 0.5
+                        ), forState: .Normal)
+                }
+                
+                //                if (reportJson["closed_by"] != nil) {
+                //                    let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+                //                    cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+                //
+                //                }
+                
+            }
+            
+            //            if (reportJson["closed_by"] != nil) {
+            //                let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+            //                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+            //
+            //            }
+            
+            //            if (reportJson["closed_by"] != nil) {
+            //                let badgeImage: UIImage = UIImage(named: "icon--Badge")!
+            //                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+            //
+            //            } else {
+            //                let badgeImage: UIImage = UIImage(named: "icon--comment")!
+            //                cell.reportCommentButton.setImage(badgeImage, forState: .Normal)
+            //            }
+            
+            // Likes Count
+            //
+            let reportLikes = report?.objectForKey("likes") as! NSArray
             
             var reportLikesCountText: String = ""
             
-            if _report_likes_updated_total == 1 {
-                reportLikesCountText = "1 like"
-                cell.buttonReportLikeCount.hidden = false
-            }
-            else if _report_likes_updated_total >= 1 {
-                reportLikesCountText = "\(_report_likes_updated_total) likes"
-                cell.buttonReportLikeCount.hidden = false
+            if reportLikes.count >= 1 {
+                reportLikesCountText = String(reportLikes.count)
+                cell.reportLikeButton.alpha = 1
+                cell.reportLikeCount.hidden = false
             }
             else {
-                reportLikesCountText = "0 likes"
-                cell.buttonReportLikeCount.hidden = false
+                cell.reportLikeButton.alpha = 0.4
+                cell.reportLikeCount.hidden = true
             }
             
-            cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
-        }
-        
-        
-        //
-        // CONTIUOUS SCROLL
-        //
-        if (indexPath.row == self.actions.count - 5 && self.actions.count < self.actionResponse!["properties"]["num_results"].int) {
-            self.attemptLoadUserActions()
+            cell.reportLikeCount.tag = indexPath.row
+            cell.reportLikeCount.setTitle(reportLikesCountText, forState: UIControlState.Normal)
+            
+            // Report Like Button
+            //
+            cell.reportLikeButton.tag = indexPath.row
+            
+            print("_user_id_integer \(_user_id_integer)")
+            
+            if _user_id_integer != 0 {
+                
+                print("Setup the like stuff")
+                
+                let _hasLiked = self.userHasLikedReport(reportJson, _current_user_id: _user_id_integer)
+                
+                cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+                
+                if (_hasLiked) {
+                    cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                    cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                    cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+                    cell.reportLikeCount.setTitleColor(UIColor(
+                        red: 240.0/255.0,
+                        green: 6.0/255.0,
+                        blue: 53.0/255.0,
+                        alpha: 1.0
+                        ), forState: .Normal)
+                }
+                else {
+                    cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+                    cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+                    cell.reportLikeCount.setTitleColor(UIColor(
+                        red: 0.0/255.0,
+                        green: 0.0/255.0,
+                        blue: 0.0/255.0,
+                        alpha: 0.5
+                        ), forState: .Normal)
+                }
+                
+            }
+            
+            //
+            // Set state of post Open Graph component
+            //
+            
+            if reportJson["social"] != nil && reportJson["social"].count != 0 {
+                cell.reportOpenGraphStoryLink.hidden = false
+                cell.reportOpenGraphStoryLink.tag = indexPath.row
+                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                
+            }
+            else {
+                cell.reportOpenGraphStoryLink.hidden = true
+            }
+            
+            //
+            // GROUPS
+            //
+            let reportGroups = report?.objectForKey("groups") as? NSArray
+            
+            cell.postGroupOne.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupTwo.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupThree.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupFour.subviews.forEach({ $0.removeFromSuperview() })
+            cell.postGroupFive.subviews.forEach({ $0.removeFromSuperview() })
+            
+            cell.postGroupOne.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupTwo.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupThree.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupFour.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            cell.postGroupFive.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            
+            cell.postGroupOne.setTitle(nil, forState: .Normal)
+            cell.postGroupTwo.setTitle(nil, forState: .Normal)
+            cell.postGroupThree.setTitle(nil, forState: .Normal)
+            cell.postGroupFour.setTitle(nil, forState: .Normal)
+            cell.postGroupFive.setTitle(nil, forState: .Normal)
+            
+            //            cell.postGroupOne.hidden = true
+            //            cell.postGroupTwo.hidden = true
+            //            cell.postGroupThree.hidden = true
+            //            cell.postGroupFour.hidden = true
+            //            cell.postGroupFive.hidden = true
+            
+            if reportGroups?.count > 0 {
+                cell.reportGroupStack.hidden = false
+            }
+            else {
+                cell.reportGroupStack.hidden = true
+            }
+            
+            //
+            // Clear subviews from group stack view
+            //
+            
+            //            cell.reportGroupStack.subviews.forEach({ $0.removeFromSuperview() })
+            
+            //            cell.reportGroupStack.frame.size.width = CGFloat(44 * (reportGroups?.count)!)
+            
+            //            let groupStackWidth:CGFloat = CGFloat(44 * (reportGroups?.count)!)
+            //
+            //            print("Group stack width \(groupStackWidth)")
+            
+            //            cell.reportGroupStack.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
+            
+            //            cell.reportGroupStackLimiter.frame = CGRect(x: 0, y: 0, width: groupStackWidth, height: 1)
+            //
+            //            cell.reportGroupStack.frame = CGRect(x: 0, y: 0, width: groupStackWidth, height: 40)
+            //
+            //            cell.reportGroupStackLimiter.widthAnchor.constraintEqualToConstant(groupStackWidth).active = true
+            
+            //            cell.reportGroupStackLimiter.frame.width = groupStackWidth
+            
+            //            cell.reportGroupStack.addConstraint(NSLayoutConstraint(item: cell.reportGroupStackLimiter, attribute: .Trailing, relatedBy: .Equal, toItem: cell.reportGroupStack, attribute: .Trailing, multiplier: 1, constant: 0))
+            
+            //            for _group in reportGroups! as NSArray {
+            for (index, _group) in reportGroups!.enumerate() {
+                
+                if let groupLogoUrl = _group.objectForKey("properties")!.objectForKey("picture") as? String,
+                    let groupName = _group.objectForKey("properties")!.objectForKey("name") as? String{
+                    
+                    let imageURL:NSURL = NSURL(string: "\(groupLogoUrl)")!
+                    
+                    print("Group logo URL \(imageURL)")
+                    
+                    let imageView = UIImageView()
+                    
+                    //                    let groupBtn = UIButton()
+                    
+                    imageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+                    
+                    //                    imageView.contentMode = .ScaleAspectFit
+                    
+                    imageView.heightAnchor.constraintEqualToConstant(40.0).active = true
+                    imageView.widthAnchor.constraintEqualToConstant(40.0).active = true
+                    
+                    imageView.setContentHuggingPriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+                    imageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+                    
+                    //                    .setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: UILayoutConstraintAxis.horizontal)
+                    
+                    //                    imageView.layer.cornerRadius = imageView.frame.size.width / 2
+                    //                    imageView.clipsToBounds = true
+                    //
+                    //                    cell.reportOpenGraphImage.kf_indicatorType = .Activity
+                    //                    cell.reportOpenGraphImage.kf_showIndicatorWhenLoading = true
+                    
+                    imageView.kf_setImageWithURL(imageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                        (image, error, cacheType, imageUrl) in
+                        
+                        //                        imageView.image = image
+                        
+                        if (image != nil) {
+                            imageView.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                            imageView.layer.cornerRadius = imageView.frame.size.width / 2
+                            //                            imageView.layer.cornerRadius = 20
+                            imageView.clipsToBounds = true
+                        }
+                        
+                    })
+                    
+                    //                    let groupBtn = UIButton()
+                    
+                    //                    let _groupName = _group["properties"]!!["name"] as? String
+                    
+                    //                    groupBtn.tag = indexPath.row
+                    //                    groupBtn.setTitle(groupName, forState: .Normal)
+                    //                    groupBtn.setTitleColor(UIColor(
+                    //                        red: 240.0/255.0,
+                    //                        green: 6.0/255.0,
+                    //                        blue: 53.0/255.0,
+                    //                        alpha: 0.0
+                    //                        ), forState: .Normal)
+                    //                    groupBtn.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                    
+                    //                    groupBtn.addSubview(imageView)
+                    
+                    //                    groupBtn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+                    
+                    //                    cell.reportGroupStack.addArrangedSubview(groupBtn)
+                    
+                    switch (index) {
+                        
+                    case 0:
+                        cell.postGroupOne.tag = indexPath.row
+                        cell.postGroupOne.setTitle(groupName, forState: .Normal)
+                        cell.postGroupOne.setTitleColor(UIColor(
+                            red: 240.0/255.0,
+                            green: 6.0/255.0,
+                            blue: 53.0/255.0,
+                            alpha: 0.0
+                            ), forState: .Normal)
+                        cell.postGroupOne.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupOne.layer.cornerRadius = cell.postGroupOne.frame.size.width / 2
+                        cell.postGroupOne.clipsToBounds = true
+                        cell.postGroupOne.addSubview(imageView)
+                        
+                    case 1:
+                        cell.postGroupTwo.tag = indexPath.row
+                        cell.postGroupTwo.setTitle(groupName, forState: .Normal)
+                        cell.postGroupTwo.setTitleColor(UIColor(
+                            red: 240.0/255.0,
+                            green: 6.0/255.0,
+                            blue: 53.0/255.0,
+                            alpha: 0.0
+                            ), forState: .Normal)
+                        cell.postGroupTwo.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupTwo.layer.cornerRadius = cell.postGroupTwo.frame.size.width / 2
+                        cell.postGroupTwo.clipsToBounds = true
+                        cell.postGroupTwo.addSubview(imageView)
+                        
+                    case 2:
+                        cell.postGroupThree.tag = indexPath.row
+                        cell.postGroupThree.setTitle(groupName, forState: .Normal)
+                        cell.postGroupThree.setTitleColor(UIColor(
+                            red: 240.0/255.0,
+                            green: 6.0/255.0,
+                            blue: 53.0/255.0,
+                            alpha: 0.0
+                            ), forState: .Normal)
+                        cell.postGroupThree.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupThree.layer.cornerRadius = cell.postGroupThree.frame.size.width / 2
+                        cell.postGroupThree.clipsToBounds = true
+                        cell.postGroupThree.addSubview(imageView)
+                        
+                    case 3:
+                        cell.postGroupFour.tag = indexPath.row
+                        cell.postGroupFour.setTitle(groupName, forState: .Normal)
+                        cell.postGroupFour.setTitleColor(UIColor(
+                            red: 240.0/255.0,
+                            green: 6.0/255.0,
+                            blue: 53.0/255.0,
+                            alpha: 0.0
+                            ), forState: .Normal)
+                        cell.postGroupFour.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupFour.layer.cornerRadius = cell.postGroupFour.frame.size.width / 2
+                        cell.postGroupFour.clipsToBounds = true
+                        cell.postGroupFour.addSubview(imageView)
+                        
+                    case 4:
+                        cell.postGroupFive.tag = indexPath.row
+                        cell.postGroupFive.setTitle(groupName, forState: .Normal)
+                        cell.postGroupFive.setTitleColor(UIColor(
+                            red: 240.0/255.0,
+                            green: 6.0/255.0,
+                            blue: 53.0/255.0,
+                            alpha: 0.0
+                            ), forState: .Normal)
+                        cell.postGroupFive.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupFive.layer.cornerRadius = cell.postGroupFive.frame.size.width / 2
+                        cell.postGroupFive.clipsToBounds = true
+                        cell.postGroupFive.addSubview(imageView)
+                        
+                    default:
+                        print(index)
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            //
+            // USER NAME
+            //
+            if let firstName = reportOwner?.objectForKey("first_name"),
+                let lastName = reportOwner?.objectForKey("last_name") {
+                
+                cell.reportUserName.text = (firstName as! String) + " " + (lastName as! String)
+                
+                cell.reportUserName.tag = indexPath.row
+                
+            } else {
+                cell.reportUserName.text = "Unknown Reporter"
+            }
+            
+            if "\(reportDescription!)" != "null" || "\(reportDescription!)" != "" {
+                cell.reportDescription.text = "\(reportDescription!)"
+                cell.reportDescription.enabledTypes = [.Hashtag, .URL]
+                cell.reportDescription.hashtagColor = UIColor.colorBrand()
+                cell.reportDescription.hashtagSelectedColor = UIColor.colorDarkGray()
+                
+                cell.reportDescription.handleHashtagTap { hashtag in
+                    print("Success. You just tapped the \(hashtag) hashtag")
+                    
+                    let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("HashtagTableViewController") as! HashtagTableViewController
+                    
+                    nextViewController.hashtag = hashtag
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+                cell.reportDescription.handleURLTap { url in
+                    print("Success. You just tapped the \(url) url")
+                    
+                    UIApplication.sharedApplication().openURL(NSURL(string: "\(url)")!)
+                }
+                
+            }
+            else {
+                cell.reportDescription.text = ""
+            }
+            
+            //
+            // REPORT > OWNER > PICTURE
+            //
+            cell.reportOwnerImageButton.tag = indexPath.row
+            cell.reportOwnerImageButton.addTarget(self, action: #selector(ActivityTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+            
+            var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
+            
+            if let thisReportOwnerImageURL = reportOwner?.objectForKey("picture") {
+                reportOwnerImageURL = NSURL(string: String(thisReportOwnerImageURL))
+            }
+            
+            cell.reportOwnerImage.kf_indicatorType = .Activity
+            cell.reportOwnerImage.kf_showIndicatorWhenLoading = true
+            
+            cell.reportOwnerImage.kf_setImageWithURL(reportOwnerImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                (image, error, cacheType, imageUrl) in
+                if (image != nil) {
+                    cell.reportOwnerImage.image = UIImage(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                }
+                cell.reportOwnerImage.layer.cornerRadius = cell.reportOwnerImage.frame.size.width / 2
+                cell.reportOwnerImage.clipsToBounds = true
+            })
+            
+            //
+            // REPORT > IMAGE
+            //
+            let reportImages = report?.objectForKey("images")!
+            let reportSocial = report?.objectForKey("social")!
+            
+            if ((reportImages != nil && reportImages!.count != 0) && (reportSocial == nil || reportSocial!.count == 0)) {
+                print("Show report image \(reportImages)")
+                
+                var reportImageURL:NSURL!
+                
+                if let thisReportImageURL = reportImages![0]?.objectForKey("properties")!.objectForKey("square") {
+                    reportImageURL = NSURL(string: String(thisReportImageURL))
+                }
+                
+                cell.reportImage.kf_indicatorType = .Activity
+                cell.reportImage.kf_showIndicatorWhenLoading = true
+                
+                cell.reportImage.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                    (image, error, cacheType, imageUrl) in
+                    
+                    if (image != nil) {
+                        cell.reportImage.image = Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up)
+                    }
+                })
+                
+                cell.reportImage.hidden = false
+                
+            }
+            else {
+                print("No image to show")
+                cell.reportImage.hidden = true
+                cell.reportImage.image = nil
+            }
+            
+            //
+            // Report > Open Graph
+            //
+            
+            cell.reportOpenGraphViewGroup.layer.cornerRadius = 6
+            
+            if (reportSocial != nil && reportSocial!.count != 0) {
+                
+                cell.reportOpenGraphViewGroup.hidden = false
+                
+                //                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openOpenGraphURL(_:)))
+                //
+                //                cell.reportOpenGraphViewGroup.userInteractionEnabled = true
+                //                cell.reportOpenGraphViewGroup.tag = indexPath.row
+                //                cell.reportOpenGraphViewGroup.addGestureRecognizer(tapGestureRecognizer)
+                
+                //                cell.reportOpenGraphStoryLink.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                
+                //                cell.reportOpenGraphViewGroup.addTarget(self, action: #selector(openOpenGraphURL(_:)), forControlEvents: .TouchUpInside)
+                
+                // Open Graph Data
+                
+                if let openGraphTitle = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_title"),
+                    let openGraphDescription = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_description") {
+                    
+                    //
+                    // Open Graph > Title
+                    //
+                    cell.reportOpenGraphTitle.text = (openGraphTitle as! String)
+                    
+                    //
+                    // Open Graph > Title
+                    //
+                    cell.reportOpenGraphDescription.text = (openGraphDescription as! String)
+                    
+                }
+                
+                // Open Graph > Image
+                //
+                
+                if let openGraphImageUrl = reportSocial![0]?.objectForKey("properties")!.objectForKey("og_image_url") {
+                    
+                    print("Open Graph image available \(openGraphImageUrl)")
+                    
+                    let ogImageURL:NSURL = NSURL(string: "\(openGraphImageUrl)")!
+                    
+                    cell.reportOpenGraphImage.kf_indicatorType = .Activity
+                    cell.reportOpenGraphImage.kf_showIndicatorWhenLoading = true
+                    
+                    cell.reportOpenGraphImage.kf_setImageWithURL(ogImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+                        (image, error, cacheType, imageUrl) in
+                        
+                        cell.reportOpenGraphImage.image = image
+                        
+                    })
+                    
+                }
+                else {
+                    
+                    print("No open graph image")
+                    
+                    cell.reportOpenGraphImage.image = UIImage(named: "og-placeholder_1024x1024_720")
+                    
+                }
+                
+            }
+            else {
+                
+                print("No open graph object")
+                
+                cell.reportOpenGraphViewGroup.hidden = true
+                
+                cell.reportOpenGraphImage.image = nil
+                
+            }
+            
+            //
+            // DATE
+            //
+            let reportDate = reportJson["created"].string
+            
+            print("The post timestamp is \(reportDate)")
+            
+            if (reportDate != nil) {
+                
+                let dateString: String = reportDate!
+                
+                print("The value of dateString is \(dateString)")
+                
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+                
+                let stringToFormat = dateFormatter.dateFromString(dateString)
+                
+                print("The post date object is \(stringToFormat)")
+                
+                dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
+                
+                let displayDate = dateFormatter.stringFromDate(stringToFormat!)
+                
+                if let thisDisplayDate: String? = displayDate {
+                    cell.reportDate.text = thisDisplayDate
+                }
+            }
+            else {
+                cell.reportDate.text = ""
+            }
+            //
+            // PASS ON DATA TO TABLE CELL
+            //
+            cell.reportGetDirectionsButton.tag = indexPath.row
+            
+            cell.reportDirectionsButton.tag = indexPath.row
+            cell.reportDirectionsButton.addTarget(self, action: #selector(openDirectionsURL(_:)), forControlEvents: .TouchUpInside)
+            
+            cell.reportShareButton.tag = indexPath.row
+            
+            //
+            // CONTINUOUS SCROLL
+            //
+            if (indexPath.row == self.actions.count - 5) {
+                self.attemptLoadUserActions()
+            }
+            
         }
         
         return cell
@@ -598,137 +963,65 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
         
         var _report: JSON!
         
-        if (self.actionsTableView.hidden == false) {
-            var _cell = self.actionsTableView.cellForRowAtIndexPath(_indexPath) as! UserProfileActionsTableViewCell
-            _report = JSON(self.userActionsObjects[(indexPathRow)].objectForKey("properties")!)
-            
-            // Change the Heart icon to red
-            //
-            if (addLike) {
-                _cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
-                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-                _cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-            } else {
-                _cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
-                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-                _cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-            }
-            
-            // Update the total likes count
-            //
-            let _report_likes_count: Int = _report["likes"].count
-            
-            // Check if we have previously liked this photo. If so, we need to take
-            // that into account when adding a new like.
-            //
-            let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
-            
-            var _report_likes_updated_total: Int! = _report_likes_count
-            
-            if (addLike) {
-                if (_previously_liked) {
-                    _report_likes_updated_total = _report_likes_count
-                }
-                else {
-                    _report_likes_updated_total = _report_likes_count+1
-                }
-            }
-            else {
-                if (_previously_liked) {
-                    _report_likes_updated_total = _report_likes_count-1
-                }
-                else {
-                    _report_likes_updated_total = _report_likes_count
-                }
-            }
-            
-            var reportLikesCountText: String = ""
-            
-            if _report_likes_updated_total == 1 {
-                reportLikesCountText = "1 like"
-                _cell.buttonReportLikeCount.hidden = false
-            }
-            else if _report_likes_updated_total >= 1 {
-                reportLikesCountText = "\(_report_likes_updated_total) likes"
-                _cell.buttonReportLikeCount.hidden = false
-            }
-            else {
-                reportLikesCountText = "0 likes"
-                _cell.buttonReportLikeCount.hidden = false
-            }
-            
-            _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
-            
+        let _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! UserProfileActionsTableViewCell
+        _report = JSON(self.actions[(indexPathRow)].objectForKey("properties")!)
+        
+        // Change the Heart icon to red
+        //
+        if (addLike) {
+            _cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+        } else {
+            _cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+            _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         }
-        else if (self.submissionTableView.hidden == false) {
-            var _cell = self.submissionTableView.cellForRowAtIndexPath(_indexPath) as! UserProfileSubmissionTableViewCell
-            _report = JSON(self.userSubmissionsObjects[(indexPathRow)].objectForKey("properties")!)
-            
-            // Change the Heart icon to red
-            //
-            if (addLike) {
-                _cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
-                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-                _cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-            } else {
-                _cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
-                _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-                _cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
-            }
-            
-            // Update the total likes count
-            //
-            let _report_likes_count: Int = _report["likes"].count
-            
-            print("existing likes \(_report["likes"])")
-            
-            // Check if we have previously liked this photo. If so, we need to take
-            // that into account when adding a new like.
-            //
-            let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
-            
-            var _report_likes_updated_total: Int! = _report_likes_count
-            
-            if (addLike) {
-                if (_previously_liked) {
-                    _report_likes_updated_total = _report_likes_count
-                }
-                else {
-                    _report_likes_updated_total = _report_likes_count+1
-                }
+        
+        // Update the total likes count
+        //
+        let _report_likes_count: Int = _report["likes"].count
+        
+        // Check if we have previously liked this photo. If so, we need to take
+        // that into account when adding a new like.
+        //
+        let _previously_liked: Bool = self.hasPreviouslyLike(_report["likes"])
+        
+        var _report_likes_updated_total: Int! = _report_likes_count
+        
+        if (addLike) {
+            if (_previously_liked) {
+                _report_likes_updated_total = _report_likes_count
             }
             else {
-                if (_previously_liked) {
-                    _report_likes_updated_total = _report_likes_count-1
-                }
-                else {
-                    _report_likes_updated_total = _report_likes_count
-                }
+                _report_likes_updated_total = _report_likes_count+1
             }
-            
-            var reportLikesCountText: String = ""
-            
-            if _report_likes_updated_total == 1 {
-                reportLikesCountText = "1 like"
-                _cell.buttonReportLikeCount.hidden = false
-            }
-            else if _report_likes_updated_total >= 1 {
-                reportLikesCountText = "\(_report_likes_updated_total) likes"
-                _cell.buttonReportLikeCount.hidden = false
-            }
-            else {
-                reportLikesCountText = "0 likes"
-                _cell.buttonReportLikeCount.hidden = false
-            }
-            
-            _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         }
         else {
-            return;
+            if (_previously_liked) {
+                _report_likes_updated_total = _report_likes_count-1
+            }
+            else {
+                _report_likes_updated_total = _report_likes_count
+            }
         }
         
+        var reportLikesCountText: String = ""
         
+        if _report_likes_updated_total == 1 {
+            reportLikesCountText = "1 like"
+            _cell.buttonReportLikeCount.hidden = false
+        }
+        else if _report_likes_updated_total >= 1 {
+            reportLikesCountText = "\(_report_likes_updated_total) likes"
+            _cell.buttonReportLikeCount.hidden = false
+        }
+        else {
+            reportLikesCountText = "0 likes"
+            _cell.buttonReportLikeCount.hidden = false
+        }
         
+        _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         
     }
     
@@ -791,15 +1084,7 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
             //
             var _report: JSON!
             
-            if (self.actionsTableView.hidden == false) {
-                _report = JSON(self.userActionsObjects[(senderTag)])
-            }
-            else if (self.submissionTableView.hidden == false) {
-                _report = JSON(self.userSubmissionsObjects[(senderTag)])
-            }
-            else {
-                return;
-            }
+            _report = JSON(self.actions[(senderTag)])
             
             let _report_id: String = "\(_report["id"])"
             
@@ -865,15 +1150,7 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
             //
             var _report: JSON!
             
-            if (self.actionsTableView.hidden == false) {
-                _report = JSON(self.userActionsObjects[(senderTag)])
-            }
-            else if (self.submissionTableView.hidden == false) {
-                _report = JSON(self.userSubmissionsObjects[(senderTag)])
-            }
-            else {
-                return;
-            }
+            _report = JSON(self.actions[(senderTag)])
             
             let _report_id: String = "\(_report["id"])"
             

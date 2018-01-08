@@ -9,10 +9,10 @@
 import ActiveLabel
 import UIKit
 
-class TableViewCell: UITableViewCell {
-
+class BasePostTableCell: UITableViewCell {
+    
     var reportObject : AnyObject?
-
+    
     @IBOutlet weak var reportUserName: UILabel!
     @IBOutlet weak var reportTerritoryName: UILabel!
     @IBOutlet weak var dropletIcon: UIImageView!
@@ -28,12 +28,12 @@ class TableViewCell: UITableViewCell {
     //
     
     @IBOutlet weak var extraActionsButton: UIButton!
-
+    
     //
     // Groups
     //
     
-//    @IBOutlet weak var reportGroupStackLimiter: UIView!
+    //    @IBOutlet weak var reportGroupStackLimiter: UIView!
     @IBOutlet weak var reportGroupStack: UIStackView!
     
     
@@ -64,7 +64,7 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var reportOpenGraphViewGroup: UIView!
     
     
-//    @IBOutlet weak var reportOpenGraphViewHeightConstraint: NSLayoutConstraint!
+    //    @IBOutlet weak var reportOpenGraphViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var reportOpenGraphImage: UIImageView!
     @IBOutlet weak var reportOpenGraphTitle: UILabel!
@@ -75,20 +75,20 @@ class TableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-    
+        
         self.reportOwnerImage.image = nil
         self.reportImage.image = nil
         self.reportCommentButton.imageView?.image = nil
-
+        
     }
-
+    
 }

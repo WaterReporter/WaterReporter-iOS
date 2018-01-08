@@ -10,6 +10,7 @@
 		6A09F4173390FEAABFC93265 /* Pods_Water_Reporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */; };
 		BA36BB1F200007430023F098 /* UserGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */; };
 		BA7D5FE02003E086002F53BB /* UserActionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D5FDF2003E086002F53BB /* UserActionsTableViewController.swift */; };
+		BA7D5FE22003EE28002F53BB /* BasePostTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D5FE12003EE28002F53BB /* BasePostTableCell.swift */; };
 		BAAE25531FCDD8B400644483 /* Res in Resources */ = {isa = PBXBuildFile; fileRef = BAAE25521FCDD8B400644483 /* Res */; };
 		C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */; };
 		C116EC881DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */; };
@@ -110,6 +111,7 @@
 		A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Water_Reporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGroupsTableViewController.swift; sourceTree = "<group>"; };
 		BA7D5FDF2003E086002F53BB /* UserActionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsTableViewController.swift; sourceTree = "<group>"; };
+		BA7D5FE12003EE28002F53BB /* BasePostTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePostTableCell.swift; sourceTree = "<group>"; };
 		BAAE25521FCDD8B400644483 /* Res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Res; path = ../Res; sourceTree = "<group>"; };
 		C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileMembersTableViewCell.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				CE015EF31F6C430400447C34 /* NewReportLocationTableViewCell.swift */,
 				CE015EF51F6C431600447C34 /* NewReportGroupTableViewCell.swift */,
 				CEB14C831F7A9903009CF49E /* NewPostContentTableViewCell.swift */,
+				BA7D5FE12003EE28002F53BB /* BasePostTableCell.swift */,
 			);
 			name = "Reusable Cells";
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				CEE1B44E1F3A5B1E0068351E /* LikeController.swift in Sources */,
 				CE015EF61F6C431600447C34 /* NewReportGroupTableViewCell.swift in Sources */,
 				C1C5FD2F1DDB3ACD00EF6302 /* UserProfileActionsTableViewCell.swift in Sources */,
+				BA7D5FE22003EE28002F53BB /* BasePostTableCell.swift in Sources */,
 				CE1E32E21F82A53600E757D0 /* ReportCommentsTableViewController.swift in Sources */,
 				C1D7DDFF1DA68C4600771F04 /* GroupsTableViewController.swift in Sources */,
 				CE9B91661E9D21F6001EBA66 /* SearchTableViewController.swift in Sources */,
