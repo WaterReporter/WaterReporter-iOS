@@ -32,6 +32,210 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
 //        
 //    }
     
+    @IBAction func presentExtraPostActions(sender: UIButton) {
+        
+        //
+        // Set up an action sheet and add our extra actions using
+        // the UIButton tag and UIButton itself as function params.
+        //
+        
+        let postIndex = sender.tag
+        
+        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let shareAction = UIAlertAction(
+            title: "Share post",
+            style: .Default,
+            handler: { action in
+                self.shareButtonClicked(postIndex, button: sender)
+            }
+        )
+        
+        thisActionSheet.addAction(shareAction)
+        let locationAction = UIAlertAction(
+            title: "View location",
+            style: .Default,
+            handler: { action in
+                self.loadPostLocationMap(postIndex)
+            }
+        )
+        
+        thisActionSheet.addAction(locationAction)
+        
+        let directionAction = UIAlertAction(
+            title: "Get directions",
+            style: .Default,
+            handler: { action in
+                self.openDirectionsURL(postIndex)
+            }
+        )
+        
+        thisActionSheet.addAction(directionAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        
+        thisActionSheet.addAction(cancelAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+        
+    }
+    
+    //@IBAction func shareButtonClicked(sender: UIButton) {
+    func shareButtonClicked(postId: Int, button: UIButton) {
+        
+        //        print("sender.tag \(sender.tag)")
+        print("sender.tag \(postId)")
+        
+        // let _thisReport = JSON(self.reports[(sender.tag)])
+        let _thisReport = JSON(self.actions[(postId)])
+        let reportId: String = "\(_thisReport["id"])"
+        var objectsToShare: [AnyObject] = [AnyObject]()
+        let reportURL = NSURL(string: "https://www.waterreporter.org/community/reports/" + reportId)
+        var reportImageURL:NSURL!
+        let tmpImageView: UIImageView = UIImageView()
+        
+        // SHARE > REPORT > TITLE
+        //
+        objectsToShare.append("\(_thisReport["properties"]["report_description"])")
+        
+        // SHARE > REPORT > URL
+        //
+        objectsToShare.append(reportURL!)
+        
+        // SHARE > REPORT > IMAGE
+        //
+        let thisReportImageURL = _thisReport["properties"]["images"][0]["properties"]["square"]
+        
+        if thisReportImageURL != nil {
+            reportImageURL = NSURL(string: String(thisReportImageURL))
+        }
+        
+        tmpImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+            (image, error, cacheType, imageUrl) in
+            
+            if (image != nil) {
+                objectsToShare.append(Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up))
+                
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                activityVC.popoverPresentationController?.sourceView = button
+                
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
+            else {
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                activityVC.popoverPresentationController?.sourceView = button
+                
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
+        })
+        
+    }
+    
+    @IBAction func loadPostComments(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
+        
+        let _thisReport = self.actions[(sender.tag)]
+        
+        nextViewController.report = _thisReport
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+//    @IBAction func loadPostLocationMap(sender: UIButton) {
+    func loadPostLocationMap(postId: Int) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ActivityMapViewController") as! ActivityMapViewController
+        
+        let _thisReport = self.actions[(postId)]
+        
+        nextViewController.reportObject = _thisReport
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    @IBAction func loadGroupProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
+        
+        let _thisReport = self.actions[(sender.tag)].objectForKey("properties")
+        
+        let _groupName = sender.titleLabel!.text
+        
+        let reportGroups = _thisReport?.objectForKey("groups") as? NSArray
+        
+        for _group in reportGroups! as NSArray {
+            
+            //            let _selectedGroupName = _group["properties"]["name"] as? String
+            
+            if let _selectedGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
+                
+                if _selectedGroupName == _groupName {
+                    
+                    let _selectedGroup = JSON(_group)
+                    
+                    //        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+                    //        nextViewController.userObject = _thisReport["properties"]["owner"]
+                    //
+                    //        self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                    nextViewController.groupId = "\(_selectedGroup["id"])"
+                    
+                    print("Selected group id \(nextViewController.groupId)")
+                    
+                    nextViewController.groupObject = _selectedGroup
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+            }
+            
+        }
+        
+        //        let _group = _thisReport["properties"]["groups"][0]
+        //
+        ////        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+        ////        nextViewController.userObject = _thisReport["properties"]["owner"]
+        ////
+        ////        self.navigationController?.pushViewController(nextViewController, animated: true)
+        //
+        //        nextViewController.groupId = "\(_group["id"])"
+        //        nextViewController.groupObject = _group
+        //
+        //        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    @IBAction func loadCommentOwnerProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
+        
+        let _thisReport = JSON(self.actions[(sender.tag)])
+        
+        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+        nextViewController.userObject = _thisReport["properties"]["owner"]
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    @IBAction func loadTerritoryProfile(sender: UILabel) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
+        
+        let _thisReport = JSON(self.actions[(sender.tag)])
+        
+        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+            
+            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+    }
+    
     @IBAction func openSubmissionsLikesList(sender: UIButton) {
         
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
@@ -65,6 +269,16 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
         super.viewWillAppear(true)
         
         self.navigationController?.navigationBarHidden = false
+        
+        //
+        // We need to execute the necessary code here to make
+        // sure the Report Single view displays from the map view
+        // and other views
+        //
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.estimatedRowHeight = 600.0;
+        self.tableView.backgroundColor = UIColor.whiteColor()
+        self.tableView.scrollsToTop = true
         
     }
     
@@ -264,9 +478,9 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
     // PROTOCOL REQUIREMENT: UITableViewDelegate
     //
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 56.0
-    }
+//    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 600.0
+//    }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         

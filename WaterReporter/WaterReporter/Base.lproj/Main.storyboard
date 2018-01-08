@@ -7124,10 +7124,11 @@
             <objects>
                 <tableViewController storyboardIdentifier="UserActionsTableViewController" title="User Actions Table View Controller" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Nd3-3U-WOi" customClass="UserActionsTableViewController" customModule="Water_Reporter" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="347" sectionHeaderHeight="28" sectionFooterHeight="28" id="rFM-s6-8Cd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="1180"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <color key="sectionIndexColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -7380,6 +7381,9 @@
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hK-0A-kNp">
                                                             <rect key="frame" x="93" y="52" width="24" height="24"/>
                                                             <state key="normal" image="icon--comment"/>
+                                                            <connections>
+                                                                <action selector="loadPostComments:" destination="Nd3-3U-WOi" eventType="touchUpInside" id="4ah-iV-8Vn"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QsM-cz-6JB">
                                                             <rect key="frame" x="117" y="52" width="24" height="24"/>
@@ -7387,6 +7391,9 @@
                                                             <state key="normal" title="0">
                                                                 <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </state>
+                                                            <connections>
+                                                                <action selector="loadPostComments:" destination="Nd3-3U-WOi" eventType="touchUpInside" id="QI5-OO-oLf"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvm-l7-s2x">
                                                             <rect key="frame" x="-37" y="0.0" width="24" height="24"/>
@@ -7429,8 +7436,10 @@
                                                 <constraint firstAttribute="trailing" secondItem="pIn-Vp-QKc" secondAttribute="trailing" constant="8" id="805-KX-pOv"/>
                                                 <constraint firstItem="k2X-qj-wm2" firstAttribute="leading" secondItem="rKD-TV-aZv" secondAttribute="leading" constant="8" id="DaO-43-4fN"/>
                                                 <constraint firstAttribute="bottom" secondItem="ddU-65-spH" secondAttribute="bottom" id="Eyc-hn-ZzD"/>
+                                                <constraint firstAttribute="trailing" secondItem="u91-o9-vH3" secondAttribute="trailing" id="HcR-qF-nNh"/>
                                                 <constraint firstAttribute="trailing" secondItem="ddU-65-spH" secondAttribute="trailing" id="HgY-5O-hPb"/>
                                                 <constraint firstAttribute="trailing" secondItem="mhw-s6-T8d" secondAttribute="trailing" constant="8" id="ITY-J4-fsT"/>
+                                                <constraint firstItem="u91-o9-vH3" firstAttribute="leading" secondItem="rKD-TV-aZv" secondAttribute="leading" id="MGS-4O-tLj"/>
                                                 <constraint firstAttribute="trailing" secondItem="o6A-62-8mj" secondAttribute="trailing" constant="8" id="OO9-aU-5ld"/>
                                                 <constraint firstAttribute="trailing" secondItem="AQx-Xj-Hxh" secondAttribute="trailing" constant="8" id="Oyb-Vs-V6X"/>
                                                 <constraint firstItem="AQx-Xj-Hxh" firstAttribute="leading" secondItem="rKD-TV-aZv" secondAttribute="leading" constant="8" id="Tfz-7l-SiF"/>
@@ -7547,8 +7556,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="hjD-A2-od6"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="1180"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ub2-Zq-fme">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>

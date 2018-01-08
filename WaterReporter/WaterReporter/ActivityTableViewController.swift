@@ -145,18 +145,11 @@ class ActivityTableViewController: UITableViewController {
         
         for _group in reportGroups! as NSArray {
             
-//            let _selectedGroupName = _group["properties"]["name"] as? String
-            
             if let _selectedGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
                 
                 if _selectedGroupName == _groupName {
                     
                     let _selectedGroup = JSON(_group)
-                    
-                    //        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
-                    //        nextViewController.userObject = _thisReport["properties"]["owner"]
-                    //
-                    //        self.navigationController?.pushViewController(nextViewController, animated: true)
                     
                     nextViewController.groupId = "\(_selectedGroup["id"])"
                     
@@ -171,18 +164,6 @@ class ActivityTableViewController: UITableViewController {
             }
             
         }
-        
-//        let _group = _thisReport["properties"]["groups"][0]
-//        
-////        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
-////        nextViewController.userObject = _thisReport["properties"]["owner"]
-////        
-////        self.navigationController?.pushViewController(nextViewController, animated: true)
-//        
-//        nextViewController.groupId = "\(_group["id"])"
-//        nextViewController.groupObject = _group
-//        
-//        self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 
     @IBAction func loadCommentOwnerProfile(sender: UIButton) {
