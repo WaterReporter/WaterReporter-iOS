@@ -16,6 +16,12 @@ import UIKit
 class UserActionsTableViewController: UITableViewController, UINavigationControllerDelegate {
     
     //
+    // MARK: @IBOutlets
+    //
+    
+    @IBOutlet var loadingIndicatorView: UIView!
+    
+    //
     // MARK: @IBActions
     //
     
@@ -312,6 +318,29 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
             return
         }
         
+        self.loading()
+        
+        if (self.refreshControl == nil) {
+            self.refreshControl = UIRefreshControl()
+        }
+        
+        self.actions = []
+        self.page = 1
+        self.tableView.reloadData()
+        
+        //
+        // Set the Navigation Bar title
+        //
+//        self.navigationItem.title = "Activity"
+//        self.navigationItem.titleView = titleImageView
+        
+//        self.navigationItem.setHidesBackButton(true, animated:true);
+        
+        //
+        // Setup pull to refresh functionality for our TableView
+        //
+        self.refreshControl?.addTarget(self, action: #selector(UserActionsTableViewController.refreshTableView(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
         self.navigationItem.title = ""
         
         self.navigationItem.rightBarButtonItem?.enabled = false
@@ -331,6 +360,43 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
     //
     // MARK: Custom Functionality
     //
+    
+    func loading() {
+        
+        //
+        // Create a view that covers the entire screen
+        //
+        self.loadingIndicatorView.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+        self.loadingIndicatorView.backgroundColor = UIColor.whiteColor()
+        
+        self.view.addSubview(self.loadingIndicatorView)
+        self.view.bringSubviewToFront(self.loadingIndicatorView)
+        
+//        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
+    }
+    
+    func loadingComplete() {
+        
+        //
+        // Remove loading screen
+        //
+        self.loadingIndicatorView.removeFromSuperview()
+        
+    }
+    
+    func refreshTableView(refreshControl: UIRefreshControl) {
+        
+        //
+        // Load 10 newest reports from API on Activity View load
+        //
+            
+        self.page = 1
+        self.actions.removeAllObjects()
+        
+        self.attemptLoadUserActions(true)
+        
+    }
     
     func userHasCommentedOnReport(_report: JSON, _current_user_id: Int) -> Bool {
         
@@ -442,6 +508,7 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
 //                            self.actions = value["features"] as! [AnyObject]
                             self.actions = (value["features"] as! NSArray).mutableCopy() as! NSMutableArray
 //                            self.actionRefreshControl.endRefreshing()
+                            self.refreshControl?.endRefreshing()
                         } else {
                             
                             if let features = value["features"] {
@@ -453,6 +520,11 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
                             }
                             
                         }
+                        
+                        //
+                        // Dismiss the loading indicator
+                        //
+                        self.loadingComplete()
                         
                         // Refresh the data in the table so the newest items appear
                         self.tableView.reloadData()
@@ -466,6 +538,10 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
                     
                     // Stop showing the loading indicator
                     //self.status("doneLoadingWithError")
+                    //
+                    // Dismiss the loading indicator
+                    //
+                    self.loadingComplete()
                     
                     break
                 }

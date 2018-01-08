@@ -7571,6 +7571,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="indicatorLoadingView" destination="jmz-9m-EbP" id="AI9-Ek-bLW"/>
+                        <outlet property="loadingIndicatorView" destination="K84-To-jfb" id="wjC-ag-Wc8"/>
                         <outlet property="titleImageView" destination="V0O-P7-BRH" id="RSZ-NR-g0O"/>
                     </connections>
                 </tableViewController>

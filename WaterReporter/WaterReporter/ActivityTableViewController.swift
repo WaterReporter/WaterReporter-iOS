@@ -355,6 +355,8 @@ class ActivityTableViewController: UITableViewController {
                     else {
                         self.reports.addObjectsFromArray(value["features"] as! NSArray as [AnyObject])
                     }
+                    
+//                    self.refreshControl?.endRefreshing()
 
                     self.tableView.reloadData()
 
