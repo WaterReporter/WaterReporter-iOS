@@ -744,6 +744,30 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     // MARK: Custom Functionality
     //
     
+    func openUserActionsList(gesture: UITapGestureRecognizer) {
+        
+        print("Open user actions list")
+        
+        let backItem = UIBarButtonItem()
+        
+        if let firstName = self.userProfile!["properties"]["first_name"].string,
+            let lastName = self.userProfile!["properties"]["last_name"].string {
+            
+            backItem.title = firstName + " " + lastName
+            
+        }
+        
+        navigationItem.backBarButtonItem = backItem // This will show in the next view controller being pushed
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserActionsTableViewController") as! UserActionsTableViewController
+        
+        nextViewController.userId = self.userId
+        //        nextViewController.userObject = self.userProfile
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
+    
     func openUserGroupsList(gesture: UITapGestureRecognizer) {
         
         print("Open user groups list")
@@ -987,7 +1011,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             return label
         }()
         
-        let actionCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.switchUserProfileTab))
+//        let actionCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.switchUserProfileTab))
+//        actionCountTapGesture.numberOfTapsRequired = 1
+        
+        let actionCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserActionsList(_:)))
         actionCountTapGesture.numberOfTapsRequired = 1
         
         //

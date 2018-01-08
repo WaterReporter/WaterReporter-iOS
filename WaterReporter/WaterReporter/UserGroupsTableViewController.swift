@@ -23,10 +23,13 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
         
         let _groups = self.groups
-        let _group_id = _groups[sender.tag]["properties"]["organization"]["id"]
+        let _group = JSON(_groups[sender.tag])
+//        let _group_id = _groups[sender.tag]["properties"]["organization"]["id"]
+        let _group_id = _group["properties"]["organization"]["id"]
         
         nextViewController.groupId = "\(_group_id)"
-        nextViewController.groupObject = _groups[sender.tag]
+//        nextViewController.groupObject = _groups[sender.tag]
+        nextViewController.groupObject = _group
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
@@ -43,7 +46,8 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
 //    var groups: JSON?
     
     var groupResponse: JSON?
-    var groups: JSON = []
+//    var groups: JSON = []
+    var groups: NSMutableArray = NSMutableArray()
 //    var userGroupsObjects = [AnyObject]()
     var page: Int = 1
     
@@ -137,11 +141,11 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         //
         // Load and display other user information
         //
-        if !withoutReportReload {
+//        if !withoutReportReload {
+        
+        self.attemptLoadUserGroups(true)
             
-            self.attemptLoadUserGroups()
-            
-        }
+//        }
         
     }
     
@@ -170,6 +174,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         let GET_GROUPS_ENDPOINT = Endpoints.GET_USER_PROFILE + "\(userId)/groups"
         
         let _parameters = [
+            "results_per_page": "10",
             "page": "\(self.page)"
         ]
         
@@ -205,18 +210,29 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
                     // list of reports
                     //
                     if (isRefreshingReportsList) {
+                        
                         self.groupResponse = JSON(value)
-                        self.groups = (self.groupResponse?["features"])!
+//                        self.groups = (self.groupResponse?["features"])!
+                        
+                        self.groups = (value["features"] as! NSArray).mutableCopy() as! NSMutableArray 
+                        
                         self.refreshControl?.endRefreshing()
+                        
                     }
                     else {
-                        self.groupResponse = JSON(value)
-                        self.groups = (self.groupResponse?["features"])!
+                        
+                        self.groups.addObjectsFromArray(value["features"] as! NSArray as [AnyObject])
+//                        self.groupResponse = JSON(value)
+//                        self.groups = (self.groupResponse?["features"])!
                     }
                     
                     print("self.groups \(self.groups)")
                     
+//                    if (isRefreshingReportsList) {
+                    
                     self.tableView.reloadData()
+                        
+//                    }
                     
                     self.page += 1
                     
@@ -268,7 +284,7 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
         print("Groups cell")
         
         // Display Group Name
-        let _groups = self.groups
+        let _groups = JSON(self.groups)
         
         if let _group_name = _groups[indexPath.row]["properties"]["organization"]["properties"]["name"].string {
             cell.labelUserProfileGroupName.text = _group_name
@@ -297,9 +313,35 @@ class UserGroupsTableViewController: UITableViewController, UINavigationControll
             cell.imageViewUserProfileGroup.image = nil
         }
         
-        if (indexPath.row == self.groups.count - 2 && self.groups.count < self.groupResponse!["properties"]["num_results"].int) {
-            self.attemptLoadUserGroups()
+        // CONTINUOUS SCROLL
+        //
+        let _total_number_results: Int = self.groupResponse!["properties"]["num_results"].intValue
+        
+        print("Total results is: \(_total_number_results)")
+        
+        if (indexPath.row == self.groups.count - 2 && self.groups.count < _total_number_results) {
+            
+//            if let reportIdNumber = report?.objectForKey("id") as? NSNumber {
+//                userId = "\(reportIdNumber)"
+//            }
+            
+            //
+            // Display loading indicator
+            //
+            //self.loading()
+            
+            //
+            //
+            //
+//            if userId != "" {
+            self.attemptLoadUserGroups(false)
+//            }
+            
         }
+        
+//        if (indexPath.row == self.groups.count - 2 && self.groups.count < self.groupResponse!["properties"]["num_results"].int) {
+//            self.attemptLoadUserGroups()
+//        }
         
         return cell
         

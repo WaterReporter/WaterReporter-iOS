@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6A09F4173390FEAABFC93265 /* Pods_Water_Reporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */; };
 		BA36BB1F200007430023F098 /* UserGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */; };
+		BA7D5FE02003E086002F53BB /* UserActionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D5FDF2003E086002F53BB /* UserActionsTableViewController.swift */; };
 		BAAE25531FCDD8B400644483 /* Res in Resources */ = {isa = PBXBuildFile; fileRef = BAAE25521FCDD8B400644483 /* Res */; };
 		C112BDF31DD641B6006C1348 /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */; };
 		C116EC881DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */; };
@@ -108,6 +109,7 @@
 		9B363F7415415CA45EC9E61D /* Pods_WaterReporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaterReporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C9469896DFE4BB78B563BF /* Pods_Water_Reporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Water_Reporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGroupsTableViewController.swift; sourceTree = "<group>"; };
+		BA7D5FDF2003E086002F53BB /* UserActionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActionsTableViewController.swift; sourceTree = "<group>"; };
 		BAAE25521FCDD8B400644483 /* Res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Res; path = ../Res; sourceTree = "<group>"; };
 		C112BDF21DD641B6006C1348 /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		C116EC871DE5DC5F0032F37C /* UserProfileMembersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileMembersTableViewCell.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				C197A1D91DED00CF001958A7 /* UserProfileCompleteViewController.swift */,
 				C1D7DDFE1DA68C4600771F04 /* GroupsTableViewController.swift */,
 				BA36BB1E200007430023F098 /* UserGroupsTableViewController.swift */,
+				BA7D5FDF2003E086002F53BB /* UserActionsTableViewController.swift */,
 			);
 			name = "User Profile";
 			sourceTree = "<group>";
@@ -679,6 +682,7 @@
 				C197A1DA1DED00CF001958A7 /* UserProfileCompleteViewController.swift in Sources */,
 				CE98256F1F03FD9D0084A097 /* TerritoryViewController.swift in Sources */,
 				C1C5FD2B1DDB38E400EF6302 /* ProfileTableViewController.swift in Sources */,
+				BA7D5FE02003E086002F53BB /* UserActionsTableViewController.swift in Sources */,
 				CE015EF01F6C42CE00447C34 /* NewReportLinkTableViewCell.swift in Sources */,
 				CE3D47171F755FBA00005DA7 /* VI+String.swift in Sources */,
 				CE4D9E571F4DB88700006097 /* ReusableProfileCollectionViewCell.swift in Sources */,
