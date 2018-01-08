@@ -19,23 +19,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // @IBOUTLETS
     //
-    @IBOutlet weak var buttonUserProfileSettings: UIBarButtonItem!
-    @IBOutlet weak var imageViewUserProfileImage: UIImageView!
-    @IBOutlet weak var labelUserProfileName: UILabel!
-    @IBOutlet weak var labelUserProfileTitle: UILabel!
-    @IBOutlet weak var labelUserProfileOrganizationName: UILabel!
-    @IBOutlet weak var labelUserProfileDescription: UILabel!
     
-    @IBOutlet weak var buttonUserProfileSubmissionCount: UIButton!
-    @IBOutlet weak var buttonUserProfileSubmissionLabel: UIButton!
-    @IBOutlet weak var buttonUserProfileActionCount: UIButton!
-    @IBOutlet weak var buttonUserProfileActionLabel: UIButton!
-    @IBOutlet weak var buttonUserProfileGroupCount: UIButton!
-    @IBOutlet weak var buttonUserProfileGroupLabel: UIButton!
+    @IBOutlet weak var buttonUserProfileSettings: UIBarButtonItem!
 
     @IBOutlet weak var submissionTableView: UITableView!
-    @IBOutlet weak var actionsTableView: UITableView!
-    @IBOutlet weak var groupsTableView: UITableView!
 
     
     //
@@ -240,7 +227,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     var isActingUsersProfile: Bool = false
 
     var userPosts: JSON?
-//    var userPosts: NSMutableArray = NSMutableArray()
     var userPostsObjects = [AnyObject]()
     var userPostsPage: Int = 1
     var submissionRefreshControl: UIRefreshControl = UIRefreshControl()
@@ -350,11 +336,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
             self.navigationItem.title = ""
             
-//            if let _first_name = self.userProfile!["properties"]["first_name"].string,
-//                let _last_name = self.userProfile!["properties"]["last_name"].string {
-//                self.navigationItem.title = _first_name + " " + _last_name
-//            }
-            
             self.navigationItem.rightBarButtonItem?.enabled = false
             
             // Show the data on screen
@@ -382,22 +363,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // Set dynamic row heights
         self.submissionTableView.rowHeight = UITableViewAutomaticDimension;
         self.submissionTableView.estimatedRowHeight = 368.0;
-        
-        self.actionsTableView.rowHeight = UITableViewAutomaticDimension;
-        self.actionsTableView.estimatedRowHeight = 368.0;
-
-        self.groupsTableView.rowHeight = UITableViewAutomaticDimension;
-        self.groupsTableView.estimatedRowHeight = 368.0;
-
-        //
-        //
-        //
-        self.labelUserProfileTitle.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
-        
-        self.labelUserProfileOrganizationName.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
-        
-        self.labelUserProfileDescription.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProfileTableViewController.toggleUILableNumberOfLines(_:))))
-        
+        self.submissionTableView.frame = view.frame
         
         //
         // SETUP SUBMISSION TABLE
@@ -420,25 +386,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         // SET DEFAULT SELECTED TAB
         //
-        self.actionsTableView.hidden = true
+        
         self.submissionTableView.hidden = false
-        self.groupsTableView.hidden = true
         
-        //
-        // Restyle the form Log In Navigation button to appear with an underline
-        //
-        let buttonWidth = self.buttonUserProfileSubmissionLabel.frame.width*0.8
-        let borderWidth = buttonWidth
-        
-        self.userPostsUnderline.borderColor = CGColor.colorBrand()
-        self.userPostsUnderline.borderWidth = 3.0
-        self.userPostsUnderline.frame = CGRectMake(self.buttonUserProfileSubmissionLabel.frame.width*0.1, self.buttonUserProfileSubmissionLabel.frame.size.height - 3.0, borderWidth, self.buttonUserProfileSubmissionLabel.frame.size.height)
-        
-        self.buttonUserProfileSubmissionLabel.layer.addSublayer(self.userPostsUnderline)
-        self.buttonUserProfileSubmissionLabel.layer.masksToBounds = true
-        
-        self.userGroupsUnderline.removeFromSuperlayer()
-        self.userActionsUnderline.removeFromSuperlayer()
     }
     
     override func didReceiveMemoryWarning() {
@@ -1088,13 +1038,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                                     self.userPostsObjects += features as! [AnyObject]
                                 }
                             }
-                        }
-                        
-                        // Set visible button count
-                        let _submission_count = self.userPosts!["properties"]["num_results"]
-                        
-                        if (_submission_count != "") {
-                            self.buttonUserProfileSubmissionCount.setTitle("\(_submission_count)", forState: .Normal)
                         }
                         
                         // Refresh the data in the table so the newest items appear
@@ -2024,7 +1967,8 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                     
                     switch response.result {
                     case .Success(let value):
-//                        print("Response Success \(value)")
+                        
+                        print("Response Success \(value)")
                         
                         self.updateReportLikes(_report_id, reportSenderTag: senderTag)
                         
