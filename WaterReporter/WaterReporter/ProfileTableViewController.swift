@@ -952,7 +952,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             label.textAlignment = .Center
             label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightRegular)
             label.widthAnchor.constraintEqualToConstant(272.0).active = true
-            label.numberOfLines = 2
+            label.numberOfLines = 1
             label.lineBreakMode = .ByTruncatingTail
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -1031,15 +1031,29 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
         var baseHeaderHeight = 145.0
         
+//        statGroupView.topAnchor.constraintEqualToAnchor(userNameLabel.bottomAnchor, constant: 16.0).active = true
+        
         if let titleText = userTitleLabel.text where !titleText.isEmpty {
             
             baseHeaderHeight += 20.0
+            
+//            statGroupView.topAnchor.constraintEqualToAnchor(userTitleLabel.bottomAnchor, constant: 16.0).active = true
+            
+        } else {
+            
+            userTitleLabel.hidden = true
             
         }
         
         if let bioText = userBioLabel.text where !bioText.isEmpty {
             
             baseHeaderHeight += 50.0
+            
+//            statGroupView.topAnchor.constraintEqualToAnchor(userBioLabel.bottomAnchor, constant: 16.0).active = true
+            
+        } else {
+            
+            userBioLabel.hidden = true
             
         }
         
