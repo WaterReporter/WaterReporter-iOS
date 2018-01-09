@@ -4435,7 +4435,6 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="dropletIcon" destination="Kb5-FN-OAU" id="94w-ep-09a"/>
-                                            <outlet property="extraActionsButton" destination="YV0-Sr-z3V" id="erh-2I-9a6"/>
                                             <outlet property="postGroupFive" destination="gYr-pG-yWK" id="EnI-Pr-fAh"/>
                                             <outlet property="postGroupFour" destination="JMT-Aj-0qi" id="gz8-IG-x8I"/>
                                             <outlet property="postGroupOne" destination="xc2-e7-UJK" id="KN4-ui-ImY"/>
@@ -7460,9 +7459,6 @@
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4WI-bT-DiY">
                                                             <rect key="frame" x="93" y="52" width="24" height="24"/>
                                                             <state key="normal" image="icon--comment"/>
-                                                            <connections>
-                                                                <action selector="loadPostComments:" destination="Fcv-4X-eZF" eventType="touchUpInside" id="usx-Nr-qvg"/>
-                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KEQ-F6-Aaw">
                                                             <rect key="frame" x="117" y="52" width="24" height="24"/>
@@ -7470,9 +7466,6 @@
                                                             <state key="normal" title="0">
                                                                 <color key="titleColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </state>
-                                                            <connections>
-                                                                <action selector="loadPostComments:" destination="Fcv-4X-eZF" eventType="touchUpInside" id="KZE-Gh-Rc2"/>
-                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uCs-JE-KWX">
                                                             <rect key="frame" x="-37" y="0.0" width="24" height="24"/>

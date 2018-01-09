@@ -32,11 +32,124 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     // MARK: @IBActions
     //
     
+    func loadGroupProfile(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("OrganizationTableViewController") as! OrganizationTableViewController
+        
+        let _thisReport = self.postsObjects[(sender.tag)].objectForKey("properties")
+        
+        let _groupName = sender.titleLabel!.text
+        
+        let reportGroups = _thisReport?.objectForKey("groups") as? NSArray
+        
+        for _group in reportGroups! as NSArray {
+            
+            //            let _selectedGroupName = _group["properties"]["name"] as? String
+            
+            if let _selectedGroupName = _group.objectForKey("properties")!.objectForKey("name") as? String {
+                
+                if _selectedGroupName == _groupName {
+                    
+                    let _selectedGroup = JSON(_group)
+                    
+                    nextViewController.groupId = "\(_selectedGroup["id"])"
+                    
+                    print("Selected group id \(nextViewController.groupId)")
+                    
+                    nextViewController.groupObject = _selectedGroup
+                    
+                    self.navigationController?.pushViewController(nextViewController, animated: true)
+                    
+                }
+                
+            }
+            
+        }
+    }
+    
+//    @IBAction func loadCommentOwnerProfile(sender: UIButton) {
+//        
+//        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ProfileTableViewController") as! ProfileTableViewController
+//        
+//        let _thisReport = JSON(self.postsObjects[(sender.tag)])
+//        
+//        nextViewController.userId = "\(_thisReport["properties"]["owner"]["id"])"
+//        nextViewController.userObject = _thisReport["properties"]["owner"]
+//        
+//        self.navigationController?.pushViewController(nextViewController, animated: true)
+//    }
+//    
+//    func loadTerritoryProfile(sender: UILabel) {
+//        
+//        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
+//        
+//        let _thisReport = JSON(self.postsObjects[(sender.tag)])
+//        
+//        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+//            
+//            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+//            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+//            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+//            
+//            self.navigationController?.pushViewController(nextViewController, animated: true)
+//        }
+//    }
+    
+    @IBAction func presentExtraPostActions(sender: UIButton) {
+        
+        //
+        // Set up an action sheet and add our extra actions using
+        // the UIButton tag and UIButton itself as function params.
+        //
+        
+        let postIndex = sender.tag
+        
+        let thisActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        //        let shareAction = UIAlertAction(title: "Share post", style: .Default, handler: nil)
+        let shareAction = UIAlertAction(
+            title: "Share post",
+            style: .Default,
+            handler: { action in
+                self.shareButtonClicked(postIndex, button: sender)
+            }
+        )
+        
+        thisActionSheet.addAction(shareAction)
+        
+        let locationAction = UIAlertAction(
+            title: "View location",
+            style: .Default,
+            handler: { action in
+                self.loadPostLocationMap(postIndex)
+            }
+        )
+        
+        thisActionSheet.addAction(locationAction)
+        
+        let directionAction = UIAlertAction(
+            title: "Get directions",
+            style: .Default,
+            handler: { action in
+                self.openDirectionsURL(postIndex)
+            }
+        )
+        
+        thisActionSheet.addAction(directionAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        
+        thisActionSheet.addAction(cancelAction)
+        
+        presentViewController(thisActionSheet, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func openSubmissionsLikesList(sender: UIButton) {
         
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("LikesTableViewController") as! LikesTableViewController
         
-        let report = self.userPostsObjects[(sender.tag)]
+        let report = self.postsObjects[(sender.tag)]
         nextViewController.report = report
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
@@ -46,7 +159,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     @IBAction func openSubmissionOpenGraphURL(sender: UIButton) {
         
         let reportId = sender.tag
-        let report = JSON(self.userPostsObjects[reportId])
+        let report = JSON(self.postsObjects[reportId])
         
         let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
         
@@ -77,15 +190,15 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     
     @IBAction func openUserSubmissionDirectionsURL(sender: UIButton) {
         
-        let _submissions = JSON(self.userPostsObjects)
-        let reportCoordinates = _submissions[sender.tag]["geometry"]["geometries"][0]["coordinates"]
+        let _posts = JSON(self.postsObjects)
+        let reportCoordinates = _posts[sender.tag]["geometry"]["geometries"][0]["coordinates"]
         
         UIApplication.sharedApplication().openURL(NSURL(string: "https://www.google.com/maps/dir//\(reportCoordinates[1]),\(reportCoordinates[0])")!)
     }
 
     @IBAction func shareSubmissionsButtonClicked(sender: UIButton) {
         
-        let _thisReport = JSON(self.userPostsObjects[(sender.tag)])
+        let _thisReport = JSON(self.postsObjects[(sender.tag)])
         let reportId: String = "\(_thisReport["id"])"
         var objectsToShare: [AnyObject] = [AnyObject]()
         let reportURL = NSURL(string: "https://www.waterreporter.org/community/reports/" + reportId)
@@ -134,7 +247,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     @IBAction func openUserSubmissionMapView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ActivityMapViewController") as! ActivityMapViewController
         
-        nextViewController.reportObject = self.userPostsObjects[sender.tag]
+        nextViewController.reportObject = self.postsObjects[sender.tag]
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
@@ -143,7 +256,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     @IBAction func openUserSubmissionCommentsView(sender: UIButton) {
         let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
         
-        nextViewController.report = self.userPostsObjects[sender.tag]
+        nextViewController.report = self.postsObjects[sender.tag]
         
         self.navigationController?.pushViewController(nextViewController, animated: true)
         
@@ -155,9 +268,9 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
         let editReportAction = UIAlertAction(title: "Edit Report", style: .Default, handler: {
             UIAlertAction in
-            let _submissions = JSON(self.userPostsObjects)
-            let _report = _submissions[sender.tag]
-            let _report_id: String! = "\(_submissions[sender.tag]["id"])"
+            let _posts = JSON(self.postsObjects)
+            let _report = _posts[sender.tag]
+            let _report_id: String! = "\(_posts[sender.tag]["id"])"
 
             self.attemptEditReport(_report, reportId: _report_id)
         })
@@ -165,8 +278,8 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
 
         let deleteReportAction = UIAlertAction(title: "Delete Report", style: .Default, handler: {
             UIAlertAction in
-            let _submissions = JSON(self.userPostsObjects)
-            let _report_id: String! = "\(_submissions[sender.tag]["id"])"
+            let _posts = JSON(self.postsObjects)
+            let _report_id: String! = "\(_posts[sender.tag]["id"])"
             
             self.attemptConfirmDeleteReport(_report_id)
         })
@@ -177,23 +290,6 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
         presentViewController(thisActionSheet, animated: true, completion: nil)
 
-    }
-
-    @IBAction func loadTerritoryProfileFromSubmissions(sender: UIButton) {
-        
-        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
-        
-        var _thisReport: JSON!
-        
-        _thisReport = JSON(self.userPostsObjects[(sender.tag)])
-        
-        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
-            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
-            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
-            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
-            
-            self.navigationController?.pushViewController(nextViewController, animated: true)
-        }
     }
     
     @IBAction func emptyMessageAddReport(sender: UIButton) {
@@ -229,13 +325,13 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     var userSnapshot: JSON?
     var isActingUsersProfile: Bool = false
 
-    var userPosts: JSON?
-    var userPostsObjects = [AnyObject]()
-    var userPostsPage: Int = 1
+    var posts: JSON?
+    var postsObjects = [AnyObject]()
+    var postsPage: Int = 1
     var submissionRefreshControl: UIRefreshControl = UIRefreshControl()
 
     var userGroupsUnderline = CALayer()
-    var userPostsUnderline = CALayer()
+    var postsUnderline = CALayer()
     var userActionsUnderline = CALayer()
     
     var likeDelay: NSTimer = NSTimer()
@@ -417,6 +513,96 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     // MARK: Custom Functionality
     //
     
+    func loadTerritoryProfile(sender: UILabel) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("TerritoryViewController") as! TerritoryViewController
+        
+        let _thisReport = JSON(self.postsObjects[(sender.tag)])
+        
+        if "\(_thisReport["properties"]["territory_id"])" != "" && "\(_thisReport["properties"]["territory_id"])" != "null" {
+            
+            nextViewController.territory = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_name"])"
+            nextViewController.territoryId = "\(_thisReport["properties"]["territory_id"])"
+            nextViewController.territoryHUC8Code = "\(_thisReport["properties"]["territory"]["properties"]["huc_8_code"])"
+            
+            self.navigationController?.pushViewController(nextViewController, animated: true)
+        }
+    }
+    
+    func loadPostComments(sender: UIButton) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ReportCommentsTableViewController") as! ReportCommentsTableViewController
+        
+        let _thisReport = self.postsObjects[(sender.tag)]
+        
+        nextViewController.report = _thisReport
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    func loadPostLocationMap(postId: Int) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("ActivityMapViewController") as! ActivityMapViewController
+        
+        let _thisReport = self.postsObjects[(postId)]
+        
+        nextViewController.reportObject = _thisReport
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    func shareButtonClicked(postId: Int, button: UIButton) {
+        
+        //        print("sender.tag \(sender.tag)")
+        print("sender.tag \(postId)")
+        
+        // let _thisReport = JSON(self.reports[(sender.tag)])
+        let _thisReport = JSON(self.postsObjects[(postId)])
+        let reportId: String = "\(_thisReport["id"])"
+        var objectsToShare: [AnyObject] = [AnyObject]()
+        let reportURL = NSURL(string: "https://www.waterreporter.org/community/reports/" + reportId)
+        var reportImageURL:NSURL!
+        let tmpImageView: UIImageView = UIImageView()
+        
+        // SHARE > REPORT > TITLE
+        //
+        objectsToShare.append("\(_thisReport["properties"]["report_description"])")
+        
+        // SHARE > REPORT > URL
+        //
+        objectsToShare.append(reportURL!)
+        
+        // SHARE > REPORT > IMAGE
+        //
+        let thisReportImageURL = _thisReport["properties"]["images"][0]["properties"]["square"]
+        
+        if thisReportImageURL != nil {
+            reportImageURL = NSURL(string: String(thisReportImageURL))
+        }
+        
+        tmpImageView.kf_setImageWithURL(reportImageURL, placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: {
+            (image, error, cacheType, imageUrl) in
+            
+            if (image != nil) {
+                objectsToShare.append(Image(CGImage: (image?.CGImage)!, scale: (image?.scale)!, orientation: UIImageOrientation.Up))
+                
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                activityVC.popoverPresentationController?.sourceView = button
+                
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
+            else {
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                
+                activityVC.popoverPresentationController?.sourceView = button
+                
+                self.presentViewController(activityVC, animated: true, completion: nil)
+            }
+        })
+        
+    }
+    
     func userHasCommentedOnReport(_report: JSON, _current_user_id: Int) -> Bool {
         
         if (_report["comments"].count != 0) {
@@ -433,7 +619,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     
     func openDirectionsURL(postId: Int) {
         
-        let report = self.userPostsObjects[postId]
+        let report = self.postsObjects[postId]
         
         let reportGeometry = report.objectForKey("geometry")
         let reportGeometries = reportGeometry!.objectForKey("geometries")
@@ -450,7 +636,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         //
         //        print("The value of `sender` > `view` is \(sender.view)")
         
-        let report = JSON(self.userPostsObjects[reportId])
+        let report = JSON(self.postsObjects[reportId])
         
         let reportURL = "\(report["properties"]["social"][0]["properties"]["og_url"])"
         
@@ -507,11 +693,11 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     
     func refreshSubsmissionsTableView(sender: UIRefreshControl) {
         
-        self.userPostsPage = 1
-        self.userPosts = nil
-        self.userPostsObjects = []
+        self.postsPage = 1
+        self.posts = nil
+        self.postsObjects = []
 
-        self.attemptLoadUserPosts(true)
+        self.attemptLoadposts(true)
 
     }
     
@@ -866,7 +1052,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         //
         if !withoutReportReload {
             
-            self.attemptLoadUserPosts()
+            self.attemptLoadposts()
         }
 
         self.attemptLoadUserSnapshot()
@@ -1002,11 +1188,11 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
     }
     
-    func attemptLoadUserPosts(isRefreshingReportsList: Bool = false) {
+    func attemptLoadposts(isRefreshingReportsList: Bool = false) {
         
         let _parameters = [
             "q": "{\"filters\":[{\"name\":\"owner_id\",\"op\":\"eq\",\"val\":\"\(self.userId)\"}],\"order_by\": [{\"field\":\"created\",\"direction\":\"desc\"}]}",
-            "page": "\(self.userPostsPage)"
+            "page": "\(self.postsPage)"
         ]
         
         Alamofire.request(.GET, Endpoints.GET_MANY_REPORTS, parameters: _parameters)
@@ -1031,14 +1217,14 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                         //
                         if (isRefreshingReportsList) {
                             // Assign response to groups variable
-                            self.userPosts = JSON(value)
-                            self.userPostsObjects = value["features"] as! [AnyObject]
+                            self.posts = JSON(value)
+                            self.postsObjects = value["features"] as! [AnyObject]
                             self.submissionRefreshControl.endRefreshing()
                         } else {
                             if let features = value["features"] {
                                 if features != nil {
-                                    self.userPosts = JSON(value)
-                                    self.userPostsObjects += features as! [AnyObject]
+                                    self.posts = JSON(value)
+                                    self.postsObjects += features as! [AnyObject]
                                 }
                             }
                         }
@@ -1046,7 +1232,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                         // Refresh the data in the table so the newest items appear
                         self.tableView.reloadData()
                         
-                        self.userPostsPage += 1
+                        self.postsPage += 1
                     }
                     
                     break
@@ -1068,13 +1254,13 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     //
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             
-        guard (JSON(self.userPostsObjects) != nil) else { return 0 }
+        guard (JSON(self.postsObjects) != nil) else { return 0 }
 
-        if self.userPostsObjects.count == 0 {
+        if self.postsObjects.count == 0 {
             return 1
         }
 
-        return (self.userPostsObjects.count)
+        return (self.postsObjects.count)
         
     }
     
@@ -1090,7 +1276,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
         let cell = tableView.dequeueReusableCellWithIdentifier("basePostTableCell", forIndexPath: indexPath) as! BasePostTableCell
         
-        if (self.userPostsObjects.count >= 1) {
+        if (self.postsObjects.count >= 1) {
             
             //
             // User Id
@@ -1105,7 +1291,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             //
             // REPORT OBJECT
             //
-            let report = self.userPostsObjects[indexPath.row].objectForKey("properties")
+            let report = self.postsObjects[indexPath.row].objectForKey("properties")
             let reportJson = JSON(report!)
             cell.reportObject = report
             
@@ -1118,7 +1304,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             //
             
             cell.extraActionsButton.tag = indexPath.row
-            cell.extraActionsButton.addTarget(self, action: #selector(ActivityTableViewController.presentExtraPostActions(_:)), forControlEvents: .TouchUpInside)
+            cell.extraActionsButton.addTarget(self, action: #selector(ProfileTableViewController.presentExtraPostActions(_:)), forControlEvents: .TouchUpInside)
             
             //
             // Territory
@@ -1137,7 +1323,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             cell.reportTerritoryName.text = reportTerritoryName
             
             cell.reportTerritoryButton.tag = indexPath.row
-            cell.reportTerritoryButton.addTarget(self, action: #selector(ActivityTableViewController.loadTerritoryProfile(_:)), forControlEvents: .TouchUpInside)
+            cell.reportTerritoryButton.addTarget(self, action: #selector(self.loadTerritoryProfile(_:)), forControlEvents: .TouchUpInside)
             
             //
             // Comment Count
@@ -1160,6 +1346,8 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             
             cell.reportCommentCount.tag = indexPath.row
             cell.reportCommentButton.tag = indexPath.row
+            
+            cell.reportCommentButton.addTarget(self, action: #selector(self.loadPostComments(_:)), forControlEvents: .TouchUpInside)
             
             //
             // MARK: Determine comment status
@@ -1348,7 +1536,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                             blue: 53.0/255.0,
                             alpha: 0.0
                             ), forState: .Normal)
-                        cell.postGroupOne.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupOne.addTarget(self, action: #selector(self.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                         cell.postGroupOne.layer.cornerRadius = cell.postGroupOne.frame.size.width / 2
                         cell.postGroupOne.clipsToBounds = true
                         cell.postGroupOne.addSubview(imageView)
@@ -1362,7 +1550,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                             blue: 53.0/255.0,
                             alpha: 0.0
                             ), forState: .Normal)
-                        cell.postGroupTwo.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupTwo.addTarget(self, action: #selector(self.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                         cell.postGroupTwo.layer.cornerRadius = cell.postGroupTwo.frame.size.width / 2
                         cell.postGroupTwo.clipsToBounds = true
                         cell.postGroupTwo.addSubview(imageView)
@@ -1376,7 +1564,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                             blue: 53.0/255.0,
                             alpha: 0.0
                             ), forState: .Normal)
-                        cell.postGroupThree.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupThree.addTarget(self, action: #selector(self.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                         cell.postGroupThree.layer.cornerRadius = cell.postGroupThree.frame.size.width / 2
                         cell.postGroupThree.clipsToBounds = true
                         cell.postGroupThree.addSubview(imageView)
@@ -1390,7 +1578,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                             blue: 53.0/255.0,
                             alpha: 0.0
                             ), forState: .Normal)
-                        cell.postGroupFour.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupFour.addTarget(self, action: #selector(self.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                         cell.postGroupFour.layer.cornerRadius = cell.postGroupFour.frame.size.width / 2
                         cell.postGroupFour.clipsToBounds = true
                         cell.postGroupFour.addSubview(imageView)
@@ -1404,7 +1592,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                             blue: 53.0/255.0,
                             alpha: 0.0
                             ), forState: .Normal)
-                        cell.postGroupFive.addTarget(self, action: #selector(ActivityTableViewController.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
+                        cell.postGroupFive.addTarget(self, action: #selector(self.loadGroupProfile(_:)), forControlEvents: .TouchUpInside)
                         cell.postGroupFive.layer.cornerRadius = cell.postGroupFive.frame.size.width / 2
                         cell.postGroupFive.clipsToBounds = true
                         cell.postGroupFive.addSubview(imageView)
@@ -1465,7 +1653,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             //
             
             cell.reportOwnerImageButton.tag = indexPath.row
-            cell.reportOwnerImageButton.addTarget(self, action: #selector(ActivityTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
+//            cell.reportOwnerImageButton.addTarget(self, action: #selector(ProfileTableViewController.loadCommentOwnerProfile(_:)), forControlEvents: .TouchUpInside)
             
             var reportOwnerImageURL:NSURL! = NSURL(string: "https://www.waterreporter.org/community/images/badget--MissingUser.png")
             
@@ -1635,8 +1823,8 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             // CONTINUOUS SCROLL
             //
             
-            if (indexPath.row == self.userPostsObjects.count - 5) {
-                self.attemptLoadUserPosts()
+            if (indexPath.row == self.postsObjects.count - 5) {
+                self.attemptLoadposts()
             }
             
         }
@@ -1704,11 +1892,11 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                     
                     self.submissionRefreshControl.beginRefreshing()
                     
-                    self.userPostsPage = 1
-                    self.userPosts = nil
-                    self.userPostsObjects = []
+                    self.postsPage = 1
+                    self.posts = nil
+                    self.postsObjects = []
                     
-                    self.attemptLoadUserPosts(true)
+                    self.attemptLoadposts(true)
 
                 case .Failure(let error):
                     
@@ -1747,7 +1935,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
         let _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! BasePostTableCell
         
-        _report = JSON(self.userPostsObjects[(indexPathRow)].objectForKey("properties")!)
+        _report = JSON(self.postsObjects[(indexPathRow)].objectForKey("properties")!)
         
         // Change the Heart icon to red
         //
@@ -1869,7 +2057,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             //
             var _report: JSON!
             
-            _report = JSON(self.userPostsObjects[(senderTag)])
+            _report = JSON(self.postsObjects[(senderTag)])
             
             let _report_id: String = "\(_report["id"])"
             
@@ -1936,7 +2124,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             //
             var _report: JSON!
             
-            _report = JSON(self.userPostsObjects[(senderTag)])
+            _report = JSON(self.postsObjects[(senderTag)])
             
             let _report_id: String = "\(_report["id"])"
             
@@ -2005,7 +2193,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                         
                         print("Response value \(value)")
                         
-                        self.userPostsObjects[(reportSenderTag)] = value
+                        self.postsObjects[(reportSenderTag)] = value
                         
                         break
                         
