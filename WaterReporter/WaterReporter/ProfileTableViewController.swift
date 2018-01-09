@@ -972,6 +972,20 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         // Stat group view
         //
         
+        let statSeparatorView: UIView = {
+            let view = UIView()
+            view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1)
+            view.alpha = 1.0
+            view.backgroundColor = UIColor(
+                red: 200.0/255.0,
+                green: 208.0/255.0,
+                blue: 216.0/255.0,
+                alpha: 0.0
+            )
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
         let statGroupView: UIView = {
             let view = UIView()
             view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 16)
@@ -1016,7 +1030,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         //
         
         let headerStackView: UIStackView = {
-            let stackView = UIStackView(arrangedSubviews: [userImageView, userNameLabel, userTitleLabel, userBioLabel, statGroupView])
+            let stackView = UIStackView(arrangedSubviews: [userImageView, userNameLabel, userTitleLabel, userBioLabel, statSeparatorView, statGroupView])
             stackView.alignment = .Center
             stackView.distribution = .Fill
             stackView.spacing = 8
@@ -1029,7 +1043,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         // Adjust header container view height
         //
         
-        var baseHeaderHeight = 145.0
+        var baseHeaderHeight = 160.0
         
 //        statGroupView.topAnchor.constraintEqualToAnchor(userNameLabel.bottomAnchor, constant: 16.0).active = true
         
@@ -1047,7 +1061,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
         if let bioText = userBioLabel.text where !bioText.isEmpty {
             
-            baseHeaderHeight += 50.0
+            baseHeaderHeight += 24.0
             
 //            statGroupView.topAnchor.constraintEqualToAnchor(userBioLabel.bottomAnchor, constant: 16.0).active = true
             
