@@ -120,18 +120,67 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     // Stat group view
     //
     
-    lazy var statGroupView: UIView = {
-        let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 32)
-        view.alpha = 0.0
-        view.backgroundColor = UIColor(
-            red: 200.0/255.0,
-            green: 208.0/255.0,
-            blue: 216.0/255.0,
-            alpha: 0.0
-        )
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+//    lazy var statGroupView: UIView = {
+//        let view = UIView()
+//        view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40)
+//        view.alpha = 0.0
+//        view.backgroundColor = UIColor(
+//            red: 200.0/255.0,
+//            green: 208.0/255.0,
+//            blue: 216.0/255.0,
+//            alpha: 1.0
+//        )
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+    
+    //
+    // Stat labels
+    //
+    
+    //
+    // Post count
+    //
+    
+    let postCountLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .Center
+        label.text = "0 posts"
+        label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.userInteractionEnabled = true
+        label.tag = 0
+        return label
+    }()
+    
+    //
+    // Action count
+    //
+    
+    let actionCountLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .Center
+        label.text = "0 actions"
+        label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.userInteractionEnabled = true
+        label.tag = 1
+        return label
+    }()
+    
+    //
+    // Group count
+    //
+    
+    let groupCountLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .Center
+        label.text = "0 groups"
+        label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.userInteractionEnabled = true
+        label.tag = 2
+        return label
     }()
 
     //
@@ -139,7 +188,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-                
+        
         // Check for profile updates
         //
         if self.userObject == nil {
@@ -182,6 +231,17 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         if (self.userId == nil) {
             
         }
+        
+        //
+        // Set background color of UITableView
+        //
+        
+        self.tableView.backgroundColor = UIColor(
+            red: 245.0/255.0,
+            green: 247.0/255.0,
+            blue: 249.0/255.0,
+            alpha: 1.0
+        )
         
         // Show User Profile Information in Header View
         if self.userObject != nil && self.userId != nil {
@@ -646,84 +706,84 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         // Summary stats group view
         //
 
-        self.profileTableHeader.addSubview(statGroupView)
+//        self.profileTableHeader.addSubview(statGroupView)
         
-        UIView.animateWithDuration(0.25) { () -> Void in
-            self.statGroupView.alpha = 1.0
-        }
+//        UIView.animateWithDuration(0.25) { () -> Void in
+//            self.statGroupView.alpha = 1.0
+//        }
         
-        statGroupView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor, constant: 0.0).active = true
-        statGroupView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor, constant: 0.0).active = true
-        statGroupView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor, constant: 0.0).active = true
-        statGroupView.heightAnchor.constraintEqualToConstant(40.0).active = true
+//        self.statGroupView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor, constant: 0.0).active = true
+//        self.statGroupView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor, constant: 0.0).active = true
+//        self.statGroupView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor, constant: 0.0).active = true
+//        self.statGroupView.heightAnchor.constraintEqualToConstant(40.0).active = true
         
-        //
-        // Post count
-        //
+//        //
+//        // Post count
+//        //
+//        
+//        let postCountLabel: UILabel = {
+//            let label = UILabel()
+//            label.textAlignment = .Center
+//            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+//            label.translatesAutoresizingMaskIntoConstraints = false
+//            label.userInteractionEnabled = true
+//            label.tag = 0
+//            return label
+//        }()
+//        
+//        //
+//        // Action count
+//        //
+//        
+//        let actionCountLabel: UILabel = {
+//            let label = UILabel()
+//            label.textAlignment = .Center
+//            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+//            label.translatesAutoresizingMaskIntoConstraints = false
+//            label.userInteractionEnabled = true
+//            label.tag = 1
+//            return label
+//        }()
+//        
+//        let actionCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserActionsList(_:)))
+//        actionCountTapGesture.numberOfTapsRequired = 1
+//        
+//        //
+//        // Group count
+//        //
+//        
+//        let groupCountLabel: UILabel = {
+//            let label = UILabel()
+//            label.textAlignment = .Center
+//            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
+//            label.translatesAutoresizingMaskIntoConstraints = false
+//            label.userInteractionEnabled = true
+//            label.tag = 2
+//            return label
+//        }()
+//        
+//        let groupCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserGroupsList(_:)))
+//        groupCountTapGesture.numberOfTapsRequired = 1
+//        
+//        //
+//        // Stat stack view
+//        //
+//        
+//        let statStackView: UIStackView = {
+//            let stackView = UIStackView(arrangedSubviews: [postCountLabel, actionCountLabel, groupCountLabel])
+//            stackView.alignment = .Center
+//            stackView.distribution = .FillEqually
+//            stackView.axis = .Horizontal
+//            stackView.translatesAutoresizingMaskIntoConstraints = false
+//            return stackView
+//        }()
+//        
+//        self.statGroupView.addSubview(statStackView)
         
-        let postCountLabel: UILabel = {
-            let label = UILabel()
-            label.textAlignment = .Center
-            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.userInteractionEnabled = true
-            label.tag = 0
-            return label
-        }()
-        
-        //
-        // Action count
-        //
-        
-        let actionCountLabel: UILabel = {
-            let label = UILabel()
-            label.textAlignment = .Center
-            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.userInteractionEnabled = true
-            label.tag = 1
-            return label
-        }()
-        
-        let actionCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserActionsList(_:)))
-        actionCountTapGesture.numberOfTapsRequired = 1
-        
-        //
-        // Group count
-        //
-        
-        let groupCountLabel: UILabel = {
-            let label = UILabel()
-            label.textAlignment = .Center
-            label.font = UIFont.systemFontOfSize(13, weight: UIFontWeightSemibold)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.userInteractionEnabled = true
-            label.tag = 2
-            return label
-        }()
-        
-        let groupCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserGroupsList(_:)))
-        groupCountTapGesture.numberOfTapsRequired = 1
-        
-        //
-        // Stat stack view
-        //
-        
-        let statStackView: UIStackView = {
-            let stackView = UIStackView(arrangedSubviews: [postCountLabel, actionCountLabel, groupCountLabel])
-            stackView.alignment = .Center
-            stackView.distribution = .FillEqually
-            stackView.axis = .Horizontal
-            stackView.translatesAutoresizingMaskIntoConstraints = false
-            return stackView
-        }()
-        
-        statGroupView.addSubview(statStackView)
-        
-        statStackView.leadingAnchor.constraintEqualToAnchor(statGroupView.leadingAnchor).active = true
-        statStackView.trailingAnchor.constraintEqualToAnchor(statGroupView.trailingAnchor).active = true
-        statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
-        statStackView.topAnchor.constraintEqualToAnchor(statGroupView.topAnchor).active = true
+//        statStackView.leadingAnchor.constraintEqualToAnchor(statGroupView.leadingAnchor).active = true
+//        statStackView.trailingAnchor.constraintEqualToAnchor(statGroupView.trailingAnchor).active = true
+//        statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
+//        statStackView.topAnchor.constraintEqualToAnchor(statGroupView.topAnchor).active = true
         
         //
         // Populate values
@@ -755,6 +815,9 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                 
             }
             
+            let actionCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserActionsList(_:)))
+                    actionCountTapGesture.numberOfTapsRequired = 1
+            
             actionCountLabel.addGestureRecognizer(actionCountTapGesture)
             
         } else {
@@ -773,6 +836,9 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                 groupCountLabel.text = "\(groupCount) group"
                 
             }
+            
+            let groupCountTapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(self.openUserGroupsList(_:)))
+            groupCountTapGesture.numberOfTapsRequired = 1
             
             groupCountLabel.addGestureRecognizer(groupCountTapGesture)
             
@@ -903,11 +969,54 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         }
         
         //
+        // Stat group view
+        //
+        
+        let statGroupView: UIView = {
+            let view = UIView()
+            view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 16)
+            view.alpha = 1.0
+            view.backgroundColor = UIColor(
+                red: 200.0/255.0,
+                green: 208.0/255.0,
+                blue: 216.0/255.0,
+                alpha: 0.0
+            )
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
+//        statGroupView.heightAnchor.constraintEqualToConstant(40.0).active = true
+        
+        //
+        // Stat stack view
+        //
+        
+        let statStackView: UIStackView = {
+            let stackView = UIStackView(arrangedSubviews: [postCountLabel, actionCountLabel, groupCountLabel])
+            stackView.alignment = .Center
+            stackView.distribution = .FillEqually
+            stackView.axis = .Horizontal
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            return stackView
+        }()
+        
+        statGroupView.addSubview(statStackView)
+        
+//        self.statGroupView.backgroundColor = UIColor.redColor()
+//        self.statGroupView.centerXAnchor.constraintEqualToAnchor(<#T##anchor: NSLayoutAnchor##NSLayoutAnchor#>)
+        
+        statStackView.leadingAnchor.constraintEqualToAnchor(statGroupView.leadingAnchor).active = true
+        statStackView.trailingAnchor.constraintEqualToAnchor(statGroupView.trailingAnchor).active = true
+        statStackView.bottomAnchor.constraintEqualToAnchor(statGroupView.bottomAnchor).active = true
+        statStackView.topAnchor.constraintEqualToAnchor(statGroupView.topAnchor).active = true
+        
+        //
         // Profile header master stack view
         //
         
         let headerStackView: UIStackView = {
-            let stackView = UIStackView(arrangedSubviews: [userImageView, userNameLabel, userTitleLabel, userBioLabel])
+            let stackView = UIStackView(arrangedSubviews: [userImageView, userNameLabel, userTitleLabel, userBioLabel, statGroupView])
             stackView.alignment = .Center
             stackView.distribution = .Fill
             stackView.spacing = 8
@@ -920,7 +1029,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         // Adjust header container view height
         //
         
-        var baseHeaderHeight = 113.0
+        var baseHeaderHeight = 145.0
         
         if let titleText = userTitleLabel.text where !titleText.isEmpty {
             
@@ -934,15 +1043,23 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             
         }
         
-        let headerHeight = CGFloat(baseHeaderHeight + 40.0)
+//        let headerHeight = CGFloat(baseHeaderHeight + 32.0)
         
-        profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: headerHeight)
+        let headerHeight = CGFloat(baseHeaderHeight)
         
-        profileTableHeader.addSubview(headerStackView)
+        self.profileTableHeader.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: headerHeight)
         
-        headerStackView.leadingAnchor.constraintEqualToAnchor(profileTableHeader.leadingAnchor).active = true
-        headerStackView.trailingAnchor.constraintEqualToAnchor(profileTableHeader.trailingAnchor).active = true
-        headerStackView.topAnchor.constraintEqualToAnchor(profileTableHeader.topAnchor, constant: 16.0).active = true
+        self.profileTableHeader.addSubview(headerStackView)
+        
+        headerStackView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor).active = true
+        headerStackView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor).active = true
+        headerStackView.topAnchor.constraintEqualToAnchor(self.profileTableHeader.topAnchor, constant: 16.0).active = true
+//        headerStackView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor, constant: 0.0).active = true
+        
+//        statGroupView.bottomAnchor.constraintEqualToAnchor(self.profileTableHeader.bottomAnchor, constant: 16.0).active = true
+        statGroupView.leadingAnchor.constraintEqualToAnchor(self.profileTableHeader.leadingAnchor, constant: 0.0).active = true
+        statGroupView.trailingAnchor.constraintEqualToAnchor(self.profileTableHeader.trailingAnchor, constant: 0.0).active = true
+//        statGroupView.heightAnchor.constraintEqualToConstant(40.0).active = true
         
         self.tableView.tableHeaderView = self.profileTableHeader
         

@@ -222,6 +222,13 @@ class ActivityTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.backgroundColor = UIColor(
+            red: 245.0/255.0,
+            green: 247.0/255.0,
+            blue: 249.0/255.0,
+            alpha: 1.0
+        )
+        
         //
         // Enable scroll to top of UITableView when title 
         // bar is tapped

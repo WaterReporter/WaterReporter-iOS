@@ -283,7 +283,13 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
         //
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 600.0;
-        self.tableView.backgroundColor = UIColor.whiteColor()
+//        self.tableView.backgroundColor = UIColor.whiteColor()
+        self.tableView.backgroundColor = UIColor(
+            red: 245.0/255.0,
+            green: 247.0/255.0,
+            blue: 249.0/255.0,
+            alpha: 1.0
+        )
         self.tableView.scrollsToTop = true
         
     }
