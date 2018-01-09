@@ -213,13 +213,16 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         else if self.userId == nil {
 
             print("Loading current user's profile")
+            
+            self.loading()
+            
+            if (self.refreshControl == nil) {
+                self.refreshControl = UIRefreshControl()
+            }
 
             self.isActingUsersProfile = true
             
             self.navigationItem.title = "Your Profile"
-            
-//            let doneButtonAsLeftArrow = UIBarButtonItem(image: UIImage(named: "LeftArrow24x24.png"), style: .Plain, target: self, action: "doneButtonPushed")
-//            navigationItem.leftBarButtonItem = doneButtonAsLeftArrow
             
             let buttonProfileSettings = UIBarButtonItem(image: UIImage(named: "Icon--Settings.png"), style: .Plain, target: self, action: #selector(ProfileTableViewController.loadProfileSettings(_:)))
             
@@ -230,17 +233,9 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                 alpha: 0.5
             )
             
-//            navigationItem.leftBarButtonItem = doneButtonAsLeftArrow
-            
             self.navigationItem.rightBarButtonItem = buttonProfileSettings
             
             self.navigationItem.rightBarButtonItem?.enabled = true
-            
-//            self.navigationItem.rightBarButtonItem? = self.buttonUserProfileSettings
-//            
-//            self.navigationItem.rightBarButtonItem?.target = self
-//            
-//            self.navigationItem.rightBarButtonItem?.action = #selector(ProfileTableViewController.loadProfileSettings(_:))
             
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"

@@ -124,7 +124,9 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
     // MARK: Custom Functionality
     //
     @IBAction func dismissSettingsTableViewController(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+//        self.popviewc
+//        self.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.popViewControllerAnimated(true)
     }
 
     @IBAction func doneMakingChangesToNotificationSettings(sender: UIBarButtonItem) {
@@ -209,9 +211,11 @@ class UserProfileSettingsTableViewController: UITableViewController, UINavigatio
                     
                     print("Response Success \(value)")
                     
-                    self.dismissViewControllerAnimated(true, completion: {
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    })
+                    self.navigationController?.popViewControllerAnimated(true)
+                    
+//                    self.dismissViewControllerAnimated(true, completion: {
+//                        self.dismissViewControllerAnimated(true, completion: nil)
+//                    })
                     
                 case .Failure(let error):
                     print("attemptUserProfileSave::Failure")
