@@ -4034,7 +4034,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="KzV-V9-Ipr" kind="relationship" relationship="rootViewController" id="N5o-L9-Gs9"/>
+                        <segue destination="Fcv-4X-eZF" kind="relationship" relationship="rootViewController" id="FgH-I7-2XT"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wrg-TV-f7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4054,7 +4054,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="submissionsTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="368" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VDb-Oe-C9z">
-                                <rect key="frame" x="0.0" y="56" width="375" height="1087"/>
+                                <rect key="frame" x="0.0" y="7" width="375" height="1185"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
@@ -7698,7 +7698,6 @@
                         </attributedString>
                     </refreshControl>
                     <connections>
-                        <outlet property="buttonUserProfileSettings" destination="JJK-Wa-j2N" id="DvC-v7-7cu"/>
                         <outlet property="indicatorLoadingView" destination="jmz-9m-EbP" id="6rd-sa-YP9"/>
                         <outlet property="loadingIndicatorView" destination="2hk-Ie-Fm2" id="eIt-CR-yLe"/>
                         <outlet property="titleImageView" destination="V0O-P7-BRH" id="qyD-ao-FvU"/>
@@ -7727,11 +7726,6 @@
                         <constraint firstItem="vfK-Lr-tQJ" firstAttribute="top" secondItem="bof-yD-rD5" secondAttribute="bottom" constant="8" id="yGf-8s-GYJ"/>
                     </constraints>
                 </view>
-                <navigationItem title="My Profile" id="BKI-ft-Tm2">
-                    <barButtonItem key="rightBarButtonItem" image="Icon--Settings" id="JJK-Wa-j2N" userLabel="Button User Profile Settings">
-                        <color key="tintColor" red="0.57254901960000004" green="0.57254901960000004" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
-                    </barButtonItem>
-                </navigationItem>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HK0-ke-lDj" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo--WaterReporter--Horizontal" id="Cnk-mW-3Sn">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -7761,7 +7755,7 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1724" y="-2271.8140929535234"/>
+            <point key="canvasLocation" x="1724" y="-2269"/>
         </scene>
     </scenes>
     <resources>

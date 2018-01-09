@@ -20,13 +20,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     // @IBOUTLETS
     //
     
-    @IBOutlet weak var buttonUserProfileSettings: UIBarButtonItem!
-    
     @IBOutlet var loadingIndicatorView: UIView!
-    
-//    @IBOutlet weak var buttonUserProfileSettings: UIBarButtonItem!
-
-//    @IBOutlet weak var tableView: UITableView!
     
     //
     // MARK: @IBActions
@@ -186,7 +180,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         // another view. If no user id was passed, then we know that
         // we should be displaying the acting user's profile
         if (self.userId == nil) {
-            return
+            
         }
         
         // Show User Profile Information in Header View
@@ -222,6 +216,32 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
 
             self.isActingUsersProfile = true
             
+            self.navigationItem.title = "Your Profile"
+            
+//            let doneButtonAsLeftArrow = UIBarButtonItem(image: UIImage(named: "LeftArrow24x24.png"), style: .Plain, target: self, action: "doneButtonPushed")
+//            navigationItem.leftBarButtonItem = doneButtonAsLeftArrow
+            
+            let buttonProfileSettings = UIBarButtonItem(image: UIImage(named: "Icon--Settings.png"), style: .Plain, target: self, action: #selector(ProfileTableViewController.loadProfileSettings(_:)))
+            
+            buttonProfileSettings.tintColor = UIColor(
+                red: 0.0/255.0,
+                green: 0.0/255.0,
+                blue: 0.0/255.0,
+                alpha: 0.5
+            )
+            
+//            navigationItem.leftBarButtonItem = doneButtonAsLeftArrow
+            
+            self.navigationItem.rightBarButtonItem = buttonProfileSettings
+            
+            self.navigationItem.rightBarButtonItem?.enabled = true
+            
+//            self.navigationItem.rightBarButtonItem? = self.buttonUserProfileSettings
+//            
+//            self.navigationItem.rightBarButtonItem?.target = self
+//            
+//            self.navigationItem.rightBarButtonItem?.action = #selector(ProfileTableViewController.loadProfileSettings(_:))
+            
             if let userIdNumber = NSUserDefaults.standardUserDefaults().objectForKey("currentUserAccountUID") as? NSNumber {
                 self.userId = "\(userIdNumber)"
                 self.attemptLoadUserProfile(self.userId)
@@ -237,7 +257,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         // Set dynamic row heights
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 368.0;
-        self.tableView.frame = view.frame
+//        self.tableView.frame = view.frame
         
         //
         // SETUP SUBMISSION TABLE
@@ -273,6 +293,14 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     //
     // MARK: Custom Functionality
     //
+    
+    func loadProfileSettings(sender: UIBarButtonItem) {
+        
+        let nextViewController = self.storyBoard.instantiateViewControllerWithIdentifier("UserProfileSettingsTableViewController") as! UserProfileSettingsTableViewController
+        
+        self.navigationController?.pushViewController(nextViewController, animated: true)
+        
+    }
 
     func loading() {
         
