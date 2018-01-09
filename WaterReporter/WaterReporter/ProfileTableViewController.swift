@@ -2039,20 +2039,24 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             }
         }
         
-        var reportLikesCountText: String = ""
+//        var reportLikesCountText: String = ""
         
-        if _report_likes_updated_total == 1 {
-            reportLikesCountText = "1 like"
-            _cell.reportLikeCount.hidden = false
-        }
-        else if _report_likes_updated_total >= 1 {
-            reportLikesCountText = "\(_report_likes_updated_total) likes"
-            _cell.reportLikeCount.hidden = false
-        }
-        else {
-            reportLikesCountText = "0 likes"
-            _cell.reportLikeCount.hidden = false
-        }
+        let reportLikesCountText = "\(_report_likes_updated_total)"
+        
+        _cell.reportLikeCount.hidden = false
+        
+//        if _report_likes_updated_total == 1 {
+//            reportLikesCountText = "1"
+//            _cell.reportLikeCount.hidden = false
+//        }
+//        else if _report_likes_updated_total >= 1 {
+//            reportLikesCountText = "\(_report_likes_updated_total)"
+//            _cell.reportLikeCount.hidden = false
+//        }
+//        else {
+//            reportLikesCountText = "0"
+//            _cell.reportLikeCount.hidden = false
+//        }
         
         _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         

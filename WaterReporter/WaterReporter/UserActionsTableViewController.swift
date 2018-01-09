@@ -1302,20 +1302,24 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
             }
         }
         
-        var reportLikesCountText: String = ""
+//        var reportLikesCountText: String = ""
         
-        if _report_likes_updated_total == 1 {
-            reportLikesCountText = "1 like"
-            _cell.buttonReportLikeCount.hidden = false
-        }
-        else if _report_likes_updated_total >= 1 {
-            reportLikesCountText = "\(_report_likes_updated_total) likes"
-            _cell.buttonReportLikeCount.hidden = false
-        }
-        else {
-            reportLikesCountText = "0 likes"
-            _cell.buttonReportLikeCount.hidden = false
-        }
+        let reportLikesCountText = "\(_report_likes_updated_total)"
+        
+        _cell.buttonReportLikeCount.hidden = false
+        
+//        if _report_likes_updated_total == 1 {
+//            reportLikesCountText = "1"
+//            _cell.buttonReportLikeCount.hidden = false
+//        }
+//        else if _report_likes_updated_total >= 1 {
+//            reportLikesCountText = "\(_report_likes_updated_total)"
+//            _cell.buttonReportLikeCount.hidden = false
+//        }
+//        else {
+//            reportLikesCountText = "0"
+//            _cell.buttonReportLikeCount.hidden = false
+//        }
         
         _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         
