@@ -13,7 +13,7 @@ import Kingfisher
 import SwiftyJSON
 import UIKit
 
-class ProfileTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
+class ProfileTableViewController: UITableViewController, UINavigationControllerDelegate {
     
     
     //
@@ -21,9 +21,12 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     
     @IBOutlet weak var buttonUserProfileSettings: UIBarButtonItem!
+    
+    @IBOutlet var loadingIndicatorView: UIView!
+    
+//    @IBOutlet weak var buttonUserProfileSettings: UIBarButtonItem!
 
-    @IBOutlet weak var submissionTableView: UITableView!
-
+//    @IBOutlet weak var tableView: UITableView!
     
     //
     // MARK: @IBActions
@@ -361,22 +364,22 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         //
         //
         // Set dynamic row heights
-        self.submissionTableView.rowHeight = UITableViewAutomaticDimension;
-        self.submissionTableView.estimatedRowHeight = 368.0;
-        self.submissionTableView.frame = view.frame
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.estimatedRowHeight = 368.0;
+        self.tableView.frame = view.frame
         
         //
         // SETUP SUBMISSION TABLE
         //
-        self.submissionTableView.delegate = self
-        self.submissionTableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         
         submissionRefreshControl = UIRefreshControl()
         submissionRefreshControl.restorationIdentifier = "submissionRefreshControl"
         
         submissionRefreshControl.addTarget(self, action: #selector(ProfileTableViewController.refreshSubsmissionsTableView(_:)), forControlEvents: .ValueChanged)
         
-        submissionTableView.addSubview(submissionRefreshControl)
+        tableView.addSubview(submissionRefreshControl)
         
         // Make sure we are getting 'auto layout' specific sizes
         // otherwise any math we do will be messed up
@@ -387,7 +390,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         // SET DEFAULT SELECTED TAB
         //
         
-        self.submissionTableView.hidden = false
+        self.tableView.hidden = false
         
     }
     
@@ -856,7 +859,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         headerStackView.trailingAnchor.constraintEqualToAnchor(profileTableHeader.trailingAnchor).active = true
         headerStackView.topAnchor.constraintEqualToAnchor(profileTableHeader.topAnchor, constant: 16.0).active = true
         
-        self.submissionTableView.tableHeaderView = self.profileTableHeader
+        self.tableView.tableHeaderView = self.profileTableHeader
         
         //
         // Load and display other user information
@@ -1041,7 +1044,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                         }
                         
                         // Refresh the data in the table so the newest items appear
-                        self.submissionTableView.reloadData()
+                        self.tableView.reloadData()
                         
                         self.userPostsPage += 1
                     }
@@ -1063,7 +1066,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     //
     // PROTOCOL REQUIREMENT: UITableViewDelegate
     //
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             
         guard (JSON(self.userPostsObjects) != nil) else { return 0 }
 
@@ -1075,13 +1078,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection  section: Int) -> UIView? {
+    override func tableView(tableView: UITableView, viewForHeaderInSection  section: Int) -> UIView? {
         
         return self.profileTableHeader;
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let emptyCell = tableView.dequeueReusableCellWithIdentifier("emptyTableViewCell", forIndexPath: indexPath) as! EmptyTableViewCell
         
@@ -1642,7 +1645,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
 
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("row tapped \(indexPath)")
     }
     
@@ -1742,19 +1745,20 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         var _report: JSON!
         
-        var _cell = self.submissionTableView.cellForRowAtIndexPath(_indexPath) as! UserProfileSubmissionTableViewCell
+        let _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! BasePostTableCell
+        
         _report = JSON(self.userPostsObjects[(indexPathRow)].objectForKey("properties")!)
         
         // Change the Heart icon to red
         //
         if (addLike) {
-            _cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
-            _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-            _cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         } else {
-            _cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
-            _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-            _cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         }
         
         // Update the total likes count
@@ -1791,18 +1795,18 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         if _report_likes_updated_total == 1 {
             reportLikesCountText = "1 like"
-            _cell.buttonReportLikeCount.hidden = false
+            _cell.reportLikeCount.hidden = false
         }
         else if _report_likes_updated_total >= 1 {
             reportLikesCountText = "\(_report_likes_updated_total) likes"
-            _cell.buttonReportLikeCount.hidden = false
+            _cell.reportLikeCount.hidden = false
         }
         else {
             reportLikesCountText = "0 likes"
-            _cell.buttonReportLikeCount.hidden = false
+            _cell.reportLikeCount.hidden = false
         }
         
-        _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
+        _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         
     }
     
