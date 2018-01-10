@@ -2039,24 +2039,45 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             }
         }
         
-//        var reportLikesCountText: String = ""
+        let reportLikesCountText: String = "\(_report_likes_updated_total)"
         
-        let reportLikesCountText = "\(_report_likes_updated_total)"
-        
-        _cell.reportLikeCount.hidden = false
-        
-//        if _report_likes_updated_total == 1 {
-//            reportLikesCountText = "1"
-//            _cell.reportLikeCount.hidden = false
-//        }
-//        else if _report_likes_updated_total >= 1 {
-//            reportLikesCountText = "\(_report_likes_updated_total)"
-//            _cell.reportLikeCount.hidden = false
-//        }
-//        else {
-//            reportLikesCountText = "0"
-//            _cell.reportLikeCount.hidden = false
-//        }
+        if _report_likes_updated_total >= 1 {
+            
+            if (addLike) {
+                
+                _cell.reportCommentButton.alpha = 1
+                _cell.reportLikeCount.setTitleColor(UIColor(
+                    red: 240.0/255.0,
+                    green: 6.0/255.0,
+                    blue: 53.0/255.0,
+                    alpha: 1.0
+                    ), forState: .Normal)
+                _cell.reportLikeCount.hidden = false
+                
+            } else {
+                
+                _cell.reportCommentButton.alpha = 1
+                _cell.reportLikeCount.setTitleColor(UIColor(
+                    red: 0.0/255.0,
+                    green: 0.0/255.0,
+                    blue: 0.0/255.0,
+                    alpha: 1.0
+                    ), forState: .Normal)
+                _cell.reportLikeCount.hidden = false
+                
+            }
+            
+        }
+        else {
+            _cell.reportLikeButton.alpha = 0.4
+            _cell.reportLikeCount.setTitleColor(UIColor(
+                red: 0.0/255.0,
+                green: 0.0/255.0,
+                blue: 0.0/255.0,
+                alpha: 1.0
+                ), forState: .Normal)
+            _cell.reportLikeCount.hidden = true
+        }
         
         _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         

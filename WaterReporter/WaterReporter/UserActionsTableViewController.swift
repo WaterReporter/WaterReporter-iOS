@@ -1259,19 +1259,19 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
         
         var _report: JSON!
         
-        let _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! UserProfileActionsTableViewCell
+        let _cell = self.tableView.cellForRowAtIndexPath(_indexPath) as! BasePostTableCell
         _report = JSON(self.actions[(indexPathRow)].objectForKey("properties")!)
         
         // Change the Heart icon to red
         //
         if (addLike) {
-            _cell.buttonReportLike.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
-            _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-            _cell.buttonReportLike.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heartred"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.reportLikeButton.addTarget(self, action: #selector(unlikeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         } else {
-            _cell.buttonReportLike.setImage(UIImage(named: "icon--heart"), forState: .Normal)
-            _cell.buttonReportLike.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-            _cell.buttonReportLike.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
+            _cell.reportLikeButton.setImage(UIImage(named: "icon--heart"), forState: .Normal)
+            _cell.reportLikeButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+            _cell.reportLikeButton.addTarget(self, action: #selector(likeCurrentReport(_:)), forControlEvents: .TouchUpInside)
         }
         
         // Update the total likes count
@@ -1302,26 +1302,30 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
             }
         }
         
-//        var reportLikesCountText: String = ""
+        let reportLikesCountText: String = "\(_report_likes_updated_total)"
         
-        let reportLikesCountText = "\(_report_likes_updated_total)"
+        if _report_likes_updated_total >= 1 {
+            _cell.reportCommentButton.alpha = 1
+            _cell.reportLikeCount.setTitleColor(UIColor(
+                red: 240.0/255.0,
+                green: 6.0/255.0,
+                blue: 53.0/255.0,
+                alpha: 1.0
+                ), forState: .Normal)
+            _cell.reportLikeCount.hidden = false
+        }
+        else {
+            _cell.reportLikeButton.alpha = 0.4
+            _cell.reportLikeCount.setTitleColor(UIColor(
+                red: 0.0/255.0,
+                green: 0.0/255.0,
+                blue: 0.0/255.0,
+                alpha: 1.0
+                ), forState: .Normal)
+            _cell.reportLikeCount.hidden = true
+        }
         
-        _cell.buttonReportLikeCount.hidden = false
-        
-//        if _report_likes_updated_total == 1 {
-//            reportLikesCountText = "1"
-//            _cell.buttonReportLikeCount.hidden = false
-//        }
-//        else if _report_likes_updated_total >= 1 {
-//            reportLikesCountText = "\(_report_likes_updated_total)"
-//            _cell.buttonReportLikeCount.hidden = false
-//        }
-//        else {
-//            reportLikesCountText = "0"
-//            _cell.buttonReportLikeCount.hidden = false
-//        }
-        
-        _cell.buttonReportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
+        _cell.reportLikeCount.setTitle(reportLikesCountText, forState: .Normal)
         
     }
     
@@ -1423,11 +1427,11 @@ class UserActionsTableViewController: UITableViewController, UINavigationControl
         
         let infoDict : [String : AnyObject] = ["sender": sender.tag]
         
-        self.unlikeDelay = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(self.attemptUnikeCurrentReport(_:)), userInfo: infoDict, repeats: false)
+        self.unlikeDelay = NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(self.attemptUnlikeCurrentReport(_:)), userInfo: infoDict, repeats: false)
         
     }
     
-    func attemptUnikeCurrentReport(timer: NSTimer) {
+    func attemptUnlikeCurrentReport(timer: NSTimer) {
         print("userInfo \(timer.userInfo!)")
         
         let _arguments = timer.userInfo as! [String : AnyObject]
